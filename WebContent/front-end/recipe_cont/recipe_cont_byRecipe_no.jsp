@@ -38,7 +38,7 @@
 		<td>食譜編號:<font color=red>${param.recipe_no}</font></td>
 	</tr>
 	<tr>
-		<td>食譜名稱:>${recipeSvc.getOneRecipe(param.recipe_no).recipe_name}</td>
+		<td>食譜名稱:${recipeSvc.getOneRecipe(param.recipe_no).recipe_name}</td>
 	</tr>
 	<c:forEach var="Recipe_contVO" items="${recipe_cont_set}">
 		<tr>
