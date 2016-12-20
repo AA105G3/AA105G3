@@ -39,7 +39,7 @@
 <h5>查詢單一:</h5>  
   <li>
     <FORM METHOD="post" ACTION="<%=request.getContextPath()%>/customer_demand/customer_demand.do" >
-        <b>輸入客戶需求編號 (如CN1(暫定)):</b>
+        <b>輸入客戶需求編號 (如CN00000001(暫定)):</b>
         <input type="text" name="cusde_no">
         <input type="submit" value="送出">
         <input type="hidden" name="action" value="getOne_For_Display">

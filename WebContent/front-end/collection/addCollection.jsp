@@ -46,13 +46,13 @@ CollectionVO collectionVO = (CollectionVO) request.getAttribute("collectionVO");
 			value="<%= (collectionVO==null)? "M00000001" : collectionVO.getMem_no()%>" /></td>
 	</tr>
 	<tr>
-		<td>收藏目錄編號:</td>
+		<td>收藏目標編號:</td>
 		<td><input type="TEXT" name="all_no" size="45"
 			value="<%= (collectionVO==null)? "C00000001" : collectionVO.getAll_no()%>" /></td>
 	</tr>
 
 	<tr>
-		<td>類別編號:<font color=red><b>*</b></font></td>
+		<td>類別編號(系統自動以收藏目標編號的第一個字母為類別編號):<font color=red><b>*</b></font></td>
 		<td><select size="1" name="class_no">
 				<option value="R"  >食譜(R)
 				<option value="F"  >影片(F)

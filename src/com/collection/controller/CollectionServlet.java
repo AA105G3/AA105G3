@@ -163,9 +163,10 @@ public class CollectionServlet extends HttpServlet {
 
 			try {
 				/***********************1.接收請求參數 - 輸入格式的錯誤處理*************************/
-				String all_no = req.getParameter("all_no").trim();System.out.println("all_no:"+all_no);
-				String mem_no = req.getParameter("mem_no").trim();System.out.println("mem_no:"+mem_no);				
-				String class_no = req.getParameter("class_no").trim();System.out.println("class_no:"+class_no);
+				String all_no = req.getParameter("all_no").trim();
+				String mem_no = req.getParameter("mem_no").trim();	
+				String class_no = String.valueOf(all_no.charAt(0));
+//				String class_no = req.getParameter("class_no").trim();
 
 				CollectionVO collectionVO = new CollectionVO();
 				collectionVO.setMem_no(mem_no);
@@ -270,7 +271,8 @@ public class CollectionServlet extends HttpServlet {
 				String coll_no = new String(req.getParameter("coll_no").trim());
 				String mem_no = req.getParameter("mem_no").trim();
 				String all_no = req.getParameter("all_no").trim();
-				String class_no = req.getParameter("class_no").trim();
+				String class_no = String.valueOf(all_no.charAt(0));
+//				String class_no = req.getParameter("class_no").trim();
 
 				CollectionVO collectionVO = new CollectionVO();
 				collectionVO.setColl_no(coll_no);

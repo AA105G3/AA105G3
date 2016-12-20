@@ -21,7 +21,7 @@ public class CollectionDAO implements CollectionDAO_interface{
 			}
 		}
 
-	private static final String INSERT_STMT = "INSERT INTO collection (coll_no, mem_no, all_no, class_no) VALUES ('CO'||collection_seq.NEXTVAL, ?, ?, ?)";
+	private static final String INSERT_STMT = "INSERT INTO collection (coll_no, mem_no, all_no, class_no) VALUES ('CO'||lpad(COLLECTION_seq.NEXTVAL,8,0), ?, ?, ?)";
 	private static final String Get_ALL_STMT = "select coll_no, mem_no, all_no, class_no from collection order by coll_no";
 	private static final String GET_ONE_STMT = "select coll_no, mem_no, all_no, class_no from collection where coll_no = ?";
 	private static final String DELETE = "DELETE FROM collection where coll_no = ?";
