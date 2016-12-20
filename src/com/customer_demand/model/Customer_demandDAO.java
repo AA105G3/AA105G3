@@ -21,7 +21,7 @@ public class Customer_demandDAO implements Customer_demandDAO_interface {
 		}
 	}
 
-	private static final String INSERT_STMT = "INSERT INTO customer_demand (cusde_no, mem_no, cusde_detail, cusde_date, cusde_create_date, cusde_title) VALUES ('CN'||customer_demand_seq.NEXTVAL, ?, ?, ?, ?, ?)";
+	private static final String INSERT_STMT = "INSERT INTO customer_demand (cusde_no, mem_no, cusde_detail, cusde_date, cusde_create_date, cusde_title) VALUES ('CN'||lpad(CUSTOMER_DEMAND_seq.NEXTVAL,8,0), ?, ?, ?, ?, ?)";
 	private static final String Get_ALL_STMT = "select cusde_no, mem_no, cusde_detail, cusde_date, cusde_create_date, cusde_title from customer_demand order by cusde_no";
 	private static final String GET_ONE_STMT = "select cusde_no, mem_no, cusde_detail, cusde_date, cusde_create_date, cusde_title from customer_demand where cusde_no = ?";
 	private static final String DELETE = "DELETE FROM customer_demand where cusde_no = ?";
