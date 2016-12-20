@@ -25,7 +25,7 @@
 </c:if>
 
 <ul>
-  <li><a href='listAllRecipe_cont.jsp'>List</a> all recipe_conts. </li> <br><br>
+  <!-- <li><a href='listAllRecipe_cont.jsp'>List</a> all recipe_conts. </li> <br><br> -->
   
   <li>
     <FORM METHOD="post" ACTION="<%=request.getContextPath()%>/recipe_cont/recipe_cont.do" >
@@ -81,7 +81,7 @@
 <h3>新增食譜步驟</h3>
 
 <ul>
-  <li><a href='addRecipe_cont.jsp'>Add</a> a new Recipe_cont.</li>
+  <li><a href='addRecipe_cont.jsp?recipe_no=R00000001'>Add</a> a new Recipe_cont.</li>
 </ul>
 
 </body>
