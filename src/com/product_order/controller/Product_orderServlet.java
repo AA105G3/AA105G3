@@ -21,7 +21,33 @@ public class Product_orderServlet extends HttpServlet {
 
 		req.setCharacterEncoding("UTF-8");
 		String action = req.getParameter("action");
+		
+		if ("getPart_For_Display_By_One_PK".equals(action)) {
 
+			List<String> errorMsgs = new LinkedList<String>();
+			req.setAttribute("errorMsgs", errorMsgs);
+
+			/*try {*/
+				/*************************** 1.接收請求參數 ****************************************/
+				String prod_ord_no = new String(req.getParameter("prod_ord_no"));
+
+				/*************************** 2.開始查詢資料 ****************************************/
+				Product_orderService product_orderSvc = new Product_orderService();
+				Set<Product_order_listVO> set = product_orderSvc.getProduct_order_list_By_One_PK(prod_ord_no);
+
+				/*************************** 3.查詢完成,準備轉交(Send the Success view) ************/
+				req.setAttribute("listPOList_ByProd_ord_no", set);    // 資料庫取出的set物件,存入request
+
+				String url = "/front-end/product_order/listAllProduct_order.jsp";              // 成功轉交 dept/listAllDept.jsp
+
+				RequestDispatcher successView = req.getRequestDispatcher(url);
+				successView.forward(req, res);
+
+				/*************************** 其他可能的錯誤處理 ***********************************/
+			/*} catch (Exception e) {
+				throw new ServletException(e);
+			}*/
+		}
 		
 		if ("getOne_For_Display".equals(action)) { // 來自select_page.jsp的請求
 

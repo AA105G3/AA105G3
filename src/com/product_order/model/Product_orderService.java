@@ -70,4 +70,8 @@ public class Product_orderService {
 		return dao.getAll();
 	}
 
+	public Set<Product_order_listVO> getProduct_order_list_By_One_PK(String prod_ord_no) {
+		return dao.findByPK(prod_ord_no);
+	}
+
 }

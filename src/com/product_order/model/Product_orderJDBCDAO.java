@@ -8,6 +8,8 @@ import javax.naming.InitialContext;
 import javax.naming.NamingException;
 import javax.sql.DataSource;
 
+import com.product_order_list.model.Product_order_listVO;
+
 public class Product_orderJDBCDAO implements Product_orderDAO_interface {
 	String driver = "oracle.jdbc.driver.OracleDriver";
 	String url = "jdbc:oracle:thin:@localhost:1521:XE";
@@ -73,6 +75,14 @@ public class Product_orderJDBCDAO implements Product_orderDAO_interface {
 		+ " mem_adrs=?,"
 		+ " cell_phone=?,"
 		+ " tel_phone=? where prod_ord_no = ?";
+	
+	private static final String GET_STMT_BY_ONE_PK = 
+		"SELECT prod_ord_no,"
+		+ " prod_no,"
+		+ " unit_price,"
+		+ " prod_quantity,"
+		+ " deli_status,"
+		+ " deli_time FROM product_order_list where prod_ord_no = ? order by prod_ord_no";
 	
 	@Override
 	public void insert(Product_orderVO prod_ordVO) {
@@ -369,6 +379,63 @@ public class Product_orderJDBCDAO implements Product_orderDAO_interface {
 			}
 		}
 		return list;
+	}
+	
+	@Override
+	public Set<Product_order_listVO> findByPK(String prod_ord_no) {
+		Set<Product_order_listVO> set = new LinkedHashSet<Product_order_listVO>();
+		Product_order_listVO prod_ord_listVO = null;
+	
+		Connection con = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+	
+		try {
+	
+			con = DriverManager.getConnection(url, userid, passwd);
+			pstmt = con.prepareStatement(GET_STMT_BY_ONE_PK);
+			pstmt.setString(1, prod_ord_no);
+			rs = pstmt.executeQuery();
+	
+			while (rs.next()) {
+				prod_ord_listVO = new Product_order_listVO();
+				prod_ord_listVO.setProd_ord_no(rs.getString("prod_ord_no"));
+				prod_ord_listVO.setProd_no(rs.getString("prod_no"));
+				prod_ord_listVO.setUnit_price(rs.getInt("unit_price"));
+				prod_ord_listVO.setProd_quantity(rs.getInt("prod_quantity"));
+				prod_ord_listVO.setDeli_status(rs.getString("deli_status"));
+				prod_ord_listVO.setDeli_time(rs.getDate("deli_time"));
+				set.add(prod_ord_listVO); // Store the row in the vector
+			}
+	
+			// Handle any SQL errors
+		} catch (SQLException se) {
+			throw new RuntimeException("A database error occured. "
+					+ se.getMessage());
+		} finally {
+			if (rs != null) {
+				try {
+					rs.close();
+				} catch (SQLException se) {
+					se.printStackTrace(System.err);
+				}
+			}
+			if (pstmt != null) {
+				try {
+					pstmt.close();
+				} catch (SQLException se) {
+					se.printStackTrace(System.err);
+				}
+			}
+			if (con != null) {
+				try {
+					con.close();
+				} catch (Exception e) {
+					e.printStackTrace(System.err);
+				}
+			}
+		}
+		return set;
 	}
 	
 	public static void main(String[] args) {
