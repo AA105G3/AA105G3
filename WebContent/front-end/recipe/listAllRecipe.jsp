@@ -1,12 +1,13 @@
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ page import="java.util.*"%>
 <%@ page import="com.recipe.model.*"%>
 <%-- 此頁練習採用 EL 的寫法取值 --%>
 
 <%
     RecipeService recipeSvc = new RecipeService();
-    List<RecipeVO> list = recipeSvc.getAll();
+	List<RecipeVO> list = recipeSvc.getAll();
     pageContext.setAttribute("list",list);
 %>
 <%-- <jsp:useBean id="recipeSvc" class="com.recipe.model.RecipeService"/> --%>
@@ -56,15 +57,21 @@
 	<c:forEach var="recipeVO" items="${list}" begin="<%=pageIndex%>" end="<%=pageIndex+rowsPerPage-1%>">
 		<tr align='center' valign='middle'>
 			<td>${recipeVO.recipe_no}</td>
-			<td>圖片</td>
+			<td>
+				<img src="<%=request.getContextPath()%>/recipe/showRecipe_pic.do?recipe_no=${recipeVO.recipe_no}" style="width:100px;"/>
+			</td>
 			<td>${recipeVO.mem_no}</td>
 			<td>${recipeVO.recipe_name}</td>
-			<td>${recipeVO.recipe_intro}</td>
+			<td width="450">${recipeVO.recipe_intro}</td>
 			<td>${recipeVO.food_mater}</td>
 			<td>${recipeVO.recipe_like}</td>
 			<td>${recipeVO.recipe_total_views}</td>
 			<td>${recipeVO.recipe_week_views}</td>
-			<td>${recipeVO.recipe_time}</td>
+			<td>
+				<fmt:formatDate value="${recipeVO.recipe_time}" var="formattedDate" 
+               		type="date" pattern="yyyy-MM-dd hh:mm:ss aa" />
+				${formattedDate}
+			</td>
 			
 			<td>
 			  <FORM METHOD="post" ACTION="<%=request.getContextPath()%>/recipe/recipe.do">
