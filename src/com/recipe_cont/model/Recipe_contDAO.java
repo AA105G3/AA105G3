@@ -16,16 +16,24 @@ import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
 
-import com.emp_auth.model.Emp_authJDBCDAO;
-import com.emp_auth.model.Emp_authVO;
+import javax.naming.Context;
+import javax.naming.InitialContext;
+import javax.naming.NamingException;
+import javax.sql.DataSource;
 
-public class Recipe_contJDBCDAO implements Recipe_contDAO_interface
+
+public class Recipe_contDAO implements Recipe_contDAO_interface
 {
 
-	String driver = "oracle.jdbc.driver.OracleDriver";
-	String url = "jdbc:oracle:thin:@localhost:1521:XE";
-	String userid = "foodtime";
-	String psw = "foodtime";
+	private static DataSource ds = null;
+	static {
+		try {
+			Context ctx = new InitialContext();
+			ds = (DataSource) ctx.lookup("java:comp/env/jdbc/FoodTimeDB");
+		} catch (NamingException e) {
+			e.printStackTrace();
+		}
+	}
 
 	private static final String INSERT_STMT = 
 			"INSERT INTO  recipe_cont (recipe_no,step,step_pic,step_cont) VALUES (?, ?, ?, ?)";
@@ -51,24 +59,25 @@ public class Recipe_contJDBCDAO implements Recipe_contDAO_interface
 
 		try
 		{
-			Class.forName(driver);
-			con = DriverManager.getConnection(url, userid, psw);
+			con = ds.getConnection();
 			pstmt = con.prepareStatement(INSERT_STMT);
 
 			byte[] step_pic = recipe_contVO.getStep_pic();
-			long piclen = step_pic.length;
-			InputStream bais = new ByteArrayInputStream(step_pic);
+			if(step_pic!=null){
+				long piclen = step_pic.length;
+				InputStream bais = new ByteArrayInputStream(step_pic);
+				pstmt.setBinaryStream(3, bais, piclen);
+				
+			}else{
+				pstmt.setBinaryStream(3, null);
+			}
 			
 			pstmt.setString(1, recipe_contVO.getRecipe_no());
 			pstmt.setInt(2, recipe_contVO.getStep());
-			pstmt.setBinaryStream(3, bais, piclen);
 			pstmt.setString(4, recipe_contVO.getStep_cont());
 			
 			pstmt.executeUpdate();
 
-		} catch (ClassNotFoundException e)
-		{
-			e.printStackTrace();
 		} catch (SQLException se)
 		{
 			se.printStackTrace();
@@ -111,8 +120,7 @@ public class Recipe_contJDBCDAO implements Recipe_contDAO_interface
 			long piclen = step_pic.length;
 			InputStream bais = new ByteArrayInputStream(step_pic);
 			
-			Class.forName(driver);
-			con = DriverManager.getConnection(url, userid, psw);
+			con = ds.getConnection();
 			pstmt = con.prepareStatement(UPDATE);
 
 			pstmt.setString(1, recipe_contVO.getStep_cont());
@@ -122,8 +130,6 @@ public class Recipe_contJDBCDAO implements Recipe_contDAO_interface
 
 			pstmt.executeUpdate();
 
-		} catch (ClassNotFoundException e) {
-			e.printStackTrace();
 		} catch (SQLException se) {
 			se.printStackTrace();
 		} finally {
@@ -153,16 +159,12 @@ public class Recipe_contJDBCDAO implements Recipe_contDAO_interface
 		
 		try
 		{
-			Class.forName(driver);
-			con = DriverManager.getConnection(url,userid,psw);
+			con = ds.getConnection();
 			pstmt = con.prepareStatement(DELETE);
 			
 			pstmt.setString(1, recipe_no);
 			pstmt.executeUpdate();
-		} catch (ClassNotFoundException e)
-		{
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			
 		} catch (SQLException e)
 		{
 			// TODO Auto-generated catch block
@@ -202,18 +204,14 @@ public class Recipe_contJDBCDAO implements Recipe_contDAO_interface
 		
 		try
 		{
-			Class.forName(driver);
-			con = DriverManager.getConnection(url,userid,psw);
+			con = ds.getConnection();
 			pstmt = con.prepareStatement(DELETE_ONE_STEP);
 			
 			pstmt.setString(1, recipe_no);
 			pstmt.setInt(2, step);
 			
 			pstmt.executeUpdate();
-		} catch (ClassNotFoundException e)
-		{
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			
 		} catch (SQLException e)
 		{
 			// TODO Auto-generated catch block
@@ -243,8 +241,8 @@ public class Recipe_contJDBCDAO implements Recipe_contDAO_interface
 			}
 		}
 	}
+
 	
-	@Override
 	public Recipe_contVO getOneCont(String recipe_no, Integer step)
 	{
 		// TODO Auto-generated method stub
@@ -255,8 +253,7 @@ public class Recipe_contJDBCDAO implements Recipe_contDAO_interface
 		
 		try
 		{
-			Class.forName(driver);
-			con = DriverManager.getConnection(url,userid,psw);
+			con = ds.getConnection();
 			pstmt = con.prepareStatement(GET_ONE_STEP);
 			
 			pstmt.setString(1,recipe_no);
@@ -272,10 +269,7 @@ public class Recipe_contJDBCDAO implements Recipe_contDAO_interface
 			recipe_contVO.setStep_cont(rs.getString("step_cont"));
 			}
 			
-		} catch (ClassNotFoundException e)
-		{
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+	
 		} catch (SQLException e)
 		{
 			// TODO Auto-generated catch block
@@ -309,7 +303,8 @@ public class Recipe_contJDBCDAO implements Recipe_contDAO_interface
 		
 		return recipe_contVO;
 	}
-
+	
+	
 	@Override
 	public Set<Recipe_contVO> findByPrimaryKey(String recipe_no)
 	{
@@ -322,8 +317,7 @@ public class Recipe_contJDBCDAO implements Recipe_contDAO_interface
 		ResultSetMetaData rsmd = null; 
 		try
 		{
-			Class.forName(driver);
-			con = DriverManager.getConnection(url,userid,psw);
+			con = ds.getConnection();
 			pstmt = con.prepareStatement(GET_ONE_STMT);
 			
 			pstmt.setString(1,recipe_no);
@@ -338,10 +332,6 @@ public class Recipe_contJDBCDAO implements Recipe_contDAO_interface
 				recipe_contVO.setStep_cont(rs.getString("step_cont"));
 				set.add(recipe_contVO);
 			}
-		} catch (ClassNotFoundException e)
-		{
-			// TODO Auto-generated catch block
-			e.printStackTrace();
 		} catch (SQLException e)
 		{
 			// TODO Auto-generated catch block
@@ -386,8 +376,7 @@ public class Recipe_contJDBCDAO implements Recipe_contDAO_interface
 		
 		try
 		{
-			Class.forName(driver);
-			con = DriverManager.getConnection(url,userid,psw);
+			con = ds.getConnection();
 			pstmt = con.prepareStatement(Get_ALL_STMT);
 			rs = pstmt.executeQuery();
 			
@@ -401,10 +390,7 @@ public class Recipe_contJDBCDAO implements Recipe_contDAO_interface
 				list.add(recipe_contVO);
 			}
 			
-		} catch (ClassNotFoundException e)
-		{
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+		
 		} catch (SQLException e)
 		{
 			// TODO Auto-generated catch block
@@ -435,74 +421,5 @@ public class Recipe_contJDBCDAO implements Recipe_contDAO_interface
 		}
 		return list;
 	}
-
-	
-	public static void main(String[] args) throws Exception
-	{
-		Recipe_contJDBCDAO dao = new Recipe_contJDBCDAO();
-		
-		//insert
-//		File pic = new File("WebContent/images/recipe_cont","6.jpg");
-//		InputStream fis = new FileInputStream(pic);
-//		byte[] buffer = new byte[fis.available()];
-		
-//		Recipe_contVO recipe_contVO1 = new Recipe_contVO();
-//		recipe_contVO1.setRecipe_no("R00000001");
-//		recipe_contVO1.setStep(6);
-//		recipe_contVO1.setStep_pic(buffer);
-//		recipe_contVO1.setStep_cont("接著打開鍋蓋放入馬鈴薯和毛豆仁，略為攪拌一下，再繼續煮15分鐘即完成。");
-//		
-//		dao.insert(recipe_contVO1);
-//		fis.close();
-		
-		//update
-//		File pic = new File("WebContent/images","cat.jpg");
-//		InputStream fis = new FileInputStream(pic);
-//		byte[] buffer = new byte[fis.available()];
-//		
-//		
-//		Recipe_contVO recipe_contVO2 = new Recipe_contVO();
-//		recipe_contVO2.setRecipe_no("R00000001");
-//		recipe_contVO2.setStep(6);
-//		recipe_contVO2.setStep_pic(buffer);
-//		recipe_contVO2.setStep_cont("更改的內容");
-//		
-//		dao.update(recipe_contVO2);
-		
-		//delete
-//		dao.delete("R00000002");
-		
-		//delete one step
-//		dao.deleteOneStep("R00000001",6);
-		
-		//search target
-//		Set<Recipe_contVO> set = dao.findByPrimaryKey("R00000001");
-//		for(Recipe_contVO recipe_contVO4: set){
-//			System.out.print("| "+recipe_contVO4.getRecipe_no()+" | ");
-//			System.out.print(recipe_contVO4.getStep()+" | ");
-//			System.out.print(recipe_contVO4.getStep_pic()+" | ");
-//			System.out.print(recipe_contVO4.getStep_cont()+" | ");
-//			System.out.println();
-//		}
-		
-		//search all
-//		List<Recipe_contVO> list = dao.getAll();
-//		for(Recipe_contVO recipe_contVO4: list){
-//			System.out.print("| "+recipe_contVO4.getRecipe_no()+" | ");
-//			System.out.print(recipe_contVO4.getStep()+" | ");
-//			System.out.print(recipe_contVO4.getStep_pic()+" | ");
-//			System.out.print(recipe_contVO4.getStep_cont()+" | ");
-//			System.out.println();
-//		}
-		
-		//getOneCont
-//		Recipe_contVO recipe_contVO6 = dao.getOneCont("R00000001", 2);
-//		System.out.print("| "+recipe_contVO6.getRecipe_no()+" | ");
-//		System.out.print(recipe_contVO6.getStep()+" | ");
-//		System.out.print(recipe_contVO6.getStep_pic()+" | ");
-//		System.out.print(recipe_contVO6.getStep_cont()+" | ");
-		
-	}
-
 	
 }
