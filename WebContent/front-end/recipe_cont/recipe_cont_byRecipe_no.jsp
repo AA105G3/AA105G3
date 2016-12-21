@@ -12,7 +12,6 @@
 <title>食譜步驟內容資料 - recipe_cont_byRecipe_no.jsp</title>
 </head>
 <body bgcolor='white'>
-
 <table border='1' cellpadding='5' cellspacing='0' width='600'>
 	<tr bgcolor='#CCCCFF' align='center' valign='middle' height='20'>
 		<td>
