@@ -3,12 +3,7 @@
 <%@ page import="java.util.*"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 
-<%
-	Product_order_listService product_order_listSvc = new Product_order_listService();
-    List<Product_order_listVO> list = (List<Product_order_listVO>) request.getAttribute("product_order_listVO");
-    pageContext.setAttribute("list",list);
-%>
-
+<jsp:useBean id="listPOList_ByProd_ord_no" scope="request" type="java.util.Set" />
 <jsp:useBean id="productSvc" scope="page" class="com.product.model.ProductService" />
 
 <html>
@@ -38,7 +33,7 @@
 		<th>商品出貨時間</th>
 	</tr>
 
-	<c:forEach var="product_order_listVO" items="${list}">
+	<c:forEach var="product_order_listVO" items="${listPOList_ByProd_ord_no}">
 		<tr align='center' valign='middle'>
 			<td>${product_order_listVO.prod_ord_no}</td>
 			<td>
