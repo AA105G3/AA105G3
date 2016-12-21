@@ -99,23 +99,32 @@ public class Recipe_contServlet extends HttpServlet {
 			// send the ErrorPage view.
 			req.setAttribute("errorMsgs", errorMsgs);
 
-			try {
+//			try {
 				/***********************1.接收請求參數 - 輸入格式的錯誤處理*************************/
 				String recipe_no = req.getParameter("recipe_no").trim();
 				String[] step = req.getParameterValues("step");
 				String[] step_cont = req.getParameterValues("step_cont");
 				
 				List<byte[]> step_pics = new ArrayList<byte[]>();
-				Collection<Part> parts = req.getParts();
+				
+				Collection<Part> parts =  req.getParts();
+
+				/*判斷上傳的檔案是否是空的，就算是空的一樣要加入list中，原因在為了存入資料庫的步驟圖片是正確的，DAO部分圖片上傳的地方也要做
+				  空值判斷，否則會出現NullPointer*/
 				for (Part part : parts) {
-					if (getFileNameFromPart(part) != null && part.getContentType() != null){
-						InputStream in = part.getInputStream();
-						byte[] step_pic = new byte[in.available()];
-						in.read(step_pic);
-						in.close();
-						step_pics.add(step_pic);
-					}
-				} 
+						if (getFileNameFromPart(part) != null && part.getContentType() != null){
+							InputStream in = part.getInputStream();
+							byte[] step_pic = new byte[in.available()];
+							in.read(step_pic);
+							in.close();
+							step_pics.add(step_pic);
+							
+						}else if(getFileNameFromPart(part) == null){
+							InputStream in = part.getInputStream();
+							byte[] step_pic = null;
+							step_pics.add(step_pic);
+						}
+					} 
 				
 				List<String> step_conts = new ArrayList<String>();
 				
@@ -129,7 +138,9 @@ public class Recipe_contServlet extends HttpServlet {
 				for(int i =0;i<step.length;i++){
 					recipe_contVO.setRecipe_no(recipe_no);
 					recipe_contVO.setStep(new Integer(step[i]));
-					recipe_contVO.setStep_pic(step_pics.get(i));
+					
+						recipe_contVO.setStep_pic(step_pics.get(i));
+					
 					recipe_contVO.setStep_cont(step_conts.get(i));
 					newRecipe_conts.add(recipe_contVO);
 				}
@@ -148,9 +159,9 @@ public class Recipe_contServlet extends HttpServlet {
 				Recipe_contService recipe_contSvc = new Recipe_contService();
 				
 				for(int i =0 ; i<newRecipe_conts.size();i++){
-					
-					recipe_contVO=recipe_contSvc.addRecipe_cont(recipe_no, new Integer(step[i]),
-							step_pics.get(i), step_conts.get(i));
+						recipe_contVO=recipe_contSvc.addRecipe_cont(recipe_no, new Integer(step[i]),
+								step_pics.get(i), step_conts.get(i));
+				
 					
 				}
 				
@@ -160,12 +171,12 @@ public class Recipe_contServlet extends HttpServlet {
 				successView.forward(req, res);				
 				
 				/***************************其他可能的錯誤處理**********************************/
-			} catch (Exception e) {
-				errorMsgs.add(e.getMessage());
-				RequestDispatcher failureView = req
-						.getRequestDispatcher("/front-end/recipe_cont/addRecipe_cont.jsp");
-				failureView.forward(req, res);
-			}
+//			} catch (Exception e) {
+//				errorMsgs.add(e.getMessage());
+//				RequestDispatcher failureView = req
+//						.getRequestDispatcher("/front-end/recipe_cont/addRecipe_cont.jsp");
+//				failureView.forward(req, res);
+//			}
 		}
 		
 	}

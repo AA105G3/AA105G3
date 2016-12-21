@@ -62,7 +62,7 @@
 	</tr>
 	<tr>
 		<td width="200"><image  style="width:200px;" id="image1">
-		<input type="file" name="recipe_pic" id = "upLoadFile1" onchange="showImage(1)">
+		<input type="file" name="step_pic" id = "upLoadFile1" onchange="showImage(1)">
 		</td>
 		<td>
 		${recipe_contSvc.getRecipe_cont(param.recipe_no).size()+1}<br>
@@ -72,7 +72,7 @@
 	</tr>
 	<tr>
 		<td width="200"><image  style="width:200px;" id="image2">
-		<input type="file" name="recipe_pic" id = "upLoadFile2" onchange="showImage(2)">
+		<input type="file" name="step_pic" id = "upLoadFile2" onchange="showImage(2)">
 		</td>
 		<td>
 		${recipe_contSvc.getRecipe_cont(param.recipe_no).size()+2}<br>
