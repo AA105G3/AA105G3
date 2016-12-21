@@ -99,7 +99,7 @@ public class Recipe_contServlet extends HttpServlet {
 			// send the ErrorPage view.
 			req.setAttribute("errorMsgs", errorMsgs);
 
-//			try {
+			try {
 				/***********************1.接收請求參數 - 輸入格式的錯誤處理*************************/
 				String recipe_no = req.getParameter("recipe_no").trim();
 				String[] step = req.getParameterValues("step");
@@ -171,12 +171,12 @@ public class Recipe_contServlet extends HttpServlet {
 				successView.forward(req, res);				
 				
 				/***************************其他可能的錯誤處理**********************************/
-//			} catch (Exception e) {
-//				errorMsgs.add(e.getMessage());
-//				RequestDispatcher failureView = req
-//						.getRequestDispatcher("/front-end/recipe_cont/addRecipe_cont.jsp");
-//				failureView.forward(req, res);
-//			}
+			} catch (Exception e) {
+				errorMsgs.add(e.getMessage());
+				RequestDispatcher failureView = req
+						.getRequestDispatcher("/front-end/recipe_cont/addRecipe_cont.jsp");
+				failureView.forward(req, res);
+			}
 		}
 		
 	}
