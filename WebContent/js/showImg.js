@@ -1,11 +1,11 @@
 
-	function showImage(){
-		var file = document.getElementById("upLoadFile").files[0];				
+	function showImage(idx){
+		var file = document.getElementById("upLoadFile"+idx).files[0];				
 		var read = new FileReader();
 		read.onload=function(){
-				var image = document.getElementById('image');
+				var image = document.getElementById('image'+idx);
 					image.src=read.result;
-					image.width=300;
+					
 				};
 		read.readAsDataURL(file);	
 	} 

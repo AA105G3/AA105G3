@@ -65,4 +65,9 @@ public class MemberService {
 		return dao.getAll();
 	}
 
+	public MemberVO getOneByMem_ac(String mem_ac) {
+		return dao.findByAC(mem_ac);
+	}
+
+
 }

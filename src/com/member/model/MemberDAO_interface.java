@@ -8,4 +8,6 @@ public interface MemberDAO_interface {
 	public void delete(String mem_no);
 	public MemberVO findByPrimaryKey(String mem_no);
 	public List<MemberVO> getAll();
+	public MemberVO findByAC(String mem_ac);
+
 }
