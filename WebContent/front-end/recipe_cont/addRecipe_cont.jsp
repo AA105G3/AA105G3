@@ -21,7 +21,6 @@
 <link rel="stylesheet" type="text/css" href="js/calendar.css">
 <script language="JavaScript" src="<%=request.getContextPath()%>/js/showImg.js"></script>
 <script src="https://code.jquery.com/jquery.js"></script>
-<div id="popupcalendar" class="text"></div>
 
 <body bgcolor='white'>
 
