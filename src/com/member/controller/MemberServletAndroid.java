@@ -10,6 +10,7 @@ import javax.servlet.http.*;
 
 import com.member.model.*;
 import util.SendResponse;
+import util.ImageUtil;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -34,27 +35,56 @@ import com.google.gson.JsonObject;
 @WebServlet("/MemberServletAndroid")
 public class MemberServletAndroid extends HttpServlet {
 	
-	public void doGet(HttpServletRequest req, HttpServletResponse res)
+	public void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		doPost(req, res);
+		doPost(request, response);
 	}
 
 	public void doPost(HttpServletRequest req, HttpServletResponse res)
 			throws ServletException, IOException {
 
+//		req.setCharacterEncoding("UTF-8");
+//		Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd").create();
+//		BufferedReader br = req.getReader();
+//		StringBuffer jsonIn = new StringBuffer();
+//		String line = null;
+//		while((line = br.readLine()) != null){
+//			jsonIn.append(line);
+//		}
+//		JsonObject jsonObject = gson.fromJson(jsonIn.toString(), JsonObject.class);
+//		MemberService memberSvc = new MemberService();
+//		String action = jsonObject.get("action").getAsString();
+//		System.out.println("action:" +action);
+//		System.out.println("jsonIn.toString():" +jsonIn.toString());
 		req.setCharacterEncoding("UTF-8");
-		Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd").create();
+		Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd HH:mm:ss").create();
+		MemberService memberSvc = new MemberService();
 		BufferedReader br = req.getReader();
-		StringBuffer jsonIn = new StringBuffer();
+		StringBuilder jsonIn = new StringBuilder();
 		String line = null;
-		while((line = br.readLine()) != null){
+		while ((line = br.readLine()) != null) {
 			jsonIn.append(line);
 		}
+		if (gson.fromJson(jsonIn.toString(), JsonObject.class) == null) {
+			return;
+		}
+
 		JsonObject jsonObject = gson.fromJson(jsonIn.toString(), JsonObject.class);
-		MemberService memberSvc = new MemberService();
+
 		String action = jsonObject.get("action").getAsString();
-		System.out.println("action:" +action);
-		System.out.println("jsonIn.toString():" +jsonIn.toString());
+		System.out.println("action = " + action);
+		StringBuffer outStr = new StringBuffer();		
+		if ("getAll".equals(action)) {
+//			List<MemberVO> memberlist = memberSvc.getAll();
+//			SendResponse.writeText(res, jsonIn.toString());
+//			return;
+			List<MemberVO> memberlist = memberSvc.getAll();
+
+			outStr.append(gson.toJson(memberlist));
+			SendResponse.writeText(res, outStr.toString());
+			return;
+		}
+
 		
 		if ("getOne_For_Display".equals(action)) {
 			
@@ -82,6 +112,27 @@ public class MemberServletAndroid extends HttpServlet {
 		}
 			
 		if ("delete".equals(action)) { 
+		}
+		if ("getImage".equals(action)) {
+			OutputStream os = res.getOutputStream();
+			String mem_no = jsonObject.get("mem_no").getAsString();
+			int imageSize = jsonObject.get("imageSize").getAsInt();
+			byte[] mem_image = memberSvc.getImage(mem_no);
+			System.out.println("mem_no " + mem_no + " mem_image " + mem_image+ " imageSize " + imageSize);
+
+			if (mem_image != null) {
+
+				mem_image = ImageUtil.shrink(mem_image, imageSize);
+				res.setContentType("image/jpeg");
+				res.setContentLength(mem_image.length);
+			} else {
+				InputStream in = getServletContext().getResourceAsStream("/NoData/nopic.jpg");
+				mem_image = new byte[in.available()];
+				in.read(mem_image);
+				in.close();
+			}
+			os.write(mem_image);
+			return;
 		}
 		
 	}

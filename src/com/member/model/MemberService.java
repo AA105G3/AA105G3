@@ -64,5 +64,9 @@ public class MemberService {
 	public List<MemberVO> getAll() {
 		return dao.getAll();
 	}
+	
+	public byte[] getImage(String mem_no) {
+		return dao.getImage(mem_no);
+	}
 
 }

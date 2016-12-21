@@ -66,6 +66,8 @@ public class MemberJDBCDAO implements MemberDAO_interface {
 		+ " mem_history=?,"
 		+ " mem_online=? where mem_no = ?";
 	
+	private static final String GET_IMAGE_STMT = "SELECT mem_image FROM member where mem_no=?";
+	
 	@Override
 	public void insert(MemberVO memVO) {
 
@@ -353,6 +355,54 @@ public class MemberJDBCDAO implements MemberDAO_interface {
 		}
 		return list;
 	}
+	
+	@Override
+	public byte[] getImage(String mem_no) {
+
+		byte[] mem_image = null;
+
+		Connection con = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+
+		try {
+			Class.forName(driver);
+			con = DriverManager.getConnection(url, userid, passwd);
+			pstmt = con.prepareStatement(GET_IMAGE_STMT);
+			pstmt.setString(1, mem_no);
+			rs = pstmt.executeQuery();
+
+			if (rs.next()) {
+				mem_image = rs.getBytes("mem_image");
+			}
+
+			// Handle any driver errors
+		}catch (ClassNotFoundException e) {
+			throw new RuntimeException("Couldn't load database driver. "
+					+ e.getMessage());
+			// Handle any SQL errors
+		} catch (SQLException se) {
+			throw new RuntimeException("A database error occured. " + se.getMessage());
+		} finally {
+			if (pstmt != null) {
+				try {
+					pstmt.close();
+				} catch (SQLException se) {
+					se.printStackTrace(System.err);
+				}
+			}
+			if (con != null) {
+				try {
+					con.close();
+				} catch (SQLException se) {
+					se.printStackTrace(System.err);
+				}
+			}
+		}
+
+		return mem_image;
+	}
+
 	
 	public static void main(String[] args) {
 
