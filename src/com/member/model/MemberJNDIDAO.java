@@ -75,6 +75,7 @@ public class MemberJNDIDAO implements MemberDAO_interface {
 		+ " mem_history=?,"
 		+ " mem_online=? where mem_no = ?";
 	
+
 	private static final String GET_AC_STMT = 
 			"SELECT mem_no,"
 			+ " mem_name,"
@@ -88,6 +89,7 @@ public class MemberJNDIDAO implements MemberDAO_interface {
 			+ " mem_history,"
 			+ " mem_online FROM member where mem_ac = ?";
 	
+
 	@Override
 	public void insert(MemberVO memVO) {
 
@@ -354,6 +356,7 @@ public class MemberJNDIDAO implements MemberDAO_interface {
 		}
 		return list;
 	}
+
 	
 	@Override
 	public MemberVO findByAC(String mem_ac) {

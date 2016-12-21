@@ -129,7 +129,9 @@ public class MemberServlet extends HttpServlet {
 				/***************************1.接收請求參數 - 輸入格式的錯誤處理**********************/
 				String mem_no = req.getParameter("mem_no").trim();
 				if(mem_no == ""){
+
 					errorMsgs.add("請輸入會員編號.");
+
 				}
 				
 				String mem_name = req.getParameter("mem_name").trim();
