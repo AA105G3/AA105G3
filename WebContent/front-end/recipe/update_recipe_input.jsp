@@ -72,7 +72,12 @@
 <br>
 <input type="hidden" name="action" value="update">
 <input type="hidden" name="recipe_no" value=${recipeVO.recipe_no}>
-<input type="submit" value="送出修改"></FORM>
+
+<input type="submit" name="edit" value="送出修改">
+<input type="submit" name="edit" value="儲存">
+</FORM>
+
+
 <img id="image" src="<%=request.getContextPath()%>/recipe/showRecipe_pic.do?recipe_no=${recipeVO.recipe_no}" style="width:300px;"/>
 
 </body>

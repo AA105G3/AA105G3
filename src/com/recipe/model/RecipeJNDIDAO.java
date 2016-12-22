@@ -35,14 +35,14 @@ public class RecipeJNDIDAO implements RecipeDAO_interface
 			+ "VALUES ('R'||lpad(recipe_seq.NEXTVAL,8,0),?,?,?,?,?)";
 	private static final String Get_ALL_STMT = 
 			"select recipe_no,mem_no,recipe_name,recipe_intro,food_mater,recipe_pic,recipe_like,recipe_total_views"
-			+ ",recipe_week_views,recipe_time from recipe order by recipe_no";
+			+ ",recipe_week_views,recipe_time,recipe_edit,recipe_classify from recipe order by recipe_no";
 	private static final String GET_ONE_STMT = 
 			"select recipe_no,mem_no,recipe_name,recipe_intro,food_mater,recipe_pic,recipe_like,recipe_total_views"
-			+ ",recipe_week_views,recipe_time from recipe where recipe_no = ?";
+			+ ",recipe_week_views,recipe_time,recipe_edit,recipe_classify from recipe where recipe_no = ?";
 	private static final String DELETE = 
 			"DELETE FROM recipe where recipe_no = ?";
 	private static final String UPDATE = 
-			"UPDATE recipe set recipe_name=?,recipe_intro=?,food_mater=?,recipe_pic=?,recipe_time=sysdate where recipe_no = ?";
+			"UPDATE recipe set recipe_name=?,recipe_intro=?,food_mater=?,recipe_pic=?,recipe_time=sysdate,recipe_edit = ? where recipe_no = ?";
 	private static final String UPDATEVIEWS = 
 			"UPDATE recipe set recipe_total_views=?,recipe_week_views=? where recipe_no = ?";
 	private static final String UPDATELIKE =
@@ -128,7 +128,8 @@ public class RecipeJNDIDAO implements RecipeDAO_interface
 			pstmt.setString(2, recipeVO.getRecipe_intro());
 			pstmt.setString(3, recipeVO.getFood_mater());
 			pstmt.setBinaryStream(4, bais, piclen);
-			pstmt.setString(5, recipeVO.getRecipe_no());
+			pstmt.setString(5, recipeVO.getRecipe_edit());
+			pstmt.setString(6, recipeVO.getRecipe_no());
 			
 
 			pstmt.executeUpdate();
@@ -227,6 +228,8 @@ public class RecipeJNDIDAO implements RecipeDAO_interface
 				recipeVO.setRecipe_total_views(rs.getInt("recipe_total_views"));
 				recipeVO.setRecipe_week_views(rs.getInt("recipe_week_views"));
 				recipeVO.setRecipe_time(rs.getTimestamp("recipe_time"));
+				recipeVO.setRecipe_edit(rs.getString("recipe_edit"));
+				recipeVO.setRecipe_classify(rs.getString("recipe_classify"));
 				
 				
 			}
@@ -290,6 +293,8 @@ public class RecipeJNDIDAO implements RecipeDAO_interface
 				recipeVO.setRecipe_total_views(rs.getInt("recipe_total_views"));
 				recipeVO.setRecipe_week_views(rs.getInt("recipe_week_views"));
 				recipeVO.setRecipe_time(rs.getTimestamp("recipe_time"));
+				recipeVO.setRecipe_edit(rs.getString("recipe_edit"));
+				recipeVO.setRecipe_classify(rs.getString("recipe_classify"));
 				
 				list.add(recipeVO);
 			}
