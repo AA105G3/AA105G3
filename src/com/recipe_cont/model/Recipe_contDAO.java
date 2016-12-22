@@ -116,10 +116,11 @@ public class Recipe_contDAO implements Recipe_contDAO_interface
 		PreparedStatement pstmt = null;
 
 		try {
-			
+
 			
 			con = ds.getConnection();
 			pstmt = con.prepareStatement(UPDATE);
+
 
 			byte[] step_pic = recipe_contVO.getStep_pic();
 			if(step_pic!=null){
@@ -135,6 +136,7 @@ public class Recipe_contDAO implements Recipe_contDAO_interface
 //			pstmt.setBinaryStream(2, bais, piclen);
 			
 			
+
 			pstmt.setString(3, recipe_contVO.getRecipe_no());
 			pstmt.setInt(4, recipe_contVO.getStep());
 

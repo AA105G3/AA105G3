@@ -58,6 +58,7 @@
 	<tr>
 		<td width="200">
 			<c:if test="${Recipe_contVO.step_pic != null}">
+
 				<image  style="width:200px;" id="image${Recipe_contVO.step}" src="<%=request.getContextPath()%>/recipe_cont/showRecipe_cont_pic.do?recipe_no=${param.recipe_no}&step=${Recipe_contVO.step}"/>
 			</c:if>
 			<c:if test="${Recipe_contVO.step_pic == null}">
@@ -67,7 +68,8 @@
 		
 		<a href="<%=request.getContextPath()%>/recipe_cont/recipe_cont.do?action=deleteImage&recipe_no=${param.recipe_no}&step=${Recipe_contVO.step}">刪除圖片</a>
 		 
-		 </form>
+		
+
 		</td>
 		<td>
 		${Recipe_contVO.step}<br>
