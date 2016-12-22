@@ -28,7 +28,7 @@ public class RecipeService
 		return recipeVO;
 	}
 
-	public RecipeVO updateRecipe(String recipe_no,String recipe_name,String recipe_intro,String food_mater,byte[] recipe_pic,String recipe_edit) {
+	public RecipeVO updateRecipe(String recipe_no,String recipe_name,String recipe_intro,String food_mater,byte[] recipe_pic) {
 
 		RecipeVO recipeVO = new RecipeVO();
 
@@ -37,7 +37,6 @@ public class RecipeService
 		recipeVO.setRecipe_intro(recipe_intro);
 		recipeVO.setFood_mater(food_mater);
 		recipeVO.setRecipe_pic(recipe_pic);
-		recipeVO.setRecipe_edit(recipe_edit);
 		dao.update(recipeVO);
 
 		return recipeVO;
