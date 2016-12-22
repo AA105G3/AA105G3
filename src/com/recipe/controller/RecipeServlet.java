@@ -188,9 +188,7 @@ public class RecipeServlet extends HttpServlet {
 				if(recipe_name==null || recipe_name.isEmpty()){
 					errorMsgs.add("食譜名稱不能為空白");
 				}
-				if(recipe_intro==null || recipe_intro.isEmpty()){
-					errorMsgs.add("食譜簡介不能為空白");
-				}
+				
 				for(int i =0;i<ingredientsStr.length;i++){
 					if(ingredientsStr[i].isEmpty() ){
 						errorMsgs.add("食材不能為空白");
@@ -250,8 +248,18 @@ public class RecipeServlet extends HttpServlet {
 				}
 				
 				/***************************2.開始修改資料*****************************************/
+				String edit = req.getParameter("edit");
 				
-				recipeVO = recipeSvc.updateRecipe(recipe_no, recipe_name, recipe_intro, food_mater,recipe_pic);
+				System.out.println(edit);
+				if(edit.equals("儲存")){
+					recipeVO = recipeSvc.updateRecipe(recipe_no, recipe_name, recipe_intro, food_mater,recipe_pic,"編輯中");
+					
+				}
+				
+				if(edit.equals("送出修改")){
+					recipeVO = recipeSvc.updateRecipe(recipe_no, recipe_name, recipe_intro, food_mater,recipe_pic,"已發布");
+				}
+				
 				recipeVO = recipeSvc.getOneRecipe(recipe_no);
 				/***************************3.修改完成,準備轉交(Send the Success view)*************/
 				String str2 = recipeVO.getFood_mater();
@@ -315,9 +323,7 @@ public class RecipeServlet extends HttpServlet {
 				if(recipe_name==null || recipe_name.isEmpty()){
 					errorMsgs.add("食譜名稱不能為空白");
 				}
-				if(recipe_intro==null || recipe_intro.isEmpty()){
-					errorMsgs.add("食譜簡介不能為空白");
-				}
+				
 				for(int i =0;i<ingredientsStr.length;i++){
 					if(ingredientsStr[i].isEmpty() ){
 						errorMsgs.add("食材不能為空白");

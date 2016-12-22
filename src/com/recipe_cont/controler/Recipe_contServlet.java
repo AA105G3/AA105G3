@@ -107,7 +107,9 @@ public class Recipe_contServlet extends HttpServlet {
 			// send the ErrorPage view.
 			req.setAttribute("errorMsgs", errorMsgs);
 
+
 			try {
+
 				/***********************1.接收請求參數 - 輸入格式的錯誤處理*************************/
 				String recipe_no = req.getParameter("recipe_no").trim();
 				String[] step = req.getParameterValues("step");
@@ -166,20 +168,44 @@ public class Recipe_contServlet extends HttpServlet {
 				/***************************2.開始新增資料***************************************/
 				Recipe_contService recipe_contSvc = new Recipe_contService();
 				
-				recipe_contSvc.deleteRecipe_cont(recipe_no);
-				for(int i =0 ; i<recipe_cont_set.size();i++){
-						recipe_contVO=recipe_contSvc.addRecipe_cont(recipe_no, new Integer(step[i]),
-								step_pics.get(i), step_conts.get(i));
+
 				
+				Set<Recipe_contVO> db_recipe_cont_set =recipe_contSvc.getRecipe_cont(recipe_no);
+				int k =0;
+				for(Recipe_contVO db_recipe_contVO:db_recipe_cont_set){
 					
+					if(recipe_cont_set.size()<=db_recipe_cont_set.size()){
+						if(step_pics.get(k)!=null){
+							recipe_contVO=recipe_contSvc.updateRecipe_cont(recipe_no, new Integer(step[k])
+									, step_pics.get(k),step_conts.get(k));
+						}else{
+							recipe_contVO=recipe_contSvc.updateRecipe_cont(recipe_no, new Integer(step[k])
+									, db_recipe_contVO.getStep_pic(),step_conts.get(k));
+						}
+					}else{
+						recipe_contSvc.deleteOneRecipe_cont(recipe_no, k);
+					}
+						
+					k++;
 				}
 				
+				
+//				recipe_contSvc.deleteRecipe_cont(recipe_no);
+//				for(int i =0 ; i<recipe_cont_set.size();i++){
+//					recipe_contVO=recipe_contSvc.addRecipe_cont(recipe_no, new Integer(step[i]),
+//						step_pics.get(i), step_conts.get(i));
+//				
+//					
+//				}
+				
+
 				/***************************3.新增完成,準備轉交(Send the Success view)***********/
 				String url = "recipe_cont.do?action=getOne_For_Display";
 				RequestDispatcher successView = req.getRequestDispatcher(url);
 				successView.forward(req, res);				
 				
 				/***************************其他可能的錯誤處理**********************************/
+
 			} catch (Exception e) {
 				errorMsgs.add(e.getMessage());
 				RequestDispatcher failureView = req
@@ -275,6 +301,41 @@ public class Recipe_contServlet extends HttpServlet {
 			}
 		}
 		
+
+		
+		if ("deleteImage".equals(action)) { 
+
+			List<String> errorMsgs = new LinkedList<String>();
+			// Store this set in the request scope, in case we need to
+			// send the ErrorPage view.
+			req.setAttribute("errorMsgs", errorMsgs);
+	
+			try {
+				/***************************1.接收請求參數***************************************/
+				String recipe_no = req.getParameter("recipe_no").trim();
+				Integer step = new Integer(req.getParameter("step").trim());
+				
+				
+				/***************************2.開始刪除資料***************************************/
+				Recipe_contService recipe_contSvc = new Recipe_contService();
+				Recipe_contVO recipe_contVO = recipe_contSvc.getOneRecipe_cont(recipe_no, step);
+				
+				recipe_contSvc.updateRecipe_cont(recipe_no, step, null, recipe_contVO.getStep_cont());
+				
+				/***************************3.刪除完成,準備轉交(Send the Success view)***********/								
+				String url = "recipe_cont.do?action=getOne_For_Update";
+				RequestDispatcher successView = req.getRequestDispatcher(url);// 刪除成功後,轉交回送出刪除的來源網頁
+				successView.forward(req, res);
+				
+				/***************************其他可能的錯誤處理**********************************/
+			} catch (Exception e) {
+				errorMsgs.add("刪除資料失敗:"+e.getMessage());
+				RequestDispatcher failureView = req
+						.getRequestDispatcher("recipe_cont.do?action=getOne_For_Update");
+				failureView.forward(req, res);
+			}
+		}
+
 	}
 	
 	public String getFileNameFromPart(Part part) {

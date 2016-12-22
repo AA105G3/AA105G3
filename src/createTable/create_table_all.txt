@@ -106,13 +106,15 @@ CREATE TABLE RECIPE (
  RECIPE_NO               VARCHAR2(20) NOT NULL,
  MEM_NO                  VARCHAR2(20) NOT NULL,
  RECIPE_NAME		 VARCHAR2(60) NOT NULL,
- RECIPE_INTRO		 CLOB NOT NULL,
+ RECIPE_INTRO		 CLOB ,
  FOOD_MATER		 VARCHAR2(600) NOT NULL,
  RECIPE_PIC		 BLOB,
  RECIPE_LIKE		 NUMBER(10) DEFAULT 0,
  RECIPE_TOTAL_VIEWS	 NUMBER(10) DEFAULT 0,
  RECIPE_WEEK_VIEWS	 NUMBER(10) DEFAULT 0,
  RECIPE_TIME		 DATE default sysdate NOT NULL,
+ RECIPE_EDIT		 VARCHAR2(20) default '編輯中',
+ RECIPE_CLASSIFY	 VARCHAR2(20) default '未分類',
  
 
  
@@ -126,16 +128,16 @@ NOMAXVALUE
 NOCYCLE
 NOCACHE;
 
-INSERT INTO recipe (recipe_no,mem_no,recipe_name,recipe_intro,FOOD_MATER,RECIPE_LIKE,RECIPE_TOTAL_VIEWS,RECIPE_WEEK_VIEWS,RECIPE_TIME) 
-VALUES ('R'||lpad(recipe_seq.NEXTVAL,8,0),'M00000001','馬鈴薯燉肉','日式家常菜馬鈴薯燉肉，真的是一道非常簡單的燉菜！','梅花肉-600公克+洋蔥-1/2個',100,2333,400,TO_DATE('2015-04-26 18:30','YYYY-MM-DD HH24:mi'));
-INSERT INTO recipe (recipe_no,mem_no,recipe_name,recipe_intro,FOOD_MATER,RECIPE_LIKE,RECIPE_TOTAL_VIEWS,RECIPE_WEEK_VIEWS,RECIPE_TIME) 
-VALUES ('R'||lpad(recipe_seq.NEXTVAL,8,0),'M00000002','蘿蔔燒雞','白蘿蔔清甜, 俗語說“冬吃蘿蔔夏吃薑，不用醫生開藥方”。現在正值產季, 和雞肉一起紅燒, 份量十足, 味道棒極了!','雞肉-800g+白蘿蔔 (大)-1條',60,1222,300,TO_DATE('2016-09-14 13:23','YYYY-MM-DD HH24:mi'));
-INSERT INTO recipe (recipe_no,mem_no,recipe_name,recipe_intro,FOOD_MATER,RECIPE_LIKE,RECIPE_TOTAL_VIEWS,RECIPE_WEEK_VIEWS,RECIPE_TIME) 
-VALUES ('R'||lpad(recipe_seq.NEXTVAL,8,0),'M00000002','海鮮蕃茄義大利麵','採蕃茄、吃蕃茄；採得開心、吃得過癮。','蕃茄-適量+起士粉-少許',46,1300,200,TO_DATE('2016-10-14 20:11','YYYY-MM-DD HH24:mi'));
-INSERT INTO recipe (recipe_no,mem_no,recipe_name,recipe_intro,FOOD_MATER,RECIPE_LIKE,RECIPE_TOTAL_VIEWS,RECIPE_WEEK_VIEWS,RECIPE_TIME) 
-VALUES ('R'||lpad(recipe_seq.NEXTVAL,8,0),'M00000003','膠質滿滿！燉蔬菜牛尾湯。','蔬菜牛尾湯是我非常喜愛的冬日暖湯，裡面滿滿蔬菜熬出清甜，花時間燉煮的牛尾風味濃郁、肉質軟嫩，輕拉就馬上與骨頭分開，主要營養之一的膠質，在慢火燒煮下溶入整鍋湯裡，喝著熱湯也喝下滋養，嘴角感覺的到黏黏膠質！','牛尾-1公斤+麵粉-少許',333,4532,2222,TO_DATE('2016-10-15 07:50','YYYY-MM-DD HH24:mi'));
-INSERT INTO recipe (recipe_no,mem_no,recipe_name,recipe_intro,FOOD_MATER,RECIPE_LIKE,RECIPE_TOTAL_VIEWS,RECIPE_WEEK_VIEWS,RECIPE_TIME) 
-VALUES ('R'||lpad(recipe_seq.NEXTVAL,8,0),'M00000004','皮蛋瘦肉粥','屋內又飄漫著熬高湯的香氣，用這香噴噴的湯底將米飯煨煮到軟爛，再加入碎皮蛋與瘦肉，滿滿地營養與用心，讓你吃飽又吃巧，可說比買的還美味唷! ','白飯-1碗+皮蛋-1顆',50,1688,396,TO_DATE('2016-10-25 14:25','YYYY-MM-DD HH24:mi'));
+INSERT INTO recipe (recipe_no,mem_no,recipe_name,recipe_intro,FOOD_MATER,RECIPE_LIKE,RECIPE_TOTAL_VIEWS,RECIPE_WEEK_VIEWS,RECIPE_TIME,RECIPE_EDIT,RECIPE_CLASSIFY) 
+VALUES ('R'||lpad(recipe_seq.NEXTVAL,8,0),'M00000001','馬鈴薯燉肉','日式家常菜馬鈴薯燉肉，真的是一道非常簡單的燉菜！','梅花肉-600公克+洋蔥-1/2個',100,2333,400,TO_DATE('2015-04-26 18:30','YYYY-MM-DD HH24:mi'),'已發布','已分類');
+INSERT INTO recipe (recipe_no,mem_no,recipe_name,recipe_intro,FOOD_MATER,RECIPE_LIKE,RECIPE_TOTAL_VIEWS,RECIPE_WEEK_VIEWS,RECIPE_TIME,RECIPE_EDIT,RECIPE_CLASSIFY) 
+VALUES ('R'||lpad(recipe_seq.NEXTVAL,8,0),'M00000002','蘿蔔燒雞','白蘿蔔清甜, 俗語說“冬吃蘿蔔夏吃薑，不用醫生開藥方”。現在正值產季, 和雞肉一起紅燒, 份量十足, 味道棒極了!','雞肉-800g+白蘿蔔 (大)-1條',60,1222,300,TO_DATE('2016-09-14 13:23','YYYY-MM-DD HH24:mi'),'已發布','已分類');
+INSERT INTO recipe (recipe_no,mem_no,recipe_name,recipe_intro,FOOD_MATER,RECIPE_LIKE,RECIPE_TOTAL_VIEWS,RECIPE_WEEK_VIEWS,RECIPE_TIME,RECIPE_EDIT,RECIPE_CLASSIFY) 
+VALUES ('R'||lpad(recipe_seq.NEXTVAL,8,0),'M00000002','海鮮蕃茄義大利麵','採蕃茄、吃蕃茄；採得開心、吃得過癮。','蕃茄-適量+起士粉-少許',46,1300,200,TO_DATE('2016-10-14 20:11','YYYY-MM-DD HH24:mi'),'已發布','未分類');
+INSERT INTO recipe (recipe_no,mem_no,recipe_name,recipe_intro,FOOD_MATER,RECIPE_LIKE,RECIPE_TOTAL_VIEWS,RECIPE_WEEK_VIEWS,RECIPE_TIME,RECIPE_EDIT) 
+VALUES ('R'||lpad(recipe_seq.NEXTVAL,8,0),'M00000003','膠質滿滿！燉蔬菜牛尾湯。','蔬菜牛尾湯是我非常喜愛的冬日暖湯，裡面滿滿蔬菜熬出清甜，花時間燉煮的牛尾風味濃郁、肉質軟嫩，輕拉就馬上與骨頭分開，主要營養之一的膠質，在慢火燒煮下溶入整鍋湯裡，喝著熱湯也喝下滋養，嘴角感覺的到黏黏膠質！','牛尾-1公斤+麵粉-少許',333,4532,2222,TO_DATE('2016-10-15 07:50','YYYY-MM-DD HH24:mi'),'已發布');
+INSERT INTO recipe (recipe_no,mem_no,recipe_name,recipe_intro,FOOD_MATER,RECIPE_LIKE,RECIPE_TOTAL_VIEWS,RECIPE_WEEK_VIEWS,RECIPE_TIME,RECIPE_EDIT,RECIPE_CLASSIFY) 
+VALUES ('R'||lpad(recipe_seq.NEXTVAL,8,0),'M00000004','皮蛋瘦肉粥','屋內又飄漫著熬高湯的香氣，用這香噴噴的湯底將米飯煨煮到軟爛，再加入碎皮蛋與瘦肉，滿滿地營養與用心，讓你吃飽又吃巧，可說比買的還美味唷! ','白飯-1碗+皮蛋-1顆',50,1688,396,TO_DATE('2016-10-25 14:25','YYYY-MM-DD HH24:mi'),'已發布','未分類');
 
 commit;
 ------------------------------------------------------------------------
