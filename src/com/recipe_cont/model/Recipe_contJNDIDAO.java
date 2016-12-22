@@ -63,12 +63,17 @@ public class Recipe_contJNDIDAO implements Recipe_contDAO_interface
 			pstmt = con.prepareStatement(INSERT_STMT);
 
 			byte[] step_pic = recipe_contVO.getStep_pic();
-			long piclen = step_pic.length;
-			InputStream bais = new ByteArrayInputStream(step_pic);
+			if(step_pic!=null){
+				long piclen = step_pic.length;
+				InputStream bais = new ByteArrayInputStream(step_pic);
+				pstmt.setBinaryStream(3, bais, piclen);
+				
+			}else{
+				pstmt.setBinaryStream(3, null);
+			}
 			
 			pstmt.setString(1, recipe_contVO.getRecipe_no());
 			pstmt.setInt(2, recipe_contVO.getStep());
-			pstmt.setBinaryStream(3, bais, piclen);
 			pstmt.setString(4, recipe_contVO.getStep_cont());
 			
 			pstmt.executeUpdate();
@@ -111,19 +116,25 @@ public class Recipe_contJNDIDAO implements Recipe_contDAO_interface
 		PreparedStatement pstmt = null;
 
 		try {
-			byte[] step_pic = recipe_contVO.getStep_pic();
-			long piclen = step_pic.length;
-			InputStream bais = new ByteArrayInputStream(step_pic);
+			
 			
 			con = ds.getConnection();
 			pstmt = con.prepareStatement(UPDATE);
 
+			byte[] step_pic = recipe_contVO.getStep_pic();
+			if(step_pic!=null){
+				long piclen = step_pic.length;
+				InputStream bais = new ByteArrayInputStream(step_pic);
+				pstmt.setBinaryStream(2, bais, piclen);
+				
+			}else{
+				pstmt.setBinaryStream(2, null);
+			}
+			
 			pstmt.setString(1, recipe_contVO.getStep_cont());
-			pstmt.setBinaryStream(2, bais, piclen);
 			pstmt.setString(3, recipe_contVO.getRecipe_no());
 			pstmt.setInt(4, recipe_contVO.getStep());
 
-			pstmt.executeUpdate();
 
 		} catch (SQLException se) {
 			se.printStackTrace();

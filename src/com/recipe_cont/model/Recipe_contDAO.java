@@ -133,7 +133,6 @@ public class Recipe_contDAO implements Recipe_contDAO_interface
 			}
 			
 			pstmt.setString(1, recipe_contVO.getStep_cont());
-//			pstmt.setBinaryStream(2, bais, piclen);
 			
 			
 

@@ -53,16 +53,19 @@ public class RecipeJDBCDAO implements RecipeDAO_interface
 			pstmt = con.prepareStatement(INSERT_STMT);
 
 			byte[] recipe_pic = recipeVO.getRecipe_pic();
-			long piclen = recipe_pic.length;
-			InputStream bais = new ByteArrayInputStream(recipe_pic);
+			if(recipe_pic !=null){
+				long piclen = recipe_pic.length;
+				InputStream bais = new ByteArrayInputStream(recipe_pic);
+				pstmt.setBinaryStream(5, bais, piclen);
+			}else{
+				pstmt.setBinaryStream(5, null);
+			}
 
 			
 			pstmt.setString(1, recipeVO.getMem_no());
 			pstmt.setString(2, recipeVO.getRecipe_name());
 			pstmt.setString(3, recipeVO.getRecipe_intro());
 			pstmt.setString(4, recipeVO.getFood_mater());
-			pstmt.setBinaryStream(5, bais, piclen);
-
 			
 			pstmt.executeUpdate();
 
