@@ -228,14 +228,8 @@ public class Product_orderServlet extends HttpServlet {
 					errorMsgs.add("請輸入會員編號.");
 				}
 				
-				java.sql.Date prod_ord_time = null;
-				try {
-					prod_ord_time = java.sql.Date.valueOf(req.getParameter("prod_ord_time").trim());
-				} catch (IllegalArgumentException e) {
-					prod_ord_time=new java.sql.Date(System.currentTimeMillis());
-					errorMsgs.add("請輸入訂單成立時間!");
-				}
-				
+				java.sql.Timestamp prod_ord_time = java.sql.Timestamp.valueOf(req.getParameter("prod_ord_time").trim());
+
 				String cred_card_no = req.getParameter("cred_card_no").trim();
 				if(cred_card_no == ""){
 					errorMsgs.add("請輸入信用卡卡號.");
@@ -350,14 +344,6 @@ public class Product_orderServlet extends HttpServlet {
 					errorMsgs.add("請輸入會員編號.");
 				}
 				
-				java.sql.Date prod_ord_time = null;
-				try {
-					prod_ord_time = java.sql.Date.valueOf(req.getParameter("prod_ord_time").trim());
-				} catch (IllegalArgumentException e) {
-					prod_ord_time=new java.sql.Date(System.currentTimeMillis());
-					errorMsgs.add("請輸入訂單成立時間!");
-				}
-				
 				String cred_card_no = req.getParameter("cred_card_no").trim();
 				if(cred_card_no == ""){
 					errorMsgs.add("請輸入信用卡卡號.");
@@ -368,7 +354,7 @@ public class Product_orderServlet extends HttpServlet {
 					valid_date = java.sql.Date.valueOf(req.getParameter("valid_date").trim());
 				} catch (IllegalArgumentException e) {
 					valid_date=new java.sql.Date(System.currentTimeMillis());
-					errorMsgs.add("請輸入訂單成立時間!");
+					errorMsgs.add("請輸入信用卡有效時期!");
 				}
 				
 				String valid_no = req.getParameter("valid_no").trim();
@@ -416,7 +402,6 @@ public class Product_orderServlet extends HttpServlet {
 
 				Product_orderVO product_orderVO = new Product_orderVO();
 				product_orderVO.setMem_no(mem_no);
-				product_orderVO.setProd_ord_time(prod_ord_time);
 				product_orderVO.setCred_card_no(cred_card_no);
 				product_orderVO.setValid_date(valid_date);
 				product_orderVO.setValid_no(valid_no);
@@ -439,7 +424,7 @@ public class Product_orderServlet extends HttpServlet {
 				
 				/***************************2.開始新增資料***************************************/
 				Product_orderService product_orderSvc = new Product_orderService();
-				product_orderVO = product_orderSvc.addProduct_order(mem_no, prod_ord_time, cred_card_no, valid_date, 
+				product_orderVO = product_orderSvc.addProduct_order(mem_no, cred_card_no, valid_date, 
 						valid_no, cred_card_type, total_money, ship_name, post_code, mem_adrs, cell_phone, tel_phone);
 				
 				/***************************3.新增完成,準備轉交(Send the Success view)***********/

@@ -15,14 +15,13 @@ public class Product_orderService {
 		dao = new Product_orderJNDIDAO();
 	}
 
-	public Product_orderVO addProduct_order(String mem_no, java.sql.Date prod_ord_time, String cred_card_no,
+	public Product_orderVO addProduct_order(String mem_no, String cred_card_no,
 			java.sql.Date valid_date, String valid_no, String cred_card_type, Integer total_money, String ship_name,
 			String post_code, String mem_adrs, String cell_phone, String tel_phone) {
 
 		Product_orderVO product_orderVO = new Product_orderVO();
 
 		product_orderVO.setMem_no(mem_no);
-		product_orderVO.setProd_ord_time(prod_ord_time);
 		product_orderVO.setCred_card_no(cred_card_no);
 		product_orderVO.setValid_date(valid_date);
 		product_orderVO.setValid_no(valid_no);
@@ -38,7 +37,7 @@ public class Product_orderService {
 		return product_orderVO;
 	}
 
-	public Product_orderVO updateProduct_order(String prod_ord_no ,String mem_no, java.sql.Date prod_ord_time, 
+	public Product_orderVO updateProduct_order(String prod_ord_no ,String mem_no, java.sql.Timestamp prod_ord_time,
 			String cred_card_no, java.sql.Date valid_date, String valid_no, String cred_card_type, Integer total_money, 
 			String ship_name, String post_code, String mem_adrs, String cell_phone, String tel_phone) {
 

@@ -30,8 +30,8 @@ public class Product_orderJDBCDAO implements Product_orderDAO_interface {
 		+ " mem_adrs,"
 		+ " cell_phone,"
 		+ " tel_phone) "
-		+ "VALUES ('20161208'||'-'||LPAD(prod_ord_seq.NEXTVAL,8,0), ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
-		//+ "VALUES (TO_CHAR(SYSDATE,'YYYYMMDD')||'-'||LPAD(prod_ord_seq.NEXTVAL,8,0), ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+		+ "VALUES ('20161208'||'-'||LPAD(prod_ord_seq.NEXTVAL,8,0), ?, sysdate, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+		//+ "VALUES (TO_CHAR(SYSDATE,'YYYYMMDD')||'-'||LPAD(prod_ord_seq.NEXTVAL,8,0), ?, sysdate, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 	private static final String GET_ALL_STMT = 
 		"SELECT prod_ord_no,"
 		+ " mem_no,"
@@ -64,7 +64,6 @@ public class Product_orderJDBCDAO implements Product_orderDAO_interface {
 		"DELETE FROM product_order where prod_ord_no = ?";
 	private static final String UPDATE = 
 		"UPDATE product_order set mem_no=?,"
-		+ " prod_ord_time=?,"
 		+ " cred_card_no=?,"
 		+ " valid_date=?,"
 		+ " valid_no=?,"
@@ -112,17 +111,16 @@ public class Product_orderJDBCDAO implements Product_orderDAO_interface {
 			pstmt = con.prepareStatement(INSERT_STMT);
 
 			pstmt.setString(1, prod_ordVO.getMem_no());
-			pstmt.setDate(2, prod_ordVO.getProd_ord_time());
-			pstmt.setString(3, prod_ordVO.getCred_card_no());
-			pstmt.setDate(4, prod_ordVO.getValid_date());
-			pstmt.setString(5, prod_ordVO.getValid_no());
-			pstmt.setString(6, prod_ordVO.getCred_card_type());
-			pstmt.setInt(7, prod_ordVO.getTotal_money());
-			pstmt.setString(8, prod_ordVO.getShip_name());
-			pstmt.setString(9, prod_ordVO.getPost_code());
-			pstmt.setString(10, prod_ordVO.getMem_adrs());
-			pstmt.setString(11, prod_ordVO.getCell_phone());
-			pstmt.setString(12, prod_ordVO.getTel_phone());
+			pstmt.setString(2, prod_ordVO.getCred_card_no());
+			pstmt.setDate(3, prod_ordVO.getValid_date());
+			pstmt.setString(4, prod_ordVO.getValid_no());
+			pstmt.setString(5, prod_ordVO.getCred_card_type());
+			pstmt.setInt(6, prod_ordVO.getTotal_money());
+			pstmt.setString(7, prod_ordVO.getShip_name());
+			pstmt.setString(8, prod_ordVO.getPost_code());
+			pstmt.setString(9, prod_ordVO.getMem_adrs());
+			pstmt.setString(10, prod_ordVO.getCell_phone());
+			pstmt.setString(11, prod_ordVO.getTel_phone());
 
 			pstmt.executeUpdate();
 
@@ -167,18 +165,17 @@ public class Product_orderJDBCDAO implements Product_orderDAO_interface {
 			pstmt = con.prepareStatement(UPDATE);
 
 			pstmt.setString(1, prod_ordVO.getMem_no());
-			pstmt.setDate(2, prod_ordVO.getProd_ord_time());
-			pstmt.setString(3, prod_ordVO.getCred_card_no());
-			pstmt.setDate(4, prod_ordVO.getValid_date());
-			pstmt.setString(5, prod_ordVO.getValid_no());
-			pstmt.setString(6, prod_ordVO.getCred_card_type());
-			pstmt.setInt(7, prod_ordVO.getTotal_money());
-			pstmt.setString(8, prod_ordVO.getShip_name());
-			pstmt.setString(9, prod_ordVO.getPost_code());
-			pstmt.setString(10, prod_ordVO.getMem_adrs());
-			pstmt.setString(11, prod_ordVO.getCell_phone());
-			pstmt.setString(12, prod_ordVO.getTel_phone());
-			pstmt.setString(13, prod_ordVO.getProd_ord_no());
+			pstmt.setString(2, prod_ordVO.getCred_card_no());
+			pstmt.setDate(3, prod_ordVO.getValid_date());
+			pstmt.setString(4, prod_ordVO.getValid_no());
+			pstmt.setString(5, prod_ordVO.getCred_card_type());
+			pstmt.setInt(6, prod_ordVO.getTotal_money());
+			pstmt.setString(7, prod_ordVO.getShip_name());
+			pstmt.setString(8, prod_ordVO.getPost_code());
+			pstmt.setString(9, prod_ordVO.getMem_adrs());
+			pstmt.setString(10, prod_ordVO.getCell_phone());
+			pstmt.setString(11, prod_ordVO.getTel_phone());
+			pstmt.setString(12, prod_ordVO.getProd_ord_no());
 
 
 			pstmt.executeUpdate();
@@ -278,7 +275,7 @@ public class Product_orderJDBCDAO implements Product_orderDAO_interface {
 				prod_ordVO = new Product_orderVO();
 				prod_ordVO.setProd_ord_no(rs.getString("prod_ord_no"));
 				prod_ordVO.setMem_no(rs.getString("mem_no"));
-				prod_ordVO.setProd_ord_time(rs.getDate("prod_ord_time"));
+				prod_ordVO.setProd_ord_time(rs.getTimestamp("prod_ord_time"));
 				prod_ordVO.setCred_card_no(rs.getString("cred_card_no"));
 				prod_ordVO.setValid_date(rs.getDate("valid_date"));
 				prod_ordVO.setValid_no(rs.getString("valid_no"));
@@ -347,7 +344,7 @@ public class Product_orderJDBCDAO implements Product_orderDAO_interface {
 				prod_ordVO = new Product_orderVO();
 				prod_ordVO.setProd_ord_no(rs.getString("prod_ord_no"));
 				prod_ordVO.setMem_no(rs.getString("mem_no"));
-				prod_ordVO.setProd_ord_time(rs.getDate("prod_ord_time"));
+				prod_ordVO.setProd_ord_time(rs.getTimestamp("prod_ord_time"));
 				prod_ordVO.setCred_card_no(rs.getString("cred_card_no"));
 				prod_ordVO.setValid_date(rs.getDate("valid_date"));
 				prod_ordVO.setValid_no(rs.getString("valid_no"));
@@ -476,7 +473,7 @@ public class Product_orderJDBCDAO implements Product_orderDAO_interface {
 				prod_ordVO = new Product_orderVO();
 				prod_ordVO.setProd_ord_no(rs.getString("prod_ord_no"));
 				prod_ordVO.setMem_no(rs.getString("mem_no"));
-				prod_ordVO.setProd_ord_time(rs.getDate("prod_ord_time"));
+				prod_ordVO.setProd_ord_time(rs.getTimestamp("prod_ord_time"));
 				prod_ordVO.setCred_card_no(rs.getString("cred_card_no"));
 				prod_ordVO.setValid_date(rs.getDate("valid_date"));
 				prod_ordVO.setValid_no(rs.getString("valid_no"));
@@ -529,7 +526,6 @@ public class Product_orderJDBCDAO implements Product_orderDAO_interface {
 		//新增
 		/*Product_orderVO prod_ordVO1 = new Product_orderVO();
 		prod_ordVO1.setMem_no("M00000002");
-		prod_ordVO1.setProd_ord_time(java.sql.Date.valueOf("2016-09-19"));
 		prod_ordVO1.setCred_card_no("1A2B3C4D5E6F7G8H");
 		prod_ordVO1.setValid_date(java.sql.Date.valueOf("2022-12-31"));
 		prod_ordVO1.setValid_no("147");
@@ -546,7 +542,6 @@ public class Product_orderJDBCDAO implements Product_orderDAO_interface {
 		/*Product_orderVO prod_ordVO2 = new Product_orderVO();
 		prod_ordVO2.setProd_ord_no("20161208-00000006");
 		prod_ordVO2.setMem_no("M00000002");
-		prod_ordVO2.setProd_ord_time(java.sql.Date.valueOf("2016-09-19"));
 		prod_ordVO2.setCred_card_no("1A2B3C4D5E6F7G8H");
 		prod_ordVO2.setValid_date(java.sql.Date.valueOf("2022-12-31"));
 		prod_ordVO2.setValid_no("147");
@@ -563,7 +558,7 @@ public class Product_orderJDBCDAO implements Product_orderDAO_interface {
 		/*dao.delete("20161208-00000006");*/
 		
 		// 查詢 - 單一
-		/*Product_orderVO prod_ordVO3 = dao.findByPrimaryKey("20161010-00000003");
+		/*Product_orderVO prod_ordVO3 = dao.findByPrimaryKey("20160630-00000001");
 		System.out.print(prod_ordVO3.getProd_ord_no() + ",	");
 		System.out.print(prod_ordVO3.getMem_no() + ",	");
 		System.out.print(prod_ordVO3.getProd_ord_time() + ",	");
@@ -580,7 +575,7 @@ public class Product_orderJDBCDAO implements Product_orderDAO_interface {
 		System.out.println();*/
 		
 		// 查詢 - 經由會員編號
-		List<Product_orderVO> list2 = dao.findByMem_no("M00000001");
+		/*List<Product_orderVO> list2 = dao.findByMem_no("M00000001");
 		for (Product_orderVO partProduct_order : list2) {
 			System.out.print(partProduct_order.getProd_ord_no() + ",	");
 			System.out.print(partProduct_order.getMem_no() + ",	");
@@ -596,10 +591,10 @@ public class Product_orderJDBCDAO implements Product_orderDAO_interface {
 			System.out.print(partProduct_order.getCell_phone() + ",	");
 			System.out.print(partProduct_order.getTel_phone());	
 			System.out.println();
-		}
+		}*/
 
 		// 查詢 - 全部
-		/*List<Product_orderVO> list = dao.getAll();
+		List<Product_orderVO> list = dao.getAll();
 		for (Product_orderVO aProd : list) {
 			System.out.print(aProd.getProd_ord_no() + ",	");
 			System.out.print(aProd.getMem_no() + ",	");
@@ -615,7 +610,7 @@ public class Product_orderJDBCDAO implements Product_orderDAO_interface {
 			System.out.print(aProd.getCell_phone() + ",	");
 			System.out.print(aProd.getTel_phone());
 			System.out.println();
-		}*/
+		}
 	}
 	
 }

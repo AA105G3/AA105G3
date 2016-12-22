@@ -320,7 +320,7 @@ public class ChatJDBCDAO implements ChatDAO_interface{
 
 		
 //		search all
-		/*List<ChatVO> list = dao.getAll();
+		List<ChatVO> list = dao.getAll();
 		for (ChatVO chatVO4 : list) {
 			System.out.print(chatVO4.getChat_no() + " | ");
 			System.out.print(chatVO4.getSend_no() + " | ");
@@ -328,7 +328,7 @@ public class ChatJDBCDAO implements ChatDAO_interface{
 			System.out.print(chatVO4.getChat_text() + " | ");
 			System.out.print(chatVO4.getChat_date() + " | ");
 			System.out.println();
-		}*/
+		}
 		
 	}	
 
