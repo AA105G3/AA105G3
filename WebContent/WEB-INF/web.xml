@@ -101,4 +101,20 @@
     <servlet-name>ChatServlet</servlet-name>
     <url-pattern>/chat/chat.do</url-pattern>
   </servlet-mapping>
+  
+  
+  
+  <filter>
+    <filter-name>FLginFilter</filter-name>
+    <filter-class>com.front.filters.FLoginFilter</filter-class>
+  </filter>
+  <filter-mapping>
+    <filter-name>FLginFilter</filter-name>
+    <url-pattern>/front-end/product_order/select_page.jsp</url-pattern>
+    <dispatcher>REQUEST</dispatcher>
+    <dispatcher>FORWARD</dispatcher>
+    <dispatcher>INCLUDE</dispatcher>
+    <dispatcher>ERROR</dispatcher>
+    <dispatcher>ASYNC</dispatcher>
+  </filter-mapping>
 </web-app>
