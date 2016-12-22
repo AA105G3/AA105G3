@@ -27,7 +27,7 @@ public class Product_orderServlet extends HttpServlet {
 			List<String> errorMsgs = new LinkedList<String>();
 			req.setAttribute("errorMsgs", errorMsgs);
 
-			/*try {*/
+			try {
 				/*************************** 1.接收請求參數 ****************************************/
 				String prod_ord_no = new String(req.getParameter("prod_ord_no"));
 
@@ -44,9 +44,9 @@ public class Product_orderServlet extends HttpServlet {
 				successView.forward(req, res);
 
 				/*************************** 其他可能的錯誤處理 ***********************************/
-			/*} catch (Exception e) {
+			} catch (Exception e) {
 				throw new ServletException(e);
-			}*/
+			}
 		}
 		
 		if ("getOne_For_Display".equals(action)) { // 來自select_page.jsp的請求
@@ -101,6 +101,70 @@ public class Product_orderServlet extends HttpServlet {
 				/***************************3.查詢完成,準備轉交(Send the Success view)*************/
 				req.setAttribute("product_orderVO", product_orderVO); // 資料庫取出的product_orderVO物件,存入req
 				String url = "/front-end/product_order/listOneProduct_order.jsp";
+				RequestDispatcher successView = req.getRequestDispatcher(url); // 成功轉交 listOneProduct_order.jsp
+				successView.forward(req, res);
+
+				/***************************其他可能的錯誤處理*************************************/
+			} catch (Exception e) {
+				errorMsgs.add("無法取得資料:" + e.getMessage());
+				RequestDispatcher failureView = req
+						.getRequestDispatcher("/front-end/product_order/select_page.jsp");
+				failureView.forward(req, res);
+			}
+		}
+		
+		if ("getPart_For_Display_By_Mem_No".equals(action)) { // 來自select_page.jsp的請求
+
+			List<String> errorMsgs = new LinkedList<String>();
+			// Store this set in the request scope, in case we need to
+			// send the ErrorPage view.
+			req.setAttribute("errorMsgs", errorMsgs);
+
+			try {
+				/***************************1.接收請求參數 - 輸入格式的錯誤處理**********************/
+				String str = req.getParameter("mem_no");
+				if (str == null || (str.trim()).length() == 0) {
+					errorMsgs.add("請輸入會員編號");
+				}
+				// Send the use back to the form, if there were errors
+				if (!errorMsgs.isEmpty()) {
+					RequestDispatcher failureView = req
+							.getRequestDispatcher("/front-end/product_order/select_page.jsp");
+					failureView.forward(req, res);
+					return;//程式中斷
+				}
+				
+				String mem_no = null;
+				try {
+					mem_no = new String(str);
+				} catch (Exception e) {
+					errorMsgs.add("會員編號格式不正確");
+				}
+				// Send the use back to the form, if there were errors
+				if (!errorMsgs.isEmpty()) {
+					RequestDispatcher failureView = req
+							.getRequestDispatcher("/front-end/product_order/select_page.jsp");
+					failureView.forward(req, res);
+					return;//程式中斷
+				}
+				
+				/***************************2.開始查詢資料*****************************************/
+				Product_orderService product_orderSvc = new Product_orderService();
+				List<Product_orderVO> product_orderVO = product_orderSvc.getProduct_order_By_Mem_no(mem_no);
+				if (product_orderVO == null) {
+					errorMsgs.add("查無資料");
+				}
+				// Send the use back to the form, if there were errors
+				if (!errorMsgs.isEmpty()) {
+					RequestDispatcher failureView = req
+							.getRequestDispatcher("/front-end/product_order/select_page.jsp");
+					failureView.forward(req, res);
+					return;//程式中斷
+				}
+				
+				/***************************3.查詢完成,準備轉交(Send the Success view)*************/
+				req.setAttribute("product_orderVO", product_orderVO); // 資料庫取出的product_orderVO物件,存入req
+				String url = "/front-end/product_order/listPartProduct_order.jsp";
 				RequestDispatcher successView = req.getRequestDispatcher(url); // 成功轉交 listOneProduct_order.jsp
 				successView.forward(req, res);
 

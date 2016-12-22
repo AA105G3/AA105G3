@@ -9,6 +9,7 @@ public interface Product_orderDAO_interface {
 	public void delete(String prod_ord_no);
 	public Product_orderVO findByPrimaryKey(String prod_ord_no);
 	public List<Product_orderVO> getAll();
+	public List<Product_orderVO> findByMem_no(String mem_no);
 	
 	public Set<Product_order_listVO> findByPK(String prod_ord_no);
 

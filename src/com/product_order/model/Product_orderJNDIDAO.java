@@ -98,6 +98,21 @@ public class Product_orderJNDIDAO implements Product_orderDAO_interface {
 		+ " deli_status,"
 		+ " deli_time FROM product_order_list where prod_ord_no = ? order by prod_ord_no";
 	
+	private static final String GET_STMT_BY_MEM_NO = 
+		"SELECT prod_ord_no,"
+		+ " mem_no,"
+		+ " prod_ord_time,"
+		+ " cred_card_no,"
+		+ " valid_date,"
+		+ " valid_no,"
+		+ " cred_card_type,"
+		+ " total_money,"
+		+ " ship_name,"
+		+ " post_code,"
+		+ " mem_adrs,"
+		+ " cell_phone,"
+		+ " tel_phone FROM product_order where mem_no = ?";
+	
 	@Override
 	public void insert(Product_orderVO prod_ordVO) {
 
@@ -425,6 +440,75 @@ public class Product_orderJNDIDAO implements Product_orderDAO_interface {
 			}
 		}
 		return set;
+	}
+	
+	@Override
+	public List<Product_orderVO> findByMem_no(String mem_no) {
+		List<Product_orderVO> list2 = new ArrayList<Product_orderVO>();
+		Product_orderVO prod_ordVO = null;
+
+		Connection con = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+
+		try {
+
+			con = ds.getConnection();
+			pstmt = con.prepareStatement(GET_STMT_BY_MEM_NO);
+			
+			pstmt.setString(1, mem_no);
+
+			rs = pstmt.executeQuery();
+
+			while (rs.next()) {
+				// prod_ord_listVO 也稱為 Domain objects
+				prod_ordVO = new Product_orderVO();
+				prod_ordVO.setProd_ord_no(rs.getString("prod_ord_no"));
+				prod_ordVO.setMem_no(rs.getString("mem_no"));
+				prod_ordVO.setProd_ord_time(rs.getDate("prod_ord_time"));
+				prod_ordVO.setCred_card_no(rs.getString("cred_card_no"));
+				prod_ordVO.setValid_date(rs.getDate("valid_date"));
+				prod_ordVO.setValid_no(rs.getString("valid_no"));
+				prod_ordVO.setCred_card_type(rs.getString("cred_card_type"));
+				prod_ordVO.setTotal_money(rs.getInt("total_money"));
+				prod_ordVO.setShip_name(rs.getString("ship_name"));
+				prod_ordVO.setPost_code(rs.getString("post_code"));
+				prod_ordVO.setMem_adrs(rs.getString("mem_adrs"));
+				prod_ordVO.setCell_phone(rs.getString("cell_phone"));
+				prod_ordVO.setTel_phone(rs.getString("tel_phone"));
+				list2.add(prod_ordVO); // Store the row in the list
+			}
+
+			// Handle any driver errors
+		} catch (SQLException se) {
+			throw new RuntimeException("A database error occured. "
+					+ se.getMessage());
+			// Clean up JDBC resources
+		} finally {
+			if (rs != null) {
+				try {
+					rs.close();
+				} catch (SQLException se) {
+					se.printStackTrace(System.err);
+				}
+			}
+			if (pstmt != null) {
+				try {
+					pstmt.close();
+				} catch (SQLException se) {
+					se.printStackTrace(System.err);
+				}
+			}
+			if (con != null) {
+				try {
+					con.close();
+				} catch (Exception e) {
+					e.printStackTrace(System.err);
+				}
+			}
+		}
+
+		return list2;
 	}
 
 }

@@ -84,6 +84,21 @@ public class Product_orderJDBCDAO implements Product_orderDAO_interface {
 		+ " deli_status,"
 		+ " deli_time FROM product_order_list where prod_ord_no = ? order by prod_ord_no";
 	
+	private static final String GET_STMT_BY_MEM_NO = 
+		"SELECT prod_ord_no,"
+		+ " mem_no,"
+		+ " prod_ord_time,"
+		+ " cred_card_no,"
+		+ " valid_date,"
+		+ " valid_no,"
+		+ " cred_card_type,"
+		+ " total_money,"
+		+ " ship_name,"
+		+ " post_code,"
+		+ " mem_adrs,"
+		+ " cell_phone,"
+		+ " tel_phone FROM product_order where mem_no = ?";
+	
 	@Override
 	public void insert(Product_orderVO prod_ordVO) {
 
@@ -438,6 +453,75 @@ public class Product_orderJDBCDAO implements Product_orderDAO_interface {
 		return set;
 	}
 	
+	@Override
+	public List<Product_orderVO> findByMem_no(String mem_no) {
+		List<Product_orderVO> list2 = new ArrayList<Product_orderVO>();
+		Product_orderVO prod_ordVO = null;
+
+		Connection con = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+
+		try {
+
+			con = DriverManager.getConnection(url, userid, passwd);
+			pstmt = con.prepareStatement(GET_STMT_BY_MEM_NO);
+			
+			pstmt.setString(1, mem_no);
+
+			rs = pstmt.executeQuery();
+
+			while (rs.next()) {
+				// prod_ord_listVO 也稱為 Domain objects
+				prod_ordVO = new Product_orderVO();
+				prod_ordVO.setProd_ord_no(rs.getString("prod_ord_no"));
+				prod_ordVO.setMem_no(rs.getString("mem_no"));
+				prod_ordVO.setProd_ord_time(rs.getDate("prod_ord_time"));
+				prod_ordVO.setCred_card_no(rs.getString("cred_card_no"));
+				prod_ordVO.setValid_date(rs.getDate("valid_date"));
+				prod_ordVO.setValid_no(rs.getString("valid_no"));
+				prod_ordVO.setCred_card_type(rs.getString("cred_card_type"));
+				prod_ordVO.setTotal_money(rs.getInt("total_money"));
+				prod_ordVO.setShip_name(rs.getString("ship_name"));
+				prod_ordVO.setPost_code(rs.getString("post_code"));
+				prod_ordVO.setMem_adrs(rs.getString("mem_adrs"));
+				prod_ordVO.setCell_phone(rs.getString("cell_phone"));
+				prod_ordVO.setTel_phone(rs.getString("tel_phone"));
+				list2.add(prod_ordVO); // Store the row in the list
+			}
+
+			// Handle any driver errors
+		} catch (SQLException se) {
+			throw new RuntimeException("A database error occured. "
+					+ se.getMessage());
+			// Clean up JDBC resources
+		} finally {
+			if (rs != null) {
+				try {
+					rs.close();
+				} catch (SQLException se) {
+					se.printStackTrace(System.err);
+				}
+			}
+			if (pstmt != null) {
+				try {
+					pstmt.close();
+				} catch (SQLException se) {
+					se.printStackTrace(System.err);
+				}
+			}
+			if (con != null) {
+				try {
+					con.close();
+				} catch (Exception e) {
+					e.printStackTrace(System.err);
+				}
+			}
+		}
+
+		return list2;
+	}
+	
 	public static void main(String[] args) {
 
 		Product_orderJDBCDAO dao = new Product_orderJDBCDAO();
@@ -494,9 +578,28 @@ public class Product_orderJDBCDAO implements Product_orderDAO_interface {
 		System.out.print(prod_ordVO3.getCell_phone() + ",	");
 		System.out.print(prod_ordVO3.getTel_phone());
 		System.out.println();*/
+		
+		// 查詢 - 經由會員編號
+		List<Product_orderVO> list2 = dao.findByMem_no("M00000001");
+		for (Product_orderVO partProduct_order : list2) {
+			System.out.print(partProduct_order.getProd_ord_no() + ",	");
+			System.out.print(partProduct_order.getMem_no() + ",	");
+			System.out.print(partProduct_order.getProd_ord_time() + ",	");
+			System.out.print(partProduct_order.getCred_card_no() + ",	");
+			System.out.print(partProduct_order.getValid_date() + ",	");
+			System.out.print(partProduct_order.getValid_no() + ",	");
+			System.out.print(partProduct_order.getCred_card_type() + ",	");
+			System.out.print(partProduct_order.getTotal_money() + ",	");
+			System.out.print(partProduct_order.getShip_name() + ",	");
+			System.out.print(partProduct_order.getPost_code() + ",	");
+			System.out.print(partProduct_order.getMem_adrs() + ",	");
+			System.out.print(partProduct_order.getCell_phone() + ",	");
+			System.out.print(partProduct_order.getTel_phone());	
+			System.out.println();
+		}
 
 		// 查詢 - 全部
-		List<Product_orderVO> list = dao.getAll();
+		/*List<Product_orderVO> list = dao.getAll();
 		for (Product_orderVO aProd : list) {
 			System.out.print(aProd.getProd_ord_no() + ",	");
 			System.out.print(aProd.getMem_no() + ",	");
@@ -512,7 +615,7 @@ public class Product_orderJDBCDAO implements Product_orderDAO_interface {
 			System.out.print(aProd.getCell_phone() + ",	");
 			System.out.print(aProd.getTel_phone());
 			System.out.println();
-		}
+		}*/
 	}
 	
 }

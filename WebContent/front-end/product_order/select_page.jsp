@@ -54,13 +54,13 @@
   <li>
      <FORM METHOD="post" ACTION="<%=request.getContextPath()%>/product_order/product_order.do" >
        <b>選擇會員:</b>
-       <select size="1" name="prod_ord_no">
+       <select size="1" name="mem_no">
          <c:forEach var="product_orderVO" items="${product_orderSvc.all}" > 
-          <option value="${product_orderVO.prod_ord_no}">${product_orderVO.mem_no}
+          <option value="${product_orderVO.mem_no}">${product_orderVO.mem_no}
          </c:forEach>   
        </select>
        <input type="submit" value="送出">
-       <input type="hidden" name="action" value="getOne_For_Display">
+       <input type="hidden" name="action" value="getPart_For_Display_By_Mem_No">
      </FORM>
   </li>
 </ul>
