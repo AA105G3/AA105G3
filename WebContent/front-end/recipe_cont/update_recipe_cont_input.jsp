@@ -58,18 +58,12 @@
 	<tr>
 		<td width="200">
 			<c:if test="${Recipe_contVO.step_pic != null}">
-
-				<image  style="width:200px;" id="image${Recipe_contVO.step}" src="<%=request.getContextPath()%>/recipe_cont/showRecipe_cont_pic.do?recipe_no=${param.recipe_no}&step=${Recipe_contVO.step}"/>
+				<image  style="width:200px;" id="image${s.index}" src="<%=request.getContextPath()%>/recipe_cont/showRecipe_cont_pic.do?recipe_no=${param.recipe_no}&step=${Recipe_contVO.step}"/>
 			</c:if>
 			<c:if test="${Recipe_contVO.step_pic == null}">
-				<image style="width:200px;" id="image${Recipe_contVO.step}">
+				<image style="width:200px;" id="image${s.index}">
 			</c:if>
-		<input type="file" name="step_pic" id = "upLoadFile${Recipe_contVO.step}" value=<%=request.getContextPath()%>/recipe_cont/showRecipe_cont_pic.do?recipe_no=${param.recipe_no}&step=${Recipe_contVO.step} onchange="showImage(${Recipe_contVO.step})">
-		
-		<a href="<%=request.getContextPath()%>/recipe_cont/recipe_cont.do?action=deleteImage&recipe_no=${param.recipe_no}&step=${Recipe_contVO.step}">刪除圖片</a>
-		 
-		
-
+		<input type="file" name="step_pic" id = "upLoadFile${s.index}" onchange="showImage(${s.index})">
 		</td>
 		<td>
 		${Recipe_contVO.step}<br>

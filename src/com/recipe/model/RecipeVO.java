@@ -14,8 +14,6 @@ public class RecipeVO
 	private Integer recipe_total_views;
 	private Integer recipe_week_views;
 	private Timestamp recipe_time;
-	private String recipe_edit;
-	private String recipe_classify;
 	
 	
 	public String getRecipe_no()
@@ -98,24 +96,6 @@ public class RecipeVO
 	{
 		this.recipe_time = recipe_time;
 	}
-	public String getRecipe_edit()
-	{
-		return recipe_edit;
-	}
-	public void setRecipe_edit(String recipe_edit)
-	{
-		this.recipe_edit = recipe_edit;
-	}
-	public String getRecipe_classify()
-	{
-		return recipe_classify;
-	}
-	public void setRecipe_classify(String recipe_classify)
-	{
-		this.recipe_classify = recipe_classify;
-	}
 	
-	
-		
 	
 }

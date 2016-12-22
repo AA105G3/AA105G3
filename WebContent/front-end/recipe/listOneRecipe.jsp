@@ -34,8 +34,6 @@
 		<th>食譜總人氣</th>
 		<th>食譜周人氣</th>
 		<th>食譜上傳時間</th>
-		<th>食譜編輯狀態</th>
-		<th>食譜分類狀態</th>
 		
 		
 	</tr>
@@ -61,8 +59,6 @@
                 type="date" pattern="yyyy-MM-dd hh:mm:ss aa" />
 			${formattedDate}
 		</td>
-		<td>${recipeVO.recipe_edit}</td>
-		<td>${recipeVO.recipe_classify}</td>
 			
 	</tr>
 </table>

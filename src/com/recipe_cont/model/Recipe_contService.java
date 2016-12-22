@@ -45,11 +45,6 @@ public class Recipe_contService
 	public void deleteRecipe_cont(String recipe_no) {
 		dao.delete(recipe_no);
 	}
-
-	public void deleteOneRecipe_cont(String recipe_no,Integer step) {
-		dao.deleteOneStep(recipe_no, step);;
-	}
-
 	
 	public Set<Recipe_contVO> getRecipe_cont(String recipe_no) {
 		return dao.findByPrimaryKey(recipe_no);

@@ -9,6 +9,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.emp_auth.model.Emp_authVO;
 
 public class Recipe_type_infoJDBCDAO implements Recipe_type_infoDAO_interface
 {
