@@ -284,6 +284,39 @@ public class RecipeServlet extends HttpServlet {
 			}
 		}
 		
+		if("create".equals(action)){
+				
+			
+
+			List<String> errorMsgs = new LinkedList<String>();
+			// Store this set in the request scope, in case we need to
+			// send the ErrorPage view.
+			req.setAttribute("errorMsgs", errorMsgs);
+			
+//			try
+//			{
+				String mem_no = req.getParameter("mem_no").trim();
+				String recipe_name = req.getParameter("recipe_name").trim();
+				
+				
+				/*create a new recipe*/
+				
+				RecipeService recipeSvc = new RecipeService();
+				RecipeVO recipeVO = recipeSvc.addRecipe(mem_no,recipe_name,null,null,null);
+				
+				String url = "/front-end/recipe/listAllRecipe.jsp";
+				RequestDispatcher successView = req.getRequestDispatcher(url);
+				successView.forward(req, res);
+//			} catch (Exception e)
+//			{
+//				// TODO Auto-generated catch block
+//				errorMsgs.add(e.getMessage());
+//				RequestDispatcher failureView = req
+//						.getRequestDispatcher("/front-end/recipe/listAllRecipe.jsp");
+//				failureView.forward(req, res);
+//			}	
+			
+		}
 		
 		if ("insert".equals(action)) {
 			
