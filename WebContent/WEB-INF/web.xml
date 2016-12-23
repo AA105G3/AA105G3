@@ -52,4 +52,69 @@
     <servlet-name>RecipeServlet</servlet-name>
     <url-pattern>/recipe/recipe.do</url-pattern>
   </servlet-mapping>
+  
+  <servlet>
+    <servlet-name>MemberServlet</servlet-name>
+    <servlet-class>com.member.controller.MemberServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>MemberServlet</servlet-name>
+    <url-pattern>/member/member.do</url-pattern>
+  </servlet-mapping>
+  <servlet>
+    <servlet-name>ProductServlet</servlet-name>
+    <servlet-class>com.product.controller.ProductServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>ProductServlet</servlet-name>
+    <url-pattern>/product/product.do</url-pattern>
+  </servlet-mapping>
+  <servlet>
+    <servlet-name>Product_orderServlet</servlet-name>
+    <servlet-class>com.product_order.controller.Product_orderServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>Product_orderServlet</servlet-name>
+    <url-pattern>/product_order/product_order.do</url-pattern>
+  </servlet-mapping>
+  <servlet>
+    <servlet-name>Product_order_listServlet</servlet-name>
+    <servlet-class>com.product_order_list.controller.Product_order_listServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>Product_order_listServlet</servlet-name>
+    <url-pattern>/product_order_list/product_order_list.do</url-pattern>
+  </servlet-mapping>
+  <servlet>
+    <servlet-name>AdvServlet</servlet-name>
+    <servlet-class>com.adv.controller.AdvServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>AdvServlet</servlet-name>
+    <url-pattern>/adv/adv.do</url-pattern>
+  </servlet-mapping>
+  <servlet>
+    <servlet-name>ChatServlet</servlet-name>
+    <servlet-class>com.chat.controller.ChatServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>ChatServlet</servlet-name>
+    <url-pattern>/chat/chat.do</url-pattern>
+  </servlet-mapping>
+  
+  
+  
+  <filter>
+    <filter-name>FLginFilter</filter-name>
+    <filter-class>com.front.filters.FLoginFilter</filter-class>
+  </filter>
+  <filter-mapping>
+    <filter-name>FLginFilter</filter-name>
+    <url-pattern>/front-end/product_order/select_page.jsp</url-pattern>
+    <dispatcher>REQUEST</dispatcher>
+    <dispatcher>FORWARD</dispatcher>
+    <dispatcher>INCLUDE</dispatcher>
+    <dispatcher>ERROR</dispatcher>
+    <dispatcher>ASYNC</dispatcher>
+  </filter-mapping>
 </web-app>
