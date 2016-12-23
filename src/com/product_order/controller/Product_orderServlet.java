@@ -38,8 +38,9 @@ public class Product_orderServlet extends HttpServlet {
 				/*************************** 3.查詢完成,準備轉交(Send the Success view) ************/
 				req.setAttribute("listPOList_ByProd_ord_no", set);    // 資料庫取出的set物件,存入request
 
-				String url = "/front-end/product_order/listAllProduct_order.jsp";              // 成功轉交 dept/listAllDept.jsp
-
+				/*String url = "/front-end/product_order/listAllProduct_order.jsp";*/              // 成功轉交 dept/listAllDept.jsp
+				String url = "/front-end/product_order/listPartProduct_order.jsp";
+				
 				RequestDispatcher successView = req.getRequestDispatcher(url);
 				successView.forward(req, res);
 
@@ -317,7 +318,7 @@ public class Product_orderServlet extends HttpServlet {
 				
 				/***************************3.修改完成,準備轉交(Send the Success view)*************/
 				req.setAttribute("product_orderVO", product_orderVO); // 資料庫update成功後,正確的的product_orderVO物件,存入req
-				String url = "/front-end/product_order/listOneProduct_order.jsp";
+				String url = "/front-end/product_order/listPartProduct_order.jsp";
 				RequestDispatcher successView = req.getRequestDispatcher(url); // 修改成功後,轉交listOneProduct_order.jsp
 				successView.forward(req, res);
 
