@@ -36,13 +36,11 @@ import com.google.gson.stream.JsonReader;
 @WebServlet("/MemberServletAndroid")
 public class MemberServletAndroid extends HttpServlet {
 	
-	public void doGet(HttpServletRequest request, HttpServletResponse response)
-			throws ServletException, IOException {
-		doPost(request, response);
+	public void doGet(HttpServletRequest req, HttpServletResponse res)throws ServletException, IOException {
+		doPost(req, res);
 	}
 
-	public void doPost(HttpServletRequest req, HttpServletResponse res)
-			throws ServletException, IOException {
+	public void doPost(HttpServletRequest req, HttpServletResponse res)throws ServletException, IOException {
 
 		req.setCharacterEncoding("UTF-8");
 		Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd HH:mm:ss").create();
