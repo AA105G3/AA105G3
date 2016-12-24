@@ -16,6 +16,8 @@ import javax.naming.InitialContext;
 import javax.naming.NamingException;
 import javax.sql.DataSource;
 
+import com.recipe_cont.model.*;
+
 
 public class RecipeJNDIDAO implements RecipeDAO_interface
 {
@@ -31,8 +33,8 @@ public class RecipeJNDIDAO implements RecipeDAO_interface
 
 
 	private static final String INSERT_STMT = 
-			"INSERT INTO  recipe (recipe_no,mem_no,recipe_name,recipe_intro,food_mater,recipe_pic) "
-			+ "VALUES ('R'||lpad(recipe_seq.NEXTVAL,8,0),?,?,?,?,?)";
+			"INSERT INTO  recipe (recipe_no,mem_no,recipe_name,recipe_intro,food_mater,recipe_pic,recipe_edit) "
+			+ "VALUES ('R'||lpad(recipe_seq.NEXTVAL,8,0),?,?,?,?,?,?)";
 	private static final String Get_ALL_STMT = 
 			"select recipe_no,mem_no,recipe_name,recipe_intro,food_mater,recipe_pic,recipe_like,recipe_total_views"
 			+ ",recipe_week_views,recipe_time,recipe_edit,recipe_classify from recipe order by recipe_no";
@@ -443,6 +445,100 @@ public class RecipeJNDIDAO implements RecipeDAO_interface
 				}
 			}
 		}
+		
+	}
+	
+	@Override
+	public void insertWithRecipe_conts(RecipeVO recipeVO, List<Recipe_contVO> list)
+	{
+		PreparedStatement pstmt = null;
+
+		Connection con = null;
+		try {
+			con = ds.getConnection();
+			
+			// 1●設定於 pstm.executeUpdate()之前
+    		con.setAutoCommit(false);
+			
+    		// 先新增食譜
+			String cols[] = {"RECIPE_NO"};
+			pstmt = con.prepareStatement(INSERT_STMT , cols);
+			
+			byte[] recipe_pic = recipeVO.getRecipe_pic();
+			if(recipe_pic !=null){
+				long piclen = recipe_pic.length;
+				InputStream bais = new ByteArrayInputStream(recipe_pic);
+				pstmt.setBinaryStream(5, bais, piclen);
+			}else{
+				pstmt.setBinaryStream(5, null);
+			}
+
+			pstmt.setString(1, recipeVO.getMem_no());
+			pstmt.setString(2, recipeVO.getRecipe_name());
+			pstmt.setString(3, recipeVO.getRecipe_intro());
+			pstmt.setString(4, recipeVO.getFood_mater());
+			pstmt.setString(6, recipeVO.getRecipe_edit());
+			
+			pstmt.executeUpdate();
+			
+			//掘取對應的自增主鍵值
+			String next_recipe_no = null;
+			ResultSet rs = pstmt.getGeneratedKeys();
+			if (rs.next()) {
+				next_recipe_no = rs.getString(1);
+				System.out.println("自增主鍵值= " + next_recipe_no +"(剛新增成功的食譜編號)");
+			} else {
+				System.out.println("未取得自增主鍵值");
+			}
+			rs.close();
+			// 再同時新增食譜內容
+			Recipe_contJNDIDAO dao = new Recipe_contJNDIDAO();
+			System.out.println("list.size()-A="+list.size());
+			for (Recipe_contVO aRecipe_cont : list) {
+				aRecipe_cont.setRecipe_no(next_recipe_no);;
+				dao.insert2(aRecipe_cont,con);
+			}
+
+			// 2●設定於 pstm.executeUpdate()之後
+			con.commit();
+			con.setAutoCommit(true);
+			System.out.println("list.size()-B="+list.size());
+			System.out.println("新增食譜編號" + next_recipe_no + "時,共有步驟" + list.size()
+					+ "條同時被新增");
+			
+			// Handle any driver errors
+		} catch (SQLException se) {
+			if (con != null) {
+				try {
+					// 3●設定於當有exception發生時之catch區塊內
+					System.err.print("Transaction is being ");
+					System.err.println("rolled back-由-recipe");
+					con.rollback();
+				} catch (SQLException excep) {
+					throw new RuntimeException("rollback error occured. "
+							+ excep.getMessage());
+				}
+			}
+			throw new RuntimeException("A database error occured. "
+					+ se.getMessage());
+			// Clean up JDBC resources
+		} finally {
+			if (pstmt != null) {
+				try {
+					pstmt.close();
+				} catch (SQLException se) {
+					se.printStackTrace(System.err);
+				}
+			}
+			if (con != null) {
+				try {
+					con.close();
+				} catch (Exception e) {
+					e.printStackTrace(System.err);
+				}
+			}
+		}
+
 		
 	}
 	

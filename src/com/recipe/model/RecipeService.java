@@ -6,6 +6,8 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
+import com.recipe_cont.model.Recipe_contVO;
+
 
 public class RecipeService
 {
@@ -27,6 +29,24 @@ public class RecipeService
 
 		return recipeVO;
 	}
+	
+	public RecipeVO addRecipeWith_Recipe_conts(String mem_no,String recipe_name,String recipe_intro,String food_mater,byte[] recipe_pic,String recipe_edit,List<Recipe_contVO> list) {
+
+		RecipeVO recipeVO = new RecipeVO();
+
+		recipeVO.setMem_no(mem_no);
+		recipeVO.setRecipe_name(recipe_name);
+		recipeVO.setRecipe_intro(recipe_intro);
+		recipeVO.setFood_mater(food_mater);
+		recipeVO.setRecipe_pic(recipe_pic);
+		recipeVO.setRecipe_edit(recipe_edit);
+		
+		dao.insertWithRecipe_conts(recipeVO, list);
+		
+		return recipeVO;
+	}
+	
+	
 
 	public RecipeVO updateRecipe(String recipe_no,String recipe_name,String recipe_intro,String food_mater,byte[] recipe_pic,String recipe_edit) {
 
@@ -84,4 +104,6 @@ public class RecipeService
 		
 		dao.changeWeekViewsZero(recipe_no);
 	}
+	
+	
 }
