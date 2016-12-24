@@ -96,7 +96,7 @@
 	            <span class="icon-bar"></span>
 	            <span class="icon-bar"></span>
 			</button>
-			<a href="#home" class="foodtime"><img alt="FoodTime" src="images/Logo.png">分享食光</a>
+			<a href="#home" class="foodtime"><img alt="FoodTime" src="<%=request.getContextPath()%>/front-end/web_page/images/Logo.png">分享食光</a>
 		</div>
 		<div class="collapse navbar-collapse" id="navbar-ex-collapse">
 			<ul class="nav navbar-nav navbar-right mu-main-nav">
@@ -182,7 +182,9 @@
 <c:forEach var="productVO" items="${list}">
 
 	<div class="col-xs-12 col-sm-4 first-col">
-		<img src="/AA105G3/ProductDBGifReader.do?name=${productVO.prod_no}" width='350' height='250'>
+		<a href='<%=request.getContextPath()%>/product/product.do?action=getOne_For_Display&prod_no=${productVO.prod_no}'>
+			<img src="/AA105G3/ProductDBGifReader.do?name=${productVO.prod_no}" width='350' height='250'>
+		</a>
 		<div class="col-xs-12 col-sm-6 front-style">
 			<h4>${productVO.prod_name}</h4>
 		</div>
