@@ -8,6 +8,7 @@ import javax.naming.InitialContext;
 import javax.naming.NamingException;
 import javax.sql.DataSource;
 
+import com.product_order_list.model.Product_order_listJDBCDAO;
 import com.product_order_list.model.Product_order_listVO;
 
 public class Product_orderJNDIDAO implements Product_orderDAO_interface {
@@ -498,6 +499,90 @@ public class Product_orderJNDIDAO implements Product_orderDAO_interface {
 		}
 
 		return list2;
+	}
+	
+	@Override
+	public void insertWithProduct_order_list(Product_orderVO product_orderVO , List<Product_order_listVO> list) {
+
+		Connection con = null;
+		PreparedStatement pstmt = null;
+
+		try {
+
+			con = ds.getConnection();
+			
+			// 1●設定於 pstm.executeUpdate()之前
+    		con.setAutoCommit(false);
+			
+    		// 先新增商品訂單
+			String cols[] = {"prod_ord_no"};
+			pstmt = con.prepareStatement(INSERT_STMT , cols);			
+			pstmt.setString(1, product_orderVO.getMem_no());
+			pstmt.setString(2, product_orderVO.getCred_card_no());
+			pstmt.setDate(3, product_orderVO.getValid_date());
+			pstmt.setString(4, product_orderVO.getValid_no());
+			pstmt.setString(5, product_orderVO.getCred_card_type());
+			pstmt.setInt(6, product_orderVO.getTotal_money());
+			pstmt.setString(7, product_orderVO.getShip_name());
+			pstmt.setString(8, product_orderVO.getPost_code());
+			pstmt.setString(9, product_orderVO.getMem_adrs());
+			pstmt.setString(10, product_orderVO.getCell_phone());
+			pstmt.setString(11, product_orderVO.getTel_phone());
+			pstmt.executeUpdate();
+			//掘取對應的自增主鍵值
+			String next_prod_ord_no = null;
+			ResultSet rs = pstmt.getGeneratedKeys();
+			if (rs.next()) {
+				next_prod_ord_no = rs.getString(1);
+				System.out.println("自增主鍵值= " + next_prod_ord_no +"(剛新增成功的商品訂單編號)");
+			} else {
+				System.out.println("未取得自增主鍵值");
+			}
+			rs.close();
+			// 再同時新增員工
+			Product_order_listJDBCDAO dao = new Product_order_listJDBCDAO();
+			for (Product_order_listVO aProduct_order_list : list) {
+				aProduct_order_list.setProd_ord_no(new String(next_prod_ord_no)) ;
+				dao.insertWithProduct_order(aProduct_order_list,con);
+			}
+
+			// 2●設定於 pstm.executeUpdate()之後
+			con.commit();
+			con.setAutoCommit(true);
+			
+			// Handle any driver errors
+		} catch (SQLException se) {
+			if (con != null) {
+				try {
+					// 3●設定於當有exception發生時之catch區塊內
+					System.err.print("Transaction is being ");
+					System.err.println("rolled back-由-product_order");
+					con.rollback();
+				} catch (SQLException excep) {
+					throw new RuntimeException("rollback error occured. "
+							+ excep.getMessage());
+				}
+			}
+			throw new RuntimeException("A database error occured. "
+					+ se.getMessage());
+			// Clean up JDBC resources
+		} finally {
+			if (pstmt != null) {
+				try {
+					pstmt.close();
+				} catch (SQLException se) {
+					se.printStackTrace(System.err);
+				}
+			}
+			if (con != null) {
+				try {
+					con.close();
+				} catch (Exception e) {
+					e.printStackTrace(System.err);
+				}
+			}
+		}
+
 	}
 
 }

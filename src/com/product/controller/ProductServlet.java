@@ -24,7 +24,7 @@ public class ProductServlet extends HttpServlet {
 		req.setCharacterEncoding("UTF-8");
 		String action = req.getParameter("action");
 		
-		if ("getOne_For_Display".equals(action)) { // 來自select_page.jsp的請求
+		if ("getOne_For_Display".equals(action) || "getOne_For_Backpage".equals(action)) { // 來自select_page.jsp的請求
 
 			List<String> errorMsgs = new LinkedList<String>();
 			// Store this set in the request scope, in case we need to
@@ -76,7 +76,14 @@ public class ProductServlet extends HttpServlet {
 				/***************************3.查詢完成,準備轉交(Send the Success view)*************/
 				req.setAttribute("productVO", productVO); // 資料庫取出的productVO物件,存入req
 				/*String url = "/back-end/product/listOneProduct.jsp";*/
-				String url = "/front-end/web_page/Product.jsp";
+				/*String url = "/front-end/web_page/Product.jsp";*/
+				
+				String url = null;
+				if ("getOne_For_Display".equals(action))
+					url = "/front-end/web_page/Product.jsp";
+				else if ("getOne_For_Backpage".equals(action))
+					url = "/back-end/web_page/DisplayProduct.jsp";
+				
 				RequestDispatcher successView = req.getRequestDispatcher(url); // 成功轉交 listOneProduct.jsp
 				successView.forward(req, res);
 
