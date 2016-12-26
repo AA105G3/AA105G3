@@ -80,10 +80,10 @@
 				margin-left:5px;
 			}
 			.recipe-collect-left{
-				width: 100px;
+				width: 180px;
 			}
 			.recipe-collect-right{
-				width:380px;
+				width:300px;
 				text-align: right;
 			}
 			.reciep-collect:hover{
@@ -310,7 +310,7 @@
 									<tr>
 										<td class="recipe-newest-image-wrapper">
 											<a href="<%=request.getContextPath()%>/recipe/recipe.do?action=getOne_For_Display&recipe_no=${recipeVO.recipe_no}">
-											<img class="recipe-newest-image" src="<%=request.getContextPath()%>/recipe/showRecipe_pic.do?recipe_no=${recipeVO.recipe_no}">
+											<img class="recipe-newest-image" src="<%=request.getContextPath()%>/recipe/showRecipe_pic.do?recipe_no=${recipeVO.recipe_no}" title="${recipeVO.recipe_name }">
 											</a>
 										</td>
 										<td class="display-recipe-newest-box">
