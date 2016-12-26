@@ -30,7 +30,9 @@ import com.recipe_cont.model.*;
 
 public class RecipeServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-
+	int viewsCounts = 0;
+	
+	
 	protected void doGet(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
 		// TODO Auto-generated method stub
 		doPost(req, res);
@@ -43,7 +45,7 @@ public class RecipeServlet extends HttpServlet {
 		String action = req.getParameter("action");
 		
 		if ("getOne_For_Display".equals(action)) { // 來自select_page.jsp的請求
-
+			viewsCounts++;
 			List<String> errorMsgs = new LinkedList<String>();
 			// Store this set in the request scope, in case we need to
 			// send the ErrorPage view.
@@ -66,8 +68,15 @@ public class RecipeServlet extends HttpServlet {
 				RecipeService recipeSvc = new RecipeService();
 				RecipeVO recipeVO = recipeSvc.getOneRecipe(recipe_no);
 				if (recipeVO == null) {
-					errorMsgs.add("查無資料");
+					errorMsgs.add("食譜查無資料");
 				}
+				
+				Recipe_contService recipe_contSvc = new Recipe_contService();
+				Set<Recipe_contVO> set = recipe_contSvc.getRecipe_cont(recipe_no);
+				if (set == null) {
+					errorMsgs.add("食譜內容步驟查無資料");
+				}
+				
 				
 				// Send the use back to the form, if there were errors
 				if (!errorMsgs.isEmpty()) {
@@ -76,6 +85,10 @@ public class RecipeServlet extends HttpServlet {
 					failureView.forward(req, res);
 					return;//程式中斷
 				}
+				
+				
+				recipeVO.setRecipe_total_views(recipeVO.getRecipe_total_views()+viewsCounts);
+				
 				
 				String str = recipeVO.getFood_mater();
 				String[] tokens = str.split("-|\\+");
@@ -98,7 +111,8 @@ public class RecipeServlet extends HttpServlet {
 				req.setAttribute("recipeVO", recipeVO); 
 				req.setAttribute("ingredients", ingredients);
 				req.setAttribute("quantity", quantity);
-				String url = "/front-end/recipe/listOneRecipe.jsp";
+				req.setAttribute("recipe_cont_set", set); 
+				String url = "/front-end/recipe/RecipeInfo.jsp";
 				RequestDispatcher successView = req.getRequestDispatcher(url); 
 				successView.forward(req, res);
 
@@ -354,7 +368,7 @@ public class RecipeServlet extends HttpServlet {
 				req.setAttribute("ingredients", ingredients); 
 				req.setAttribute("quantity", quantity); 
 				req.setAttribute("recipe_cont_set", recipe_cont_set); 
-				String url = "/front-end/recipe/listOneRecipe.jsp";
+				String url = "/front-end/recipe/RecipeInfo.jsp.jsp";
 				RequestDispatcher successView = req.getRequestDispatcher(url); 
 				successView.forward(req, res);
 
@@ -641,7 +655,17 @@ public class RecipeServlet extends HttpServlet {
 				recipeVO = recipeSvc.addRecipeWith_Recipe_conts(mem_no, recipe_name, recipe_intro, food_mater, recipe_pic,"已發布", contList);
 				
 				/***************************3.新增完成,準備轉交(Send the Success view)***********/
-				String url = "/front-end/recipe/listAllRecipe.jsp";
+				
+				List<RecipeVO> list = recipeSvc.findByMem_no(recipeVO.getMem_no());
+				String recipe_no = "";
+				for(RecipeVO aRecipe:list){
+					if(aRecipe.getRecipe_name().equals(recipe_name)){
+						recipe_no = aRecipe.getRecipe_no();
+					}
+				}
+				
+				
+				String url = "recipe.do?action=getOne_For_Display&recipe_no="+recipe_no;
 				RequestDispatcher successView = req.getRequestDispatcher(url);
 				successView.forward(req, res);				
 				

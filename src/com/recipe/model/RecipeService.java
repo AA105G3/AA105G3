@@ -105,5 +105,25 @@ public class RecipeService
 		dao.changeWeekViewsZero(recipe_no);
 	}
 	
+	public List<RecipeVO> findByMem_no(String mem_no) {
+		
+		List<RecipeVO> list = dao.findByMem_no(mem_no);
+		return list;
+	}
 	
+	public List<RecipeVO> topViewsRecipe() {
+		
+		List<RecipeVO> list = dao.getAllOrderByViews();
+		return list;
+	}
+	public List<RecipeVO> serachByRecipe_name(String recipe_name){
+		
+		List<RecipeVO> list= dao.serachByRecipe_name(recipe_name);
+		return list;
+	}
+	public List<RecipeVO> serachByFood_Mater(String food_mater){
+		
+		List<RecipeVO> list= dao.serachByFood_Mater(food_mater);
+		return list;
+	}
 }
