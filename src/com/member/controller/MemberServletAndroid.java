@@ -8,7 +8,7 @@ import javax.servlet.annotation.MultipartConfig;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.*;
 
-import com.member.model.*;
+import com.member.modelAndroid.*;
 import util.SendResponse;
 import util.ImageUtil;
 
@@ -29,6 +29,8 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonObject;
 import com.google.gson.stream.JsonReader;
+
+import java.util.Base64;
 
 @MultipartConfig(fileSizeThreshold = 1024 * 1024, maxFileSize = 5 * 1024 * 1024, maxRequestSize = 5 * 5 * 1024 * 1024)
 
@@ -83,8 +85,45 @@ public class MemberServletAndroid extends HttpServlet {
 		if ("getOne_For_Update".equals(action)) { 
 		}
 		
-		if ("update".equals(action)) { 
+		if ("update".equals(action)) {
+			String memberJson = jsonObject.get("memberVO").getAsString();
+			MemberVO memberVO = gson.fromJson(memberJson, MemberVO.class);
+			
+			if(jsonObject.get("mem_image")!=null){
+				String imageBase64 = jsonObject.get("mem_image").getAsString();
+//				byte[] mem_image = Base64.decodeBase64(mem_imageBase64);
+				byte[] mem_image = Base64.getMimeDecoder().decode(imageBase64);
+				memberVO = memberSvc.update(memberVO, mem_image);
+			}else {
+				memberVO = memberSvc.updateNoPic(memberVO);
+			}
+			
+			outStr.append(gson.toJson(memberVO));
+			SendResponse.writeText(res, outStr.toString());
 		}
+		
+		// =========================== Login ============================
+//
+//		if ("Login".equals(action)) {
+//
+//			String memidJson = jsonObject.get("memid").getAsString();
+//			JsonReader reader = new JsonReader(new StringReader(memidJson));
+//			reader.setLenient(true);
+//			String memid = gson.fromJson(reader, String.class);
+//
+//			String mempswJson = jsonObject.get("mempsw").getAsString();
+//			reader = new JsonReader(new StringReader(mempswJson));
+//			reader.setLenient(true);
+//			String mempsw = gson.fromJson(reader, String.class);
+//
+//			MemberVO memberVO = memberSvc.MemLogin(memid, mempsw);
+//			if(memberVO==null){
+//				memberVO = new MemberVO();
+//				memberVO.setMemno("-1");
+//			}
+//			outStr.append(gson.toJson(memberVO));
+//			SendResponse.writeText(res, outStr.toString());
+//		}
 		
 		if ("insert".equals(action)) {   
 		}
