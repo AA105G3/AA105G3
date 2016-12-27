@@ -8,7 +8,7 @@ import javax.servlet.annotation.MultipartConfig;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.*;
 
-import com.member.modelAndroid.*;
+import com.member.model.*;
 import util.SendResponse;
 import util.ImageUtil;
 
@@ -85,23 +85,23 @@ public class MemberServletAndroid extends HttpServlet {
 		if ("getOne_For_Update".equals(action)) { 
 		}
 		
-		if ("update".equals(action)) {
-			String memberJson = jsonObject.get("memberVO").getAsString();
-			MemberVO memberVO = gson.fromJson(memberJson, MemberVO.class);
-			
-			if(jsonObject.get("mem_image")!=null){
-				String imageBase64 = jsonObject.get("mem_image").getAsString();
-//				byte[] mem_image = Base64.decodeBase64(mem_imageBase64);
-				byte[] mem_image = Base64.getMimeDecoder().decode(imageBase64);
-				memberVO = memberSvc.update(memberVO, mem_image);
-			}else {
-				memberVO = memberSvc.updateNoPic(memberVO);
-			}
-			
-			outStr.append(gson.toJson(memberVO));
-			SendResponse.writeText(res, outStr.toString());
-		}
-		
+//		if ("update".equals(action)) {
+//			String memberJson = jsonObject.get("memberVO").getAsString();
+//			MemberVO memberVO = gson.fromJson(memberJson, MemberVO.class);
+//			
+//			if(jsonObject.get("mem_image")!=null){
+//				String imageBase64 = jsonObject.get("mem_image").getAsString();
+////				byte[] mem_image = Base64.decodeBase64(mem_imageBase64);
+//				byte[] mem_image = Base64.getMimeDecoder().decode(imageBase64);
+//				memberVO = memberSvc.update(memberVO, mem_image);
+//			}else {
+//				memberVO = memberSvc.updateNoPic(memberVO);
+//			}
+//			
+//			outStr.append(gson.toJson(memberVO));
+//			SendResponse.writeText(res, outStr.toString());
+//		}
+//		
 		// =========================== Login ============================
 //
 //		if ("Login".equals(action)) {
