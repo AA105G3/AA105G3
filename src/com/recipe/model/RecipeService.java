@@ -126,4 +126,35 @@ public class RecipeService
 		List<RecipeVO> list= dao.serachByFood_Mater(food_mater);
 		return list;
 	}
+	public List<RecipeVO> getNewest(){
+		List<RecipeVO> list = dao.getAll();
+		for(RecipeVO aRecipe:list){
+			
+			if(aRecipe.getRecipe_intro().length()>55){
+				String introSbsr= aRecipe.getRecipe_intro().substring(0,56);
+				aRecipe.setRecipe_intro(introSbsr);
+			}
+			
+			String str = aRecipe.getFood_mater();
+			String[] tokens = str.split("-|\\+");
+			
+			StringBuffer ingredients = new StringBuffer();
+			
+			ingredients.append(tokens[0]);
+			for(int i =2;i<tokens.length-1;i+=2){
+				ingredients.append("、"+tokens[i]);
+			}
+			
+				
+			if(ingredients.length()>27){
+				String food_mater = ingredients.substring(0,27); 
+				
+			}
+			
+			aRecipe.setFood_mater(new String(ingredients));
+			
+			
+		}
+		return list;
+	}
 }
