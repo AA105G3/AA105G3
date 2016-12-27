@@ -7,7 +7,7 @@ public class MemberService {
 	private MemberDAO_interface dao;
 
 	public MemberService() {
-		dao = new MemberJNDIDAO();
+		dao = new MemberDAO();
 	}
 	
 	public MemberVO addMember(String mem_name, String mem_ac, String mem_pw, byte[] mem_image, String mem_sex, String mem_phone, 
@@ -59,6 +59,10 @@ public class MemberService {
 
 	public MemberVO getOneMember(String mem_no) {
 		return dao.findByPrimaryKey(mem_no);
+	}
+	
+	public MemberVO getOneMember(String mem_no, Integer android) {
+		return dao.findByPrimaryKey(mem_no, android);
 	}
 
 	public List<MemberVO> getAll() {

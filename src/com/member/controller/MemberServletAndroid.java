@@ -76,7 +76,7 @@ public class MemberServletAndroid extends HttpServlet {
 			reader.setLenient(true);
 			String mem_no = gson.fromJson(reader, String.class);
 //			MemberVO memberVO = memberSvc.getOneMemberTextOnly(mem_no);
-			MemberVO memberVO = memberSvc.getOneMember(mem_no); 
+			MemberVO memberVO = memberSvc.getOneMember(mem_no,1); 
 			
 			outStr.append(gson.toJson(memberVO));
 			SendResponse.writeText(res, outStr.toString());	
