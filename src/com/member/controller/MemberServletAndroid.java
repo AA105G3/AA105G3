@@ -85,22 +85,36 @@ public class MemberServletAndroid extends HttpServlet {
 		if ("getOne_For_Update".equals(action)) { 
 		}
 		
-//		if ("update".equals(action)) {
-//			String memberJson = jsonObject.get("memberVO").getAsString();
-//			MemberVO memberVO = gson.fromJson(memberJson, MemberVO.class);
-//			
-//			if(jsonObject.get("mem_image")!=null){
-//				String imageBase64 = jsonObject.get("mem_image").getAsString();
-////				byte[] mem_image = Base64.decodeBase64(mem_imageBase64);
-//				byte[] mem_image = Base64.getMimeDecoder().decode(imageBase64);
-//				memberVO = memberSvc.update(memberVO, mem_image);
-//			}else {
+		if ("update".equals(action)) {
+			String memberJson = jsonObject.get("memberVO").getAsString();
+			MemberVO inputMemberVO = gson.fromJson(memberJson, MemberVO.class);
+			String mem_no = jsonObject.get("mem_no").getAsString();
+			MemberVO memberVO = memberSvc.getOneMember(mem_no);
+			String mem_name = null;
+			
+			if(inputMemberVO.getMem_name()!=null){
+				mem_name=jsonObject.get("mem_name").getAsString();
+			}else{
+				mem_name=memberVO.getMem_name();
+			}
+			
+			memberVO.setMem_name(mem_name);
+			
+			if(inputMemberVO.getMem_image()!=null){
+				String imageBase64 = jsonObject.get("mem_image").getAsString();
+//				byte[] mem_image = Base64.decodeBase64(mem_imageBase64);
+				byte[] mem_image = Base64.getMimeDecoder().decode(imageBase64);
+				
+				memberSvc.updateMember(mem_no, memberVO.getMem_name(), memberVO.getMem_ac(),memberVO.getMem_pw(), mem_image,memberVO.getMem_sex(),memberVO.getMem_phone()
+						,memberVO.getMem_email(),memberVO.getMem_adrs(),memberVO.getMem_own(),memberVO.getMem_history(),memberVO.getMem_online());
+			}
+//			else {
 //				memberVO = memberSvc.updateNoPic(memberVO);
 //			}
 //			
 //			outStr.append(gson.toJson(memberVO));
 //			SendResponse.writeText(res, outStr.toString());
-//		}
+		}
 //		
 		// =========================== Login ============================
 //

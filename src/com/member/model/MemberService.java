@@ -53,6 +53,17 @@ public class MemberService {
 		return memberVO;
 	}
 	
+	public MemberVO updateMember(String mem_name, byte[] mem_image){
+		
+		MemberVO memberVO = new MemberVO();
+		
+		memberVO.setMem_name(mem_name);
+		memberVO.setMem_image(mem_image);
+		dao.update(memberVO, 1);
+		
+		return memberVO;
+	}
+	
 	public void deleteMember(String mem_no) {
 		dao.delete(mem_no);
 	}

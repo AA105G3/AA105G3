@@ -87,6 +87,9 @@ public class MemberDAO implements MemberDAO_interface {
 		+ " mem_own=?,"
 		+ " mem_history=?,"
 		+ " mem_online=? where mem_no = ?";
+	private static final String UPDATE_ANDROID = 
+			"UPDATE member set mem_name=?,"
+			+ " mem_image=? where mem_no = ?";
 	
 	private static final String GET_IMAGE_STMT = "SELECT mem_image FROM member where mem_no=?";
 	
@@ -188,6 +191,47 @@ public class MemberDAO implements MemberDAO_interface {
 		}
 
 	}
+	
+	@Override
+	public void update(MemberVO memVO, Integer android) {
+
+		Connection con = null;
+		PreparedStatement pstmt = null;
+
+		try {
+
+			con = ds.getConnection();
+			pstmt = con.prepareStatement(UPDATE_ANDROID);
+
+			pstmt.setString(1, memVO.getMem_name());
+			pstmt.setBytes(4, memVO.getMem_image());
+
+			pstmt.executeUpdate();
+
+			// Handle any driver errors
+		} catch (SQLException se) {
+			throw new RuntimeException("A database error occured. "
+					+ se.getMessage());
+			// Clean up JDBC resources
+		} finally {
+			if (pstmt != null) {
+				try {
+					pstmt.close();
+				} catch (SQLException se) {
+					se.printStackTrace(System.err);
+				}
+			}
+			if (con != null) {
+				try {
+					con.close();
+				} catch (Exception e) {
+					e.printStackTrace(System.err);
+				}
+			}
+		}
+
+	}
+
 	
 	@Override
 	public void delete(String mem_no) {
