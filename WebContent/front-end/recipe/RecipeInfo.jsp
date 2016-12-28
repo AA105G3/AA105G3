@@ -34,7 +34,36 @@
 		<style type="text/css">
 			body{
 				background: #efede8;
+				padding-top:50px;
 			}
+			.recipe-search{
+		
+				text-align: center;
+			}
+		
+			.recipe-search-select{
+				height: 50px;
+			}
+			.recipe-search-text{
+				height: 50px;
+				width:375px !important;
+			}
+			
+			.recipe-search-btn{
+				height: 50px;
+				color:#D9230F;
+				width: 50px;
+			}
+			.write-recipe{
+				height: 50px;
+				font-weight: bold;
+			}
+			.recipe-header-right{
+				padding-left: 25px;
+			}
+			
+			
+			
 			.display-recipe-wrapper{
 				border:1px solid #e2e0db;
 				margin:20px 0px;
@@ -67,6 +96,9 @@
 			}
 			.display-recipe-update a:hover{
 				text-decoration: none;
+			}
+			.glyphicon-cog{
+				font-size:19px;
 			}
 			.dispaly-recipe-upload-date{
 				font-size: 16px;
@@ -241,9 +273,32 @@
 	<body>
 		
 		<div class="container">
+			<div class="row">
+				<div class="col-xs-12 col-sm-8 ">
+					<div class="recipe-search">
+						<form class="form-inline text-center" action="<%=request.getContextPath()%>/recipe/recipe.do" method="POST">
+						    <select class="form-control recipe-search-select" name="searchCondition">
+						        <option value="recipe_name">找食譜名</option>
+						        <option value="food_mater">找食材</option>
+						    </select>
+						   <div class="input-group recipe-search-form">
+						    <input type="text" class="form-control recipe-search-text" placeholder="Search Recipe" name="searchInput">
+						        <span class="input-group-btn">
+						            <button class="btn btn-default recipe-search-btn" type="submit" name="action" value="search"><i class="glyphicon glyphicon-search"></i></button>
+						        </span>
+						    </div>
+						</form>
+					</div>
+				</div>
+				<div class="col-xs-12 col-sm-4 recipe-header-right">
+					<a href="<%=request.getContextPath()%>/front-end/recipe/addRecipe.jsp">
+						<button class="btn btn-default write-recipe">
+						<span class="glyphicon glyphicon-pencil" aria-hidden="true"></span>
+						寫食譜</button></a>
+				</div>
+			</div>
 			<div class="col-xs-12 col-sm-12">
 				<div class="row">
-				
 					<div class="col-xs-12 col-sm-8 display-recipe-wrapper">
 						<div class="recipe-top-title-wrapper col-xs-12 col-sm-12">
 						<div class="col-xs-12 col-sm-6 display-recipe-title">
@@ -253,7 +308,7 @@
 							<c:if test="${recipeVO.mem_no == mem_no}">
 							<div class=" btn btn-default">
 								<a href="<%=request.getContextPath()%>/recipe/recipe.do?action=getOne_For_Update&recipe_no=${recipeVO.recipe_no}">
-								<i class="glyphicon glyphicon-heart-empty"></i><span>修改</span>
+								<i class="glyphicon glyphicon-cog"></i><span>修改</span>
 								</a>
 							</div>
 							</c:if>
