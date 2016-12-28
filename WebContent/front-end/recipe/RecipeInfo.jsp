@@ -416,7 +416,7 @@
 										<h4 class="display-more-newest-title">最新食譜</h4>			
 									</div>
 									<div class="col-xs-12 col-sm-6 text-right dispaly-more-newest">
-										<a href="#" class="">更多</a>
+										<a href="<%=request.getContextPath()%>/front-end/recipe/RecipeNewest.jsp" class="">更多</a>
 									</div>
 									<div style="clear:both;"></div>
 								</div>

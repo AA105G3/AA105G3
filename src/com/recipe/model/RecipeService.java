@@ -114,10 +114,10 @@ public class RecipeService
 	
 	public List<RecipeVO> topViewsRecipe() {
 		List<RecipeVO> list = dao.getAllOrderByViews();
-for(RecipeVO aRecipe:list){
+		for(RecipeVO aRecipe:list){
 			
-			if(aRecipe.getRecipe_intro().length()>67){
-				String introSbsr= aRecipe.getRecipe_intro().substring(0,68)+"...";
+			if(aRecipe.getRecipe_intro().length()>64){
+				String introSbsr= aRecipe.getRecipe_intro().substring(0,65)+"...";
 				aRecipe.setRecipe_intro(introSbsr);
 			}
 			
@@ -132,8 +132,8 @@ for(RecipeVO aRecipe:list){
 			}
 			
 			String food_maters = null;
-			if(ingredients.length()>41){
-				food_maters = ingredients.substring(0,42)+"..."; 
+			if(ingredients.length()>38){
+				food_maters = ingredients.substring(0,39)+"..."; 
 				
 			}else{
 				food_maters = new String(ingredients);
@@ -151,8 +151,8 @@ for(RecipeVO aRecipe:list){
 		List<RecipeVO> list= dao.serachByRecipe_name(recipe_name);
 for(RecipeVO aRecipe:list){
 			
-			if(aRecipe.getRecipe_intro().length()>67){
-				String introSbsr= aRecipe.getRecipe_intro().substring(0,68)+"...";
+			if(aRecipe.getRecipe_intro().length()>64){
+				String introSbsr= aRecipe.getRecipe_intro().substring(0,65)+"...";
 				aRecipe.setRecipe_intro(introSbsr);
 			}
 			
@@ -167,8 +167,8 @@ for(RecipeVO aRecipe:list){
 			}
 			
 			String food_maters = null;
-			if(ingredients.length()>41){
-				food_maters = ingredients.substring(0,42)+"..."; 
+			if(ingredients.length()>38){
+				food_maters = ingredients.substring(0,39)+"..."; 
 				
 			}else{
 				food_maters = new String(ingredients);
@@ -186,8 +186,8 @@ for(RecipeVO aRecipe:list){
 		List<RecipeVO> list= dao.serachByFood_Mater(food_mater);
 for(RecipeVO aRecipe:list){
 			
-			if(aRecipe.getRecipe_intro().length()>67){
-				String introSbsr= aRecipe.getRecipe_intro().substring(0,68)+"...";
+			if(aRecipe.getRecipe_intro().length()>64){
+				String introSbsr= aRecipe.getRecipe_intro().substring(0,65)+"...";
 				aRecipe.setRecipe_intro(introSbsr);
 			}
 			
@@ -202,8 +202,8 @@ for(RecipeVO aRecipe:list){
 			}
 			
 			String food_maters = null;
-			if(ingredients.length()>41){
-				food_maters = ingredients.substring(0,42)+"..."; 
+			if(ingredients.length()>38){
+				food_maters = ingredients.substring(0,39)+"..."; 
 				
 			}else{
 				food_maters = new String(ingredients);
@@ -219,8 +219,8 @@ for(RecipeVO aRecipe:list){
 		List<RecipeVO> list = dao.getAll();
 		for(RecipeVO aRecipe:list){
 			
-			if(aRecipe.getRecipe_intro().length()>67){
-				String introSbsr= aRecipe.getRecipe_intro().substring(0,68)+"...";
+			if(aRecipe.getRecipe_intro().length()>64){
+				String introSbsr= aRecipe.getRecipe_intro().substring(0,65)+"...";
 				aRecipe.setRecipe_intro(introSbsr);
 			}
 			
@@ -235,8 +235,8 @@ for(RecipeVO aRecipe:list){
 			}
 			
 			String food_maters = null;
-			if(ingredients.length()>41){
-				food_maters = ingredients.substring(0,42)+"..."; 
+			if(ingredients.length()>38){
+				food_maters = ingredients.substring(0,39)+"..."; 
 				
 			}else{
 				food_maters = new String(ingredients);
