@@ -498,9 +498,7 @@ public class RecipeDAO implements RecipeDAO_interface
 			ResultSet rs = pstmt.getGeneratedKeys();
 			if (rs.next()) {
 				next_recipe_no = rs.getString(1);
-				System.out.println("自增主鍵值= " + next_recipe_no +"(剛新增成功的食譜編號)");
 			} else {
-				System.out.println("未取得自增主鍵值");
 			}
 			rs.close();
 			// 再同時新增食譜內容
@@ -514,9 +512,6 @@ public class RecipeDAO implements RecipeDAO_interface
 			// 2●設定於 pstm.executeUpdate()之後
 			con.commit();
 			con.setAutoCommit(true);
-			System.out.println("list.size()-B="+list.size());
-			System.out.println("新增食譜編號" + next_recipe_no + "時,共有步驟" + list.size()
-					+ "條同時被新增");
 			
 			// Handle any driver errors
 		} catch (SQLException se) {

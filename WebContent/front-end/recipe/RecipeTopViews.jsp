@@ -5,9 +5,11 @@
 <%@ page import="java.util.*"%>
 <%@ page import="com.recipe.model.*"%>
 
-<% 
-   List<RecipeVO> list = (List)request.getAttribute("list");
-   request.setAttribute("list",list);
+<% 		
+	RecipeService recipeSvc = new RecipeService();
+	List<RecipeVO> list = recipeSvc.topViewsRecipe();
+	pageContext.setAttribute("list",list);
+	
 %>
 <jsp:useBean id="memberSvc" scope="page" class="com.member.model.MemberService" />
 
@@ -17,7 +19,7 @@
 		<meta charset="utf-8">
 		<meta http-equiv="X-UA-Compatible" content="IE=edge">
 		<meta name="viewport" content="width=device-width, initial-scale=1">
-		<title>最新食譜</title>
+		<title>人氣食譜</title>
 		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
 		<!--[if lt IE 9]>
 			<script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
@@ -81,7 +83,7 @@
 		<div class="container">
 			<div class="row">
 				<div class="col-xs-12 col-sm-12 page-top-title-wrapper">
-					<h4 class="title-item-top">${title}</h4>
+					<h4 class="title-item-top">人氣食譜</h4>
 				</div>
 			</div>
 	<%@ include file="page1.file" %> 
@@ -110,16 +112,20 @@
 				<c:if test="${s.index+1 < list.size()}">
 				<div class="col-xs-12 col-sm-6 recipe-item-wrapper-right">
 					<div class="col-xs-12 col-sm-5 recipe-item-left">
+					<a href="<%=request.getContextPath()%>/recipe/recipe.do?action=getOne_For_Display&recipe_no=${list.get(s.index+1).recipe_no}">
 						<img src="<%=request.getContextPath()%>/recipe/showRecipe_pic.do?recipe_no=${list.get(s.index+1).recipe_no}">
+					</a>
 					</div>
 					<div class="col-xs-12 col-sm-7 recipe-item-right">
-						<h3>${list.get(s.index+1).recipe_name}</h3>
+						<a href="<%=request.getContextPath()%>/recipe/recipe.do?action=getOne_For_Display&recipe_no=${list.get(s.index+1).recipe_no}">
+							<h3>${list.get(s.index+1).recipe_name}</h3>
+						</a>
 						<p>by <a href="#">${memberSvc.getOneMember(list.get(s.index+1).mem_no).mem_name}</a></p>
 						<p class="recipe-intro">${list.get(s.index+1).recipe_intro}</p>
 						<p class="recipe-food-mater">食材：${list.get(s.index+1).food_mater}</p>
 						<p>
-							<i class="glyphicon glyphicon-eye-open">555</i>
-							<i class="glyphicon glyphicon-heart">200</i>
+							<i class="glyphicon glyphicon-eye-open">${list.get(s.index+1).recipe_total_views}</i>
+							<i class="glyphicon glyphicon-heart">${list.get(s.index+1).recipe_like}</i>
 						</p>
 					</div>
 				</div>

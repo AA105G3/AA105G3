@@ -120,6 +120,7 @@
 				width: 480px;
 				margin: 15px 0px;
 				font-size: 16px;
+				word-break:break-all;
 			}
 			.recipe-right-wrapper{
 				padding: 0px;
@@ -142,10 +143,14 @@
 				padding:15px 0px;
 				margin-bottom: 10px; 
 			}
+			
 			.display-step-image-wrapper,.display-step-cont{
 				padding: 15px 0px;
 				border-bottom: 1px solid;
 				vertical-align: top;
+			}
+			#cont-table{
+				width:100%;
 			}
 			.display-step-cont{
 				width:100%;
@@ -153,6 +158,9 @@
 			.display-step-image{
 				width: 220px;
 				height: 170px;
+			}
+			td.display-step-image-wrapper{
+				width:15%;	
 			}
 			.display-step{
 				margin: 0px 0px 10px 0px;
@@ -193,6 +201,7 @@
 				margin:0px 0px 5px 0px;
 				font-size: 20px;
 				color: #000;
+				word-break:break-all;
 			}
 			.display-recipe-newest{
 				border:1px solid #e2e0db;
@@ -213,6 +222,7 @@
 			.display-newest-recipe-content{
 				border-top: 1px solid #e2e0db;
 				padding:10px 0px;
+				word-break:break-all;
 			}
 			.recipe-newest-image{
 				width: 80px;
@@ -254,7 +264,7 @@
 								<img id="display-recipe-image" src="<%=request.getContextPath()%>/recipe/showRecipe_pic.do?recipe_no=${recipeVO.recipe_no}">
 								</div>
 					
-								<table>
+								<table >
 									<tr >
 										<td class="recipe-collect-left">
 										<div class="display-recipe-views">
@@ -287,7 +297,7 @@
 							</c:forEach>
 						</div>
 						<div class="col-xs-12 col-sm-12 display-recipeCont-wrapper">
-							<table>
+							<table id="cont-table">
 							<c:forEach var="recipe_contVO" items="${recipe_cont_set}">
 								<tr>
 								<c:if test="${recipe_contVO.step_pic != null}">

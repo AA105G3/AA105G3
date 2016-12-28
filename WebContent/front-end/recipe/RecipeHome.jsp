@@ -154,13 +154,13 @@
 				<div class="row">
 					<div class="col-xs-12 col-sm-8 ">
 						<div class="recipe-search">
-								<form class="form-inline" action="#" method="POST">
+								<form class="form-inline" action="<%=request.getContextPath()%>/recipe/recipe.do" method="POST">
 								    <select class="form-control recipe-select" name="searchCondition">
 								        <option value="recipe_name">找食譜名</option>
 								        <option value="food_mater">找食材</option>
 								    </select>
 								   <div class="input-group recipe-search-form">
-								    <input type="text" class="form-control recipe-text" placeholder="Search Recipe">
+								    <input type="text" class="form-control recipe-text" placeholder="Search Recipe" name="searchInput">
 								        <span class="input-group-btn">
 								            <button class="btn btn-default recipe-btn" type="submit" name="action" value="search"><i class="glyphicon glyphicon-search"></i></button>
 								        </span>
@@ -185,7 +185,7 @@
 					<h4 class="title-item-top">最新食譜</h4>
 				</div>
 				<div class="col-xs-12 col-sm-6">
-					<a href="<%=request.getContextPath()%>/recipe/recipe.do?action=getNewest"><h4 class="title-more">更多內容 <i class="glyphicon glyphicon-menu-right"></i></h4>
+					<a href="<%=request.getContextPath()%>/front-end/recipe/RecipeNewest.jsp"><h4 class="title-more">更多內容 <i class="glyphicon glyphicon-menu-right"></i></h4>
 					
 					</a>
 				</div>
@@ -218,7 +218,7 @@
 					<h4 class="title-item-top">人氣食譜</h4>
 				</div>
 				<div class="col-xs-12 col-sm-6">
-					<a href=""><h4 class="title-more">更多內容 <i class="glyphicon glyphicon-menu-right"></i></h4></a>
+					<a href="<%=request.getContextPath()%>/front-end/recipe/RecipeTopViews.jsp"><h4 class="title-more">更多內容 <i class="glyphicon glyphicon-menu-right"></i></h4></a>
 				</div>
 			</div>
 		</div>

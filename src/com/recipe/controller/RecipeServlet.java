@@ -176,8 +176,8 @@ public class RecipeServlet extends HttpServlet {
 		}
 		
 		
-		if ("getNewest".equals(action)||"getTopViews".equals(action)) { 
-
+		if("search".equals(action)){
+			
 			List<String> errorMsgs = new LinkedList<String>();
 			// Store this set in the request scope, in case we need to
 			// send the ErrorPage view.
@@ -185,28 +185,43 @@ public class RecipeServlet extends HttpServlet {
 			
 			try {
 				/***************************1.接收請求參數****************************************/
+				String searchCondition = req.getParameter("searchCondition");
+				String searchInput =req.getParameter("searchInput");
+				
+				
+				if(searchInput.length()==0 || searchInput.isEmpty()){
+					errorMsgs.add("搜尋條件請勿空白");
+				}
+				
+				if (!errorMsgs.isEmpty()) {
+					
+					RequestDispatcher failureView = req
+							.getRequestDispatcher("/front-end/recipe/RecipeHome.jsp");
+					failureView.forward(req, res);
+					return; //程式中斷
+				}
 				
 				/***************************2.開始查詢資料****************************************/
 				RecipeService recipeSvc = new RecipeService();
-				List<RecipeVO> list = new ArrayList<RecipeVO>();
 				
-				if("getNewest".equals(action)){
-					list = recipeSvc.getNewest();
-					req.setAttribute("title","最新食譜");
-					
+				List<RecipeVO> list =null;
+				if(searchCondition.equals("recipe_name")){
+					list = recipeSvc.serachByRecipe_name(searchInput);
 				}
-				if("getTopViews".equals(action)){
-					list = recipeSvc.topViewsRecipe();
-					req.setAttribute("title","人氣食譜");
+				
+				if(searchCondition.equals("food_mater")){
+					list = recipeSvc.serachByFood_Mater(searchInput);
 				}
+				
+				
+				
 				
 				
 								
 				/***************************3.查詢完成,準備轉交(Send the Success view)************/
-				
-				
-				req.setAttribute("list",list);
-				String url = "/front-end/recipe/RecipeList1.jsp";
+				req.setAttribute("list", list);
+				req.setAttribute("title", searchInput);
+				String url = "/front-end/recipe/RecipeSearch.jsp";
 				RequestDispatcher successView = req.getRequestDispatcher(url);
 				successView.forward(req, res);
 
@@ -218,6 +233,10 @@ public class RecipeServlet extends HttpServlet {
 				failureView.forward(req, res);
 			}
 		}
+		
+			
+			
+		
 		
 		
 		if ("update".equals(action)) { 

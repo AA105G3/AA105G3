@@ -113,26 +113,11 @@ public class RecipeService
 	}
 	
 	public List<RecipeVO> topViewsRecipe() {
-		
 		List<RecipeVO> list = dao.getAllOrderByViews();
-		return list;
-	}
-	public List<RecipeVO> serachByRecipe_name(String recipe_name){
-		
-		List<RecipeVO> list= dao.serachByRecipe_name(recipe_name);
-		return list;
-	}
-	public List<RecipeVO> serachByFood_Mater(String food_mater){
-		
-		List<RecipeVO> list= dao.serachByFood_Mater(food_mater);
-		return list;
-	}
-	public List<RecipeVO> getNewest(){
-		List<RecipeVO> list = dao.getAll();
-		for(RecipeVO aRecipe:list){
+for(RecipeVO aRecipe:list){
 			
-			if(aRecipe.getRecipe_intro().length()>55){
-				String introSbsr= aRecipe.getRecipe_intro().substring(0,56);
+			if(aRecipe.getRecipe_intro().length()>67){
+				String introSbsr= aRecipe.getRecipe_intro().substring(0,68)+"...";
 				aRecipe.setRecipe_intro(introSbsr);
 			}
 			
@@ -146,13 +131,118 @@ public class RecipeService
 				ingredients.append("、"+tokens[i]);
 			}
 			
+			String food_maters = null;
+			if(ingredients.length()>41){
+				food_maters = ingredients.substring(0,42)+"..."; 
 				
-			if(ingredients.length()>27){
-				String food_mater = ingredients.substring(0,27); 
-				
+			}else{
+				food_maters = new String(ingredients);
 			}
 			
-			aRecipe.setFood_mater(new String(ingredients));
+			aRecipe.setFood_mater(new String(food_maters));
+			
+			
+		}
+		return list;
+		
+	}
+	public List<RecipeVO> serachByRecipe_name(String recipe_name){
+		
+		List<RecipeVO> list= dao.serachByRecipe_name(recipe_name);
+for(RecipeVO aRecipe:list){
+			
+			if(aRecipe.getRecipe_intro().length()>67){
+				String introSbsr= aRecipe.getRecipe_intro().substring(0,68)+"...";
+				aRecipe.setRecipe_intro(introSbsr);
+			}
+			
+			String str = aRecipe.getFood_mater();
+			String[] tokens = str.split("-|\\+");
+			
+			StringBuffer ingredients = new StringBuffer();
+			
+			ingredients.append(tokens[0]);
+			for(int i =2;i<tokens.length-1;i+=2){
+				ingredients.append("、"+tokens[i]);
+			}
+			
+			String food_maters = null;
+			if(ingredients.length()>41){
+				food_maters = ingredients.substring(0,42)+"..."; 
+				
+			}else{
+				food_maters = new String(ingredients);
+			}
+			
+			aRecipe.setFood_mater(new String(food_maters));
+			
+			
+		}
+		
+		return list;
+	}
+	public List<RecipeVO> serachByFood_Mater(String food_mater){
+		
+		List<RecipeVO> list= dao.serachByFood_Mater(food_mater);
+for(RecipeVO aRecipe:list){
+			
+			if(aRecipe.getRecipe_intro().length()>67){
+				String introSbsr= aRecipe.getRecipe_intro().substring(0,68)+"...";
+				aRecipe.setRecipe_intro(introSbsr);
+			}
+			
+			String str = aRecipe.getFood_mater();
+			String[] tokens = str.split("-|\\+");
+			
+			StringBuffer ingredients = new StringBuffer();
+			
+			ingredients.append(tokens[0]);
+			for(int i =2;i<tokens.length-1;i+=2){
+				ingredients.append("、"+tokens[i]);
+			}
+			
+			String food_maters = null;
+			if(ingredients.length()>41){
+				food_maters = ingredients.substring(0,42)+"..."; 
+				
+			}else{
+				food_maters = new String(ingredients);
+			}
+			
+			aRecipe.setFood_mater(new String(food_maters));
+			
+			
+		}
+		return list;
+	}
+	public List<RecipeVO> getNewest(){
+		List<RecipeVO> list = dao.getAll();
+		for(RecipeVO aRecipe:list){
+			
+			if(aRecipe.getRecipe_intro().length()>67){
+				String introSbsr= aRecipe.getRecipe_intro().substring(0,68)+"...";
+				aRecipe.setRecipe_intro(introSbsr);
+			}
+			
+			String str = aRecipe.getFood_mater();
+			String[] tokens = str.split("-|\\+");
+			
+			StringBuffer ingredients = new StringBuffer();
+			
+			ingredients.append(tokens[0]);
+			for(int i =2;i<tokens.length-1;i+=2){
+				ingredients.append("、"+tokens[i]);
+			}
+			
+			String food_maters = null;
+			if(ingredients.length()>41){
+				food_maters = ingredients.substring(0,42)+"..."; 
+				
+			}else{
+				food_maters = new String(ingredients);
+			}
+			
+			aRecipe.setFood_mater(new String(food_maters));
 			
 			
 		}
