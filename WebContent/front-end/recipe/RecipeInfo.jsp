@@ -4,6 +4,11 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 
+
+
+<% session.setAttribute("mem_no", "M00000005"); %>
+
+
 <jsp:useBean id="recipe_cont_set" scope="request" type="java.util.Set" />
 <jsp:useBean id="recipeSvc" scope="page" class="com.recipe.model.RecipeService" />
 <jsp:useBean id="recipe_contSvc" scope="page" class="com.recipe_cont.model.Recipe_contService" />
@@ -245,11 +250,13 @@
 							<div>${recipeVO.recipe_name}</div>
 						</div>
 						<div class="col-xs-12 col-sm-6 display-recipe-update">
+							<c:if test="${recipeVO.mem_no == mem_no}">
 							<div class=" btn btn-default">
 								<a href="<%=request.getContextPath()%>/recipe/recipe.do?action=getOne_For_Update&recipe_no=${recipeVO.recipe_no}">
 								<i class="glyphicon glyphicon-heart-empty"></i><span>修改</span>
 								</a>
 							</div>
+							</c:if>
 						</div>
 						</div>
 						
@@ -273,9 +280,11 @@
 									</div>
 										</td>
 										<td class="recipe-collect-right">
+										<c:if test="${recipeVO.mem_no != mem_no}">
 											<div class="reciep-collect btn">
 											<i class="glyphicon glyphicon-heart-empty"></i><span>收藏</span>
 											</div>
+										</c:if>
 										</td>
 									</tr>
 								</table>
