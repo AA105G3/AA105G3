@@ -27,21 +27,47 @@
 			<script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
 		<![endif]-->
 		<style type="text/css">
+			body{
+				background: #efede8;
+			}
 			.display-recipe-wrapper{
 				border:1px solid #e2e0db;
 				margin:20px 0px;
+				background: #fff;
 
+			}
+			.display-recipe-title{
+				padding:0px;
+			}
+			.recipe-top-title-wrapper{
+				padding:0px;
+				border-bottom: 1px solid #e2e0db;
 			}
 			.display-recipe-title>div{
 				font-size: 30px;
 				font-weight: bold;
 				padding:10px 0px;
-				border-bottom: 1px solid #e2e0db; 
+				 
+			}
+			.display-recipe-update{
+				padding:10px 0px 0px 0px;
+				text-align: right;
+			}
+			.display-recipe-update>.btn{
+				border:1px solid ;
+				font-size:20px;
+			}
+			.display-recipe-update a{
+				color:#000;
+			}
+			.display-recipe-update a:hover{
+				text-decoration: none;
 			}
 			.dispaly-recipe-upload-date{
 				font-size: 16px;
 				color: #9b9491;
 				padding:5px 0px;
+				
 			}
 			.recipe-left-wrapper{
 				padding: 0px;
@@ -121,6 +147,9 @@
 				border-bottom: 1px solid;
 				vertical-align: top;
 			}
+			.display-step-cont{
+				width:100%;
+			}
 			.display-step-image{
 				width: 220px;
 				height: 170px;
@@ -130,6 +159,7 @@
 			}
 			.display-step-cont p{
 				font-size: 18px;
+				
 			}
 			.recipe-type-wraaper{
 				padding:15px 0px;
@@ -150,6 +180,7 @@
 				border:1px solid #e2e0db;
 				margin:20px 0px;
 				padding:10px 10px;
+				background:#fff;
 			}
 			.author-image{
 				width: 70px;	
@@ -165,7 +196,8 @@
 			}
 			.display-recipe-newest{
 				border:1px solid #e2e0db;
-				padding:5px; 
+				padding:5px;
+				background:#fff; 
 			}
 			.more-newest-title-wrapper{
 				border-bottom: 1px solid red;
@@ -198,10 +230,20 @@
 				<div class="row">
 				
 					<div class="col-xs-12 col-sm-8 display-recipe-wrapper">
-						<div class="display-recipe-title">
+						<div class="recipe-top-title-wrapper col-xs-12 col-sm-12">
+						<div class="col-xs-12 col-sm-6 display-recipe-title">
 							<div>${recipeVO.recipe_name}</div>
 						</div>
-						<div class="dispaly-recipe-upload-date">
+						<div class="col-xs-12 col-sm-6 display-recipe-update">
+							<div class=" btn btn-default">
+								<a href="<%=request.getContextPath()%>/recipe/recipe.do?action=getOne_For_Update&recipe_no=${recipeVO.recipe_no}">
+								<i class="glyphicon glyphicon-heart-empty"></i><span>修改</span>
+								</a>
+							</div>
+						</div>
+						</div>
+						
+						<div class="col-xs-12 col-sm-12 dispaly-recipe-upload-date">
 							<fmt:formatDate value="${recipeVO.recipe_time}" var="formattedDate" 
                				 type="date" pattern="yyyy-MM-dd" />
 							${formattedDate} 發表
@@ -217,7 +259,7 @@
 										<td class="recipe-collect-left">
 										<div class="display-recipe-views">
 										<i class="glyphicon glyphicon-eye-open">${recipeVO.recipe_total_views}</i>
-										<i class="glyphicon glyphicon-heart">${recipeVO.recipe_week_views}</i>
+										<i class="glyphicon glyphicon-heart">${recipeVO.recipe_like}</i>
 									</div>
 										</td>
 										<td class="recipe-collect-right">
@@ -287,7 +329,7 @@
 									</td>
 									<td class="author-info">
 										<a href="#"><h4>${memberSvc.getOneMember(recipeVO.mem_no).mem_name}</h4></a>
-										<a href="#"><p>${recipeSvc.findByMem_no(recipeVO.mem_no).size()}食譜</p></a>
+										<a href="#"><p>${recipeSvc.findByMem_no(recipeVO.mem_no).size()} 食譜</p></a>
 									</td>
 								</tr>
 							</table>

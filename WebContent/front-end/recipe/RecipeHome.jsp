@@ -19,7 +19,7 @@
 			<script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
 		<![endif]-->
 	<style type="text/css">
-		#recipe-home{
+	body{
 		background: #efede8;
 		padding-top: 50px;
 	}
@@ -185,7 +185,7 @@
 					<h4 class="title-item-top">最新食譜</h4>
 				</div>
 				<div class="col-xs-12 col-sm-6">
-					<a href=""><h4 class="title-more">更多內容 <i class="glyphicon glyphicon-menu-right"></i></h4>
+					<a href="<%=request.getContextPath()%>/recipe/recipe.do?action=getNewest"><h4 class="title-more">更多內容 <i class="glyphicon glyphicon-menu-right"></i></h4>
 					
 					</a>
 				</div>

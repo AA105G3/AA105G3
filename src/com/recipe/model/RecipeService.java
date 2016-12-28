@@ -91,6 +91,7 @@ public class RecipeService
 	}
 
 	public RecipeVO getOneRecipe(String recipe_no) {
+		
 		return dao.findByPrimaryKey(recipe_no);
 	}
 

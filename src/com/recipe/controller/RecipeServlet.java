@@ -30,7 +30,6 @@ import com.recipe_cont.model.*;
 
 public class RecipeServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-	int viewsCounts = 0;
 	
 	
 	protected void doGet(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
@@ -45,7 +44,6 @@ public class RecipeServlet extends HttpServlet {
 		String action = req.getParameter("action");
 		
 		if ("getOne_For_Display".equals(action)) { // 來自select_page.jsp的請求
-			viewsCounts++;
 			List<String> errorMsgs = new LinkedList<String>();
 			// Store this set in the request scope, in case we need to
 			// send the ErrorPage view.
@@ -67,6 +65,7 @@ public class RecipeServlet extends HttpServlet {
 				/***************************2.開始查詢資料*****************************************/
 				RecipeService recipeSvc = new RecipeService();
 				RecipeVO recipeVO = recipeSvc.getOneRecipe(recipe_no);
+				
 				if (recipeVO == null) {
 					errorMsgs.add("食譜查無資料");
 				}
@@ -85,9 +84,9 @@ public class RecipeServlet extends HttpServlet {
 					failureView.forward(req, res);
 					return;//程式中斷
 				}
+				recipeSvc.updateRecipeViews(recipe_no, recipeVO.getRecipe_total_views()+1, recipeVO.getRecipe_week_views()+1);
+				recipeVO = recipeSvc.getOneRecipe(recipe_no);
 				
-				
-				recipeVO.setRecipe_total_views(recipeVO.getRecipe_total_views()+viewsCounts);
 				
 				
 				String str = recipeVO.getFood_mater();
@@ -175,6 +174,51 @@ public class RecipeServlet extends HttpServlet {
 				failureView.forward(req, res);
 			}
 		}
+		
+		
+		if ("getNewest".equals(action)||"getTopViews".equals(action)) { 
+
+			List<String> errorMsgs = new LinkedList<String>();
+			// Store this set in the request scope, in case we need to
+			// send the ErrorPage view.
+			req.setAttribute("errorMsgs", errorMsgs);
+			
+			try {
+				/***************************1.接收請求參數****************************************/
+				
+				/***************************2.開始查詢資料****************************************/
+				RecipeService recipeSvc = new RecipeService();
+				List<RecipeVO> list = new ArrayList<RecipeVO>();
+				
+				if("getNewest".equals(action)){
+					list = recipeSvc.getNewest();
+					req.setAttribute("title","最新食譜");
+					
+				}
+				if("getTopViews".equals(action)){
+					list = recipeSvc.topViewsRecipe();
+					req.setAttribute("title","人氣食譜");
+				}
+				
+				
+								
+				/***************************3.查詢完成,準備轉交(Send the Success view)************/
+				
+				
+				req.setAttribute("list",list);
+				String url = "/front-end/recipe/RecipeList1.jsp";
+				RequestDispatcher successView = req.getRequestDispatcher(url);
+				successView.forward(req, res);
+
+				/***************************其他可能的錯誤處理**********************************/
+			} catch (Exception e) {
+				errorMsgs.add("無法取得要修改的資料:" + e.getMessage());
+				RequestDispatcher failureView = req
+						.getRequestDispatcher("/front-end/recipe/listAllRecipe.jsp");
+				failureView.forward(req, res);
+			}
+		}
+		
 		
 		if ("update".equals(action)) { 
 			

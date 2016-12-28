@@ -5,8 +5,8 @@
 <%@ page import="java.util.*"%>
 <%@ page import="com.recipe.model.*"%>
 
-<% RecipeService recipeSvc = new RecipeService();
-   List<RecipeVO> list = recipeSvc.getNewest();
+<% 
+   List<RecipeVO> list = (List)request.getAttribute("list");
    request.setAttribute("list",list);
 %>
 <jsp:useBean id="memberSvc" scope="page" class="com.member.model.MemberService" />
@@ -37,16 +37,21 @@
 			.recipe-row-wrapper{
 				margin-bottom: 10px;
 			}
+			.recipe-row-wrapper img{
+				width:230px;
+				height:200px;
+			}
 			.recipe-item-wrapper{
 				background: #fff;
 				padding: 15px;
 				border:1px solid #d3d0c9;
+				height:230px;
 			}
 			.recipe-item-wrapper-right{
-				padding: 15px 15px 4px 15px;
+				padding: 15px 15px 15px 15px;
 				background: #fff;
 				border:1px solid #d3d0c9;
-
+				height:230px;
 			}
 			.recipe-item-wrapper h3{
 				margin:0px 0px 5px 0px;	
@@ -57,11 +62,18 @@
 			.recipe-item-left{
 				padding:0px;
 			}
+			.recipe-item-right{
+				padding:0px;
+			}
 			.recipe-intro{
 				color:#706864;
+				height:60px;
+				word-break:break-all;
 			}
 			.recipe-food-mater{
 				color:#b6b0a5;
+				word-break:break-all;
+				height:40px;
 			}
 		</style>
 	</head>
@@ -69,38 +81,42 @@
 		<div class="container">
 			<div class="row">
 				<div class="col-xs-12 col-sm-12 page-top-title-wrapper">
-					<h4 class="title-item-top">最新食譜</h4>
+					<h4 class="title-item-top">${title}</h4>
 				</div>
 			</div>
 	<%@ include file="page1.file" %> 
 	
-	<c:forEach var="recipeVO" items="${list}" varStatus="s" step="2">
+	<c:forEach var="recipeVO" items="${list}" varStatus="s" step="2" begin="<%=pageIndex%>" end="<%=pageIndex+rowsPerPage-1%>"> 
 			<div class="row recipe-row-wrapper">
 				<div class="col-xs-12 col-sm-6 recipe-item-wrapper">
 					<div class="col-xs-12 col-sm-5 recipe-item-left">
-						<img src="https://api.fnkr.net/testimg/230x200/00CED1/FFF/?text=img+placeholder">
+					<a href="<%=request.getContextPath()%>/recipe/recipe.do?action=getOne_For_Display&recipe_no=${recipeVO.recipe_no}">
+						<img src="<%=request.getContextPath()%>/recipe/showRecipe_pic.do?recipe_no=${recipeVO.recipe_no}">
+					</a>
 					</div>
 					<div class="col-xs-12 col-sm-7 recipe-item-right">
+					<a href="<%=request.getContextPath()%>/recipe/recipe.do?action=getOne_For_Display&recipe_no=${recipeVO.recipe_no}">
 						<h3>${recipeVO.recipe_name}</h3>
+						</a>
 						<p>by <a href="#">${memberSvc.getOneMember(recipeVO.mem_no).mem_name}</a></p>
 						<p class="recipe-intro">${recipeVO.recipe_intro}</p>
-						<p>食材：${recipeVO.food_mater}</p>
+						<p class="recipe-food-mater">食材：${recipeVO.food_mater}</p>
 						<p>
-							<i class="glyphicon glyphicon-eye-open">555</i>
-							<i class="glyphicon glyphicon-heart">200</i>
+							<i class="glyphicon glyphicon-eye-open">${recipeVO.recipe_total_views}</i>
+							<i class="glyphicon glyphicon-heart">${recipeVO.recipe_like}</i>
 						</p>
 					</div>
 				</div>
 				<c:if test="${s.index+1 < list.size()}">
 				<div class="col-xs-12 col-sm-6 recipe-item-wrapper-right">
 					<div class="col-xs-12 col-sm-5 recipe-item-left">
-						<img src="https://api.fnkr.net/testimg/230x200/00CED1/FFF/?text=img+placeholder">
+						<img src="<%=request.getContextPath()%>/recipe/showRecipe_pic.do?recipe_no=${list.get(s.index+1).recipe_no}">
 					</div>
 					<div class="col-xs-12 col-sm-7 recipe-item-right">
 						<h3>${list.get(s.index+1).recipe_name}</h3>
-						<p>by <a href="#">kona</a></p>
-						<p>這個蛋糕充滿了雞蛋的香味，朋友家人都很喜歡呢!剛好是快聖誕節的時間做，加點裝飾就可以做成聖誕蛋糕了!!! 食譜參加自於奧地利寶盒: </p>
-						<p class="recipe-food-mater">食材：低筋麵粉、泡打粉、動物性鮮奶油、糖粉、室溫雞蛋(連殼約重60g)</p>
+						<p>by <a href="#">${memberSvc.getOneMember(list.get(s.index+1).mem_no).mem_name}</a></p>
+						<p class="recipe-intro">${list.get(s.index+1).recipe_intro}</p>
+						<p class="recipe-food-mater">食材：${list.get(s.index+1).food_mater}</p>
 						<p>
 							<i class="glyphicon glyphicon-eye-open">555</i>
 							<i class="glyphicon glyphicon-heart">200</i>
