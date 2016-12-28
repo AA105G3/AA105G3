@@ -50,7 +50,7 @@ public class Frd_listServletAndroid extends HttpServlet {
 		JsonObject jsonObject = gson.fromJson(jsonIn.toString(), JsonObject.class);
 
 		String action = jsonObject.get("action").getAsString();
-		System.out.println("action = " + action);
+		System.out.println("Frd_list action = " + action);
 		StringBuffer outStr = new StringBuffer();		
 
 		if ("getOne_For_Display".equals(action)) {
@@ -65,6 +65,7 @@ public class Frd_listServletAndroid extends HttpServlet {
 			
 			outStr.append(gson.toJson(frd_listVOList));
 			SendResponse.writeText(res, outStr.toString());	
+			return;
 		}
 
 		if ("insert".equals(action)) {

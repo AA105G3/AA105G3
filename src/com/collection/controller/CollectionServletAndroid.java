@@ -49,7 +49,7 @@ public class CollectionServletAndroid extends HttpServlet {
 		JsonObject jsonObject = gson.fromJson(jsonIn.toString(), JsonObject.class);
 
 		String action = jsonObject.get("action").getAsString();
-		System.out.println("action = " + action);
+		System.out.println("Collection action = " + action);
 		StringBuffer outStr = new StringBuffer();		
 
 		if ("getOne_For_Display".equals(action)) {
@@ -64,7 +64,8 @@ public class CollectionServletAndroid extends HttpServlet {
 			List<CollectionVO> collectionVOList = collectionSvc.getAllByMem_noCollection(mem_no); 
 			
 			outStr.append(gson.toJson(collectionVOList));
-			SendResponse.writeText(res, outStr.toString());	
+			SendResponse.writeText(res, outStr.toString());
+			return;
 		}
 
         if ("insert".equals(action)) { 
