@@ -7,11 +7,8 @@
 
 <%
     RecipeService recipeSvc = new RecipeService();
-    List recipeList = recipeSvc.getAll();
-    List list = (ArrayList)recipeList.get(0);
-    Map map = (HashMap)recipeList.get(1);
+	List<RecipeVO> list = recipeSvc.getAll();
     pageContext.setAttribute("list",list);
-    pageContext.setAttribute("map",map);
 %>
 <%-- <jsp:useBean id="recipeSvc" class="com.recipe.model.RecipeService"/> --%>
 
@@ -53,6 +50,8 @@
 		<th>食譜總人氣</th>
 		<th>食譜周人氣</th>
 		<th>食譜上傳時間</th>
+		<th>食譜編輯狀態</th>
+		<th>食譜分類狀態</th>
 		<th>修改</th>
 		<th>刪除</th>
 	</tr>
@@ -61,17 +60,12 @@
 		<tr align='center' valign='middle'>
 			<td>${recipeVO.recipe_no}</td>
 			<td>
-				<img src="<%=request.getContextPath()%>/recipe/ShowRecipe_pic.do?recipe_no=${recipeVO.recipe_no}" style="width:100px;"/>
+				<img src="<%=request.getContextPath()%>/recipe/showRecipe_pic.do?recipe_no=${recipeVO.recipe_no}" style="width:100px;"/>
 			</td>
 			<td>${recipeVO.mem_no}</td>
 			<td>${recipeVO.recipe_name}</td>
 			<td width="450">${recipeVO.recipe_intro}</td>
-			<td width="150">
-				<c:forEach var="ingredient" items="${map[recipeVO.recipe_no][0]}" varStatus="s">
-						${ingredient}&nbsp; &nbsp;
-						${map[recipeVO.recipe_no][1][s.index]}<br>
-				</c:forEach>
-			</td>
+			<td>${recipeVO.food_mater}</td>
 			<td>${recipeVO.recipe_like}</td>
 			<td>${recipeVO.recipe_total_views}</td>
 			<td>${recipeVO.recipe_week_views}</td>
@@ -80,7 +74,8 @@
                		type="date" pattern="yyyy-MM-dd hh:mm:ss aa" />
 				${formattedDate}
 			</td>
-			
+			<td>${recipeVO.recipe_edit}</td>
+			<td>${recipeVO.recipe_classify}</td>
 			<td>
 			  <FORM METHOD="post" ACTION="<%=request.getContextPath()%>/recipe/recipe.do">
 			     <input type="submit" value="修改">

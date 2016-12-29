@@ -28,19 +28,21 @@
 		<th>食譜圖片</th>
 		<th>作者</th>
 		<th>食譜名稱</th>
-		<th>食譜簡介</th>
-		<th>食材</th>
+		<th width="450">食譜簡介</th>
+		<th width="150">食材</th>
 		<th>食譜按讚人數</th>
 		<th>食譜總人氣</th>
 		<th>食譜周人氣</th>
 		<th>食譜上傳時間</th>
+		<th>食譜編輯狀態</th>
+		<th>食譜分類狀態</th>
 		
 		
 	</tr>
 	<tr align='center' valign='middle'>
 		<td>${recipeVO.recipe_no}</td>
 		<td>
-			<img src="<%=request.getContextPath()%>/recipe/ShowRecipe_pic.do?recipe_no=${recipeVO.recipe_no}" style="width:100px;"/>
+			<img src="<%=request.getContextPath()%>/recipe/showRecipe_pic.do?recipe_no=${recipeVO.recipe_no}" style="width:100px;"/>
 		</td>
 		<td>${recipeVO.mem_no}</td>
 		<td>${recipeVO.recipe_name}</td>
@@ -59,6 +61,8 @@
                 type="date" pattern="yyyy-MM-dd hh:mm:ss aa" />
 			${formattedDate}
 		</td>
+		<td>${recipeVO.recipe_edit}</td>
+		<td>${recipeVO.recipe_classify}</td>
 			
 	</tr>
 </table>

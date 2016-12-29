@@ -1,4 +1,4 @@
-package com.recipe.controller;
+package com.recipe_cont.controler;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -10,13 +10,12 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import com.recipe.model.*;
+import com.recipe_cont.model.*;
 
 
-@WebServlet("/recipe/showRecipe_pic.do")
-public class ShowRecipe_pic extends HttpServlet {
-
-	
+@WebServlet("/recipe_cont/showRecipe_cont_pic.do")
+public class ShowRecipe_cont_pic extends HttpServlet {
+       
 	protected void doGet(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
 		res.setContentType("image/gif");
 		OutputStream out = res.getOutputStream();
@@ -24,10 +23,12 @@ public class ShowRecipe_pic extends HttpServlet {
 		try
 		{
 			String recipe_no = req.getParameter("recipe_no");
-			RecipeService recipeSvc = new RecipeService();
-			RecipeVO recipeVO = recipeSvc.getOneRecipe(recipe_no);
+			Integer step = new Integer(req.getParameter("step"));
+			Recipe_contService recipe_contSvc = new Recipe_contService();
+			Recipe_contVO recipe_contVO = recipe_contSvc.getOneRecipe_cont(recipe_no, step);
 			
-			byte[] buffer = recipeVO.getRecipe_pic();
+			
+			byte[] buffer = recipe_contVO.getStep_pic();
 			out.write(buffer);
 		} catch (Exception e)
 		{
@@ -40,6 +41,4 @@ public class ShowRecipe_pic extends HttpServlet {
 		}
 		
 	}
-
-
 }
