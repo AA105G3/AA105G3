@@ -91,14 +91,24 @@ public class RecipeService
 	}
 
 	public RecipeVO getOneRecipe(String recipe_no) {
-		
-		return dao.findByPrimaryKey(recipe_no);
+		RecipeVO recipeVO = dao.findByPrimaryKey(recipe_no);
+		if(recipeVO.getRecipe_edit().equals("已刪除")){
+			recipeVO=null;
+		}
+		return recipeVO;
 	}
 
 	public List<RecipeVO> getAll() {
 		
 		List<RecipeVO> list = dao.getAll();
-		return list;
+		List<RecipeVO> list2 = new ArrayList<RecipeVO>();
+		
+		for(RecipeVO aRecipe : list){
+			if(aRecipe.getRecipe_edit().equals("編輯中")||aRecipe.getRecipe_edit().equals("已發布")){
+				list2.add(aRecipe);
+			}
+		}
+		return list2;
 	}
 	
 	public void WeekViewsToZero(String recipe_no){
@@ -109,11 +119,19 @@ public class RecipeService
 	public List<RecipeVO> findByMem_no(String mem_no) {
 		
 		List<RecipeVO> list = dao.findByMem_no(mem_no);
-		return list;
+		List<RecipeVO> list2 = new ArrayList<RecipeVO>();
+		
+		for(RecipeVO aRecipe : list){
+			if(aRecipe.getRecipe_edit().equals("編輯中")||aRecipe.getRecipe_edit().equals("已發布")){
+				list2.add(aRecipe);
+			}
+		}
+		return list2;
 	}
 	
 	public List<RecipeVO> topViewsRecipe() {
 		List<RecipeVO> list = dao.getAllOrderByViews();
+		List<RecipeVO> list2 = new ArrayList<RecipeVO>();
 		for(RecipeVO aRecipe:list){
 			
 			if(aRecipe.getRecipe_intro().length()>64){
@@ -141,82 +159,17 @@ public class RecipeService
 			
 			aRecipe.setFood_mater(new String(food_maters));
 			
-			
+			if(aRecipe.getRecipe_edit().equals("編輯中")||aRecipe.getRecipe_edit().equals("已發布")){
+				list2.add(aRecipe);
+			}
 		}
-		return list;
+		return list2;
 		
 	}
 	public List<RecipeVO> serachByRecipe_name(String recipe_name){
 		
 		List<RecipeVO> list= dao.serachByRecipe_name(recipe_name);
-for(RecipeVO aRecipe:list){
-			
-			if(aRecipe.getRecipe_intro().length()>64){
-				String introSbsr= aRecipe.getRecipe_intro().substring(0,65)+"...";
-				aRecipe.setRecipe_intro(introSbsr);
-			}
-			
-			String str = aRecipe.getFood_mater();
-			String[] tokens = str.split("-|\\+");
-			
-			StringBuffer ingredients = new StringBuffer();
-			
-			ingredients.append(tokens[0]);
-			for(int i =2;i<tokens.length-1;i+=2){
-				ingredients.append("、"+tokens[i]);
-			}
-			
-			String food_maters = null;
-			if(ingredients.length()>38){
-				food_maters = ingredients.substring(0,39)+"..."; 
-				
-			}else{
-				food_maters = new String(ingredients);
-			}
-			
-			aRecipe.setFood_mater(new String(food_maters));
-			
-			
-		}
-		
-		return list;
-	}
-	public List<RecipeVO> serachByFood_Mater(String food_mater){
-		
-		List<RecipeVO> list= dao.serachByFood_Mater(food_mater);
-for(RecipeVO aRecipe:list){
-			
-			if(aRecipe.getRecipe_intro().length()>64){
-				String introSbsr= aRecipe.getRecipe_intro().substring(0,65)+"...";
-				aRecipe.setRecipe_intro(introSbsr);
-			}
-			
-			String str = aRecipe.getFood_mater();
-			String[] tokens = str.split("-|\\+");
-			
-			StringBuffer ingredients = new StringBuffer();
-			
-			ingredients.append(tokens[0]);
-			for(int i =2;i<tokens.length-1;i+=2){
-				ingredients.append("、"+tokens[i]);
-			}
-			
-			String food_maters = null;
-			if(ingredients.length()>38){
-				food_maters = ingredients.substring(0,39)+"..."; 
-				
-			}else{
-				food_maters = new String(ingredients);
-			}
-			
-			aRecipe.setFood_mater(new String(food_maters));
-			
-			
-		}
-		return list;
-	}
-	public List<RecipeVO> getNewest(){
-		List<RecipeVO> list = dao.getAll();
+		List<RecipeVO> list2 = new ArrayList<RecipeVO>();
 		for(RecipeVO aRecipe:list){
 			
 			if(aRecipe.getRecipe_intro().length()>64){
@@ -244,8 +197,86 @@ for(RecipeVO aRecipe:list){
 			
 			aRecipe.setFood_mater(new String(food_maters));
 			
+			if(aRecipe.getRecipe_edit().equals("編輯中")||aRecipe.getRecipe_edit().equals("已發布")){
+				list2.add(aRecipe);
+			}
 			
 		}
-		return list;
+		
+		return list2;
+	}
+	public List<RecipeVO> serachByFood_Mater(String food_mater){
+		
+		List<RecipeVO> list= dao.serachByFood_Mater(food_mater);
+		List<RecipeVO> list2 = new ArrayList<RecipeVO>();
+		for(RecipeVO aRecipe:list){
+			
+			if(aRecipe.getRecipe_intro().length()>64){
+				String introSbsr= aRecipe.getRecipe_intro().substring(0,65)+"...";
+				aRecipe.setRecipe_intro(introSbsr);
+			}
+			
+			String str = aRecipe.getFood_mater();
+			String[] tokens = str.split("-|\\+");
+			
+			StringBuffer ingredients = new StringBuffer();
+			
+			ingredients.append(tokens[0]);
+			for(int i =2;i<tokens.length-1;i+=2){
+				ingredients.append("、"+tokens[i]);
+			}
+			
+			String food_maters = null;
+			if(ingredients.length()>38){
+				food_maters = ingredients.substring(0,39)+"..."; 
+				
+			}else{
+				food_maters = new String(ingredients);
+			}
+			
+			aRecipe.setFood_mater(new String(food_maters));
+			
+			if(aRecipe.getRecipe_edit().equals("編輯中")||aRecipe.getRecipe_edit().equals("已發布")){
+				list2.add(aRecipe);
+			}
+			
+		}
+		return list2;
+	}
+	public List<RecipeVO> getNewest(){
+		List<RecipeVO> list = dao.getAll();
+		List<RecipeVO> list2 = new ArrayList<RecipeVO>();
+		for(RecipeVO aRecipe:list){
+			
+			if(aRecipe.getRecipe_intro().length()>64){
+				String introSbsr= aRecipe.getRecipe_intro().substring(0,65)+"...";
+				aRecipe.setRecipe_intro(introSbsr);
+			}
+			
+			String str = aRecipe.getFood_mater();
+			String[] tokens = str.split("-|\\+");
+			
+			StringBuffer ingredients = new StringBuffer();
+			
+			ingredients.append(tokens[0]);
+			for(int i =2;i<tokens.length-1;i+=2){
+				ingredients.append("、"+tokens[i]);
+			}
+			
+			String food_maters = null;
+			if(ingredients.length()>38){
+				food_maters = ingredients.substring(0,39)+"..."; 
+				
+			}else{
+				food_maters = new String(ingredients);
+			}
+			
+			aRecipe.setFood_mater(new String(food_maters));
+			
+			if(aRecipe.getRecipe_edit().equals("編輯中")||aRecipe.getRecipe_edit().equals("已發布")){
+				list2.add(aRecipe);
+			}
+		}
+		return list2;
 	}
 }
