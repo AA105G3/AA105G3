@@ -12,7 +12,6 @@
 
 <%
 	Vector<Product_order_listVO> buylist = (Vector<Product_order_listVO>) session.getAttribute("shoppingcart");
-	/* String amount =  (String) request.getAttribute("amount"); */
 	String amount =  (String) session.getAttribute("amount");
 	String quantity =  (String) session.getAttribute("quantity");
 %>

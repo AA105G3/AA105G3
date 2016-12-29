@@ -26,68 +26,73 @@ public class Product_order_listServlet extends HttpServlet {
 		HttpSession session = req.getSession();
 		Vector<Product_order_listVO> buylist = (Vector<Product_order_listVO>) session.getAttribute("shoppingcart");
 		
-		if (!action.equals("CHECKOUT")) {
+		
 
-			// 刪除購物車中的商品
-			if (action.equals("DELETE_PRODUCT")) {
-				String del = req.getParameter("del");
-				int d = Integer.parseInt(del);
-				buylist.removeElementAt(d);
-			}
-			// 新增商品至購物車中
-			else if (action.equals("ADD_PRODUCT")) {
-				boolean match = false;
+		// 刪除購物車中的商品
+		if (action.equals("DELETE_PRODUCT")) {
+			String del = req.getParameter("del");
+			int d = Integer.parseInt(del);
+			buylist.removeElementAt(d);
+			
+			/*session.setAttribute("amount", amount);
+			session.setAttribute("quantity", quantity);*/
 
-				// 取得後來新增的商品
-				Product_order_listVO aproduct_order_list = getProduct(req);
-				
-				// 新增第一本商品至購物車時
-				if (buylist == null) {
-					buylist = new Vector<Product_order_listVO>();
+			String url = "/front-end/web_page/Cart.jsp";
+			RequestDispatcher successView = req.getRequestDispatcher(url);// 刪除成功後,轉交回送出刪除的來源網頁
+			successView.forward(req, res);
+		}
+			
+		// 新增商品至購物車中
+		if (action.equals("ADD_PRODUCT")) {
+			boolean match = false;
+
+			// 取得後來新增的商品
+			Product_order_listVO aproduct_order_list = getProduct(req);
+			
+			// 新增第一本商品至購物車時
+			if (buylist == null) {
+				buylist = new Vector<Product_order_listVO>();
+				buylist.add(aproduct_order_list);
+			} else {
+				for (int i = 0; i < buylist.size(); i++) {
+					Product_order_listVO product_order_list = buylist.get(i);
+
+					// 假若新增的商品和購物車的商品一樣時
+					if (product_order_list.getProd_no().equals(aproduct_order_list.getProd_no())) {
+						product_order_list.setProd_quantity(product_order_list.getProd_quantity()
+								+ aproduct_order_list.getProd_quantity());
+						buylist.setElementAt(product_order_list, i);
+						match = true;
+					} // end of if name matches
+				} // end of for
+
+				// 假若新增的商品和購物車的商品不一樣時
+				if (!match)
 					buylist.add(aproduct_order_list);
-				} else {
-					for (int i = 0; i < buylist.size(); i++) {
-						Product_order_listVO product_order_list = buylist.get(i);
-
-						// 假若新增的商品和購物車的商品一樣時
-						if (product_order_list.getProd_no().equals(aproduct_order_list.getProd_no())) {
-							product_order_list.setProd_quantity(product_order_list.getProd_quantity()
-									+ aproduct_order_list.getProd_quantity());
-							buylist.setElementAt(product_order_list, i);
-							match = true;
-						} // end of if name matches
-					} // end of for
-
-					// 假若新增的商品和購物車的商品不一樣時
-					if (!match)
-						buylist.add(aproduct_order_list);
-				}
+			}
 				
-				float total = 0;
-				for (int i = 0; i < buylist.size(); i++) {
-					Product_order_listVO product_order_listVO = buylist.get(i);
-					int unit_price = product_order_listVO.getUnit_price();
-					int prod_quantity = product_order_listVO.getProd_quantity();
-					total += (unit_price * prod_quantity);
-				}
+			int total = 0;
+			for (int i = 0; i < buylist.size(); i++) {
+				Product_order_listVO product_order_listVO = buylist.get(i);
+				int unit_price = product_order_listVO.getUnit_price();
+				int prod_quantity = product_order_listVO.getProd_quantity();
+				total += (unit_price * prod_quantity);
+			}
 				
-				int total2 = 0;
-				for (int i = 0; i < buylist.size(); i++) {
-					Product_order_listVO product_order_listVO = buylist.get(i);
-					int unit_price = product_order_listVO.getUnit_price();
-					int prod_quantity = product_order_listVO.getProd_quantity();
-					total2 += (prod_quantity);
-				}
-
-				String amount = String.valueOf(total);
-				String quantity = String.valueOf(total2);
-				/*req.setAttribute("amount", amount);*/
-				session.setAttribute("amount", amount);
-				session.setAttribute("quantity", quantity);
-				/*RequestDispatcher rd = req.getRequestDispatcher("/front-end/web_page/Market.jsp");
-				rd.forward(req, res);*/
+			int total2 = 0;
+			for (int i = 0; i < buylist.size(); i++) {
+				Product_order_listVO product_order_listVO = buylist.get(i);
+				int unit_price = product_order_listVO.getUnit_price();
+				int prod_quantity = product_order_listVO.getProd_quantity();
+				total2 += (prod_quantity);
 			}
 
+			String amount = String.valueOf(total);
+			String quantity = String.valueOf(total2);
+
+			session.setAttribute("amount", amount);
+			session.setAttribute("quantity", quantity);
+				
 			session.setAttribute("shoppingcart", buylist);
 			RequestDispatcher failureView = req.getRequestDispatcher("/front-end/web_page/Market.jsp");
 			failureView.forward(req, res);

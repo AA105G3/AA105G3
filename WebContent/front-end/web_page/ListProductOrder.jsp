@@ -1,20 +1,18 @@
-<%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8" %>
+<%@ page import="com.product_order.model.*"%>
 <%@ page import="java.util.*"%>
-<%@ page import="com.product.model.*"%>
-<%@ page import="com.product_order_list.model.*"%>
+<%@ page import="java.text.*"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 
 <%
-    ProductService productSvc = new ProductService();
-    List<ProductVO> list = productSvc.getAll();
-    pageContext.setAttribute("list",list);
+	
 %>
+<jsp:useBean id="product_orderSvc" scope="page" class="com.product_order.model.Product_orderService" />
 
 <html>
 <head>
+<title>訂單資料</title>
 
-<title>Cart.jsp</title>
- 
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -52,8 +50,8 @@
 		width : 100%;
 	}
 	.list-style{
-		padding-top : 200px;
-		padding-left : 175px;
+		padding-top : 100px;
+		padding-left : 225px;
 	}
 	th{
 		text-align : center;
@@ -62,6 +60,11 @@
 
 </head>
 <body>
+
+
+
+
+
 <div id="skin">
 
 
@@ -162,94 +165,89 @@
 
 
 
-<div class="container">
-		<div class="row">
+<!-- <div class="container">
+		<div class="row"> -->
 			<div class="list-style">
 
 
 
 
-
-<!-- <img src="images/Logo.png"> --> <font size="+3">目前您購物車的內容如下： </font>
+<font size="+3">您所擁有的商品訂單： </font>
 <p>
 
-<table border="1" width="800">
-	<tr bgcolor="#f5deb3">
-		<th width="200" height="30">商品名稱</th>
-		<th width="200" height="30">商品單價</th>
-		<th width="200" height="30">購買數量</th>
-		<!-- <th width="200" height="30">移除</th> -->
-	</tr>
-	
-	<%
-		Vector<Product_order_listVO> buylist = (Vector<Product_order_listVO>) session.getAttribute("shoppingcart");
-		pageContext.setAttribute("buylist",buylist);
-		String amount =  (String) session.getAttribute("amount");
-		String quantity =  (String) session.getAttribute("quantity");
-	%>
-		
-	<%	
-		int i = 0;
-		Integer str[] = new Integer [buylist.size()];
-		for (i = 0; i < buylist.size(); i++) {
-			str[i]=i;	
-		}
-		request.setAttribute("myStr", str);
-	%>
-	
-	<c:forEach var="Product_order_listVO" items="${buylist}">
-		<c:forEach var="ProductVO" items="${list}">
-			<c:if test="${Product_order_listVO.prod_no==ProductVO.prod_no}">
-				<tr>
-					<td width="200" height="30"><div align="center"><b>${ProductVO.prod_name}</b></div></td>
-					<td width="200" height="30"><div align="center"><b>$	${Product_order_listVO.unit_price}</b></div></td>
-					<td width="200" height="30"><div align="center"><b>${Product_order_listVO.prod_quantity}</b></div></td>
-					<%-- <td width="200"><div align="center">
-						<form name="deleteForm" action="/AA105G3/product_order_list/product_order_list.do" method="POST">
-							<input type="hidden" name="action" value="DELETE_PRODUCT">
-							<c:forEach var="myData" items="${myStr}" >
-								<input type="hidden" name="del" value="${myData}">
-							</c:forEach>
-							<input type="submit" value="刪除"></div>
-						</form>
-					</td> --%>
-				</tr>
-			</c:if>
-		</c:forEach>
-	</c:forEach>
-	
-	
+<table border='1' bordercolor='#CCCCFF' width='1500'>
 	<tr>
-		<td colspan="4" height="30">
-			<div align="center"><font color="red"><b>總金額：$	<%=amount%></b></font></div>
-		</td>
+		<th>訂單編號</th>
+		<!-- <th>會員編號</th> -->
+		<th>訂單成立時間</th>
+		<th>信用卡卡號</th>
+		<th>信用卡有效日期</th>
+		<!-- <th>信用卡驗證碼</th> -->
+		<th>信用卡卡別</th>
+		<th>訂單總金額</th>
+		<th>收件人姓名</th>
+		<th>郵遞區號</th>
+		<th>寄送地址</th>
+		<th>聯絡手機</th>
+		<th>聯絡市話</th>
+		<th>查詢明細</th>
 	</tr>
+	
+	<c:forEach var="product_orderVO" items="${product_orderSvc.getProduct_order_By_Mem_no(param.mem_no)}">
+		<tr align='center' valign='middle' ${(product_orderVO.prod_ord_no==param.prod_ord_no) ? 'bgcolor=#CCCCFF':''}>
+			<td>${product_orderVO.prod_ord_no}</td>
+			<%-- <td>${product_orderVO.mem_no}</td> --%>
+			
+			<%-- <td>${product_orderVO.prod_ord_time}</td> --%>
+			<jsp:useBean id="product_orderVO" scope="page" class="com.product_order.model.Product_orderVO" />
+			<td><%=new SimpleDateFormat("yyyy/MM/dd HH:mm:ss").format(product_orderVO.getProd_ord_time())%></td>
+			
+			<td>${product_orderVO.cred_card_no.subSequence(0,4)}********${product_orderVO.cred_card_no.subSequence(12,16)}</td>
+			<td>${product_orderVO.valid_date}</td>
+			<%-- <td>${product_orderVO.valid_no}</td> --%>
+			<td>
+				<c:if test="${product_orderVO.cred_card_type == '0'}" >
+					VISA
+				</c:if>
+				<c:if test="${product_orderVO.cred_card_type == '1'}" >
+					MASTER
+				</c:if>
+				<c:if test="${product_orderVO.cred_card_type == '2'}" >
+					JCB
+				</c:if>
+			</td>
+			<td>${product_orderVO.total_money}</td>
+			<td>${product_orderVO.ship_name}</td>
+			<td>${product_orderVO.post_code}</td>
+			<td>${product_orderVO.mem_adrs}</td>
+			<td>${product_orderVO.cell_phone}</td>
+			<td>${product_orderVO.tel_phone}</td>
+			<td>
+			  <FORM METHOD="post" ACTION="<%=request.getContextPath()%>/product_order/product_order.do">
+			    <input type="submit" value="送出查詢"> 
+			    <input type="hidden" name="prod_ord_no" value="${product_orderVO.prod_ord_no}">
+			    <input type="hidden" name="mem_no" value="${product_orderVO.mem_no}">
+			    <input type="hidden" name="action" value="getPart_For_Display_By_One_PK"></FORM>
+			</td>
+	</tr>
+	</c:forEach>
 </table>
 
-<p>
+<br>
+<br>
+<br>
 
-<div class="col-xs-12 col-sm-2">
-	<a href="Market.jsp" class="btn btn-primary">繼續購物</a>
-</div>
-
-<div class="col-xs-12 col-sm-2">
-	<form METHOD="post" ACTION="<%=request.getContextPath()%>/member/member.do">
-		<input type="submit" class="btn btn-danger" value="結帳">
-		<input type="hidden" name="mem_no" value="M00000001">
-		<input type="hidden" name="action" value="getOne_For_List">
-	</form>
-</div>
-
-
-</p>
+<%if (request.getAttribute("listPOList_ByProd_ord_no")!=null){%>
+       <jsp:include page="ListProductOrderList.jsp" />
+<%} %>
 
 
 
 
 
 		</div>
-	</div>
-</div>
+	<!-- </div>
+</div> -->
 
 
 
@@ -262,6 +260,7 @@
 
 <script src="https://code.jquery.com/jquery.js"></script>
 <script src="https://netdna.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+
 
 
 

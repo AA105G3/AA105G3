@@ -1,6 +1,7 @@
 package com.product_order.controller;
 
 import java.io.*;
+import java.text.SimpleDateFormat;
 import java.util.*;
 
 import javax.servlet.*;
@@ -38,8 +39,8 @@ public class Product_orderServlet extends HttpServlet {
 				/*************************** 3.查詢完成,準備轉交(Send the Success view) ************/
 				req.setAttribute("listPOList_ByProd_ord_no", set);    // 資料庫取出的set物件,存入request
 
-				/*String url = "/front-end/product_order/listAllProduct_order.jsp";*/              // 成功轉交 dept/listAllDept.jsp
-				String url = "/front-end/product_order/listPartProduct_order.jsp";
+				/*String url = "/front-end/product_order/listPartProduct_order.jsp"; */             // 成功轉交 dept/listAllDept.jsp
+				String url = "/front-end/web_page/ListProductOrder.jsp";
 				
 				RequestDispatcher successView = req.getRequestDispatcher(url);
 				successView.forward(req, res);
@@ -165,7 +166,8 @@ public class Product_orderServlet extends HttpServlet {
 				
 				/***************************3.查詢完成,準備轉交(Send the Success view)*************/
 				req.setAttribute("product_orderVO", product_orderVO); // 資料庫取出的product_orderVO物件,存入req
-				String url = "/front-end/product_order/listPartProduct_order.jsp";
+				/*String url = "/front-end/product_order/listPartProduct_order.jsp";*/
+				String url = "/front-end/web_page/ListProductOrder.jsp";
 				RequestDispatcher successView = req.getRequestDispatcher(url); // 成功轉交 listOneProduct_order.jsp
 				successView.forward(req, res);
 
@@ -350,13 +352,30 @@ public class Product_orderServlet extends HttpServlet {
 					errorMsgs.add("請輸入信用卡卡號.");
 				}
 				
-				java.sql.Date valid_date = null;
+				/*java.sql.Date valid_date = null;
 				try {
 					valid_date = java.sql.Date.valueOf(req.getParameter("valid_date").trim());
 				} catch (IllegalArgumentException e) {
 					valid_date=new java.sql.Date(System.currentTimeMillis());
 					errorMsgs.add("請輸入信用卡有效時期!");
+				}*/
+				
+				SimpleDateFormat sdf = new SimpleDateFormat("MM/yy");
+				String validDate = req.getParameter("valid_date").trim();
+				
+				SimpleDateFormat sdf2 = new SimpleDateFormat("yyyy-MM-dd");
+				java.util.Date date = sdf.parse(validDate);
+				validDate = sdf2.format(date);
+				java.sql.Date valid_date = null;
+				try {
+					valid_date = java.sql.Date.valueOf(validDate);
+				} catch (IllegalArgumentException e) {
+					valid_date=new java.sql.Date(System.currentTimeMillis());
+					errorMsgs.add("請輸入信用卡有效時期!");
 				}
+				
+				
+				
 				
 				String valid_no = req.getParameter("valid_no").trim();
 				if(valid_no == ""){
@@ -417,8 +436,10 @@ public class Product_orderServlet extends HttpServlet {
 				// Send the use back to the form, if there were errors
 				if (!errorMsgs.isEmpty()) {
 					req.setAttribute("product_orderVO", product_orderVO); // 含有輸入格式錯誤的product_orderVO物件,也存入req
+					/*RequestDispatcher failureView = req
+							.getRequestDispatcher("/front-end/product_order/addProduct_order.jsp");*/
 					RequestDispatcher failureView = req
-							.getRequestDispatcher("/front-end/product_order/addProduct_order.jsp");
+							.getRequestDispatcher("/front-end/web_page/AddProductOrder.jsp");
 					failureView.forward(req, res);
 					return;
 				}
@@ -429,7 +450,8 @@ public class Product_orderServlet extends HttpServlet {
 						valid_no, cred_card_type, total_money, ship_name, post_code, mem_adrs, cell_phone, tel_phone);
 				
 				/***************************3.新增完成,準備轉交(Send the Success view)***********/
-				String url = "/front-end/product_order/listAllProduct_order.jsp";
+				/*String url = "/front-end/product_order/listAllProduct_order.jsp";*/
+				String url = "/front-end/web_page/ListProductOrder.jsp";
 				RequestDispatcher successView = req.getRequestDispatcher(url); // 新增成功後轉交listAllProduct_order.jsp
 				successView.forward(req, res);				
 				

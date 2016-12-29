@@ -1,20 +1,22 @@
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
-<%@ page import="java.util.*"%>
-<%@ page import="com.product.model.*"%>
-<%@ page import="com.product_order_list.model.*"%>
-
+<%@ page import="com.product_order.model.*"%>
+<%@ page import="com.member.model.*"%>
 <%
-    ProductService productSvc = new ProductService();
-    List<ProductVO> list = productSvc.getAll();
-    pageContext.setAttribute("list",list);
+Product_orderVO product_orderVO = (Product_orderVO) request.getAttribute("product_orderVO");
+String amount =  (String) session.getAttribute("amount");
+int total = Integer.parseInt(amount);
+String quantity =  (String) session.getAttribute("quantity");
+
+MemberVO memberVO = (MemberVO) request.getAttribute("memberVO");
 %>
+
+<%@ page import="com.member.model.*"%>
 
 <html>
 <head>
+<title>商品訂單資料新增 - addMember.jsp</title>
 
-<title>Cart.jsp</title>
- 
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -52,16 +54,25 @@
 		width : 100%;
 	}
 	.list-style{
-		padding-top : 200px;
-		padding-left : 175px;
+		padding-top : 100px;
+		padding-left : 320px;
 	}
 	th{
 		text-align : center;
 	}
+	tr{
+		height: 50px;
+	}
 </style>
 
 </head>
+
 <body>
+
+
+
+
+
 <div id="skin">
 
 
@@ -170,78 +181,92 @@
 
 
 
-<!-- <img src="images/Logo.png"> --> <font size="+3">目前您購物車的內容如下： </font>
-<p>
-
-<table border="1" width="800">
-	<tr bgcolor="#f5deb3">
-		<th width="200" height="30">商品名稱</th>
-		<th width="200" height="30">商品單價</th>
-		<th width="200" height="30">購買數量</th>
-		<!-- <th width="200" height="30">移除</th> -->
-	</tr>
-	
-	<%
-		Vector<Product_order_listVO> buylist = (Vector<Product_order_listVO>) session.getAttribute("shoppingcart");
-		pageContext.setAttribute("buylist",buylist);
-		String amount =  (String) session.getAttribute("amount");
-		String quantity =  (String) session.getAttribute("quantity");
-	%>
-		
-	<%	
-		int i = 0;
-		Integer str[] = new Integer [buylist.size()];
-		for (i = 0; i < buylist.size(); i++) {
-			str[i]=i;	
-		}
-		request.setAttribute("myStr", str);
-	%>
-	
-	<c:forEach var="Product_order_listVO" items="${buylist}">
-		<c:forEach var="ProductVO" items="${list}">
-			<c:if test="${Product_order_listVO.prod_no==ProductVO.prod_no}">
-				<tr>
-					<td width="200" height="30"><div align="center"><b>${ProductVO.prod_name}</b></div></td>
-					<td width="200" height="30"><div align="center"><b>$	${Product_order_listVO.unit_price}</b></div></td>
-					<td width="200" height="30"><div align="center"><b>${Product_order_listVO.prod_quantity}</b></div></td>
-					<%-- <td width="200"><div align="center">
-						<form name="deleteForm" action="/AA105G3/product_order_list/product_order_list.do" method="POST">
-							<input type="hidden" name="action" value="DELETE_PRODUCT">
-							<c:forEach var="myData" items="${myStr}" >
-								<input type="hidden" name="del" value="${myData}">
-							</c:forEach>
-							<input type="submit" value="刪除"></div>
-						</form>
-					</td> --%>
-				</tr>
-			</c:if>
+<font size="+3">請填寫訂單資料： </font>
+<%-- 錯誤表列 --%>
+<c:if test="${not empty errorMsgs}">
+	<font color='red'>請修正以下錯誤:
+	<ul>
+		<c:forEach var="message" items="${errorMsgs}">
+			<li>${message}</li>
 		</c:forEach>
-	</c:forEach>
-	
-	
+	</ul>
+	</font>
+</c:if>
+
+<FORM METHOD="post" ACTION="<%=request.getContextPath()%>/product_order/product_order.do" name="form1">
+<table border="0">
+
 	<tr>
-		<td colspan="4" height="30">
-			<div align="center"><font color="red"><b>總金額：$	<%=amount%></b></font></div>
-		</td>
+		<td>會員帳號：</td>
+		<td>${memberVO.mem_ac}</td>
 	</tr>
+	<tr>
+		<td>信用卡卡號：</td>
+		<td><input type="TEXT" name="cred_card_no" size="45"
+			value="<%= (product_orderVO==null)? "A1B2C3D4E5F6G7H8" : product_orderVO.getCred_card_no()%>" /></td>
+	</tr>
+	<tr>
+		<td>信用卡有效時期：</td>
+		<td><input type="TEXT" name="valid_date"></td>
+	</tr>
+	<tr>
+		<td>信用卡驗證碼：</td>
+		<td><input type="TEXT" name="valid_no" size="45"
+			value="<%= (product_orderVO==null)? "" : product_orderVO.getValid_no()%>" /></td>
+	</tr>
+	<tr>
+		<td>信用卡卡別：</td>
+		<td><select size="1" name="cred_card_type">
+				<option value="0" >VISA
+				<option value="1" >MASTER
+				<option value="2" >JCB
+			</select></td>
+	</tr>
+	<tr>
+		<td>收件人姓名：</td>
+		<td><input type="TEXT" name="ship_name" size="45"
+			value="${memberVO.mem_name}" /></td>
+	</tr>
+	<tr>
+		<td>郵遞區號：</td>
+		<td><input type="TEXT" name="post_code" size="45"
+			value="<%= (product_orderVO==null)? "" : product_orderVO.getPost_code()%>" /></td>
+	</tr>
+	<tr>
+		<td>寄送地址：</td>
+		<td><input type="TEXT" name="mem_adrs" size="45"
+			value="${memberVO.mem_adrs}" /></td>
+	</tr>
+	<tr>
+		<td>聯絡手機：</td>
+		<td><input type="TEXT" name="cell_phone" size="45"
+			value="${memberVO.mem_phone}" /></td>
+	</tr>
+	<tr>
+		<td>聯絡市話：</td>
+		<td><input type="TEXT" name="tel_phone" size="45"
+			value="<%= (product_orderVO==null)? "" : product_orderVO.getTel_phone()%>" /></td>
+	</tr>
+	<tr>
+		<td>訂單總金額：</td>
+		<td>NT$ <font color="red"><b><%=amount%></b></font></td>
+	</tr>
+
 </table>
+<br>
 
-<p>
-
-<div class="col-xs-12 col-sm-2">
-	<a href="Market.jsp" class="btn btn-primary">繼續購物</a>
+<div class="col-xs-12 col-sm-6">
+	<a href="/AA105G3/front-end/web_page/Market.jsp" class="btn btn-default">取消</a>
 </div>
 
 <div class="col-xs-12 col-sm-2">
-	<form METHOD="post" ACTION="<%=request.getContextPath()%>/member/member.do">
-		<input type="submit" class="btn btn-danger" value="結帳">
-		<input type="hidden" name="mem_no" value="M00000001">
-		<input type="hidden" name="action" value="getOne_For_List">
-	</form>
+	<input type="hidden" name="action" value="insert">
+	<input type="submit" class="btn btn-danger" value="結帳">
+	<input type="hidden" name="mem_no" value="${memberVO.mem_no}">
+	<input type="hidden" name="total_money" value="<%=total%>">
 </div>
 
-
-</p>
+</FORM>
 
 
 
@@ -266,6 +291,8 @@
 
 
 
+
 </div>
 </body>
+
 </html>
