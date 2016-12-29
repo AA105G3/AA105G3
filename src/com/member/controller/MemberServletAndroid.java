@@ -90,7 +90,10 @@ public class MemberServletAndroid extends HttpServlet {
 		if ("update".equals(action)) {
 			String memberJson = jsonObject.get("memberVO").getAsString();
 			MemberVO memberVO = gson.fromJson(memberJson, MemberVO.class);
-
+			memberVO = memberSvc.updateMember(memberVO.getMem_no(), memberVO.getMem_name(), memberVO.getMem_ac(), 
+					memberVO.getMem_pw(), memberVO.getMem_image(), memberVO.getMem_sex(), 
+					memberVO.getMem_phone(), memberVO.getMem_email(),	memberVO.getMem_adrs(), 
+					memberVO.getMem_own(), memberVO.getMem_history(), memberVO.getMem_online());
 			//			if(jsonObject.get("mem_image")!=null){
 //				String mem_imageBase64 = jsonObject.get("mem_image").getAsString();
 //				
