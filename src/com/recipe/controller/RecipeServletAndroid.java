@@ -4,6 +4,7 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.OutputStream;
 import java.io.StringReader;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -34,6 +35,7 @@ import com.member.model.MemberVO;
 import com.recipe.model.*;
 import com.recipe_cont.model.*;
 
+import util.ImageUtil;
 import util.SendResponse;
 
 @MultipartConfig(fileSizeThreshold = 1024 * 1024, maxFileSize = 5 * 1024 * 1024, maxRequestSize = 5 * 5 * 1024 * 1024)
@@ -84,7 +86,14 @@ public class RecipeServletAndroid extends HttpServlet {
 			String mem_no = gson.fromJson(reader, String.class);System.out.println("RecipeServletAndroid(63 line) mem_no:" + mem_no);
 			List<RecipeVO> recipeVOList = recipeSvc.findByMem_no(mem_no); 
 			
-			outStr.append(gson.toJson(recipeVOList));
+			List<RecipeVO> list2 = new ArrayList<RecipeVO>();
+			for(RecipeVO aRecipe : recipeVOList){
+				aRecipe.setRecipe_pic(null);
+				list2.add(aRecipe);
+			}
+			
+			outStr.append(gson.toJson(list2));
+//			outStr.append(gson.toJson(recipeVOList));
 			SendResponse.writeText(res, outStr.toString());
 			
 			return;
@@ -120,6 +129,28 @@ public class RecipeServletAndroid extends HttpServlet {
 		}
 
 		if ("recipe_week_viewsZero".equals(action)) {
+		}
+		
+		if ("getImage".equals(action)) {
+			OutputStream os = res.getOutputStream();
+			String recipe_no = jsonObject.get("recipe_no").getAsString();
+			int imageSize = jsonObject.get("imageSize").getAsInt();
+			byte[] recipe_pic = recipeSvc.getImage(recipe_no);
+			System.out.println("recipe_no " + recipe_no + " recipe_pic " + recipe_pic+ " imageSize " + imageSize);
+
+			if (recipe_pic != null) {
+
+				recipe_pic = ImageUtil.shrink(recipe_pic, imageSize);
+				res.setContentType("image/jpeg");
+				res.setContentLength(recipe_pic.length);
+			} else {
+				InputStream in = getServletContext().getResourceAsStream("/noImages/noimage.jpg");
+				recipe_pic = new byte[in.available()];
+				in.read(recipe_pic);
+				in.close();
+			}
+			os.write(recipe_pic);
+			return;
 		}
 	}
 
