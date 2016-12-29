@@ -1,19 +1,13 @@
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
-<%@ page import="java.util.*"%>
 <%@ page import="com.product.model.*"%>
-<%-- 此頁練習採用 EL 的寫法取值 --%>
-
 <%
-    ProductService productSvc = new ProductService();
-    List<ProductVO> list = productSvc.getAll();
-    pageContext.setAttribute("list",list);
+ProductVO productVO = (ProductVO) request.getAttribute("productVO");
 %>
 
 <html>
 <head>
-
-<title>市集管理 - MarketManagement.jsp</title>
+<title>商品資料新增 - addProduct.jsp</title>
 
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -22,30 +16,44 @@
 <link rel="stylesheet" href="/AA105G3/back-end/web_page/css/backpageCSS.css">
 
 <style>
-.table-style{
-	padding-top: 75px;
+
+#mainTable{
+	width : 800px;
+	height : 600px;
+	margin : 0px auto;
+	/* background-color : #f5deb3; */
 }
-th{
-	text-align: center;
+th, td {
+	height : 50px;
+	max-width : 200px;
+	padding-left : 60px;
 }
-.search-style{
-	padding-bottom: 30px;
+#center{
+	padding-left : 0px;
+	text-align : center;
 }
+#productTextarea{
+	resize : none;
+	width : 250px;
+	height : 150px;
+}
+#img{
+	height : 150px;
+	width : auto;
+}
+.btn-style{
+	padding-top : 50px;
+}
+
 </style>
 
 </head>
+<script language="JavaScript" src="<%=request.getContextPath()%>/back-end/product/js/product_picture.js"></script>
+<div id="popupcalendar" class="text"></div>
+
 <body>
 
-<%-- 錯誤表列 --%>
-<c:if test="${not empty errorMsgs}">
-	<font color='red'>請修正以下錯誤:
-	<ul>
-		<c:forEach var="message" items="${errorMsgs}">
-			<li>${message}</li>
-		</c:forEach>
-	</ul>
-	</font>
-</c:if>
+
 
 
 
@@ -84,6 +92,8 @@ th{
 	</div>
 	<!-- 手機隱藏選單區結束 -->
 </nav>
+
+
 
 
 
@@ -234,117 +244,136 @@ th{
 
 
 
+
+
 <div class="container">
 	<div class="row">
-		<div class="col-xs-12 col-sm-12 col-sm-push-2 table-style">
+		<div class="col-xs-12 col-sm-12 col-sm-push-1 table-style">
 		
 		
 		
 		
-			<div class="search-style">
-				<div class="col-xs-12 col-sm-2">
-					<a class="btn btn-primary" href="/AA105G3/back-end/web_page/AddProduct.jsp">新增商品</a>
-				</div>
-				
-			
-			
-			
-			
-				<FORM METHOD="post" ACTION="<%=request.getContextPath()%>/product/product.do">
-				
-					<div class="col-xs-12 col-sm-4 input-group">
-						<div class="input-group-addon">
-							輸入商品編號：
-						</div>
-						<input type="text" name="prod_no" class="form-control">
-						<input type="hidden" name="action" value="getOne_For_Backpage">
-						<div class="input-group-btn">
-							<button class="btn btn-primary">查詢資料</button>
-						</div>
-					</div>
-				
-				</FORM>
-			</div>
+		
+		<%-- 錯誤表列 --%>
+			<c:if test="${not empty errorMsgs}">
+				<font color='red'>請修正以下錯誤:
+				<ul>
+					<c:forEach var="message" items="${errorMsgs}">
+						<li>${message}</li>
+					</c:forEach>
+				</ul>
+				</font>
+			</c:if>
 
 
 
 
-			<table border='1' bordercolor='#CCCCFF' width='1000'>
+
+			<FORM METHOD="post" ACTION="<%=request.getContextPath()%>/product/product.do" name="form1" enctype="multipart/form-data">
+
+			<table border='1' bordercolor='#CCCCFF' id="mainTable" cellspacing="0" >
+			
 				<tr>
-					<th>商品圖片</th>
-					<th>商品編號</th>
-					<th>商品名稱</th>
-					<th>商品類別</th>
-					<th>銷售數量</th>
-					<th>庫存數量</th>
-					<th>單價</th>
-					<th>商品狀態</th>
-					<th>優惠狀態</th>
-					<th>銷售狀態</th>
-					<th>查詢詳情</th>
-					<th>修改資料</th>
-					
+					<td colspan="2" id="center" align="center" valign="center"><h2>修改商品資料</h2></td>
 				</tr>
-			
-				<%@ include file="pages/page1.file" %> 
-				<c:forEach var="productVO" items="${list}" begin="<%=pageIndex%>" end="<%=pageIndex+rowsPerPage-1%>">
-					<tr align='center' valign='middle' ${(productVO.prod_no==param.prod_no) ? 'bgcolor=#f5deb3':''}>
+				
+				<tr>
+					<td>商品編號：${productVO.prod_no}</td>
+					<td>商品名稱：<input type="TEXT" name="prod_name" value="<%= (productVO==null)? "新的商品" : productVO.getProd_name()%>" /></td>
+				</tr>
+				
+				<tr>
+					<td>上架日期：<input type="date" name="shelf_date"></td>
 					
-						<td><img src="/AA105G3/ProductDBGifReader.do?name=${productVO.prod_no}" width='100' height='75'></td>
-						<td>${productVO.prod_no}</td>
-						<td>${productVO.prod_name}</td>
-						<td>
-							<c:if test="${productVO.prod_type == 'SPACE BAG'}" >
-								太空包
-							</c:if>
-							<c:if test="${productVO.prod_type == 'TABLEWARE'}" >
-								餐具
-							</c:if>
-							<c:if test="${productVO.prod_type == 'KITCHENWARE'}" >
-								廚具
-							</c:if>
-						</td>
-						<td>${productVO.sales_volume}</td>
-						<td>${productVO.stor_capacity}</td>
-						<td>${productVO.unit_price}</td>
-						<td>
-							<c:if test="${productVO.prod_status == '0'}" >
-								下架
-							</c:if>
-							<c:if test="${productVO.prod_status == '1'}" >
-								上架
-							</c:if>
-							<c:if test="${productVO.prod_status == '2'}" >
-								不再販售
-							</c:if>
-						</td>
-						<td>${productVO.disc_status==0 ? '非特價' : '特價中'}</td>
-						<td>${productVO.sell_status==0 ? '缺貨中' : '販售中'}</td>
-						
-						<td>
-						  <FORM METHOD="post" ACTION="<%=request.getContextPath()%>/product/product.do">
-						    <input type="submit" value="查詢" class="btn btn-primary"> 
-						    <input type="hidden" name="prod_no" value="${productVO.prod_no}">
-						    <input type="hidden" name="action" value="getOne_For_Backpage"></FORM>
-						</td>
-						
-						<td>
-						  <FORM METHOD="post" ACTION="<%=request.getContextPath()%>/product/product.do">
-						     <input type="submit" value="修改" class="btn btn-primary">
-						     <input type="hidden" name="prod_no" value="${productVO.prod_no}">
-						     <input type="hidden" name="whichPage"	value="<%=whichPage%>">
-						     <input type="hidden" name="action"	value="getOne_For_Update"></FORM>
-						</td>
-						
-					</tr>
-				</c:forEach>
+					<td>下架日期：<input type="date" name="remove_date"></td>
+				</tr>
+				
+				<tr>
+					<td>銷售數量：<input type="TEXT" name="sales_volume" value="<%= (productVO==null)? "10" : productVO.getSales_volume()%>" /></td>
+					<td>庫存數量：<input type="TEXT" name="stor_capacity" value="<%= (productVO==null)? "100" : productVO.getStor_capacity()%>" /></td>
+				</tr>
+										
+				<tr>
+					<td>商品單價：<input type="TEXT" name="unit_price" value="<%= (productVO==null)? "50" : productVO.getUnit_price()%>" /></td>
+					<td>優惠價格：<input type="TEXT" name="disc_price" value="<%= (productVO==null)? "25" : productVO.getDisc_price()%>" /></td>
+				</tr>
+										
+				<tr>
+					<td>
+						商品類別：
+						<select size="1" name="prod_type">
+							<option value="SPACE BAG" >太空包
+							<option value="TABLEWARE" >餐具
+							<option value="KITCHENWARE" >廚具
+						</select>
+					</td>
+					<td id="searchTd">
+						銷售狀態：
+						<select size="1" name="sell_status">
+							<option value="0" >缺貨中
+							<option value="1" >販售中
+						</select>
+					</td>
+				</tr>
+											
+				<tr>
+					<td id="searchTd">
+						商品狀態：
+						<select size="1" name="prod_status">
+							<option value="0" >下架
+							<option value="1" >上架
+							<option value="2" >不再販售
+						</select>
+					</td>
+					<td id="searchTd">
+						優惠狀態：
+						<select size="1" name="disc_status">
+							<option value="0" >非特價
+							<option value="1" >特價中
+						</select>
+					</td>
+				</tr>
+								
+				<tr>
+					<td>優惠起始日期：<input type="date" name="disc_start_date"></td>
+					<td>優惠結束日期：<input type="date" name="disc_end_date"></td>
+				</tr>
+											
+				<tr>
+					<td>商品照片：
+						<input accept="image/*" type="FILE" name="prod_picture" id="prod_picture" />
+						<div id="center"><img id="img" src="<%=request.getContextPath()%>/back-end/product/images/No-image-found.png"></div></td>
+					<td>商品描述：<br>
+						<textarea id="productTextarea" name="prod_description" cols="50" rows="5">
+							<%= (productVO==null)? "最新的太空包上市！" : productVO.getProd_description()%>
+						</textarea>
+					</td>
+				</tr>
+				
 			</table>
-			<%@ include file="pages/page2.file" %>
+
+				<br>
+
+				<div class="text-center btn-style">
+					<a class="btn btn-default" href="/AA105G3/back-end/web_page/MarketManagement.jsp">取消新增</a>
+					
+					
+					<input type="hidden" name="action" value="insert">
+					<input class="btn btn-primary" type="submit" value="確認新增">
+				</div>
+
+			</FORM>
+
+
+
 
 
 		</div>
 	</div>
 </div>
+
+
+
 
 
 
@@ -354,6 +383,10 @@ th{
 		
 <script src="https://code.jquery.com/jquery.js"></script>
 <script src="https://netdna.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+
+
+
+
 
 </body>
 </html>

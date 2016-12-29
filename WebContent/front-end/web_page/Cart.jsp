@@ -10,18 +10,11 @@
     pageContext.setAttribute("list",list);
 %>
 
-<%
-	Vector<Product_order_listVO> buylist = (Vector<Product_order_listVO>) session.getAttribute("shoppingcart");
-	/* String amount =  (String) request.getAttribute("amount"); */
-	String amount =  (String) session.getAttribute("amount");
-	String quantity =  (String) session.getAttribute("quantity");
-%>
-
 <html>
 <head>
 
-<title>市集.jsp</title>
-
+<title>Cart.jsp</title>
+ 
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -29,61 +22,47 @@
 <link rel="stylesheet" href="/AA105G3/front-end/web_page/css/frontpageCSS.css">
 
 <style type="text/css" media="screen">
-	.select-menu{
-		text-align: center;
-		background: #f5f5dc;
-		width: 100%;
+	html, body{
+		background : white;
+		height : 100%;
 	}
-	.select-item{
-		padding-left: 30px;
-		padding-right: 30px;
-		font-size: 24px;
+
+	#skin{
+		/* border : solid red; */
+		/* background : #f5f5dc; */
+		width : 100%;
+		margin : 0px auto;
+				
+		/* 填滿skin */
+		min-height : 100%;
+		position : relative;
 	}
-	.href-style{
-		color: black;
+	#id_wrapper{
+		min-height: 100%;
+		position: relative;
 	}
-	.first-col{
-		padding-top:5px;
-		padding-bottom: 50px;
-	}
-	.first-col img{
-		width: 350px;
-		height: 250px;
-	}
-	.next-col{
-		padding-bottom: 50px;
-	}
-	.next-col img{
-		width: 350px;
-		height: 250px;
-	}
-	#top-img{
-		background-image: url(/AA105G3/front-end/web_page/images/product_title.jpg);
-		height: 500px;
-		/* background-size: cover; */
-		background-position: center;
-	}
-	.front-style{
-		background: #f5deb3;
-		width: 175px;
-	}
-	.shopping-cart{
+	#id_footer{
 		position: absolute;
-		top: 650px;
-		left: 75px;
-		width: 250px;
-		list-style: none;
-		margin: 0;
-		padding: 0;
-		font-size: 16px;
+    	bottom: 0;
 	}
-	.shopping-cart li{
-		padding-bottom: 15px;
+	#theFooter{
+		/* 對應skin */
+		position : absolute;
+		bottom : 0px;
+		width : 100%;
+	}
+	.list-style{
+		padding-top : 200px;
+		padding-left : 175px;
+	}
+	th{
+		text-align : center;
 	}
 </style>
 
 </head>
 <body>
+<div id="skin">
 
 
 
@@ -183,70 +162,74 @@
 
 
 
-<div id="sidebar-wrapper">
-	<ul class="shopping-cart">
-		<li>
-			<a href="<%=request.getContextPath()%>/front-end/web_page/Cart.jsp">
-				<img src="<%=request.getContextPath()%>/front-end/web_page/images/shopping-cart2.png" height="175" weight="175">
-			</a>
-		</li>
-		<li>目前購物車內有：<font color="red"><%= (quantity==null)? "0" : quantity%></font>個商品</li>
-		<li>小計：$	<font color="red"><%= (amount==null)? "0" : amount%></font>元</li>
-		<li><a class="btn btn-primary" href="<%=request.getContextPath()%>/front-end/web_page/Cart.jsp">查看購物車內容</a></li>
-	</ul>
-</div>
-
-
-
-
-
 <div class="container">
-	<div class="row">
-		<div class="container">
-			<div class="row">
-				<div class="col-xs-12 col-sm-12">
-					<h2>最新商品</h2>
-				</div>
-			</div>
-		</div>
+		<div class="row">
+			<div class="list-style">
 
-<c:forEach var="productVO" items="${list}">
 
-<c:if test="${productVO.prod_status == '1'}">
 
-	<div class="col-xs-12 col-sm-4 first-col">
-		<a href='<%=request.getContextPath()%>/product/product.do?action=getOne_For_Display&prod_no=${productVO.prod_no}'>
-			<img src="/AA105G3/ProductDBGifReader.do?name=${productVO.prod_no}" width='350' height='250'>
-		</a>
-		<div class="col-xs-12 col-sm-6 front-style">
-			<h4>${productVO.prod_name}</h4>
-		</div>
-		<div class="col-xs-12 col-sm-6 text-right front-style">
-			<h4>NT$ ${productVO.unit_price}</h4>
-		</div>
-	</div>
+
+
+<!-- <img src="images/Logo.png"> --> <font size="+3">目前您購物車的內容如下： </font>
+<hr><p>
+
+<table border="1" width="800">
+	<tr bgcolor="#f5deb3">
+		<th width="200" height="30">商品名稱</th>
+		<th width="200" height="30">商品單價</th>
+		<th width="200" height="30">購買數量</th>
+	</tr>
 	
-</c:if>
+	<%
+		Vector<Product_order_listVO> buylist = (Vector<Product_order_listVO>) session.getAttribute("shoppingcart");
+		pageContext.setAttribute("buylist",buylist);
+		String amount =  (String) session.getAttribute("amount");
+	%>	
+
+	<c:forEach var="ProductVO" items="${list}">
+		<c:forEach var="Product_order_listVO" items="${buylist}">
+			<c:if test="${Product_order_listVO.prod_no==ProductVO.prod_no}">
+				<tr>
+					<td width="200" height="30"><div align="center"><b>${ProductVO.prod_name}</b></div></td>
+					<td width="200" height="30"><div align="center"><b>$	${Product_order_listVO.unit_price}</b></div></td>
+					<td width="200" height="30"><div align="center"><b>${Product_order_listVO.prod_quantity}</b></div></td>
+				</tr>
+			</c:if>
+		</c:forEach>
+	</c:forEach>
 	
-</c:forEach>
+	<tr>
+		<td colspan="3" height="30">
+			<div align="center"><font color="red"><b>總金額：$	<%=amount%></b></font></div>
+		</td>
+	</tr>
+</table>
+<p><a href="Market.jsp">繼續購物</a></p>
 
-<!-- <div class="col-xs-12 col-sm-12">
-	<ul class="pager">
-		<li class="previous"><a href="#">&larr; 上一頁</a></li>
-		<li>第1頁	/	共X頁</li>
-		<li class="next"><a href="#">下一頁 &rarr;</a></li>
-	</ul>
-</div> -->
 
+
+
+
+
+		</div>
 	</div>
 </div>
 
-<footer>
+
+
+
+
+<footer id="theFooter">
 	Copyright &copy; 2016 Java Team 3 
 </footer>
 
 
 <script src="https://code.jquery.com/jquery.js"></script>
 <script src="https://netdna.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+
+
+
+
+</div>
 </body>
 </html>

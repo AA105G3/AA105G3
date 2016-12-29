@@ -1,13 +1,20 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" %>
-<%@ page import="com.product.model.*"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ page import="java.util.*"%>
 <%@ page import="com.product.model.*"%>
+<%@ page import="com.product_order_list.model.*"%>
 
 <%
 	ProductService productSvc = new ProductService();
 	ProductVO productVO = productSvc.getOneProduct("prod_no");
 	pageContext.setAttribute("productVO",productVO);
+%>
+
+<%
+	Vector<Product_order_listVO> buylist = (Vector<Product_order_listVO>) session.getAttribute("shoppingcart");
+	//String amount =  (String) request.getAttribute("amount");
+	String amount =  (String) session.getAttribute("amount");
+	String quantity =  (String) session.getAttribute("quantity");
 %>
 
 <html>
@@ -50,6 +57,10 @@
 		height: 5.9%;
 		padding-bottom: 25px;
 	}
+	.select-style{
+		font-size: 20px;
+		padding-left: 30px;
+	}
 	.font-style{
 		font-size: 20px;
 	}
@@ -60,6 +71,19 @@
 	.tab-style{
 		padding-top: 75px;
 		padding-bottom: 75px;
+	}
+	.shopping-cart{
+		position: absolute;
+		top: 650px;
+		left: 75px;
+		width: 250px;
+		list-style: none;
+		margin: 0;
+		padding: 0;
+		font-size: 16px;
+	}
+	.shopping-cart li{
+		padding-bottom: 15px;
 	}
 	</style>
 
@@ -130,6 +154,26 @@
 
 
 
+
+
+<div id="sidebar-wrapper">
+	<ul class="shopping-cart">
+		<li>
+			<a href="<%=request.getContextPath()%>/front-end/web_page/Cart.jsp">
+				<img src="<%=request.getContextPath()%>/front-end/web_page/images/shopping-cart2.png" height="175" weight="175">
+			</a>
+		</li>
+		<li>目前購物車內有：<font color="red"><%= (quantity==null)? "0" : quantity%></font>個商品</li>
+		<li>小計：$	<font color="red"><%= (amount==null)? "0" : amount%></font>元</li>
+		<li><a class="btn btn-primary" href="<%=request.getContextPath()%>/front-end/web_page/Cart.jsp">查看購物車內容</a></li>
+	</ul>
+</div>
+
+
+
+
+<form name="shoppingForm" action="/AA105G3/product_order_list/product_order_list.do" method="POST">
+
 <div class="container">
 	<div class="row">
 		<div class="col-xs-12 col-sm-8 first-col">
@@ -149,15 +193,44 @@
 				<img src="<%=request.getContextPath()%>/front-end/web_page/images/visa.jpg">
 				<img src="<%=request.getContextPath()%>/front-end/web_page/images/mastercard.jpg">
 				<img src="<%=request.getContextPath()%>/front-end/web_page/images/jcb.jpg">
+				
+				<span class="select-style">
+					購買數量：
+					<select name="prod_quantity">
+						<option value="1">1
+						<option value="2">2
+						<option value="3">3
+						<option value="4">4
+						<option value="5">5
+						<option value="6">6
+						<option value="7">7
+						<option value="8">8
+						<option value="9">9
+						<option value="10">10
+					</select>
+				</span>
+				
 			</div>
-			<div class="btn btn-danger btn-lg btn-block btn-style">
+			
+			<%-- <div type="submit" name="Submit" class="btn btn-danger btn-lg btn-block btn-style"
+			onclick="javascript:location.href='<%=request.getContextPath()%>/product_order_list/product_order_list.do?action=ADD_PRODUCT&prod_no=${productVO.prod_no}'">
 				<img src="<%=request.getContextPath()%>/front-end/web_page/images/shopping-cart.png">
 				加入購物車
-			</div>
+			</div> --%>
+
+			<input class="btn btn-danger btn-lg btn-block btn-style" type="submit" name="Submit" 
+			onClick="alert('成功加入到購物車！')"
+			value="加入購物車">
+			
+			<input type="hidden" name="prod_no" value="${productVO.prod_no}">
+			<input type="hidden" name="unit_price" value="${productVO.unit_price}">
+			<input type="hidden" name="action" value="ADD_PRODUCT">	
+			
 		</div>
 	</div>
 </div>
 
+</form>
 
 		
 

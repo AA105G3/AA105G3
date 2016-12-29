@@ -4,7 +4,7 @@
 
 <html>
 <head>
-<title>商品資料 - listOneProduct.jsp</title>
+<title>商品詳細資料 - DisplayProduct.jsp</title>
 
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -55,7 +55,7 @@ th, td {
 			<span class="icon-bar"></span>
 			<span class="icon-bar"></span>
 		</button>
-		<img src="images/New_Logo2.0.png" href="#" id="logo">				
+		<img src="<%=request.getContextPath()%>/back-end/web_page/images/Logo.png" href="#" id="logo">				
 	</div>
 		
 	<!-- 手機隱藏選單區 -->
@@ -238,93 +238,95 @@ th, td {
 
 <div class="container">
 	<div class="row">
-		<div class="col-xs-12 col-sm-12 col-sm-push-2 table-style">
+		<div class="col-xs-12 col-sm-12 col-sm-push-1 table-style">
 
 
 
 
 
-<table border='1' bordercolor='#CCCCFF' id="mainTable" cellspacing="0" >
-
-	<tr>
-		<td colspan="2" id="center" align="center" valign="center"><h2>商品詳細資料</h2></td>
-	</tr>
-	
-	<tr>
-		<td>商品編號：${productVO.prod_no}</td>
-		<td>商品名稱：${productVO.prod_name}</td>	
-	</tr>
-	
-	<tr>
-		<td>上架日期：${productVO.shelf_date}</td>
-		<td>下架日期：${productVO.shelf_date}</td>
-	</tr>
-	
-	<tr>
-		<td>銷售數量：${productVO.sales_volume}</td>
-		<td>庫存數量：${productVO.stor_capacity}</td>
-	</tr>
-							
-	<tr>
-		<td>商品單價：${productVO.unit_price}</td>
-		<td>優惠價格：${productVO.disc_price}</td>
-	</tr>
-							
-	<tr>
-		<td>
-			商品類別：
-			<c:if test="${productVO.prod_type == 'SPACE BAG'}" >
-				太空包
-			</c:if>
-			<c:if test="${productVO.prod_type == 'TABLEWARE'}" >
-				餐具
-			</c:if>
-			<c:if test="${productVO.prod_type == 'KITCHENWARE'}" >
-				廚具
-			</c:if>
-		</td>
-		<td id="searchTd">
-			銷售狀態：${productVO.sell_status==0 ? '缺貨中' : '販售中'}
-		</td>
-	</tr>
+			<table border='1' bordercolor='#CCCCFF' id="mainTable" cellspacing="0" >
+			
+				<tr>
+					<td colspan="2" id="center" align="center" valign="center"><h2>商品詳細資料</h2></td>
+				</tr>
+				
+				<tr>
+					<td>商品編號：${productVO.prod_no}</td>
+					<td>商品名稱：${productVO.prod_name}</td>	
+				</tr>
+				
+				<tr>
+					<td>上架日期：${productVO.shelf_date}</td>
+					<td>下架日期：${productVO.shelf_date}</td>
+				</tr>
+				
+				<tr>
+					<td>銷售數量：${productVO.sales_volume}</td>
+					<td>庫存數量：${productVO.stor_capacity}</td>
+				</tr>
+										
+				<tr>
+					<td>商品單價：${productVO.unit_price}</td>
+					<td>優惠價格：${productVO.disc_price}</td>
+				</tr>
+										
+				<tr>
+					<td>
+						商品類別：
+						<c:if test="${productVO.prod_type == 'SPACE BAG'}" >
+							太空包
+						</c:if>
+						<c:if test="${productVO.prod_type == 'TABLEWARE'}" >
+							餐具
+						</c:if>
+						<c:if test="${productVO.prod_type == 'KITCHENWARE'}" >
+							廚具
+						</c:if>
+					</td>
+					<td id="searchTd">
+						銷售狀態：${productVO.sell_status==0 ? '缺貨中' : '販售中'}
+					</td>
+				</tr>
+											
+				<tr>
+					<td id="searchTd">
+						商品狀態：
+						<c:if test="${productVO.prod_status == '0'}" >
+							下架
+						</c:if>
+						<c:if test="${productVO.prod_status == '1'}" >
+							上架
+						</c:if>
+						<c:if test="${productVO.prod_status == '2'}" >
+							不再販售
+						</c:if>
+					</td>
+					<td id="searchTd">
+						優惠狀態：${productVO.disc_status==0 ? '非特價' : '特價中'}
+					</td>
+				</tr>
 								
-	<tr>
-		<td id="searchTd">
-			商品狀態：
-			<c:if test="${productVO.prod_status == '0'}" >
-				下架
-			</c:if>
-			<c:if test="${productVO.prod_status == '1'}" >
-				上架
-			</c:if>
-			<c:if test="${productVO.prod_status == '2'}" >
-				不再販售
-			</c:if>
-		</td>
-		<td id="searchTd">
-			優惠狀態：${productVO.disc_status==0 ? '非特價' : '特價中'}
-		</td>
-	</tr>
-					
-	<tr>
-		<td>優惠期使日期：${productVO.disc_start_date}</td>
-		<td>優惠結束日期：${productVO.disc_end_date}</td>
-	</tr>
-								
-	<tr>
-		<td>商品照片：
-			<div id="center"><img id="img" src="/AA105G3/ProductDBGifReader.do?name=${productVO.prod_no}"></div></td>
-		<td>商品描述：<br>
-			<textarea id="productTextarea" readonly="readonly">
-				${productVO.prod_description}
-			</textarea>
-		</td>
-	</tr>
-	
-</table>
+				<tr>
+					<td>優惠期使日期：${productVO.disc_start_date}</td>
+					<td>優惠結束日期：${productVO.disc_end_date}</td>
+				</tr>
+											
+				<tr>
+					<td>商品照片：
+						<div id="center"><img id="img" src="/AA105G3/ProductDBGifReader.do?name=${productVO.prod_no}"></div></td>
+					<td>商品描述：<br>
+						<textarea id="productTextarea" readonly="readonly">
+							${productVO.prod_description}
+						</textarea>
+					</td>
+				</tr>
+				
+			</table>
 
 <div class="text-center btn-style">
-	<a class="btn btn-primary" href="/AA105G3/back-end/web_page/MarketManagement.jsp">返回</a>
+	<form>
+		<a class="btn btn-primary" href="/AA105G3/back-end/web_page/MarketManagement.jsp">返回</a>
+	</form>
 </div>
 
 
