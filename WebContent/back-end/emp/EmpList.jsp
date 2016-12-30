@@ -31,6 +31,7 @@
 }
 #table_title{
 	font-size: 25px;
+	padding:5px 0px;
 }
 #menu_zone{
 	background: #f5deb3;
@@ -139,6 +140,10 @@ tr{
 	text-align:center;
 }
 
+.add-emp{
+	margin-top: 29px;
+	font-size: 15px;
+}
 
 
 
@@ -323,7 +328,14 @@ tr{
 			<div class="container">
 				<div class="row">
 					<table class="table table-hover table-striped table-bordered table-condensed">
-					<caption id="table_title"><h2>員工資料管理</h2></caption>
+					<caption id="table_title">
+					<div class="col-xs-12 col-sm-6">
+						<h2>員工資料管理</h2>
+					</div>
+					<div class="col-xs-12 col-sm-6 text-right" style="height: 63px;">
+						<a href="<%=request.getContextPath()%>/back-end/emp/EmpRegister.jsp" class="btn btn-default add-emp" >員工新增</a>
+					</div>
+					</caption>
 					<thead>
 						<tr>
 							<th class="emp_no">員工編號</th>
@@ -542,7 +554,6 @@ tr{
 							 
 							 $("#emp_status").val(data.emp_status).change();
 							 $("#emp_status").val(data.emp_status);
-							 alert(data.emp_status);
 							 $("#emp-info-input").modal('show');
 							 
 					     },
