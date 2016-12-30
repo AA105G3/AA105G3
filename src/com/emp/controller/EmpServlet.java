@@ -140,6 +140,8 @@ public class EmpServlet extends HttpServlet {
 		
 			try {
 				/***************************1.接收請求參數 - 輸入格式的錯誤處理**********************/
+				String requestURL = req.getParameter("requestURL");
+				
 				String emp_no = req.getParameter("emp_no").trim();
 				String emp_name = req.getParameter("emp_name").trim();
 				String emp_id = req.getParameter("emp_id").trim();
@@ -193,15 +195,25 @@ public class EmpServlet extends HttpServlet {
 				
 				/***************************3.修改完成,準備轉交(Send the Success view)*************/
 				req.setAttribute("empVO", empVO); // 資料庫update成功後,正確的的empVO物件,存入req
-				String url = "/back-end/emp/EmpList.jsp";
-				RequestDispatcher successView = req.getRequestDispatcher(url); // 修改成功後,轉交listOneEmp.jsp
-				successView.forward(req, res);
+				
+				if(requestURL.equals("/back-end/emp/EmpList.jsp")){
+					String url = "/back-end/emp/EmpList.jsp";
+					RequestDispatcher successView = req.getRequestDispatcher(url); // 修改成功後,轉交listOneEmp.jsp
+					successView.forward(req, res);
+					
+				}
+				if(requestURL.equals("/back-end/emp/EmpHasLeft.jsp")){
+					String url = "/back-end/emp/EmpHasLeft.jsp";
+					RequestDispatcher successView = req.getRequestDispatcher(url); // 修改成功後,轉交listOneEmp.jsp
+					successView.forward(req, res);
+					
+				}
 
 				/***************************其他可能的錯誤處理*************************************/
 			} catch (Exception e) {
 				errorMsgs.add("修改資料失敗:"+e.getMessage());
 				RequestDispatcher failureView = req
-						.getRequestDispatcher("/back-end/emp/EmpList.jsp.jsp");
+						.getRequestDispatcher("/back-end/emp/EmpList.jsp");
 				failureView.forward(req, res);
 			}
 		}
@@ -266,7 +278,6 @@ public class EmpServlet extends HttpServlet {
 				EmpService empSvc = new EmpService();
 				empVO = empSvc.addEmp(emp_name,emp_account,emp_password,emp_id,emp_email,emp_address
 						,emp_phone,emp_hiredate,emp_job);
-
 				/*寄出email*/
 				  String to = emp_email;
 				  String ch_name = emp_name;
@@ -282,9 +293,8 @@ public class EmpServlet extends HttpServlet {
 				
 				
 				
-				
 				/***************************3.新增完成,準備轉交(Send the Success view)***********/
-				String url = "/back-end/emp/listAllEmp.jsp";
+				String url = "/back-end/emp/EmpList.jsp";
 				RequestDispatcher successView = req.getRequestDispatcher(url); // 新增成功後轉交listAllEmp.jsp
 				successView.forward(req, res);				
 				
@@ -292,7 +302,7 @@ public class EmpServlet extends HttpServlet {
 			} catch (Exception e) {
 				errorMsgs.add(e.getMessage());
 				RequestDispatcher failureView = req
-						.getRequestDispatcher("/back-end/emp/addEmp.jsp");
+						.getRequestDispatcher("/back-end/emp/EmpList.jsp");
 				failureView.forward(req, res);
 			}
 		}

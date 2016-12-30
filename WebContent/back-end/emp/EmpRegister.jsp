@@ -87,7 +87,8 @@
 							</div>
 						</div>
 						<div class="submit-wrapper col-sm-9 col-sm-pull-3 col-sm-offset-3">
-							<button type="submit" name="action" value="insert">提交</button>	
+							<input type="submit" class="btn btn-primary" value="提交"/>
+							<input type="hidden"  name="action" value="insert">	
 						</div>
 						<div class="col-sm-offset-3"></div>
 						

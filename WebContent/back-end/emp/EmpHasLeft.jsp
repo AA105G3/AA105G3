@@ -13,7 +13,7 @@
 		<meta charset="utf-8">
 		<meta http-equiv="X-UA-Compatible" content="IE=edge">
 		<meta name="viewport" content="width=device-width, initial-scale=1">
-		<title>員工資料管理</title>
+		<title>離職員工資料管理</title>
 		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
 		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.6.4/css/bootstrap-datepicker.css">
 		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.12.1/css/bootstrap-select.min.css">
@@ -330,11 +330,10 @@ tr{
 					<table class="table table-hover table-striped table-bordered table-condensed">
 					<caption id="table_title">
 					<div class="col-xs-12 col-sm-6">
-						<h2>員工資料管理</h2>
+						<h2>離職員工資料管理</h2>
 					</div>
 					<div class="col-xs-12 col-sm-6 text-right" style="height: 63px;">
-						<a href="<%=request.getContextPath()%>/back-end/emp/EmpHasLeft.jsp" class="btn btn-default add-emp" >已離職員工資料</a>
-						<a href="<%=request.getContextPath()%>/back-end/emp/EmpRegister.jsp" class="btn btn-primary add-emp" >員工新增</a>
+						<a href="<%=request.getContextPath()%>/back-end/emp/EmpList.jsp" class="btn btn-default add-emp" >返回</a>
 					</div>
 					</caption>
 					<thead>
@@ -343,14 +342,14 @@ tr{
    							<th class="emp_name">員工姓名</th>
    							<th class="emp_account">員工帳號</th>
    							<th class="emp_email">員工信箱</th>
-   							<th class="emp_job">職稱</th>
+   							<th class="emp_status">狀態</th>
    							
    							
 						</tr>
 					</thead>
 					<tbody>
 					<c:forEach var="empVO" items="${empSvc.all}" >
-					<c:if test="${empVO.emp_status==1}">
+					<c:if test="${empVO.emp_status==0}">
 						<tr>
 							<td class="emp-list-info-title" colspan="6">
 								<div class="panel panel-default emp-info-wrapper">
@@ -363,8 +362,7 @@ tr{
 					        	  				<td class="emp_name_info">${empVO.emp_name}</td>
 					        	  				<td class="emp_account_info">${empVO.emp_account}</td>
 					        	  				<td class="emp_email_info">${empVO.emp_email}</td>
-					        	  				
-					        	  				<td class="emp_job_info">${empVO.emp_job}</td>
+					        	  				<td class="emp_status_info">${empVO.emp_status==0? "已離職":"在職"}</td>
 					        	  				
 					        	  			</tr>
 					        	  		</table>
@@ -379,17 +377,11 @@ tr{
 								      			<div class="col-xs-12 col-sm-10 emp-info-inner">
 								      				<label>身分證字號 :</label>&nbsp<span>${empVO.emp_id}</span>&nbsp&nbsp&nbsp&nbsp
 								      				<label>連絡電話 :</label>&nbsp<span>${empVO.emp_phone}</span>&nbsp&nbsp&nbsp&nbsp
-								      				<label>到職日 :</label>&nbsp<span>${empVO.emp_hiredate}</span><br>
 								      				<label>地址 :</label>&nbsp<span>${empVO.emp_address}</span><br>
-								      				<label>員工狀態 :</label>&nbsp<span>${empVO.emp_status==0? "已離職":"在職"}</span><br>
-								      				<label>擁有權限 :</label>&nbsp<span>員工資料管理、會員管理</span>
 								      			</div>
 								      			<div class="col-xs-12 col-sm-2 text-right">
 								      				<div class="emp_auth-update-wrapper">
 								      					<button class="btn btn-primary btn-sm emp-info-update" onclick="updateEmpInfo(${empVO.emp_no})">修改基本資料</button>
-								      				</div>
-								      				<div>
-								      					<button class="btn btn-sm btn-primary emp_auth-update" data-toggle="modal" data-target="#emp-auth-input">修改權限</button>	
 								      				</div>
 								      			</div>
 								      			</div>
@@ -399,7 +391,8 @@ tr{
 								</div>
 							</td>
 						</tr>
-						</c:if>
+					</c:if>
+						
 						</c:forEach>
 
 
@@ -491,31 +484,7 @@ tr{
 		    </div>
 		  </div>
 
-		  <div class="modal fade" id="emp-auth-input" role="dialog">
-		    <div class="modal-dialog">
-		    
-		      <!-- Modal content-->
-		      <div class="modal-content">
-		      <form class="form-horizontal" action="" method="get" >
-		        <div class="modal-header">
-		          <button type="button" class="close" data-dismiss="modal">&times;</button>
-		          <h4 class="modal-title">修改權限</h4>
-		        </div>
-		        <div class="modal-body">
-		          <form >
-		          	
-		          </form>
-		        </div>
-		        <div class="modal-footer">
-		       	  <input type="submit" class="btn btn-default" name="submitButton" value="提交">
-		          <input type="hidden" name="action" value="update">
-		          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-		        </div>
-		        </form>
-		      </div>
-		      
-		    </div>
-		  </div>
+		 
 
 		<footer id="the_footer">
 			<p class="lightcolor">All Content Copyright &copy; 2016 TomCat Inc</p>
