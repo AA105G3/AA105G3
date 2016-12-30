@@ -64,8 +64,8 @@ public class RecipeDAO implements RecipeDAO_interface
 			"select recipe_no,mem_no,recipe_name,recipe_intro,food_mater,recipe_pic,recipe_like,recipe_total_views"
 					+ ",recipe_week_views,recipe_time,recipe_edit,recipe_classify from recipe where food_mater like ?";
 	
-	private static final String GET_IMAGE_STMT = "SELECT recipe_pic FROM recipe where recipe_no=?"; // for android
-	
+	// for android by cyh
+	private static final String GET_IMAGE_STMT = "SELECT recipe_pic FROM recipe where recipe_no=?"; 
 	
 	@Override
 	public void insert(RecipeVO recipeVO)
@@ -816,6 +816,7 @@ public class RecipeDAO implements RecipeDAO_interface
 		return list;
 	}
 	
+	//for android by cyh
 	@Override
 	public byte[] getImage(String recipe_no) {
 

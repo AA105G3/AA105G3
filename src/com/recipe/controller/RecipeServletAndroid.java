@@ -63,7 +63,6 @@ public class RecipeServletAndroid extends HttpServlet {
 		}
 		
 		if (gson.fromJson(jsonIn.toString(), JsonObject.class) == null) {
-			System.out.println("Recipe JsonObject null");
 			return;
 		}
 
@@ -83,7 +82,7 @@ public class RecipeServletAndroid extends HttpServlet {
 			String mem_noJson = jsonObject.get("mem_no").getAsString();
 			JsonReader reader = new JsonReader(new StringReader(mem_noJson));
 			reader.setLenient(true);
-			String mem_no = gson.fromJson(reader, String.class);System.out.println("RecipeServletAndroid(63 line) mem_no:" + mem_no);
+			String mem_no = gson.fromJson(reader, String.class);
 			List<RecipeVO> recipeVOList = recipeSvc.findByMem_no(mem_no); 
 			
 			List<RecipeVO> list2 = new ArrayList<RecipeVO>();
@@ -99,6 +98,27 @@ public class RecipeServletAndroid extends HttpServlet {
 			return;
 		}
 		if ("getOne_For_Display".equals(action)) { // 來自select_page.jsp的請求
+			
+			String recipe_noJson = jsonObject.get("recipe_no").getAsString();
+			JsonReader reader = new JsonReader(new StringReader(recipe_noJson));
+			reader.setLenient(true);
+			
+			String recipe_no = gson.fromJson(reader, String.class);
+			Recipe_contService recipe_contSvc = new Recipe_contService();
+			Set<Recipe_contVO> set = recipe_contSvc.getRecipe_cont(recipe_no);
+			
+			
+			Set<Recipe_contVO> set2 = new LinkedHashSet<Recipe_contVO>();
+			for(Recipe_contVO aRecipeCond : set){
+				aRecipeCond.setStep_pic(null);
+				set2.add(aRecipeCond);
+			}
+			
+			outStr.append(gson.toJson(set2));
+//			outStr.append(gson.toJson(recipeVOList));
+			SendResponse.writeText(res, outStr.toString());
+			
+			return;
 		}
 
 		if ("getOne_For_Update".equals(action)) {

@@ -280,7 +280,8 @@ public class RecipeService
 		return list2;
 	}
 	
-	public byte[] getImage(String recipe_no) {  //for android
+	//for android by cyh
+	public byte[] getImage(String recipe_no) {  
 		return dao.getImage(recipe_no);
 	}
 }
