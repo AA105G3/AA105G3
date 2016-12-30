@@ -4,12 +4,8 @@
 <%@ page import="com.emp.model.*"%>
 <%-- 此頁練習採用 EL 的寫法取值 --%>
 
-<%
-    EmpService empSvc = new EmpService();
-    List<EmpVO> list = empSvc.getAll();
-    pageContext.setAttribute("list",list);
-%>
 
+<jsp:useBean id="empSvc" scope="page" class="com.emp.model.EmpService" />
 
 <!DOCTYPE html>
 <html lang="">
@@ -19,8 +15,9 @@
 		<meta name="viewport" content="width=device-width, initial-scale=1">
 		<title>員工資料管理</title>
 		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
-		<link rel="stylesheet" href="BackChefPage_main.css">
-		<script src=1_new.js></script>
+		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.6.4/css/bootstrap-datepicker.css">
+		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.12.1/css/bootstrap-select.min.css">
+		<script></script>
 		<!--[if lt IE 9]>
 			<script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
 			<script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
@@ -125,6 +122,21 @@ thead{
 }
 tr{
 	border:0px;
+}
+.modal{
+	margin-top: 100px;
+}
+.modal-title{
+	text-align: center;
+}
+#emp_address{
+	width:350px;
+}
+#emp_status{
+	height: 32px;
+}
+.modal-footer{
+	text-align:center;
 }
 
 
@@ -324,20 +336,21 @@ tr{
 						</tr>
 					</thead>
 					<tbody>
+					<c:forEach var="empVO" items="${empSvc.all}" >
 						<tr>
 							<td class="emp-list-info-title" colspan="6">
 								<div class="panel panel-default emp-info-wrapper">
 				    				<div class="panel-heading emp-info-title" role="tab" id="panel1">					      
 				    				<h4 class="panel-title">
-					        			<a href="#E00000002" data-parent="#accordion2" data-toggle="collapse" role="button" aria-expanded="true" aria-controls="E00000002" class="emp-info-a">
+					        			<a href="#E${empVO.emp_no}" data-parent="#accordion2" data-toggle="collapse" role="button" aria-expanded="true" aria-controls="E${empVO.emp_no}" class="emp-info-a">
 					        	  		<table class="table emp-info-head">
 					        	  			<tr>
-					        	  				<td class="emp_no_info">1001</td>
-					        	  				<td class="emp_name_info">員工一號</td>
-					        	  				<td class="emp_account_info">account</td>
-					        	  				<td class="emp_email_info">llll@email.com</td>
+					        	  				<td class="emp_no_info">${empVO.emp_no}</td>
+					        	  				<td class="emp_name_info">${empVO.emp_name}</td>
+					        	  				<td class="emp_account_info">${empVO.emp_account}</td>
+					        	  				<td class="emp_email_info">${empVO.emp_email}</td>
 					        	  				
-					        	  				<td class="emp_job_info">經理</td>
+					        	  				<td class="emp_job_info">${empVO.emp_job}</td>
 					        	  				
 					        	  			</tr>
 					        	  		</table>
@@ -345,39 +358,33 @@ tr{
 
 					    			</h4>
 									</div>
-								    <div id="E00000002" class="panel-collapse collapse" role="tabpanel" aria-labelledby="panel1">
+								    <div id="E${empVO.emp_no}" class="panel-collapse collapse" role="tabpanel" aria-labelledby="panel1">
 								      	<div>
 								      		<div class="list-group-item">
 								      			<div class="row">
 								      			<div class="col-xs-12 col-sm-10 emp-info-inner">
-								      				<label>身分證字號 :</label>&nbsp<span>O100150254</span>&nbsp&nbsp&nbsp&nbsp
-								      				<label>連絡電話 :</label>&nbsp<span>O100150254</span>&nbsp&nbsp&nbsp&nbsp
-								      				<label>到職日 :</label>&nbsp<span>2016/10/15</span><br>
-								      				<label>地址 :</label>&nbsp<span>O100150254</span><br>
+								      				<label>身分證字號 :</label>&nbsp<span>${empVO.emp_id}</span>&nbsp&nbsp&nbsp&nbsp
+								      				<label>連絡電話 :</label>&nbsp<span>${empVO.emp_phone}</span>&nbsp&nbsp&nbsp&nbsp
+								      				<label>到職日 :</label>&nbsp<span>${empVO.emp_hiredate}</span><br>
+								      				<label>地址 :</label>&nbsp<span>${empVO.emp_address}</span><br>
 								      				<label>擁有權限 :</label>&nbsp<span>員工資料管理、會員管理</span>
 								      			</div>
 								      			<div class="col-xs-12 col-sm-2 text-right">
 								      				<div class="emp_auth-update-wrapper">
-								      					<button class="btn btn-primary btn-sm emp-info-update">修改基本資料</button>
-								      					
+								      					<button class="btn btn-primary btn-sm emp-info-update" onclick="updateEmpInfo(${empVO.emp_no})">修改基本資料</button>
 								      				</div>
 								      				<div>
-								      					<button class="btn btn-sm btn-primary emp_auth-update">修改權限</button>	
+								      					<button class="btn btn-sm btn-primary emp_auth-update" data-toggle="modal" data-target="#emp-auth-input">修改權限</button>	
 								      				</div>
-								      				
 								      			</div>
-								      				
-								      			
 								      			</div>
 								      		</div>
-								      		
-								      		
 								      	</div>
 							   		 </div>
 								</div>
 							</td>
 						</tr>
-						
+						</c:forEach>
 
 
 						
@@ -388,11 +395,164 @@ tr{
 				
 			
 		</div>
+
+		 <div class="modal fade" id="emp-info-input" role="dialog">
+		    <div class="modal-dialog">
+		    
+		      <!-- Modal content-->
+		      <div class="modal-content">
+		      <form class="form-horizontal" action="<%=request.getContextPath()%>/emp/emp.do" method="post" >
+		        <div class="modal-header">
+		          <button type="button" class="close" data-dismiss="modal">&times;</button>
+		          <h4 class="modal-title">修改基本資料</h4>
+		        </div>
+		        <div class="modal-body">
+		          
+
+		          	<div class="form-group form-inline">
+							<label  for="emp_name" class="col-sm-3 control-label">姓名 : </label>
+						<div class="col-sm-9 text-left">
+							<input type="text" name="emp_name" id="emp_name" class="form-control" placeholder="請輸入修改的姓名">
+						</div>
+					</div>
+					<div class="form-group form-inline">
+							<label  for="emp_id" class="col-sm-3 control-label">身分證字號 : </label>
+						<div class="col-sm-9 text-left">
+							<input type="text" name="emp_id" id="emp_id" class="form-control" placeholder="請輸入身分證字號">
+						</div>
+					</div>
+					<div class="form-group form-inline">
+							<label  for="emp_email" class="col-sm-3 control-label">E-mail : </label>
+							<div class="col-sm-9 text-left">
+							<input type="text" name="emp_email" id="emp_email" class="form-control" placeholder="請輸入E-mail">
+							</div>
+						</div>
+					<div class="form-group form-inline">
+							<label  for="emp_phone" class="col-sm-3 control-label">連絡電話 : </label>
+							<div class="col-sm-9 text-left">
+							<input type="text" name="emp_phone" id="emp_phone" class="form-control" placeholder="請輸入連絡電話">
+							</div>
+						</div>
+
+					<div class="form-group form-inline">
+							<label  for="emp_hiredate" class="col-sm-3 control-label"  >到職日 : </label>
+							<div class="col-sm-9 text-left">
+							<input type="text" name="emp_hiredate" id="emp_hiredate" class="form-control" placeholder="請輸入到職日" readonly>
+							</div>
+						</div>
+						<div class="form-group form-inline">
+							<label  for="emp_address" class="col-sm-3 control-label">住址 : </label>
+							<div class="col-sm-9 text-left">
+							<input type="text" name="emp_address" id="emp_address" class="form-control" placeholder="請輸入住址">
+							</div>
+						</div>
+						<div class="form-group form-inline">
+							<label  for="emp_job" class="col-sm-3 control-label">職稱 : </label>
+							<div class="col-sm-9 text-left">
+							<input type="text" name="emp_job" id="emp_job" class="form-control" placeholder="請輸入職稱">
+							</div>
+						</div>
+						<div class="form-group form-inline">
+							<label  for="emp_job" class="col-sm-3 control-label">員工狀態 : </label>
+							<div class="col-sm-9 text-left">
+							<select name="emp_status" id="emp_status" class="selectpicker show-tick">
+								<option value="1">在職</option>
+								<option value="0">離職</option>
+							</select>
+							</div>
+						</div>
+		          
+		        </div>
+		        <div class="modal-footer">
+		          <input type="submit" class="btn btn-default" name="submitButton" value="提交">
+		          <input type="hidden" name="action" value="update">
+		          <input type="hidden" id="info_emp_no" name="emp_no" value="">
+		          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+		        </div>
+		        </form>
+		      </div>
+		    </div>
+		  </div>
+
+		  <div class="modal fade" id="emp-auth-input" role="dialog">
+		    <div class="modal-dialog">
+		    
+		      <!-- Modal content-->
+		      <div class="modal-content">
+		      <form class="form-horizontal" action="" method="get" >
+		        <div class="modal-header">
+		          <button type="button" class="close" data-dismiss="modal">&times;</button>
+		          <h4 class="modal-title">修改權限</h4>
+		        </div>
+		        <div class="modal-body">
+		          <form >
+		          	
+		          </form>
+		        </div>
+		        <div class="modal-footer">
+		       	  <input type="submit" class="btn btn-default" name="submitButton" value="提交">
+		          <input type="hidden" name="action" value="update">
+		          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+		        </div>
+		        </form>
+		      </div>
+		      
+		    </div>
+		  </div>
+
 		<footer id="the_footer">
 			<p class="lightcolor">All Content Copyright &copy; 2016 TomCat Inc</p>
 		</footer>
 		
 		<script src="https://code.jquery.com/jquery.js"></script>
 		<script src="https://netdna.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+		<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.6.4/js/bootstrap-datepicker.js"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.12.1/js/bootstrap-select.min.js"></script>
+
+		<script type="text/javascript">
+
+			$(document).ready(function (){
+					$('#emp_hiredate').datepicker({
+				    todayBtn: "linked",
+				    clearBtn: true,
+				    
+				    orientation: "bottom right"
+				    
+				});
+				})
+			
+
+			function updateEmpInfo(e){
+				// $("#emp-info-input").modal('show');
+				var emp_no = e;
+				$("#info_emp_no").val(emp_no);
+				$.ajax({
+						 type:"GET",
+						 url:"/AA105G3/Emp/EmpJsonRes.do",
+						 data:creatQueryString(emp_no),
+						 dataType:"json",
+						 success:function (data){
+							 $("#emp_name").val(data.emp_name);
+							 $("#emp_id").val(data.emp_id);
+							 $("#emp_email").val(data.emp_email);
+							 $("#emp_phone").val(data.emp_phone);
+							 $("#emp_hiredate").val(data.emp_hiredate);
+							 $("#emp_address").val(data.emp_address);
+							 $("#emp_job").val(data.emp_job);
+							 
+							 $("#emp_status").val(data.emp_status).change();
+							 $("#emp_status").val(data.emp_status);
+							 alert(data.emp_status);
+							 $("#emp-info-input").modal('show');
+							 
+					     },
+			             error:function(){alert(emp_no)}
+			         })
+			}
+			function creatQueryString(emp_no){
+				var queryString={"action":"getEmpInfo","emp_no":emp_no};
+				return queryString;
+			}
+		</script>
 	</body>
 </html>

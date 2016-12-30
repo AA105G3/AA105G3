@@ -6,9 +6,9 @@
 		<meta name="viewport" content="width=device-width, initial-scale=1">
 		<title>員工資料管理</title>
 		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
-		<link rel="stylesheet" href="BackChefPage_main.css">
 		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.6.4/css/bootstrap-datepicker.css">
-		<script src=1_new.js></script>
+		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.12.1/css/bootstrap-select.min.css">
+		<script></script>
 		<!--[if lt IE 9]>
 			<script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
 			<script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
@@ -122,6 +122,9 @@ tr{
 }
 #emp_address{
 	width:350px;
+}
+#emp_status{
+	height: 32px;
 }
 .modal-footer{
 	text-align:center;
@@ -398,7 +401,7 @@ tr{
 		    
 		      <!-- Modal content-->
 		      <div class="modal-content">
-		      <form class="form-horizontal" action="" method="get" >
+		      <form class="form-horizontal" action="<%=request.getContextPath()%>/emp/emp.do" method="post" >
 		        <div class="modal-header">
 		          <button type="button" class="close" data-dismiss="modal">&times;</button>
 		          <h4 class="modal-title">修改基本資料</h4>
@@ -449,6 +452,15 @@ tr{
 							<input type="text" name="emp_job" id="emp_job" class="form-control" placeholder="請輸入職稱">
 							</div>
 						</div>
+						<div class="form-group form-inline">
+							<label  for="emp_job" class="col-sm-3 control-label">員工狀態 : </label>
+							<div class="col-sm-9 text-left">
+							<select name="emp_status" id="emp_status" class="selectpicker show-tick">
+								<option value="1">在職</option>
+								<option value="0">離職</option>
+							</select>
+							</div>
+						</div>
 		          
 		        </div>
 		        <div class="modal-footer">
@@ -494,6 +506,7 @@ tr{
 		<script src="https://code.jquery.com/jquery.js"></script>
 		<script src="https://netdna.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
 		<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.6.4/js/bootstrap-datepicker.js"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.12.1/js/bootstrap-select.min.js"></script>
 
 		<script type="text/javascript">
 
@@ -509,6 +522,7 @@ tr{
 			
 
 			function updateEmpInfo(e){
+				// $("#emp-info-input").modal('show');
 				var emp_no = e;
 				$.ajax({
 						 type:"GET",
@@ -523,6 +537,10 @@ tr{
 							 $("#emp_hiredate").val(data.emp_hiredate);
 							 $("#emp_address").val(data.emp_address);
 							 $("#emp_job").val(data.emp_job);
+							 
+							 $("#emp_status").val(data.emp_status).change();
+							 $("#emp_status").val(data.emp_status);
+							 alert(data.emp_status);
 							 $("#emp-info-input").modal('show');
 					     },
 			             error:function(){alert(emp_no)}

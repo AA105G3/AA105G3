@@ -142,8 +142,6 @@ public class EmpServlet extends HttpServlet {
 				/***************************1.接收請求參數 - 輸入格式的錯誤處理**********************/
 				String emp_no = req.getParameter("emp_no").trim();
 				String emp_name = req.getParameter("emp_name").trim();
-				String emp_account = req.getParameter("emp_account").trim();
-				String emp_password = req.getParameter("emp_password").trim();
 				String emp_id = req.getParameter("emp_id").trim();
 				String emp_email = req.getParameter("emp_email").trim();
 				String emp_address = req.getParameter("emp_address").trim();
@@ -152,19 +150,25 @@ public class EmpServlet extends HttpServlet {
 				
 				String emp_job = req.getParameter("emp_job").trim();				
 				
+				SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy");
+			    String hireDate = req.getParameter("emp_hiredate").trim();
+			    
+			    SimpleDateFormat sdf2 = new SimpleDateFormat("yyyy-MM-dd");
+			    java.util.Date date = sdf.parse(hireDate);
+			    hireDate = sdf2.format(date);
 				java.sql.Date emp_hiredate = null;
 				try {
-					emp_hiredate = java.sql.Date.valueOf(req.getParameter("emp_hiredate").trim());
+					emp_hiredate = java.sql.Date.valueOf(hireDate);
 				} catch (IllegalArgumentException e) {
 					emp_hiredate=new java.sql.Date(System.currentTimeMillis());
 					errorMsgs.add("請輸入日期!");
 				}
-
+				
+				
+				
 				EmpVO empVO = new EmpVO();
 				empVO.setEmp_no(emp_no);
 				empVO.setEmp_name(emp_name);
-				empVO.setEmp_account(emp_account);
-				empVO.setEmp_password(emp_password);
 				empVO.setEmp_id(emp_id);
 				empVO.setEmp_email(emp_email);
 				empVO.setEmp_address(emp_address);
@@ -183,12 +187,13 @@ public class EmpServlet extends HttpServlet {
 				
 				/***************************2.開始修改資料*****************************************/
 				EmpService empSvc = new EmpService();
-				empVO = empSvc.updateEmp(emp_no,emp_name,emp_account,emp_password,emp_id,emp_email,
+				EmpVO dbempVO = empSvc.getOneEmp(emp_no);
+				empVO = empSvc.updateEmp(emp_no,emp_name,dbempVO.getEmp_account(),dbempVO.getEmp_password(),emp_id,emp_email,
 						emp_address,emp_phone,emp_hiredate,emp_job,emp_status);
 				
 				/***************************3.修改完成,準備轉交(Send the Success view)*************/
 				req.setAttribute("empVO", empVO); // 資料庫update成功後,正確的的empVO物件,存入req
-				String url = "/back-end/emp/listOneEmp.jsp";
+				String url = "/back-end/emp/EmpList.jsp";
 				RequestDispatcher successView = req.getRequestDispatcher(url); // 修改成功後,轉交listOneEmp.jsp
 				successView.forward(req, res);
 
@@ -196,7 +201,7 @@ public class EmpServlet extends HttpServlet {
 			} catch (Exception e) {
 				errorMsgs.add("修改資料失敗:"+e.getMessage());
 				RequestDispatcher failureView = req
-						.getRequestDispatcher("/back-end/emp/update_emp_input.jsp");
+						.getRequestDispatcher("/back-end/emp/EmpList.jsp.jsp");
 				failureView.forward(req, res);
 			}
 		}

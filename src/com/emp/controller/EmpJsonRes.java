@@ -52,6 +52,7 @@ public class EmpJsonRes extends HttpServlet {
 					obj.put("emp_hiredate",hiredate);
 					obj.put("emp_address",empVO.getEmp_address());
 					obj.put("emp_job",empVO.getEmp_job());
+					obj.put("emp_status", empVO.getEmp_status());
 				} catch (JSONException e)
 				{
 					// TODO Auto-generated catch block
