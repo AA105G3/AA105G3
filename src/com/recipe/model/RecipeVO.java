@@ -15,7 +15,7 @@ public class RecipeVO
 	private Integer recipe_week_views;
 	private Timestamp recipe_time;
 	private String recipe_edit;
-	
+	private String recipe_classify;
 	
 	
 	public String getRecipe_no()
