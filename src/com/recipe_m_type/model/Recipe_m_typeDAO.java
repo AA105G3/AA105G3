@@ -6,6 +6,9 @@ import javax.naming.Context;
 import javax.naming.InitialContext;
 import javax.naming.NamingException;
 import javax.sql.DataSource;
+
+import com.recipe_s_type.model.Recipe_s_typeVO;
+
 import java.sql.*;
 
 public class Recipe_m_typeDAO implements Recipe_m_typeDAO_interface {
@@ -38,6 +41,9 @@ public class Recipe_m_typeDAO implements Recipe_m_typeDAO_interface {
 		private static final String UPDATE = 
 			"UPDATE recipe_m_type set m_type_name=?,"
 			+ " parent_type=? where recipe_m_type_no = ?";
+		
+		private static final String GET_S_Types_ByM_Type_NO = "SELECT recipe_s_type_no, s_type_name,"
+				+ " parent_type FROM recipe_s_type where parent_type = ?";
 		
 	@Override
 	public void insert(Recipe_m_typeVO recipe_m_typeVO) {
@@ -159,7 +165,7 @@ public class Recipe_m_typeDAO implements Recipe_m_typeDAO_interface {
 			rs = pstmt.executeQuery();
 
 			while (rs.next()) {
-				// recipe_m_typeVO ¤]ºÙ¬° Domain objects
+				// recipe_m_typeVO ï¿½]ï¿½Ù¬ï¿½ Domain objects
 				recipe_m_typeVO = new Recipe_m_typeVO();
 				recipe_m_typeVO.setRecipe_m_type_no(rs.getString("recipe_m_type_no"));
 				recipe_m_typeVO.setM_type_name(rs.getString("m_type_name"));
@@ -213,7 +219,7 @@ public class Recipe_m_typeDAO implements Recipe_m_typeDAO_interface {
 			rs = pstmt.executeQuery();
 
 			while (rs.next()) {
-				// recipe_m_typeVO ¤]ºÙ¬° Domain objects
+				// recipe_m_typeVO ï¿½]ï¿½Ù¬ï¿½ Domain objects
 				recipe_m_typeVO = new Recipe_m_typeVO();
 				recipe_m_typeVO.setRecipe_m_type_no(rs.getString("recipe_m_type_no"));
 				recipe_m_typeVO.setM_type_name(rs.getString("m_type_name"));
@@ -251,5 +257,59 @@ public class Recipe_m_typeDAO implements Recipe_m_typeDAO_interface {
 		}
 		return list;
 	}
-
+	
+	@Override
+	public Set<Recipe_s_typeVO> getS_typesByM_Type_No(String parent_type)
+	{
+		Set<Recipe_s_typeVO> set = new LinkedHashSet<Recipe_s_typeVO>();
+		Recipe_s_typeVO recipe_s_typeVO = null;
+	
+		Connection con = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+	
+		try {
+	
+			con = ds.getConnection();
+			pstmt = con.prepareStatement(GET_S_Types_ByM_Type_NO);
+			pstmt.setString(1, parent_type);
+			rs = pstmt.executeQuery();
+	
+			while (rs.next()) {
+				recipe_s_typeVO = new Recipe_s_typeVO();
+				recipe_s_typeVO.setS_type_name(rs.getString("s_type_name"));
+				recipe_s_typeVO.setRecipe_s_type_no(rs.getString("recipe_s_type_no"));
+				recipe_s_typeVO.setParent_type(rs.getString("parent_type"));
+				set.add(recipe_s_typeVO); // Store the row in the vector
+			}
+	
+		
+		} catch (SQLException se) {
+			throw new RuntimeException("A database error occured. "
+					+ se.getMessage());
+		} finally {
+			if (rs != null) {
+				try {
+					rs.close();
+				} catch (SQLException se) {
+					se.printStackTrace(System.err);
+				}
+			}
+			if (pstmt != null) {
+				try {
+					pstmt.close();
+				} catch (SQLException se) {
+					se.printStackTrace(System.err);
+				}
+			}
+			if (con != null) {
+				try {
+					con.close();
+				} catch (Exception e) {
+					e.printStackTrace(System.err);
+				}
+			}
+		}
+		return set;
+	}
 }
