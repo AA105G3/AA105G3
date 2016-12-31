@@ -37,12 +37,6 @@ public class RecipeDAO implements RecipeDAO_interface
 			+ "VALUES ('R'||lpad(recipe_seq.NEXTVAL,8,0),?,?,?,?,?,?)";
 	private static final String Get_ALL_STMT = 
 			"select recipe_no,mem_no,recipe_name,recipe_intro,food_mater,recipe_pic,recipe_like,recipe_total_views"
-<<<<<<< HEAD
-			+ ",recipe_week_views,recipe_time from recipe order by recipe_no";
-	private static final String GET_ONE_STMT = 
-			"select recipe_no,mem_no,recipe_name,recipe_intro,food_mater,recipe_pic,recipe_like,recipe_total_views"
-			+ ",recipe_week_views,recipe_time from recipe where recipe_no = ?";
-=======
 			+ ",recipe_week_views,recipe_time,recipe_edit,recipe_classify from recipe order by recipe_time desc";
 	private static final String Get_ALL_STMT_By_Views = 
 			"select recipe_no,mem_no,recipe_name,recipe_intro,food_mater,recipe_pic,recipe_like,recipe_total_views"
@@ -53,11 +47,10 @@ public class RecipeDAO implements RecipeDAO_interface
 	private static final String GET_BY_Mem_No = 
 			"select recipe_no,mem_no,recipe_name,recipe_intro,food_mater,recipe_pic,recipe_like,recipe_total_views"
 			+ ",recipe_week_views,recipe_time,recipe_edit,recipe_classify from recipe where mem_no = ?";
->>>>>>> refs/heads/liquid-develop2
 	private static final String DELETE = 
 			"DELETE FROM recipe where recipe_no = ?";
 	private static final String UPDATE = 
-			"UPDATE recipe set recipe_name=?,recipe_intro=?,food_mater=?,recipe_pic=?,recipe_time=sysdate where recipe_no = ?";
+			"UPDATE recipe set recipe_name=?,recipe_intro=?,food_mater=?,recipe_pic=?,recipe_time=sysdate,recipe_edit = ? where recipe_no = ?";
 	private static final String UPDATEVIEWS = 
 			"UPDATE recipe set recipe_total_views=?,recipe_week_views=? where recipe_no = ?";
 	private static final String UPDATELIKE =
@@ -153,7 +146,8 @@ public class RecipeDAO implements RecipeDAO_interface
 			pstmt.setString(2, recipeVO.getRecipe_intro());
 			pstmt.setString(3, recipeVO.getFood_mater());
 			pstmt.setBinaryStream(4, bais, piclen);
-			pstmt.setString(5, recipeVO.getRecipe_no());
+			pstmt.setString(5, recipeVO.getRecipe_edit());
+			pstmt.setString(6, recipeVO.getRecipe_no());
 			
 
 			pstmt.executeUpdate();
@@ -252,6 +246,8 @@ public class RecipeDAO implements RecipeDAO_interface
 				recipeVO.setRecipe_total_views(rs.getInt("recipe_total_views"));
 				recipeVO.setRecipe_week_views(rs.getInt("recipe_week_views"));
 				recipeVO.setRecipe_time(rs.getTimestamp("recipe_time"));
+				recipeVO.setRecipe_edit(rs.getString("recipe_edit"));
+				recipeVO.setRecipe_classify(rs.getString("recipe_classify"));
 				
 				
 			}
@@ -315,6 +311,8 @@ public class RecipeDAO implements RecipeDAO_interface
 				recipeVO.setRecipe_total_views(rs.getInt("recipe_total_views"));
 				recipeVO.setRecipe_week_views(rs.getInt("recipe_week_views"));
 				recipeVO.setRecipe_time(rs.getTimestamp("recipe_time"));
+				recipeVO.setRecipe_edit(rs.getString("recipe_edit"));
+				recipeVO.setRecipe_classify(rs.getString("recipe_classify"));
 				
 				list.add(recipeVO);
 			}
@@ -500,7 +498,9 @@ public class RecipeDAO implements RecipeDAO_interface
 			ResultSet rs = pstmt.getGeneratedKeys();
 			if (rs.next()) {
 				next_recipe_no = rs.getString(1);
+				System.out.println("自增主鍵值= " + next_recipe_no +"(剛新增成功的食譜編號)");
 			} else {
+				System.out.println("未取得自增主鍵值");
 			}
 			rs.close();
 			// 再同時新增食譜內容
@@ -514,6 +514,9 @@ public class RecipeDAO implements RecipeDAO_interface
 			// 2●設定於 pstm.executeUpdate()之後
 			con.commit();
 			con.setAutoCommit(true);
+			System.out.println("list.size()-B="+list.size());
+			System.out.println("新增食譜編號" + next_recipe_no + "時,共有步驟" + list.size()
+					+ "條同時被新增");
 			
 			// Handle any driver errors
 		} catch (SQLException se) {

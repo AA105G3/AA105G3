@@ -26,12 +26,6 @@ public class RecipeJDBCDAO implements RecipeDAO_interface
 			+ "VALUES ('R'||lpad(recipe_seq.NEXTVAL,8,0),?,?,?,?,?,?)";
 	private static final String Get_ALL_STMT = 
 			"select recipe_no,mem_no,recipe_name,recipe_intro,food_mater,recipe_pic,recipe_like,recipe_total_views"
-<<<<<<< HEAD
-			+ ",recipe_week_views,recipe_time from recipe order by recipe_no";
-	private static final String GET_ONE_STMT = 
-			"select recipe_no,mem_no,recipe_name,recipe_intro,food_mater,recipe_pic,recipe_like,recipe_total_views"
-			+ ",recipe_week_views,recipe_time from recipe where recipe_no = ?";
-=======
 			+ ",recipe_week_views,recipe_time,recipe_edit,recipe_classify from recipe order by recipe_time desc";
 	private static final String Get_ALL_STMT_By_Views = 
 			"select recipe_no,mem_no,recipe_name,recipe_intro,food_mater,recipe_pic,recipe_like,recipe_total_views"
@@ -42,11 +36,10 @@ public class RecipeJDBCDAO implements RecipeDAO_interface
 	private static final String GET_BY_Mem_No = 
 			"select recipe_no,mem_no,recipe_name,recipe_intro,food_mater,recipe_pic,recipe_like,recipe_total_views"
 			+ ",recipe_week_views,recipe_time,recipe_edit,recipe_classify from recipe where mem_no = ?";
->>>>>>> refs/heads/liquid-develop2
 	private static final String DELETE = 
 			"DELETE FROM recipe where recipe_no = ?";
 	private static final String UPDATE = 
-			"UPDATE recipe set recipe_name=?,recipe_intro=?,food_mater=?,recipe_pic=?,recipe_time=sysdate where recipe_no = ?";
+			"UPDATE recipe set recipe_name=?,recipe_intro=?,food_mater=?,recipe_pic=?,recipe_time=sysdate,recipe_edit = ? where recipe_no = ?";
 	private static final String UPDATEVIEWS = 
 			"UPDATE recipe set recipe_total_views=?,recipe_week_views=? where recipe_no = ?";
 	private static final String UPDATELIKE =
@@ -143,7 +136,8 @@ public class RecipeJDBCDAO implements RecipeDAO_interface
 			pstmt.setString(2, recipeVO.getRecipe_intro());
 			pstmt.setString(3, recipeVO.getFood_mater());
 			pstmt.setBinaryStream(4, bais, piclen);
-			pstmt.setString(5, recipeVO.getRecipe_no());
+			pstmt.setString(5, recipeVO.getRecipe_edit());
+			pstmt.setString(6, recipeVO.getRecipe_no());
 			
 
 			pstmt.executeUpdate();
@@ -251,7 +245,8 @@ public class RecipeJDBCDAO implements RecipeDAO_interface
 				recipeVO.setRecipe_total_views(rs.getInt("recipe_total_views"));
 				recipeVO.setRecipe_week_views(rs.getInt("recipe_week_views"));
 				recipeVO.setRecipe_time(rs.getTimestamp("recipe_time"));
-				
+				recipeVO.setRecipe_edit(rs.getString("recipe_edit"));
+				recipeVO.setRecipe_classify(rs.getString("recipe_classify"));
 				
 			}
 		} catch (ClassNotFoundException e)
@@ -390,6 +385,8 @@ public class RecipeJDBCDAO implements RecipeDAO_interface
 				recipeVO.setRecipe_total_views(rs.getInt("recipe_total_views"));
 				recipeVO.setRecipe_week_views(rs.getInt("recipe_week_views"));
 				recipeVO.setRecipe_time(rs.getTimestamp("recipe_time"));
+				recipeVO.setRecipe_edit(rs.getString("recipe_edit"));
+				recipeVO.setRecipe_classify(rs.getString("recipe_classify"));
 				
 				list.add(recipeVO);
 			}
@@ -921,7 +918,7 @@ public class RecipeJDBCDAO implements RecipeDAO_interface
 //		fis.close();
 		
 		//update
-//		File pic = new File("images/recipe","cat.jpg");
+//		File pic = new File("WebContent/images","cat.jpg");
 //		InputStream fis = new FileInputStream(pic);
 //		byte[] buffer = new byte[fis.available()];
 //		
@@ -931,6 +928,7 @@ public class RecipeJDBCDAO implements RecipeDAO_interface
 //		recipeVO2.setFood_mater("食材1-100g+食材2-200g");
 //		recipeVO2.setRecipe_pic(buffer);
 //		recipeVO2.setRecipe_no("R00000002");
+//		recipeVO2.setRecipe_edit("編輯中");
 //		
 //		dao.update(recipeVO2);
 		
@@ -966,6 +964,8 @@ public class RecipeJDBCDAO implements RecipeDAO_interface
 //		System.out.print(recipeVO3.getRecipe_total_views()+" | ");
 //		System.out.print(recipeVO3.getRecipe_week_views()+" | ");
 //		System.out.print(new java.text.SimpleDateFormat().format(recipeVO3.getRecipe_time())+" | ");
+//		System.out.print(recipeVO3.getRecipe_edit()+" | ");
+//		System.out.print(recipeVO3.getRecipe_classify()+" | ");
 
 		//search by mem_no
 		
@@ -1007,22 +1007,6 @@ public class RecipeJDBCDAO implements RecipeDAO_interface
 //		}
 		
 		//search all
-<<<<<<< HEAD
-		List<RecipeVO> list = dao.getAll();
-		for(RecipeVO recipeVO4: list){
-			System.out.print("| "+recipeVO4.getRecipe_no()+" | ");
-		System.out.print(recipeVO4.getMem_no()+" | ");
-		System.out.print(recipeVO4.getRecipe_name()+" | ");
-		System.out.print(recipeVO4.getRecipe_intro()+" | ");
-		System.out.print(recipeVO4.getFood_mater()+" | ");
-		System.out.print(recipeVO4.getRecipe_like()+" | ");
-		System.out.print(recipeVO4.getRecipe_total_views()+" | ");
-		System.out.print(recipeVO4.getRecipe_week_views()+" | ");
-		System.out.print(recipeVO4.getRecipe_time()+" | ");
-		System.out.print(recipeVO4.getRecipe_pic()+" | ");
-			System.out.println();
-		}
-=======
 //		List<RecipeVO> list = dao.getAllOrderByViews();
 //		for(RecipeVO recipeVO4: list){
 //			System.out.print("| "+recipeVO4.getRecipe_no()+" | ");
@@ -1039,7 +1023,6 @@ public class RecipeJDBCDAO implements RecipeDAO_interface
 //		System.out.print(recipeVO4.getRecipe_classify()+" | ");
 //			System.out.println();
 //		}
->>>>>>> refs/heads/liquid-develop2
 	}
 
 	
