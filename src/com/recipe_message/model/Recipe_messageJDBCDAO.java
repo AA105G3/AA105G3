@@ -1,41 +1,27 @@
-package com.recipe_m_type.model;
+package com.recipe_message.model;
 
 import java.util.*;
+
+import com.recipe_message.model.Recipe_messageVO;
+
 import java.sql.*;
 
-import javax.naming.Context;
-import javax.naming.InitialContext;
-import javax.naming.NamingException;
-import javax.sql.DataSource;
+public class Recipe_messageJDBCDAO implements Recipe_messageDAO_interface{
 
-public class Recipe_m_typeJDBCDAO implements Recipe_m_typeDAO_interface {
 	String driver = "oracle.jdbc.driver.OracleDriver";
 	String url = "jdbc:oracle:thin:@localhost:1521:XE";
 	String userid = "foodtime";
 	String passwd = "foodtime";
 	
-	private static final String INSERT_STMT = 
-		"INSERT INTO recipe_m_type (recipe_m_type_no,"
-		+ " m_type_name,"
-		+ " parent_type) "
-		+ "VALUES ('RM'||LPAD(recipe_m_type_seq.NEXTVAL,4,0), ?, ?)";
-	private static final String GET_ALL_STMT = 
-		"SELECT recipe_m_type_no,"
-		+ " m_type_name,"
-		+ " parent_type FROM recipe_m_type order by recipe_m_type_no";
-	private static final String GET_ONE_STMT = 
-		"SELECT recipe_m_type_no,"
-		+ " m_type_name,"
-		+ " parent_type FROM recipe_m_type where recipe_m_type_no = ?";
-	private static final String DELETE = 
-		"DELETE FROM recipe_m_type where recipe_m_type_no = ?";
-	private static final String UPDATE = 
-		"UPDATE recipe_m_type set m_type_name=?,"
-		+ " parent_type=? where recipe_m_type_no = ?";
+	private static final String INSERT_STMT = "INSERT INTO recipe_message (recipe_msg_no, mem_no, recipe_no, msg_cont, recipe_msg_ref, msg_time ) VALUES ('RMN'||recipe_msg_seq.NEXTVAL,?,?,?,?,sysdate)";
+	private static final String GET_ALL_STMT = "SELECT recipe_msg_no, mem_no, recipe_no, msg_cont, recipe_msg_ref, msg_time FROM recipe_message";
+	private static final String GET_ONE_STMT = "SELECT recipe_msg_no, mem_no, recipe_no, msg_cont, recipe_msg_ref, msg_time FROM recipe_message where recipe_msg_no = ?";
+	private static final String DELETE = "DELETE FROM recipe_message where recipe_msg_no = ?";
+	private static final String UPDATE = "UPDATE recipe_message set msg_cont=? , msg_time=sysdate where recipe_msg_no = ?";
 	
-	@Override
-	public void insert(Recipe_m_typeVO recipe_m_typeVO) {
-
+	
+	public void insert(Recipe_messageVO recipe_messageVO) {
+		
 		Connection con = null;
 		PreparedStatement pstmt = null;
 
@@ -45,12 +31,15 @@ public class Recipe_m_typeJDBCDAO implements Recipe_m_typeDAO_interface {
 			con = DriverManager.getConnection(url, userid, passwd);
 			pstmt = con.prepareStatement(INSERT_STMT);
 
-			pstmt.setString(1, recipe_m_typeVO.getM_type_name());
-			pstmt.setString(2, recipe_m_typeVO.getParent_type());
-
+			pstmt.setString(1, recipe_messageVO.getMem_no());
+			pstmt.setString(2, recipe_messageVO.getRecipe_no());
+			pstmt.setString(3,recipe_messageVO.getMsg_cont());
+			pstmt.setString(4, recipe_messageVO.getRecipe_msg_ref());
+			
+			
 			pstmt.executeUpdate();
 
-			// Handle any SQL errors
+			// Handle any driver errors
 		} catch (ClassNotFoundException e) {
 			throw new RuntimeException("Couldn't load database driver. "
 					+ e.getMessage());
@@ -74,13 +63,14 @@ public class Recipe_m_typeJDBCDAO implements Recipe_m_typeDAO_interface {
 					e.printStackTrace(System.err);
 				}
 			}
-		}
-
+		}		
+		
 	}
 	
+	
 	@Override
-	public void update(Recipe_m_typeVO recipe_m_typeVO) {
-
+	public void update(Recipe_messageVO recipe_messageVO) {
+		
 		Connection con = null;
 		PreparedStatement pstmt = null;
 
@@ -90,9 +80,9 @@ public class Recipe_m_typeJDBCDAO implements Recipe_m_typeDAO_interface {
 			con = DriverManager.getConnection(url, userid, passwd);
 			pstmt = con.prepareStatement(UPDATE);
 
-			pstmt.setString(1, recipe_m_typeVO.getM_type_name());
-			pstmt.setString(2, recipe_m_typeVO.getParent_type());
-			pstmt.setString(3, recipe_m_typeVO.getRecipe_m_type_no());
+			pstmt.setString(1, recipe_messageVO.getMsg_cont());
+			pstmt.setString(2, recipe_messageVO.getRecipe_msg_no());
+
 			pstmt.executeUpdate();
 
 			// Handle any driver errors
@@ -119,13 +109,13 @@ public class Recipe_m_typeJDBCDAO implements Recipe_m_typeDAO_interface {
 					e.printStackTrace(System.err);
 				}
 			}
-		}
+		}	
 
 	}
-	
-	@Override
-	public void delete(String recipe_m_type_no) {
 
+	@Override
+	public void delete(String recipe_msg_no) {
+		
 		Connection con = null;
 		PreparedStatement pstmt = null;
 
@@ -135,7 +125,7 @@ public class Recipe_m_typeJDBCDAO implements Recipe_m_typeDAO_interface {
 			con = DriverManager.getConnection(url, userid, passwd);
 			pstmt = con.prepareStatement(DELETE);
 
-			pstmt.setString(1, recipe_m_type_no);
+			pstmt.setString(1, recipe_msg_no);
 
 			pstmt.executeUpdate();
 
@@ -163,14 +153,14 @@ public class Recipe_m_typeJDBCDAO implements Recipe_m_typeDAO_interface {
 					e.printStackTrace(System.err);
 				}
 			}
-		}
+		}		
 
 	}
 
 	@Override
-	public Recipe_m_typeVO findByPrimaryKey(String recipe_m_type_no) {
+	public Recipe_messageVO findByPrimaryKey(String recipe_msg_no) {
 
-		Recipe_m_typeVO recipe_m_typeVO = null;
+		Recipe_messageVO recipe_messageVO = null;
 		Connection con = null;
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
@@ -181,16 +171,20 @@ public class Recipe_m_typeJDBCDAO implements Recipe_m_typeDAO_interface {
 			con = DriverManager.getConnection(url, userid, passwd);
 			pstmt = con.prepareStatement(GET_ONE_STMT);
 
-			pstmt.setString(1, recipe_m_type_no);
+			pstmt.setString(1, recipe_msg_no);
 
 			rs = pstmt.executeQuery();
 
 			while (rs.next()) {
-				// recipe_m_typeVO 也稱為 Domain objects
-				recipe_m_typeVO = new Recipe_m_typeVO();
-				recipe_m_typeVO.setRecipe_m_type_no(rs.getString("recipe_m_type_no"));
-				recipe_m_typeVO.setM_type_name(rs.getString("m_type_name"));
-				recipe_m_typeVO.setParent_type(rs.getString("parent_type"));
+				// recipe_messageVO 也稱為 Domain objects
+				recipe_messageVO = new Recipe_messageVO();
+				recipe_messageVO.setMem_no(rs.getString("mem_no"));
+				recipe_messageVO.setRecipe_no(rs.getString("recipe_no"));
+				recipe_messageVO.setMsg_cont(rs.getString("msg_cont"));
+				recipe_messageVO.setRecipe_msg_ref(rs.getString("recipe_msg_ref"));
+				recipe_messageVO.setRecipe_msg_no(rs.getString("recipe_msg_no"));
+				recipe_messageVO.setMsg_time(rs.getTimestamp("msg_time"));
+				
 			}
 
 			// Handle any driver errors
@@ -225,13 +219,13 @@ public class Recipe_m_typeJDBCDAO implements Recipe_m_typeDAO_interface {
 				}
 			}
 		}
-		return recipe_m_typeVO;
+		return recipe_messageVO;
 	}
 
 	@Override
-	public List<Recipe_m_typeVO> getAll() {
-		List<Recipe_m_typeVO> list = new ArrayList<Recipe_m_typeVO>();
-		Recipe_m_typeVO recipe_m_typeVO = null;
+	public List<Recipe_messageVO> getAll() {
+		List<Recipe_messageVO> list = new ArrayList<Recipe_messageVO>();
+		Recipe_messageVO recipe_messageVO = null;
 
 		Connection con = null;
 		PreparedStatement pstmt = null;
@@ -245,12 +239,15 @@ public class Recipe_m_typeJDBCDAO implements Recipe_m_typeDAO_interface {
 			rs = pstmt.executeQuery();
 
 			while (rs.next()) {
-				// recipe_m_typeVO 也稱為 Domain objects
-				recipe_m_typeVO = new Recipe_m_typeVO();
-				recipe_m_typeVO.setRecipe_m_type_no(rs.getString("recipe_m_type_no"));
-				recipe_m_typeVO.setM_type_name(rs.getString("m_type_name"));
-				recipe_m_typeVO.setParent_type(rs.getString("parent_type"));
-				list.add(recipe_m_typeVO); // Store the row in the list
+				// recipe_messageVO 也稱為 Domain objects
+				recipe_messageVO = new Recipe_messageVO();
+				recipe_messageVO.setRecipe_msg_no(rs.getString("recipe_msg_no"));
+				recipe_messageVO.setMem_no(rs.getString("mem_no"));
+				recipe_messageVO.setRecipe_no(rs.getString("recipe_no"));
+				recipe_messageVO.setMsg_cont(rs.getString("msg_cont"));
+				recipe_messageVO.setRecipe_msg_ref(rs.getString("recipe_msg_ref"));
+				recipe_messageVO.setMsg_time(rs.getTimestamp("msg_time"));
+				list.add(recipe_messageVO); // Store the row in the list
 			}
 
 			// Handle any driver errors
@@ -288,41 +285,57 @@ public class Recipe_m_typeJDBCDAO implements Recipe_m_typeDAO_interface {
 		return list;
 	}
 	
+	
+	
 	public static void main(String[] args) {
+	
+		Recipe_messageJDBCDAO dao = new Recipe_messageJDBCDAO();
+	
+//		insert
+//		Recipe_messageVO recipe_messageVO1 =new Recipe_messageVO();
+//		recipe_messageVO1.setMem_no("M00000001");
+//		recipe_messageVO1.setRecipe_no("R00000001");
+//		recipe_messageVO1.setMsg_cont("好好吃~~");
+//		recipe_messageVO1.setRecipe_msg_ref("RMN1");
+//		recipe_messageVO1.setMsg_time(Timestamp.valueOf("2016-12-01 15:33:22"));
+//		dao.insert(recipe_messageVO1);
 
-		Recipe_m_typeJDBCDAO dao = new Recipe_m_typeJDBCDAO();
 		
-		//新增
-//		Recipe_m_typeVO recipe_m_typeVO1 = new Recipe_m_typeVO();
-//		recipe_m_typeVO1.setM_type_name("新的中類別");
-//		recipe_m_typeVO1.setParent_type("RL0001");
-//		dao.insert(recipe_m_typeVO1);
+				
 		
-		//修改
-//		Recipe_m_typeVO recipe_m_typeVO2 = new Recipe_m_typeVO();
-//		recipe_m_typeVO2.setRecipe_m_type_no("RM0009");
-//		recipe_m_typeVO2.setM_type_name("修改中類別");
-//		recipe_m_typeVO2.setParent_type("RL0003");
-//		dao.update(recipe_m_typeVO2);
+//		update
+//		Recipe_messageVO recipe_messageVO2 = new Recipe_messageVO();
+//		recipe_messageVO2.setMsg_cont("讚!!!");
+//		recipe_messageVO2.setRecipe_msg_no("RMN2");
+//		
+//		dao.update(recipe_messageVO2);
 		
-		//刪除
-//		dao.delete("RM0009");
 		
-		// 查詢 - 單一
-//		Recipe_m_typeVO recipe_m_typeVO3 = dao.findByPrimaryKey("RM0003");
-//		System.out.print(recipe_m_typeVO3.getRecipe_m_type_no() + ",	");
-//		System.out.print(recipe_m_typeVO3.getM_type_name() + ",	");
-//		System.out.print(recipe_m_typeVO3.getParent_type());
-//		System.out.println();
+//		delete
+		dao.delete("RMN6");
+		
+		
+//		search target
+		Recipe_messageVO recipe_messageVO3 = dao.findByPrimaryKey("RMN2");
+		System.out.print(recipe_messageVO3.getRecipe_msg_no() + " | ");
+		System.out.print(recipe_messageVO3.getMem_no() + " | ");
+		System.out.print(recipe_messageVO3.getRecipe_no() + " | ");
+		System.out.print(recipe_messageVO3.getMsg_cont() + " | ");
+		System.out.print(recipe_messageVO3.getRecipe_msg_ref() + " | ");
+		System.out.print(recipe_messageVO3.getMsg_time() + " | ");
 
-		// 查詢 - 全部
-//		List<Recipe_m_typeVO> list = dao.getAll();
-//		for (Recipe_m_typeVO arecipe_m_type : list) {
-//			System.out.print(arecipe_m_type.getRecipe_m_type_no() + ",	");
-//			System.out.print(arecipe_m_type.getM_type_name() + ",	");
-//			System.out.print(arecipe_m_type.getParent_type());
+
+//		search all
+//		List<Recipe_messageVO> list = dao.getAll();
+//		for (Recipe_messageVO recipe_messageVO4 : list) {
+//			System.out.print(recipe_messageVO4.getRecipe_msg_no() + " | ");
+//			System.out.print(recipe_messageVO4.getMem_no() + " | ");
+//			System.out.print(recipe_messageVO4.getRecipe_no() + " | ");
+//			System.out.print(recipe_messageVO4.getMsg_cont() + " | ");
+//			System.out.print(recipe_messageVO4.getRecipe_msg_ref() + " | ");
+//			System.out.print(recipe_messageVO4.getMsg_time() + " | ");
 //			System.out.println();
 //		}
-	}
-
+		
+	}	
 }
