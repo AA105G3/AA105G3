@@ -2,10 +2,14 @@ package com.recipe_l_type.model;
 
 import java.sql.*;
 import java.util.ArrayList;
+import java.util.LinkedHashSet;
 import java.util.List;
+import java.util.Set;
 
+import com.emp.model.EmpVO;
 import com.recipe_l_type.model.Recipe_l_typeDAO_interface;
 import com.recipe_l_type.model.Recipe_l_typeVO;
+import com.recipe_m_type.model.Recipe_m_typeVO;
 
 public class Recipe_l_typeJDBCDAO implements Recipe_l_typeDAO_interface {
 	
@@ -19,6 +23,8 @@ public class Recipe_l_typeJDBCDAO implements Recipe_l_typeDAO_interface {
 	private static final String GET_ONE_STMT = "SELECT recipe_l_type_no, l_type_name FROM recipe_l_type where recipe_l_type_no = ?";
 	private static final String DELETE = "DELETE FROM recipe_l_type where recipe_l_type_no = ?";
 	private static final String UPDATE = "UPDATE recipe_l_type set l_type_name = ? where recipe_l_type_no = ?";
+	private static final String GET_M_Types_ByL_Type_NO = "SELECT recipe_m_type_no, m_type_name,"
+								+ " parent_type FROM recipe_m_type where parent_type = ?";
 	
 	@Override
 	public void insert(Recipe_l_typeVO recipe_l_typeVO) {
@@ -265,6 +271,65 @@ public class Recipe_l_typeJDBCDAO implements Recipe_l_typeDAO_interface {
 		
 	}
 	
+	@Override
+	public Set<Recipe_m_typeVO> getM_typesByL_Type_No(String parent_type)
+	{
+		Set<Recipe_m_typeVO> set = new LinkedHashSet<Recipe_m_typeVO>();
+		Recipe_m_typeVO recipe_m_typeVO = null;
+	
+		Connection con = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+	
+		try {
+	
+			Class.forName(driver);
+			con = DriverManager.getConnection(url, userid, passwd);
+			pstmt = con.prepareStatement(GET_M_Types_ByL_Type_NO);
+			pstmt.setString(1, parent_type);
+			rs = pstmt.executeQuery();
+	
+			while (rs.next()) {
+				recipe_m_typeVO = new Recipe_m_typeVO();
+				recipe_m_typeVO.setM_type_name(rs.getString("m_type_name"));
+				recipe_m_typeVO.setRecipe_m_type_no(rs.getString("recipe_m_type_no"));
+				recipe_m_typeVO.setParent_type(rs.getString("parent_type"));
+				set.add(recipe_m_typeVO); // Store the row in the vector
+			}
+	
+		} catch (ClassNotFoundException e) {
+			
+			e.printStackTrace();// Handle any SQL errors
+		} catch (SQLException se) {
+			throw new RuntimeException("A database error occured. "
+					+ se.getMessage());
+		} finally {
+			if (rs != null) {
+				try {
+					rs.close();
+				} catch (SQLException se) {
+					se.printStackTrace(System.err);
+				}
+			}
+			if (pstmt != null) {
+				try {
+					pstmt.close();
+				} catch (SQLException se) {
+					se.printStackTrace(System.err);
+				}
+			}
+			if (con != null) {
+				try {
+					con.close();
+				} catch (Exception e) {
+					e.printStackTrace(System.err);
+				}
+			}
+		}
+		return set;
+	}
+	
+	
 	
 	public static void main(String[] args) {
 		
@@ -300,6 +365,15 @@ public class Recipe_l_typeJDBCDAO implements Recipe_l_typeDAO_interface {
 //		for (Recipe_l_typeVO recipe_l_typeVO4 : list) {
 //			System.out.print(recipe_l_typeVO4.getRecipe_l_type_no() + " | ");
 //			System.out.print(recipe_l_typeVO4.getL_type_name() + " | ");
+//			System.out.println();
+//		}
+		
+		//search by L_type_no
+//		Set<Recipe_m_typeVO> set = dao.getM_typesByL_Type_No("RL0001");
+//		for (Recipe_m_typeVO arecipe_m_type : set) {
+//			System.out.print(arecipe_m_type.getRecipe_m_type_no() + ",	");
+//			System.out.print(arecipe_m_type.getM_type_name() + ",	");
+//			System.out.print(arecipe_m_type.getParent_type());
 //			System.out.println();
 //		}
 	}

@@ -11,7 +11,7 @@ import com.recipe_m_type.model.Recipe_m_typeVO;
 
 import java.sql.*;
 
-public class Recipe_l_typeDAO implements Recipe_l_typeDAO_interface {
+public class Recipe_l_typeJNDIDAO implements Recipe_l_typeDAO_interface {
 
 	private static DataSource ds = null;
 	static {
