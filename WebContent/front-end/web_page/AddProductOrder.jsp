@@ -1,7 +1,9 @@
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ page import="com.product_order_list.model.*"%>
 <%@ page import="com.product_order.model.*"%>
 <%@ page import="com.member.model.*"%>
+<%@ page import="java.util.*"%>
 <%
 Product_orderVO product_orderVO = (Product_orderVO) request.getAttribute("product_orderVO");
 String amount =  (String) session.getAttribute("amount");
@@ -9,6 +11,9 @@ int total = Integer.parseInt(amount);
 String quantity =  (String) session.getAttribute("quantity");
 
 MemberVO memberVO = (MemberVO) request.getAttribute("memberVO");
+
+Vector<Product_order_listVO> buylist = (Vector<Product_order_listVO>) session.getAttribute("shoppingcart");
+pageContext.setAttribute("buylist",buylist);
 %>
 
 <%@ page import="com.member.model.*"%>
@@ -260,10 +265,32 @@ MemberVO memberVO = (MemberVO) request.getAttribute("memberVO");
 </div>
 
 <div class="col-xs-12 col-sm-2">
-	<input type="hidden" name="action" value="insert">
+	<input type="hidden" name="action" value="insertWithList">
 	<input type="submit" class="btn btn-danger" value="結帳">
 	<input type="hidden" name="mem_no" value="${memberVO.mem_no}">
 	<input type="hidden" name="total_money" value="<%=total%>">
+	
+	<c:forEach var="Product_order_listVO" items="${buylist}">
+		<input type="hidden" name="prod_no" value="${Product_order_listVO.prod_no}">
+		<input type="hidden" name="unit_price" value="${Product_order_listVO.unit_price}">
+		<input type="hidden" name="prod_quantity" value="${Product_order_listVO.prod_quantity}">
+		<input type="hidden" name="deli_status" value="0">
+		<input type="hidden" name="deli_time" value="2017-12-31">	
+	</c:forEach>
+	
+	<%-- <%
+	 for (int index = 0; index < buylist.size(); index++) {
+		Product_order_listVO order = buylist.get(index);
+	%>
+	<input type="hidden" name="prod_no" value="<%=order.getProd_no()%>">
+	<input type="hidden" name="unit_price" value="<%=order.getUnit_price()%>">
+	<input type="hidden" name="prod_quantity" value="<%=order.getProd_quantity()%>">
+	
+	<input type="hidden" name="deli_status" value="0">
+	<input type="hidden" name="deli_time" value="2017-12-31">
+	
+	<%}%> --%>
+	
 </div>
 
 </FORM>

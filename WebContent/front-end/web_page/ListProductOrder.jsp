@@ -194,7 +194,7 @@
 	</tr>
 	
 	<c:forEach var="product_orderVO" items="${product_orderSvc.getProduct_order_By_Mem_no(param.mem_no)}">
-		<tr align='center' valign='middle' ${(product_orderVO.prod_ord_no==param.prod_ord_no) ? 'bgcolor=#CCCCFF':''}>
+		<tr align='center' valign='middle' ${(product_orderVO.prod_ord_no==param.prod_ord_no) ? 'bgcolor=#f5deb3':''}>
 			<td>${product_orderVO.prod_ord_no}</td>
 			<%-- <td>${product_orderVO.mem_no}</td> --%>
 			
@@ -224,7 +224,7 @@
 			<td>${product_orderVO.tel_phone}</td>
 			<td>
 			  <FORM METHOD="post" ACTION="<%=request.getContextPath()%>/product_order/product_order.do">
-			    <input type="submit" value="送出查詢"> 
+			    <input type="submit" class="btn btn-primary" value="查詢"> 
 			    <input type="hidden" name="prod_ord_no" value="${product_orderVO.prod_ord_no}">
 			    <input type="hidden" name="mem_no" value="${product_orderVO.mem_no}">
 			    <input type="hidden" name="action" value="getPart_For_Display_By_One_PK"></FORM>

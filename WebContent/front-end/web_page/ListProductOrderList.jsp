@@ -13,6 +13,8 @@
 </head>
 <body>
 
+<font size="+3">商品明細： </font>
+
 <table border='1' bordercolor='#CCCCFF' width='1500'>
 	<tr>
 		<th>訂單編號</th>
