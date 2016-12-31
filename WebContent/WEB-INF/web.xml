@@ -1,5 +1,4 @@
 <?xml version="1.0" encoding="UTF-8"?>
-
 <web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://java.sun.com/xml/ns/javaee" xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd" id="WebApp_ID" version="3.0">
   <display-name>AA105G3</display-name>
   <welcome-file-list>
@@ -48,7 +47,6 @@
     <servlet-name>RecipeServlet</servlet-name>
     <url-pattern>/recipe/recipe.do</url-pattern>
   </servlet-mapping>
-  
   <servlet>
     <servlet-name>MemberServlet</servlet-name>
     <servlet-class>com.member.controller.MemberServlet</servlet-class>
@@ -81,8 +79,6 @@
     <servlet-name>Product_order_listServlet</servlet-name>
     <url-pattern>/product_order_list/product_order_list.do</url-pattern>
   </servlet-mapping>
-
-   <!-- 廣告註冊 -->
   <servlet>
     <servlet-name>AdvServlet</servlet-name>
     <servlet-class>com.adv.controller.AdvServlet</servlet-class>
@@ -91,32 +87,43 @@
     <servlet-name>AdvServlet</servlet-name>
     <url-pattern>/adv/adv.do</url-pattern>
   </servlet-mapping>
-  <!-- 好友註冊 -->
-	<servlet>
-		<servlet-name>Frd_listServlet</servlet-name>
-		<servlet-class>com.frd_list.controller.Frd_listServlet</servlet-class>
-	</servlet>
-	<servlet-mapping>
-		<servlet-name>Frd_listServlet</servlet-name>
-		<url-pattern>/frd_list/frd_list.do</url-pattern>
-	</servlet-mapping>
-<!-- 我的最愛註冊 -->
-	<servlet>
-		<servlet-name>CollectionServlet</servlet-name>
-		<servlet-class>com.collection.controller.CollectionServlet</servlet-class>
-	</servlet>
-	<servlet-mapping>
-		<servlet-name>CollectionServlet</servlet-name>
-		<url-pattern>/collection/collection.do</url-pattern>
-	</servlet-mapping>
-	<!-- 客戶需求註冊 -->
-	<servlet>
-		<servlet-name>Customer_demandServlet</servlet-name>
-		<servlet-class>com.customer_demand.controller.Customer_demandServlet</servlet-class>
-	</servlet>
-	<servlet-mapping>
-		<servlet-name>Customer_demandServlet</servlet-name>
-		<url-pattern>/customer_demand/customer_demand.do</url-pattern>
-	</servlet-mapping>
-
+  <servlet>
+    <servlet-name>Frd_listServlet</servlet-name>
+    <servlet-class>com.frd_list.controller.Frd_listServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>Frd_listServlet</servlet-name>
+    <url-pattern>/frd_list/frd_list.do</url-pattern>
+  </servlet-mapping>
+  <servlet>
+    <servlet-name>CollectionServlet</servlet-name>
+    <servlet-class>com.collection.controller.CollectionServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>CollectionServlet</servlet-name>
+    <url-pattern>/collection/collection.do</url-pattern>
+  </servlet-mapping>
+  <servlet>
+    <servlet-name>Customer_demandServlet</servlet-name>
+    <servlet-class>com.customer_demand.controller.Customer_demandServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>Customer_demandServlet</servlet-name>
+    <url-pattern>/customer_demand/customer_demand.do</url-pattern>
+  </servlet-mapping>
+  
+  <!-- Filters -->
+   <!-- <filter>
+    <filter-name>BLoginFilter</filter-name>
+    <filter-class>filters.BLoginFilter</filter-class>
+  </filter>
+  <filter-mapping>
+    <filter-name>BLoginFilter</filter-name>
+    <url-pattern>/back-end/*</url-pattern>
+    <dispatcher>REQUEST</dispatcher>
+    <dispatcher>FORWARD</dispatcher>
+    <dispatcher>INCLUDE</dispatcher>
+    <dispatcher>ERROR</dispatcher>
+    <dispatcher>ASYNC</dispatcher>
+  </filter-mapping>   -->
 </web-app>

@@ -293,36 +293,36 @@ public class Recipe_m_typeJDBCDAO implements Recipe_m_typeDAO_interface {
 		Recipe_m_typeJDBCDAO dao = new Recipe_m_typeJDBCDAO();
 		
 		//新增
-		/*Recipe_m_typeVO recipe_m_typeVO1 = new Recipe_m_typeVO();
-		recipe_m_typeVO1.setM_type_name("新的中類別");
-		recipe_m_typeVO1.setParent_type("RL0001");
-		dao.insert(recipe_m_typeVO1);*/
+//		Recipe_m_typeVO recipe_m_typeVO1 = new Recipe_m_typeVO();
+//		recipe_m_typeVO1.setM_type_name("新的中類別");
+//		recipe_m_typeVO1.setParent_type("RL0001");
+//		dao.insert(recipe_m_typeVO1);
 		
 		//修改
-		/*Recipe_m_typeVO recipe_m_typeVO2 = new Recipe_m_typeVO();
-		recipe_m_typeVO2.setRecipe_m_type_no("RM0009");
-		recipe_m_typeVO2.setM_type_name("修改中類別");
-		recipe_m_typeVO2.setParent_type("RL0003");
-		dao.update(recipe_m_typeVO2);*/
+//		Recipe_m_typeVO recipe_m_typeVO2 = new Recipe_m_typeVO();
+//		recipe_m_typeVO2.setRecipe_m_type_no("RM0009");
+//		recipe_m_typeVO2.setM_type_name("修改中類別");
+//		recipe_m_typeVO2.setParent_type("RL0003");
+//		dao.update(recipe_m_typeVO2);
 		
 		//刪除
-		/*dao.delete("RM0009");*/
+//		dao.delete("RM0009");
 		
 		// 查詢 - 單一
-		/*Recipe_m_typeVO recipe_m_typeVO3 = dao.findByPrimaryKey("RM0003");
-		System.out.print(recipe_m_typeVO3.getRecipe_m_type_no() + ",	");
-		System.out.print(recipe_m_typeVO3.getM_type_name() + ",	");
-		System.out.print(recipe_m_typeVO3.getParent_type());
-		System.out.println();*/
+//		Recipe_m_typeVO recipe_m_typeVO3 = dao.findByPrimaryKey("RM0003");
+//		System.out.print(recipe_m_typeVO3.getRecipe_m_type_no() + ",	");
+//		System.out.print(recipe_m_typeVO3.getM_type_name() + ",	");
+//		System.out.print(recipe_m_typeVO3.getParent_type());
+//		System.out.println();
 
 		// 查詢 - 全部
-		List<Recipe_m_typeVO> list = dao.getAll();
-		for (Recipe_m_typeVO arecipe_m_type : list) {
-			System.out.print(arecipe_m_type.getRecipe_m_type_no() + ",	");
-			System.out.print(arecipe_m_type.getM_type_name() + ",	");
-			System.out.print(arecipe_m_type.getParent_type());
-			System.out.println();
-		}
+//		List<Recipe_m_typeVO> list = dao.getAll();
+//		for (Recipe_m_typeVO arecipe_m_type : list) {
+//			System.out.print(arecipe_m_type.getRecipe_m_type_no() + ",	");
+//			System.out.print(arecipe_m_type.getM_type_name() + ",	");
+//			System.out.print(arecipe_m_type.getParent_type());
+//			System.out.println();
+//		}
 	}
 
 }
