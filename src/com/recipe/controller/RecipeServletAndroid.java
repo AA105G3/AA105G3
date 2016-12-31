@@ -105,6 +105,8 @@ public class RecipeServletAndroid extends HttpServlet {
 			
 			String recipe_no = gson.fromJson(reader, String.class);
 			Recipe_contService recipe_contSvc = new Recipe_contService();
+//			recipeSvc.updateRecipeViews(recipe_no, recipeVO.getRecipe_total_views()+1, recipeVO.getRecipe_week_views()+1);
+//			recipeVO = recipeSvc.getOneRecipe(recipe_no);
 			Set<Recipe_contVO> set = recipe_contSvc.getRecipe_cont(recipe_no);
 			
 			
