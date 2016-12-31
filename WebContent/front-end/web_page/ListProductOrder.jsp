@@ -56,6 +56,9 @@
 	th{
 		text-align : center;
 	}
+	.btn-style{
+		margin-top : 15px;
+	}
 </style>
 
 </head>
@@ -133,38 +136,6 @@
 
 
 
-<section id="top-img">
-	<div class="col-xs-12 col-sm-12">
-		<div class="top-img"></div>
-		<!-- <img src="images/title.jpg" height="500px" width="100%"> -->
-	</div>
-	<div>
-				
-	</div>
-</section>
-
-<div class="col-xs-12 col-sm-12 select-menu">
-	<nobr class="select-item">
-		<a href="#" class="href-style">最新消息</a>
-	</nobr>
-	<nobr class="select-item">
-		<a href="#" class="href-style">特價商品</a>
-	</nobr>
-	<nobr class="select-item">
-		<a href="#" class="href-style">太空包</a>
-	</nobr>
-	<nobr class="select-item">
-		<a href="#" class="href-style">廚具</a>
-	</nobr>
-	<nobr class="select-item">
-		<a href="#" class="href-style">餐具</a>
-	</nobr>	
-</div>
-
-
-
-
-
 <!-- <div class="container">
 		<div class="row"> -->
 			<div class="list-style">
@@ -224,7 +195,7 @@
 			<td>${product_orderVO.tel_phone}</td>
 			<td>
 			  <FORM METHOD="post" ACTION="<%=request.getContextPath()%>/product_order/product_order.do">
-			    <input type="submit" class="btn btn-primary" value="查詢"> 
+			    <input type="submit" class="btn btn-primary btn-style" value="查詢"> 
 			    <input type="hidden" name="prod_ord_no" value="${product_orderVO.prod_ord_no}">
 			    <input type="hidden" name="mem_no" value="${product_orderVO.mem_no}">
 			    <input type="hidden" name="action" value="getPart_For_Display_By_One_PK"></FORM>

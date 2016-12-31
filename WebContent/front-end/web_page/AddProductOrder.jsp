@@ -146,38 +146,6 @@ pageContext.setAttribute("buylist",buylist);
 
 
 
-<section id="top-img">
-	<div class="col-xs-12 col-sm-12">
-		<div class="top-img"></div>
-		<!-- <img src="images/title.jpg" height="500px" width="100%"> -->
-	</div>
-	<div>
-				
-	</div>
-</section>
-
-<div class="col-xs-12 col-sm-12 select-menu">
-	<nobr class="select-item">
-		<a href="#" class="href-style">最新消息</a>
-	</nobr>
-	<nobr class="select-item">
-		<a href="#" class="href-style">特價商品</a>
-	</nobr>
-	<nobr class="select-item">
-		<a href="#" class="href-style">太空包</a>
-	</nobr>
-	<nobr class="select-item">
-		<a href="#" class="href-style">廚具</a>
-	</nobr>
-	<nobr class="select-item">
-		<a href="#" class="href-style">餐具</a>
-	</nobr>	
-</div>
-
-
-
-
-
 <div class="container">
 		<div class="row">
 			<div class="list-style">

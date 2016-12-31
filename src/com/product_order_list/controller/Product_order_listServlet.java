@@ -26,16 +26,37 @@ public class Product_order_listServlet extends HttpServlet {
 		HttpSession session = req.getSession();
 		Vector<Product_order_listVO> buylist = (Vector<Product_order_listVO>) session.getAttribute("shoppingcart");
 		
-		
 
 		// 刪除購物車中的商品
 		if (action.equals("DELETE_PRODUCT")) {
 			String del = req.getParameter("del");
-			int d = Integer.parseInt(del);
-			buylist.removeElementAt(d);
+			for(int index = 0; index < buylist.size(); index++){
+				if(buylist.elementAt(index).getProd_no().toString().equals(del)){
+					buylist.removeElementAt(index);
+				}
+			}
 			
-			/*session.setAttribute("amount", amount);
-			session.setAttribute("quantity", quantity);*/
+			int total = 0;
+			for (int i = 0; i < buylist.size(); i++) {
+				Product_order_listVO product_order_listVO = buylist.get(i);
+				int unit_price = product_order_listVO.getUnit_price();
+				int prod_quantity = product_order_listVO.getProd_quantity();
+				total += (unit_price * prod_quantity);
+			}
+				
+			int total2 = 0;
+			for (int i = 0; i < buylist.size(); i++) {
+				Product_order_listVO product_order_listVO = buylist.get(i);
+				int unit_price = product_order_listVO.getUnit_price();
+				int prod_quantity = product_order_listVO.getProd_quantity();
+				total2 += (prod_quantity);
+			}
+
+			String amount = String.valueOf(total);
+			String quantity = String.valueOf(total2);
+			
+			session.setAttribute("amount", amount);
+			session.setAttribute("quantity", quantity);
 
 			String url = "/front-end/web_page/Cart.jsp";
 			RequestDispatcher successView = req.getRequestDispatcher(url);// 刪除成功後,轉交回送出刪除的來源網頁
