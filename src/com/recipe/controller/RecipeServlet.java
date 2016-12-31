@@ -431,7 +431,7 @@ public class RecipeServlet extends HttpServlet {
 				req.setAttribute("ingredients", ingredients); 
 				req.setAttribute("quantity", quantity); 
 				req.setAttribute("recipe_cont_set", recipe_cont_set); 
-				String url = "/front-end/recipe/RecipeInfo.jsp.jsp";
+				String url = "/front-end/recipe/RecipeInfo.jsp";
 				RequestDispatcher successView = req.getRequestDispatcher(url); 
 				successView.forward(req, res);
 
