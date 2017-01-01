@@ -1,6 +1,6 @@
 package com.recipe_l_type.model;
 
-public class Recipe_l_typeVO {
+public class Recipe_l_typeVO implements java.io.Serializable {
 
 	private String recipe_l_type_no; 
 	private String l_type_name;		 
