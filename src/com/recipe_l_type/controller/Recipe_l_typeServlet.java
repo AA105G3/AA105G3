@@ -15,7 +15,7 @@ import com.recipe_l_type.model.Recipe_l_typeVO;
 import com.recipe_m_type.model.*;
 import com.recipe_l_type.model.Recipe_l_typeService;
 
-@WebServlet("/Recipe_l_type/Recipe_l_type.do")
+@WebServlet("/recipe_l_type/recipe_l_type.do")
 public class Recipe_l_typeServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	public void doGet(HttpServletRequest req, HttpServletResponse res)
@@ -138,7 +138,6 @@ public class Recipe_l_typeServlet extends HttpServlet {
 				String l_type_name = req.getParameter("l_type_name").trim();
 				String addM_type = req.getParameter("addAttachment");
 				String deleteM_type = req.getParameter("deleteAttachment");
-				System.out.println(recipe_l_type_no);
 				
 				Recipe_l_typeVO recipe_l_typeVO = new Recipe_l_typeVO();
 				recipe_l_typeVO.setRecipe_l_type_no(recipe_l_type_no);
@@ -159,7 +158,7 @@ public class Recipe_l_typeServlet extends HttpServlet {
 				
 				Recipe_m_typeService recipe_m_typeSvc = new Recipe_m_typeService();
 				
-				if(!addM_type.isEmpty()){
+				if(addM_type !="" || addM_type !=null){
 					Recipe_m_typeVO recipe_m_typeVO = recipe_m_typeSvc.addRecipe_m_type(addM_type,recipe_l_type_no);
 				}
 				

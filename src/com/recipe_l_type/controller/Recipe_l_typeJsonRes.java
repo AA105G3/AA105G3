@@ -24,7 +24,7 @@ import org.json.JSONArray;
 
 
 
-@WebServlet("/Recipe_l_type/Recipe_l_typeJsonRes.do")
+@WebServlet("/recipe_l_type/recipe_l_typeJsonRes.do")
 public class Recipe_l_typeJsonRes extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
