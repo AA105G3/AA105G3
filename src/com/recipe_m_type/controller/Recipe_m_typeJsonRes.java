@@ -36,6 +36,10 @@ public class Recipe_m_typeJsonRes extends HttpServlet {
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
+		
+		request.setCharacterEncoding("UTF-8");
+		String action = request.getParameter("action");
+		
 		if("getTypeInfo".equals(request.getParameter("action"))){
 			
 			String recipe_m_type_no = request.getParameter("recipe_m_type_no");
@@ -98,6 +102,38 @@ public class Recipe_m_typeJsonRes extends HttpServlet {
 			out.write(wrapper.toString());
 			out.flush();
 			out.close();
+		}
+		
+		if("getStypesByMtype_no".equals(action)){
+			
+			String recipe_m_type_no = request.getParameter("recipe_m_type_no");
+			Recipe_m_typeService recipe_m_typeSvc = new Recipe_m_typeService();
+			
+			JSONArray sTypeWrapper = new JSONArray();
+			
+			Set<Recipe_s_typeVO> sTypes =  recipe_m_typeSvc.getS_typesByM_Type_No(recipe_m_type_no);
+			
+			for(Recipe_s_typeVO recipe_s_typeVO:sTypes){
+				JSONObject obj = new JSONObject();
+				try
+				{
+					obj.put("recipe_s_type_no",recipe_s_typeVO.getRecipe_s_type_no());
+					obj.put("s_type_name",recipe_s_typeVO.getS_type_name());
+					sTypeWrapper.put(obj);
+				} catch (JSONException e)
+				{
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+			
+			response.setContentType("text/plain");
+			response.setCharacterEncoding("UTF-8");
+			PrintWriter out = response.getWriter();
+			out.write(sTypeWrapper.toString());
+			out.flush();
+			out.close();
+			
 		}
 	}
 

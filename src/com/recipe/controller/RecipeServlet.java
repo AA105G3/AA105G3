@@ -187,7 +187,7 @@ public class RecipeServlet extends HttpServlet {
 				/***************************1.接收請求參數****************************************/
 				String searchCondition = req.getParameter("searchCondition");
 				String searchInput =req.getParameter("searchInput");
-				
+				String requestEnd =req.getParameter("requestEnd");
 				
 				if(searchInput.length()==0 || searchInput.isEmpty()){
 					errorMsgs.add("搜尋條件請勿空白");
@@ -221,6 +221,9 @@ public class RecipeServlet extends HttpServlet {
 				/***************************3.查詢完成,準備轉交(Send the Success view)************/
 				req.setAttribute("list", list);
 				req.setAttribute("title", searchInput);
+				if(requestEnd.equals("back")){
+					String url = "/back-end/recipe_type_info/RecipeClassified.jsp";
+				}
 				String url = "/front-end/recipe/RecipeSearch.jsp";
 				RequestDispatcher successView = req.getRequestDispatcher(url);
 				successView.forward(req, res);
