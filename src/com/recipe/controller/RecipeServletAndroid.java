@@ -51,17 +51,17 @@ public class RecipeServletAndroid extends HttpServlet {
 
 	protected void doPost(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
 		req.setCharacterEncoding("UTF-8");
-		
+
 		Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd HH:mm:ss").create();
 		RecipeService recipeSvc = new RecipeService();
 		BufferedReader br = req.getReader();
 		StringBuffer jsonIn = new StringBuffer();
 		String line = null;
-		
+
 		while ((line = br.readLine()) != null) {
 			jsonIn.append(line);
 		}
-		
+
 		if (gson.fromJson(jsonIn.toString(), JsonObject.class) == null) {
 			return;
 		}
@@ -71,55 +71,74 @@ public class RecipeServletAndroid extends HttpServlet {
 		String action = jsonObject.get("action").getAsString();
 		System.out.println("Recipe action = " + action);
 		StringBuffer outStr = new StringBuffer();
-		
+
 		if ("getAll".equals(action)) {
 			List<RecipeVO> recipelist = recipeSvc.getAll();
 			SendResponse.writeText(res, gson.toJson(recipelist));
 			return;
 		}
-		
-		if ("getAllByMem_no_For_Display".equals(action)) { 
+
+		if ("getAllByMem_no_For_Display".equals(action)) {
 			String mem_noJson = jsonObject.get("mem_no").getAsString();
 			JsonReader reader = new JsonReader(new StringReader(mem_noJson));
 			reader.setLenient(true);
 			String mem_no = gson.fromJson(reader, String.class);
-			List<RecipeVO> recipeVOList = recipeSvc.findByMem_no(mem_no); 
-			
+			List<RecipeVO> recipeVOList = recipeSvc.findByMem_no(mem_no);
+
 			List<RecipeVO> list2 = new ArrayList<RecipeVO>();
-			for(RecipeVO aRecipe : recipeVOList){
+			for (RecipeVO aRecipe : recipeVOList) {
 				aRecipe.setRecipe_pic(null);
 				list2.add(aRecipe);
 			}
-			
+
 			outStr.append(gson.toJson(list2));
-//			outStr.append(gson.toJson(recipeVOList));
+			// outStr.append(gson.toJson(recipeVOList));
 			SendResponse.writeText(res, outStr.toString());
-			
+
 			return;
 		}
-		if ("getOne_For_Display".equals(action)) { // 來自select_page.jsp的請求
-			
+		if ("getOneByRecipe_no_For_Display".equals(action)) { // 來自select_page.jsp的請求
+
 			String recipe_noJson = jsonObject.get("recipe_no").getAsString();
 			JsonReader reader = new JsonReader(new StringReader(recipe_noJson));
 			reader.setLenient(true);
+
+			String recipe_no = gson.fromJson(reader, String.class);
+			RecipeVO recipeVO = recipeSvc.getOneRecipe(recipe_no);
 			
+			recipeVO.setRecipe_pic(null);
+
+
+			outStr.append(gson.toJson(recipeVO));
+			SendResponse.writeText(res, outStr.toString());
+
+			return;
+		}
+
+		if ("getOne_For_Display".equals(action)) { // 來自select_page.jsp的請求
+
+			String recipe_noJson = jsonObject.get("recipe_no").getAsString();
+			JsonReader reader = new JsonReader(new StringReader(recipe_noJson));
+			reader.setLenient(true);
+
 			String recipe_no = gson.fromJson(reader, String.class);
 			Recipe_contService recipe_contSvc = new Recipe_contService();
-//			recipeSvc.updateRecipeViews(recipe_no, recipeVO.getRecipe_total_views()+1, recipeVO.getRecipe_week_views()+1);
-//			recipeVO = recipeSvc.getOneRecipe(recipe_no);
+			// recipeSvc.updateRecipeViews(recipe_no,
+			// recipeVO.getRecipe_total_views()+1,
+			// recipeVO.getRecipe_week_views()+1);
+			// recipeVO = recipeSvc.getOneRecipe(recipe_no);
 			Set<Recipe_contVO> set = recipe_contSvc.getRecipe_cont(recipe_no);
-			
-			
+
 			Set<Recipe_contVO> set2 = new LinkedHashSet<Recipe_contVO>();
-			for(Recipe_contVO aRecipeCond : set){
+			for (Recipe_contVO aRecipeCond : set) {
 				aRecipeCond.setStep_pic(null);
 				set2.add(aRecipeCond);
 			}
-			
+
 			outStr.append(gson.toJson(set2));
-//			outStr.append(gson.toJson(recipeVOList));
+			// outStr.append(gson.toJson(recipeVOList));
 			SendResponse.writeText(res, outStr.toString());
-			
+
 			return;
 		}
 
@@ -152,13 +171,13 @@ public class RecipeServletAndroid extends HttpServlet {
 
 		if ("recipe_week_viewsZero".equals(action)) {
 		}
-		
+
 		if ("getImage".equals(action)) {
 			OutputStream os = res.getOutputStream();
 			String recipe_no = jsonObject.get("recipe_no").getAsString();
 			int imageSize = jsonObject.get("imageSize").getAsInt();
 			byte[] recipe_pic = recipeSvc.getImage(recipe_no);
-			System.out.println("recipe_no " + recipe_no + " recipe_pic " + recipe_pic+ " imageSize " + imageSize);
+			System.out.println("recipe_no " + recipe_no + " recipe_pic " + recipe_pic + " imageSize " + imageSize);
 
 			if (recipe_pic != null) {
 

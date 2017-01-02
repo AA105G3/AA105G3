@@ -381,13 +381,13 @@ public class Frd_listJDBCDAO implements Frd_listDAO_interface{
 	}
 
 	public static void main(String[] args) {
-		Frd_listJDBCDAO dao = new Frd_listJDBCDAO();
-		//
-		// // insert
+//		Frd_listJDBCDAO dao = new Frd_listJDBCDAO();
+//		//
+//		// // insert
 //		 Frd_listVO frd_listVO1 = new Frd_listVO();
 //		
-//		 frd_listVO1.setMem_no("M00000006");
-//		 frd_listVO1.setFriend_no("C00000003");
+//		 frd_listVO1.setMem_no("M00000001");
+//		 frd_listVO1.setFriend_no("C00000005");
 //		 frd_listVO1.setFriend_chk("1");
 //		 dao.insert(frd_listVO1);
 

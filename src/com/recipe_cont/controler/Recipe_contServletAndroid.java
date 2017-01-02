@@ -82,7 +82,7 @@ public class Recipe_contServletAndroid extends HttpServlet {
 			Recipe_contVO recipe_contVO = recipe_contSvc.getOneRecipe_cont(recipe_no, step);
 			
 			byte[] step_pic = recipe_contVO.getStep_pic();
-			System.out.println("recipe_no " + recipe_no + " step_pic " + step_pic+ " imageSize " + imageSize);
+			System.out.println("recipe_no " + recipe_no + " step " + step + " imageSize " + imageSize);
 
 			if (step_pic != null) {
 

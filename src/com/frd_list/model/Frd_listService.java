@@ -13,16 +13,24 @@ public class Frd_listService {
 		dao = new Frd_listDAO();
 	}
 
+	//新增好友
 	public Frd_listVO addFrd_list(String mem_no, String friend_no, String friend_chk) {
 
-		Frd_listVO frd_listVO = new Frd_listVO();
-
-		frd_listVO.setMem_no(mem_no);
-		frd_listVO.setFriend_no(friend_no);
-		frd_listVO.setFriend_chk(friend_chk);
-		dao.insert(frd_listVO);
-
-		return frd_listVO;
+		Frd_listVO frd_listVOActive = new Frd_listVO();
+//		Frd_listVO frd_listVOPassive = new Frd_listVO();
+		
+		
+		frd_listVOActive.setMem_no(mem_no);
+		frd_listVOActive.setFriend_no(friend_no);
+		frd_listVOActive.setFriend_chk(friend_chk);
+		dao.insert(frd_listVOActive);
+		
+//		frd_listVOPassive.setMem_no(friend_no);
+//		frd_listVOPassive.setFriend_no(mem_no);
+//		frd_listVOPassive.setFriend_chk("0");
+//		dao.insert(frd_listVOPassive);
+		
+		return frd_listVOActive;
 	}
 
 	public Frd_listVO updateFrd_list(String mem_no, String friend_no, String friend_chk) {
