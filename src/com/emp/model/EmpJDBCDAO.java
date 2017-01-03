@@ -24,6 +24,9 @@ public class EmpJDBCDAO implements EmpDAO_interface
 	private static final String UPDATE = 
 			"UPDATE emp set emp_name=?, emp_account=?, emp_password=?, emp_id=?, emp_email=?, emp_address=?"
 			+ ", emp_phone=?, emp_hiredate=?, emp_job=?, emp_status=? where emp_no = ?";
+	private static final String GET_ONE_ACCOUNT = 
+			"select emp_no,emp_name,emp_account,emp_password,emp_id,emp_email,emp_address,emp_phone,"
+			+"to_char(emp_hiredate,'yyyy-mm-dd') emp_hiredate,emp_job,emp_status from emp where emp_account = ?";
 
 	@Override
 	public void insert(EmpVO empVO)
@@ -180,7 +183,73 @@ public class EmpJDBCDAO implements EmpDAO_interface
 			}
 		}
 	}
-
+	
+	@Override
+	public EmpVO findByAccount(String emp_account)
+	{
+		EmpVO empVO =null;
+		Connection con = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs =null;
+		ResultSetMetaData rsmd = null; 
+		try
+		{
+			Class.forName(driver);
+			con = DriverManager.getConnection(url,userid,psw);
+			pstmt = con.prepareStatement(GET_ONE_ACCOUNT);
+			
+			pstmt.setString(1,emp_account);
+			rs = pstmt.executeQuery();
+				
+			while(rs.next())
+			{
+				empVO = new EmpVO();
+				empVO.setEmp_no(rs.getString("emp_no"));
+				empVO.setEmp_name(rs.getString("emp_name"));
+				empVO.setEmp_account(rs.getString("emp_account"));
+				empVO.setEmp_password(rs.getString("emp_password"));
+				empVO.setEmp_id(rs.getString("emp_id"));
+				empVO.setEmp_email(rs.getString("emp_email"));
+				empVO.setEmp_address(rs.getString("emp_address"));
+				empVO.setEmp_phone(rs.getString("emp_phone"));
+				empVO.setEmp_hiredate(rs.getDate("emp_hiredate"));
+				empVO.setEmp_job(rs.getString("emp_job"));
+				empVO.setEmp_status(rs.getString("emp_status"));
+			}
+		} catch (ClassNotFoundException e)
+		{
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (SQLException e)
+		{
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}finally
+		{
+			if(pstmt !=null)
+			{
+				try
+				{
+					pstmt.close();
+				} catch (SQLException e)
+				{
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+			if(con !=null){
+				try
+				{
+					con.close();
+				} catch (SQLException e)
+				{
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+		}
+		return empVO;
+	}
 	@Override
 	public EmpVO findByPrimaryKey(String emp_no)
 	{
@@ -357,7 +426,7 @@ public class EmpJDBCDAO implements EmpDAO_interface
 //		dao.delete("1006");
 		
 		//search target
-//		EmpVO empVO3 = dao.findByPrimaryKey(1002);
+//		EmpVO empVO3 = dao.findByPrimaryKey("1002");
 //		System.out.print("| "+empVO3.getEmp_no()+" | ");
 //		System.out.print(empVO3.getEmp_name()+" | ");
 //		System.out.print(empVO3.getEmp_account()+" | ");
@@ -370,21 +439,38 @@ public class EmpJDBCDAO implements EmpDAO_interface
 //		System.out.print(empVO3.getEmp_job()+" | ");
 //		System.out.println(empVO3.getEmp_status()+" | ");
 		
-		//search all
-		List<EmpVO> list = dao.getAll();
-		for(EmpVO empVO4: list){
-			System.out.print("| "+empVO4.getEmp_no()+" | ");
-			System.out.print(empVO4.getEmp_name()+" | ");
-			System.out.print(empVO4.getEmp_account()+" | ");
-			System.out.print(empVO4.getEmp_password()+" | ");
-			System.out.print(empVO4.getEmp_id()+" | ");
-			System.out.print(empVO4.getEmp_email()+" | ");
-			System.out.print(empVO4.getEmp_address()+" | ");
-			System.out.print(empVO4.getEmp_phone()+" | ");
-			System.out.print(empVO4.getEmp_hiredate()+" | ");
-			System.out.print(empVO4.getEmp_job()+" | ");
-			System.out.println(empVO4.getEmp_status()+" | ");
-		}
+		//search 
+//		EmpVO empVO7 = dao.findByAccount("test01");
+//		System.out.print("| "+empVO7.getEmp_no()+" | ");
+//		System.out.print(empVO7.getEmp_name()+" | ");
+//		System.out.print(empVO7.getEmp_account()+" | ");
+//		System.out.print(empVO7.getEmp_password()+" | ");
+//		System.out.print(empVO7.getEmp_id()+" | ");
+//		System.out.print(empVO7.getEmp_email()+" | ");
+//		System.out.print(empVO7.getEmp_address()+" | ");
+//		System.out.print(empVO7.getEmp_phone()+" | ");
+//		System.out.print(empVO7.getEmp_hiredate()+" | ");
+//		System.out.print(empVO7.getEmp_job()+" | ");
+//		System.out.println(empVO7.getEmp_status()+" | ");
 		
+		
+		//search all
+//		List<EmpVO> list = dao.getAll();
+//		for(EmpVO empVO4: list){
+//			System.out.print("| "+empVO4.getEmp_no()+" | ");
+//			System.out.print(empVO4.getEmp_name()+" | ");
+//			System.out.print(empVO4.getEmp_account()+" | ");
+//			System.out.print(empVO4.getEmp_password()+" | ");
+//			System.out.print(empVO4.getEmp_id()+" | ");
+//			System.out.print(empVO4.getEmp_email()+" | ");
+//			System.out.print(empVO4.getEmp_address()+" | ");
+//			System.out.print(empVO4.getEmp_phone()+" | ");
+//			System.out.print(empVO4.getEmp_hiredate()+" | ");
+//			System.out.print(empVO4.getEmp_job()+" | ");
+//			System.out.println(empVO4.getEmp_status()+" | ");
+//		}
+//		
 	}
+
+	
 }

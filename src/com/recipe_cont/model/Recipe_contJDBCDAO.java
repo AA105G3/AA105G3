@@ -16,8 +16,6 @@ import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
 
-import com.emp_auth.model.Emp_authJDBCDAO;
-import com.emp_auth.model.Emp_authVO;
 
 public class Recipe_contJDBCDAO implements Recipe_contDAO_interface
 {
@@ -56,12 +54,17 @@ public class Recipe_contJDBCDAO implements Recipe_contDAO_interface
 			pstmt = con.prepareStatement(INSERT_STMT);
 
 			byte[] step_pic = recipe_contVO.getStep_pic();
-			long piclen = step_pic.length;
-			InputStream bais = new ByteArrayInputStream(step_pic);
+			if(step_pic!=null){
+				long piclen = step_pic.length;
+				InputStream bais = new ByteArrayInputStream(step_pic);
+				pstmt.setBinaryStream(3, bais, piclen);
+				
+			}else{
+				pstmt.setBinaryStream(3, null);
+			}
 			
 			pstmt.setString(1, recipe_contVO.getRecipe_no());
 			pstmt.setInt(2, recipe_contVO.getStep());
-			pstmt.setBinaryStream(3, bais, piclen);
 			pstmt.setString(4, recipe_contVO.getStep_cont());
 			
 			pstmt.executeUpdate();
@@ -107,20 +110,26 @@ public class Recipe_contJDBCDAO implements Recipe_contDAO_interface
 		PreparedStatement pstmt = null;
 
 		try {
-			byte[] step_pic = recipe_contVO.getStep_pic();
-			long piclen = step_pic.length;
-			InputStream bais = new ByteArrayInputStream(step_pic);
+			
 			
 			Class.forName(driver);
 			con = DriverManager.getConnection(url, userid, psw);
 			pstmt = con.prepareStatement(UPDATE);
 
+			byte[] step_pic = recipe_contVO.getStep_pic();
+			if(step_pic!=null){
+				long piclen = step_pic.length;
+				InputStream bais = new ByteArrayInputStream(step_pic);
+				pstmt.setBinaryStream(2, bais, piclen);
+				
+			}else{
+				pstmt.setBinaryStream(2, null);
+			}
+			
 			pstmt.setString(1, recipe_contVO.getStep_cont());
-			pstmt.setBinaryStream(2, bais, piclen);
 			pstmt.setString(3, recipe_contVO.getRecipe_no());
 			pstmt.setInt(4, recipe_contVO.getStep());
 
-			pstmt.executeUpdate();
 
 		} catch (ClassNotFoundException e) {
 			e.printStackTrace();
@@ -437,6 +446,60 @@ public class Recipe_contJDBCDAO implements Recipe_contDAO_interface
 	}
 
 	
+	@Override
+	public void insert2(Recipe_contVO recipe_contVO, Connection con)
+	{
+		PreparedStatement pstmt = null;
+
+		try {
+
+     		pstmt = con.prepareStatement(INSERT_STMT);
+
+     		byte[] step_pic = recipe_contVO.getStep_pic();
+			if(step_pic!=null){
+				long piclen = step_pic.length;
+				InputStream bais = new ByteArrayInputStream(step_pic);
+				pstmt.setBinaryStream(3, bais, piclen);
+				
+			}else{
+				pstmt.setBinaryStream(3, null);
+			}
+			
+			pstmt.setString(1, recipe_contVO.getRecipe_no());
+			pstmt.setInt(2, recipe_contVO.getStep());
+			pstmt.setString(4, recipe_contVO.getStep_cont());
+
+			pstmt.executeUpdate();
+
+			// Handle any SQL errors
+		} catch (SQLException se) {
+			if (con != null) {
+				try {
+					// 3●設定於當有exception發生時之catch區塊內
+					System.err.print("Transaction is being ");
+					System.err.println("rolled back-由-recipe_cont");
+					con.rollback();
+				} catch (SQLException excep) {
+					throw new RuntimeException("rollback error occured. "
+							+ excep.getMessage());
+				}
+			}
+			throw new RuntimeException("A database error occured. "
+					+ se.getMessage());
+			// Clean up JDBC resources
+		} finally {
+			if (pstmt != null) {
+				try {
+					pstmt.close();
+				} catch (SQLException se) {
+					se.printStackTrace(System.err);
+				}
+			}
+		}
+		
+		
+	}
+	
 	public static void main(String[] args) throws Exception
 	{
 		Recipe_contJDBCDAO dao = new Recipe_contJDBCDAO();
@@ -445,7 +508,7 @@ public class Recipe_contJDBCDAO implements Recipe_contDAO_interface
 //		File pic = new File("WebContent/images/recipe_cont","6.jpg");
 //		InputStream fis = new FileInputStream(pic);
 //		byte[] buffer = new byte[fis.available()];
-		
+//		
 //		Recipe_contVO recipe_contVO1 = new Recipe_contVO();
 //		recipe_contVO1.setRecipe_no("R00000001");
 //		recipe_contVO1.setStep(6);
@@ -503,6 +566,8 @@ public class Recipe_contJDBCDAO implements Recipe_contDAO_interface
 //		System.out.print(recipe_contVO6.getStep_cont()+" | ");
 		
 	}
+
+	
 
 	
 }
