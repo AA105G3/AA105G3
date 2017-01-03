@@ -504,7 +504,6 @@ public class RecipeDAO implements RecipeDAO_interface
 			rs.close();
 			// 再同時新增食譜內容
 			Recipe_contJNDIDAO dao = new Recipe_contJNDIDAO();
-			System.out.println("list.size()-A="+list.size());
 			for (Recipe_contVO aRecipe_cont : list) {
 				aRecipe_cont.setRecipe_no(next_recipe_no);;
 				dao.insert2(aRecipe_cont,con);

@@ -41,5 +41,9 @@ public class Recipe_type_infoService
 		dao.deleteOneType(recipe_no, recipe_type_no);
 		
 	}
+	public Set<Recipe_type_infoVO> findByType_no(String recipe_type_no){
+		
+		return dao.findByType_no(recipe_type_no);
+	}
 	
 }

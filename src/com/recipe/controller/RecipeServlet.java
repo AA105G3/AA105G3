@@ -732,9 +732,6 @@ public class RecipeServlet extends HttpServlet {
 					contList.add(recipe_contVO);
 				}
 				
-				for(int i =0;i<contList.size();i++){
-					System.out.println(contList.get(i).getStep());
-				}
 				
 				//將資料存入VO
 				RecipeVO recipeVO = new RecipeVO();
