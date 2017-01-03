@@ -11,4 +11,5 @@ public interface MemberDAO_interface {
 	public MemberVO findByPrimaryKey(String mem_no, Integer android);
 	public List<MemberVO> getAll();
 	public byte[] getImage(String mem_no);
+	public MemberVO findByAC(String mem_ac);
 }

@@ -93,6 +93,19 @@ public class MemberDAO implements MemberDAO_interface {
 	
 	private static final String GET_IMAGE_STMT = "SELECT mem_image FROM member where mem_no=?";
 	
+	private static final String GET_AC_STMT = 
+			"SELECT mem_no,"
+			+ " mem_name,"
+			+ " mem_ac,"
+			+ " mem_pw,"
+			+ " mem_sex,"
+			+ " mem_phone,"
+			+ " mem_email,"
+			+ " mem_adrs,"
+			+ " mem_own,"
+			+ " mem_history,"
+			+ " mem_online FROM member where mem_ac = ?";
+	
 	@Override
 	public void insert(MemberVO memVO) {
 
@@ -508,6 +521,69 @@ public class MemberDAO implements MemberDAO_interface {
 
 		return mem_image;
 	}
+	
+	@Override
+	public MemberVO findByAC(String mem_ac) {
 
+		MemberVO memVO = null;
+		Connection con = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+
+		try {
+
+			con = ds.getConnection();
+			pstmt = con.prepareStatement(GET_AC_STMT);
+
+			pstmt.setString(1, mem_ac);
+
+			rs = pstmt.executeQuery();
+
+			while (rs.next()) {
+				// memVO 也稱為 Domain objects
+				memVO = new MemberVO();
+				memVO.setMem_no(rs.getString("mem_no"));
+				memVO.setMem_name(rs.getString("mem_name"));
+				memVO.setMem_ac(rs.getString("mem_ac"));
+				memVO.setMem_pw(rs.getString("mem_pw"));
+				memVO.setMem_sex(rs.getString("mem_sex"));
+				memVO.setMem_phone(rs.getString("mem_phone"));
+				memVO.setMem_email(rs.getString("mem_email"));
+				memVO.setMem_adrs(rs.getString("mem_adrs"));
+				memVO.setMem_own(rs.getString("mem_own"));
+				memVO.setMem_history(rs.getString("mem_history"));
+				memVO.setMem_online(rs.getString("mem_online"));
+			}
+
+			// Handle any driver errors
+		} catch (SQLException se) {
+			throw new RuntimeException("A database error occured. "
+					+ se.getMessage());
+			// Clean up JDBC resources
+		} finally {
+			if (rs != null) {
+				try {
+					rs.close();
+				} catch (SQLException se) {
+					se.printStackTrace(System.err);
+				}
+			}
+			if (pstmt != null) {
+				try {
+					pstmt.close();
+				} catch (SQLException se) {
+					se.printStackTrace(System.err);
+				}
+			}
+			if (con != null) {
+				try {
+					con.close();
+				} catch (Exception e) {
+					e.printStackTrace(System.err);
+				}
+			}
+		}
+		return memVO;
+	}
 
 }

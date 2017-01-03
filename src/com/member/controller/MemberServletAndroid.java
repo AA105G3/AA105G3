@@ -37,12 +37,12 @@ import java.util.Base64;
 @SuppressWarnings("serial")
 @WebServlet("/MemberServletAndroid")
 public class MemberServletAndroid extends HttpServlet {
-	
-	public void doGet(HttpServletRequest req, HttpServletResponse res)throws ServletException, IOException {
+
+	public void doGet(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
 		doPost(req, res);
 	}
 
-	public void doPost(HttpServletRequest req, HttpServletResponse res)throws ServletException, IOException {
+	public void doPost(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
 
 		req.setCharacterEncoding("UTF-8");
 		Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd HH:mm:ss").create();
@@ -63,72 +63,64 @@ public class MemberServletAndroid extends HttpServlet {
 		String action = jsonObject.get("action").getAsString();
 		System.out.println("Member action = " + action);
 		StringBuffer outStr = new StringBuffer();
-		
+
 		if ("getAll".equals(action)) {
 			List<MemberVO> memberlist = memberSvc.getAll();
 			SendResponse.writeText(res, gson.toJson(memberlist));
 			return;
 		}
 
-		
 		if ("getOne_For_Display".equals(action)) {
-			
+
 			String mem_noJson = jsonObject.get("mem_no").getAsString();
 			JsonReader reader = new JsonReader(new StringReader(mem_noJson));
 			reader.setLenient(true);
 			String mem_no = gson.fromJson(reader, String.class);
-//			MemberVO memberVO = memberSvc.getOneMemberTextOnly(mem_no);
-			MemberVO memberVO = memberSvc.getOneMember(mem_no,1); 
-			
+			// MemberVO memberVO = memberSvc.getOneMemberTextOnly(mem_no);
+			MemberVO memberVO = memberSvc.getOneMember(mem_no, 1);
+
 			outStr.append(gson.toJson(memberVO));
-			SendResponse.writeText(res, outStr.toString());	
+			SendResponse.writeText(res, outStr.toString());
 			return;
 		}
-		
-		if ("getOne_For_Update".equals(action)) { 
+
+		if ("getOne_For_Update".equals(action)) {
 		}
-		
+
 		if ("update".equals(action)) {
 			String memberJson = jsonObject.get("memberVO").getAsString();
 			MemberVO memberVO = gson.fromJson(memberJson, MemberVO.class);
-			memberVO = memberSvc.updateMember(
-					memberVO.getMem_no(), memberVO.getMem_name(), memberVO.getMem_ac(), 
-					memberVO.getMem_pw(), memberVO.getMem_image(), memberVO.getMem_sex(), 
-					memberVO.getMem_phone(), memberVO.getMem_email(),	memberVO.getMem_adrs(), 
-					memberVO.getMem_own(), memberVO.getMem_history(), memberVO.getMem_online()
-					);
+			memberVO = memberSvc.updateMember(memberVO.getMem_no(), memberVO.getMem_name(), memberVO.getMem_ac(),
+					memberVO.getMem_pw(), memberVO.getMem_image(), memberVO.getMem_sex(), memberVO.getMem_phone(),
+					memberVO.getMem_email(), memberVO.getMem_adrs(), memberVO.getMem_own(), memberVO.getMem_history(),
+					memberVO.getMem_online());
 
 			outStr.append(gson.toJson(memberVO));
 			SendResponse.writeText(res, outStr.toString());
 		}
-		
-//		
+
+		//
 		// =========================== Login ============================
-//
-//		if ("Login".equals(action)) {
-//
-//			String memidJson = jsonObject.get("memid").getAsString();
-//			JsonReader reader = new JsonReader(new StringReader(memidJson));
-//			reader.setLenient(true);
-//			String memid = gson.fromJson(reader, String.class);
-//
-//			String mempswJson = jsonObject.get("mempsw").getAsString();
-//			reader = new JsonReader(new StringReader(mempswJson));
-//			reader.setLenient(true);
-//			String mempsw = gson.fromJson(reader, String.class);
-//
-//			MemberVO memberVO = memberSvc.MemLogin(memid, mempsw);
-//			if(memberVO==null){
-//				memberVO = new MemberVO();
-//				memberVO.setMemno("-1");
-//			}
-//			outStr.append(gson.toJson(memberVO));
-//			SendResponse.writeText(res, outStr.toString());
-//		}
-		
-		if ("insert".equals(action)) {   
-		}
+		//
+		if ("login".equals(action)) {
+			String mem_ac = jsonObject.get("mem_ac").getAsString();
+			String mem_pw = jsonObject.get("mem_pw").getAsString();
+			MemberVO memberVO = memberSvc.getOneByMem_ac(mem_ac);
 			
+			if(memberVO.getMem_pw().equals(mem_pw)){
+				memberVO.setMem_image(null);
+				outStr.append(gson.toJson(memberVO));
+			}else{
+				memberVO = null;
+				outStr.append(gson.toJson(memberVO));
+			}
+
+			SendResponse.writeText(res, outStr.toString());
+		}
+
+		if ("insert".equals(action)) {
+		}
+
 		if ("delete".equals(action)) {
 			MemberVO member = gson.fromJson(jsonObject.get("memberVO").getAsString(), MemberVO.class);
 			memberSvc.deleteMember(member.getMem_no());
@@ -139,7 +131,7 @@ public class MemberServletAndroid extends HttpServlet {
 			String mem_no = jsonObject.get("mem_no").getAsString();
 			int imageSize = jsonObject.get("imageSize").getAsInt();
 			byte[] mem_image = memberSvc.getImage(mem_no);
-			System.out.println("mem_no " + mem_no + " mem_image " + mem_image+ " imageSize " + imageSize);
+			System.out.println("mem_no " + mem_no + " mem_image " + mem_image + " imageSize " + imageSize);
 
 			if (mem_image != null) {
 
@@ -155,7 +147,7 @@ public class MemberServletAndroid extends HttpServlet {
 			os.write(mem_image);
 			return;
 		}
-		
+
 	}
 
 }

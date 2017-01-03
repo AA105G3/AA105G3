@@ -87,5 +87,8 @@ public class MemberService {
 	public byte[] getImage(String mem_no) {
 		return dao.getImage(mem_no);
 	}
-
+	
+	public MemberVO getOneByMem_ac(String mem_ac) {
+		return dao.findByAC(mem_ac);
+	}
 }
