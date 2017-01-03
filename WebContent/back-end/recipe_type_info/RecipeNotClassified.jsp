@@ -1,3 +1,20 @@
+<%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ page import="java.util.*"%>
+<%@ page import="com.recipe_type_info.model.*"%>
+<%@ page import="com.recipe.model.*"%>
+
+
+
+<% 		
+	RecipeService recipeSvc = new RecipeService();
+	List<RecipeVO> list = recipeSvc.getNotClassified();
+	pageContext.setAttribute("list",list);
+%>
+<jsp:useBean id="recipe_type_infoSvc" scope="page" class="com.recipe_type_info.model.Recipe_type_infoService" />
+<jsp:useBean id="recipe_m_typeSvc" scope="page" class="com.recipe_m_type.model.Recipe_m_typeService" />
+<jsp:useBean id="recipe_s_typeSvc" scope="page" class="com.recipe_s_type.model.Recipe_s_typeService" />
+
 <!DOCTYPE html>
 <html lang="">
 	<head>
@@ -142,7 +159,10 @@
 				height: 34px;
 			}
 
-			
+			#recipeCompleteForm{
+				padding:0px;
+				margin:0px;
+			}
 			
 
 		</style>
@@ -346,39 +366,34 @@
 	                    		</tr>
 	                    	</thead>
 	                		<tbody>
+	                		<%@ include file="pages/page1.file" %> 
+	                		<c:forEach var="recipeVO" items="${list}" varStatus="s"  begin="<%=pageIndex%>" end="<%=pageIndex+rowsPerPage-1%>">
 	                			<tr>
-	                				<td class="recipe_no" name="recipe_no">R00000001</td>
-	                				<td class="recipe_name">馬鈴薯燉肉</td>
-	                				<td class="category" id="R00000001">
-
-	                					<span class="recipe_type">豬肉<i class="glyphicon glyphicon-trash btn" name="RS0001"></i>、</span>
-	                					<span class="recipe_type">日式<i class="glyphicon glyphicon-trash btn" name="RM0001"></i></span>
+	                				<td class="recipe_no" name="recipe_no">${recipeVO.recipe_no}</td>
+	                				<td class="recipe_name">${recipeVO.recipe_name}</td>
+	                				<td class="category" id="${recipeVO.recipe_no}">
+										<c:forEach var="aType" items="${recipe_type_infoSvc.getRecipe_type_infoByRecipe_no(recipeVO.recipe_no)}" varStatus="s">
+	                						<span class="recipe_type">
+	                							${aType.type_range==1?recipe_m_typeSvc.getOneRecipe_m_type(aType.recipe_type_no).m_type_name : recipe_s_typeSvc.getOneRecipe_s_type(aType.recipe_type_no).s_type_name}
+	                						<i class="glyphicon glyphicon-trash btn" name="${aType.recipe_type_no}"></i>
+	                						<c:if test="${recipe_type_infoSvc.getRecipe_type_infoByRecipe_no(recipeVO.recipe_no).size()!= s.count}">
+	                					 	、
+	                					 	</c:if>
+	                						</span>
+	                					</c:forEach>
 	                				</td>
 	                				<td class="edit">
-	                				
 	                				<button class="btn btn-danger addType"><i class="glyphicon glyphicon-plus" ></i>增加分類</button>
-	                				<form id="R00000001Form" action="#" method="post">
-	                				<input type="hidden" name="recipe_no" value="">
-	                				<button class="btn btn-primary recipeComplete" type="button" name="action" value="updateEdit" ><i class="glyphicon glyphicon-ok"></i>完成送出</button>
+	                				<form class="recipeCompleteForm" action="<%=request.getContextPath()%>/recipe/recipe.do" method="post">
+	                				
+	                				<input type="hidden" name="recipe_no" value="${recipeVO.recipe_no}">
+	                				<input type="hidden" name="action" value="updateEdit">
+	                				<button class="btn btn-primary" type="submit"><i class="glyphicon glyphicon-ok"></i>完成送出</button>
 	                				</form>
 	                				</td>
 	                			</tr>
-	                			<tr>
-	                				<td class="recipe_no" name="recipe_no">R00000001</td>
-	                				<td class="recipe_name">馬鈴薯燉肉</td>
-	                				<td class="category" id="R00000002">
-
-	                					
-	                				</td>
-	                				<td class="edit">
-	                				
-	                				<button class="btn btn-danger addType"><i class="glyphicon glyphicon-plus" ></i>增加分類</button>
-	                				<form id="R00000002Form" action="#" method="post">
-	                				<input type="hidden" name="recipe_no" value="">
-	                				<button class="btn btn-primary recipeComplete" type="button" name="action" value="updateEdit" ><i class="glyphicon glyphicon-ok"></i>完成送出</button>
-	                				</form>
-	                				</td>
-	                			</tr>
+	                		</c:forEach>
+	                		<%@ include file="pages/page2.file" %>
 	                		</tbody>
 	                	</table>
 	                </div>
@@ -651,8 +666,15 @@
 						 success:function (data){
 
 						 	if(data.ErrorMsg==null){
-						 		$("#type-info-input").modal('hide');
-						 			$('#'+recipe_no).append('<span class="recipe_type">、'+data.typeName+'<i class="glyphicon glyphicon-trash btn" name="'+data.recipe_type_no+'"></i></span>');
+						 		
+						 		if (!$.trim($('#'+recipe_no).html())){
+						 				$("#type-info-input").modal('hide');
+						 				$('#'+recipe_no).append('<span class="recipe_type">'+data.typeName+'<i class="glyphicon glyphicon-trash btn" name="'+data.recipe_type_no+'"></i></span>');
+						 			}else{
+						 				$("#type-info-input").modal('hide');
+							 			$('#'+recipe_no).append('<span class="recipe_type">、'+data.typeName+'<i class="glyphicon glyphicon-trash btn" name="'+data.recipe_type_no+'"></i></span>');
+						 			}
+						 		
 						 			
 							 swal(
 
@@ -691,7 +713,7 @@
 				swal({
 					  title: '請輸入食譜名',
 					  html:
-					  	'<form class="form-horizontal" id="searchBar" action="/AA105G3/recipe/recipe.do" method="get" >'+
+					  	'<form class="form-horizontal" id="searchBar" action="/AA105G3/recipe/recipe.do" method="post" >'+
 					    '<input id="searchInput" class="searchInput" name="searchInput" autofocus>' +
 					    '<input type="hidden" name="searchCondition" value="recipe_name">' +
 					    '<input type="hidden" name="action" value="search">' +
@@ -710,26 +732,7 @@
 					})
 			})
 
-			//Recipe Complete submit
-			var RecipeComplete =$('.recipeComplete').click(function(){
-				var reicpe_no = $(this).parent().siblings("td[name='recipe_no']").text();
-				alert(recipe_no);
-				swal({
-					  title: '確認送出嗎?',
-					  text: "食譜將會被分到已分類",
-					  type: 'warning',
-					  showCancelButton: true,
-					  confirmButtonColor: '#3085d6',
-					  cancelButtonColor: '#d33',
-					  confirmButtonText: '送出'
-					}).then(function () {
-						$('#recipeCompleteForm').submit();
-					  swal({
-					    title:'送出成功!',
-					    type:'success'
-					  })
-					})
-			})
+			
 
 
 
