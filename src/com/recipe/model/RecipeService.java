@@ -62,6 +62,20 @@ public class RecipeService
 
 		return recipeVO;
 	}
+	
+	public RecipeVO updateClassify(String recipe_no,String recipe_classify) {
+
+		RecipeVO recipeVO = new RecipeVO();
+
+		recipeVO.setRecipe_no(recipe_no);
+		recipeVO.setRecipe_classify(recipe_classify);
+		
+		dao.updateClassify(recipeVO);
+
+		return recipeVO;
+	}
+	
+	
 
 	public RecipeVO updateRecipeViews(String recipe_no ,Integer recipe_total_views,Integer recipe_week_views) {
 
@@ -97,7 +111,32 @@ public class RecipeService
 		}
 		return recipeVO;
 	}
-
+	public List<RecipeVO> getNotClassified() {
+		
+		List<RecipeVO> list = dao.getAll();
+		List<RecipeVO> list2 = new ArrayList<RecipeVO>();
+		
+		for(RecipeVO aRecipe : list){
+			if(aRecipe.getRecipe_classify().equals("未分類")){
+				list2.add(aRecipe);
+			}
+		}
+		return list2;
+	}
+	
+	public List<RecipeVO> getClassified() {
+		
+		List<RecipeVO> list = dao.getAll();
+		List<RecipeVO> list2 = new ArrayList<RecipeVO>();
+		
+		for(RecipeVO aRecipe : list){
+			if(aRecipe.getRecipe_classify().equals("已分類")){
+				list2.add(aRecipe);
+			}
+		}
+		return list2;
+	}
+	
 	public List<RecipeVO> getAll() {
 		
 		List<RecipeVO> list = dao.getAll();
@@ -279,4 +318,7 @@ public class RecipeService
 		}
 		return list2;
 	}
+	
+	
+	
 }

@@ -813,6 +813,42 @@ public class RecipeServlet extends HttpServlet {
 			}
 		}
 		
+		if ("updateEdit".equals(action)) { 
+			
+			List<String> errorMsgs = new LinkedList<String>();
+			// Store this set in the request scope, in case we need to
+			// send the ErrorPage view.
+			req.setAttribute("errorMsgs", errorMsgs);
+		
+			try {
+				/***************************1.接收請求參數 - 輸入格式的錯誤處理**********************/
+				String recipe_no = req.getParameter("recipe_no").trim();
+				
+				RecipeService recipeSvc = new RecipeService();
+				RecipeVO targetRecipeVO = recipeSvc.getOneRecipe(recipe_no);
+				
+				
+				
+				/***************************2.開始修改資料*****************************************/
+				
+				
+				RecipeVO recipeVO = recipeSvc.updateClassify(recipe_no, "已分類");
+				
+				/***************************3.修改完成,準備轉交(Send the Success view)*************/
+				String url = "/back-end/recipe_type_info/RecipeNotClassified.jsp";
+				RequestDispatcher successView = req.getRequestDispatcher(url); 
+				successView.forward(req, res);
+
+				/***************************其他可能的錯誤處理*************************************/
+			} catch (Exception e) {
+				errorMsgs.add("修改資料失敗:"+e.getMessage());
+				RequestDispatcher failureView = req
+						.getRequestDispatcher("/back-end/recipe_type_info/RecipeNotClassified.jsp");
+				failureView.forward(req, res);
+			}
+		}
+		
+		
 		if ("updateViews".equals(action)) { 
 			
 			List<String> errorMsgs = new LinkedList<String>();

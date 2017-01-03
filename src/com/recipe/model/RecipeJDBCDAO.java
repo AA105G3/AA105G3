@@ -52,6 +52,9 @@ public class RecipeJDBCDAO implements RecipeDAO_interface
 	private static final String SearchByFoodMater = 
 			"select recipe_no,mem_no,recipe_name,recipe_intro,food_mater,recipe_pic,recipe_like,recipe_total_views"
 					+ ",recipe_week_views,recipe_time,recipe_edit,recipe_classify from recipe where food_mater like ?";
+	private static final String UPDATE_CLASSIFY = 
+			"UPDATE recipe set recipe_classify = ? where recipe_no = ?";
+	
 	
 	@Override
 	public void insert(RecipeVO recipeVO)
@@ -617,6 +620,48 @@ public class RecipeJDBCDAO implements RecipeDAO_interface
 	}
 	
 	@Override
+	public void updateClassify(RecipeVO recipeVO)
+	{
+		Connection con = null;
+		PreparedStatement pstmt = null;
+
+		try {
+
+			Class.forName(driver);
+			con = DriverManager.getConnection(url, userid, psw);
+			pstmt = con.prepareStatement(UPDATE_CLASSIFY);
+
+			pstmt.setString(1, recipeVO.getRecipe_classify());
+			pstmt.setString(2, recipeVO.getRecipe_no());
+			
+
+			pstmt.executeUpdate();
+
+		} catch (ClassNotFoundException e) {
+			e.printStackTrace();
+		} catch (SQLException se) {
+			se.printStackTrace();
+		} finally {
+			if (pstmt != null) {
+				try {
+					pstmt.close();
+				} catch (SQLException se) {
+					se.printStackTrace();
+				}
+			}
+			if (con != null) {
+				try {
+					con.close();
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			}
+		}
+		
+	}
+	
+	
+	@Override
 	public void insertWithRecipe_conts(RecipeVO recipeVO, List<Recipe_contVO> list)
 	{
 		Connection con = null;
@@ -940,6 +985,14 @@ public class RecipeJDBCDAO implements RecipeDAO_interface
 //		
 //		dao.updateViews(recipeVO5);
 		
+		//update classify
+//		RecipeVO recipeVO9 = new RecipeVO();
+//		recipeVO9.setRecipe_classify("已分類");;
+//		recipeVO9.setRecipe_no("R00000004");
+//		dao.updateClassify(recipeVO9);
+		
+		
+		
 		//update Like
 		
 //		RecipeVO recipeVO6 = new RecipeVO();
@@ -1024,6 +1077,8 @@ public class RecipeJDBCDAO implements RecipeDAO_interface
 //			System.out.println();
 //		}
 	}
+
+
 
 	
 
