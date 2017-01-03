@@ -39,8 +39,10 @@ public class ProductServlet extends HttpServlet {
 				}
 				// Send the use back to the form, if there were errors
 				if (!errorMsgs.isEmpty()) {
+					/*RequestDispatcher failureView = req
+							.getRequestDispatcher("/back-end/product/select_page.jsp");*/
 					RequestDispatcher failureView = req
-							.getRequestDispatcher("/back-end/product/select_page.jsp");
+							.getRequestDispatcher("/back-end/web_page/MarketManagement.jsp");
 					failureView.forward(req, res);
 					return;//程式中斷
 				}
@@ -53,8 +55,10 @@ public class ProductServlet extends HttpServlet {
 				}
 				// Send the use back to the form, if there were errors
 				if (!errorMsgs.isEmpty()) {
+					/*RequestDispatcher failureView = req
+							.getRequestDispatcher("/back-end/product/select_page.jsp");*/
 					RequestDispatcher failureView = req
-							.getRequestDispatcher("/back-end/product/select_page.jsp");
+							.getRequestDispatcher("/back-end/web_page/MarketManagement.jsp");
 					failureView.forward(req, res);
 					return;//程式中斷
 				}
@@ -67,8 +71,10 @@ public class ProductServlet extends HttpServlet {
 				}
 				// Send the use back to the form, if there were errors
 				if (!errorMsgs.isEmpty()) {
+					/*RequestDispatcher failureView = req
+							.getRequestDispatcher("/back-end/product/select_page.jsp");*/
 					RequestDispatcher failureView = req
-							.getRequestDispatcher("/back-end/product/select_page.jsp");
+							.getRequestDispatcher("/back-end/web_page/MarketManagement.jsp");
 					failureView.forward(req, res);
 					return;//程式中斷
 				}

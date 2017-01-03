@@ -199,7 +199,8 @@ public class Product_orderServlet extends HttpServlet {
 								
 				/***************************3.查詢完成,準備轉交(Send the Success view)************/
 				req.setAttribute("product_orderVO", product_orderVO);         // 資料庫取出的product_orderVO物件,存入req
-				String url = "/front-end/product_order/update_product_order_input.jsp";
+				/*String url = "/front-end/product_order/update_product_order_input.jsp";*/
+				String url = "/front-end/web_page/UpdateProductOrder.jsp";
 				RequestDispatcher successView = req.getRequestDispatcher(url);// 成功轉交 update_product_order_input.jsp
 				successView.forward(req, res);
 
@@ -308,8 +309,10 @@ public class Product_orderServlet extends HttpServlet {
 				// Send the use back to the form, if there were errors
 				if (!errorMsgs.isEmpty()) {
 					req.setAttribute("product_orderVO", product_orderVO); // 含有輸入格式錯誤的product_orderVO物件,也存入req
+					/*RequestDispatcher failureView = req
+							.getRequestDispatcher("/front-end/product_order/update_product_order_input.jsp");*/
 					RequestDispatcher failureView = req
-							.getRequestDispatcher("/front-end/product_order/update_product_order_input.jsp");
+							.getRequestDispatcher("/front-end/web_page/UpdateProductOrder.jsp");
 					failureView.forward(req, res);
 					return; //程式中斷
 				}
@@ -321,7 +324,8 @@ public class Product_orderServlet extends HttpServlet {
 				
 				/***************************3.修改完成,準備轉交(Send the Success view)*************/
 				req.setAttribute("product_orderVO", product_orderVO); // 資料庫update成功後,正確的的product_orderVO物件,存入req
-				String url = "/front-end/product_order/listPartProduct_order.jsp";
+				/*String url = "/front-end/product_order/listPartProduct_order.jsp";*/
+				String url = "/front-end/web_page/ListProductOrder.jsp";
 				RequestDispatcher successView = req.getRequestDispatcher(url); // 修改成功後,轉交listOneProduct_order.jsp
 				successView.forward(req, res);
 
@@ -661,6 +665,8 @@ System.out.println(deli_status);
 				product_orderVO = product_orderSvc.addProduct_orderWithList(mem_no, cred_card_no, valid_date, 
 						valid_no, cred_card_type, total_money, ship_name, post_code, mem_adrs, cell_phone, tel_phone, 
 						list);
+				
+				buylist.clear();
 				
 				/***************************3.新增完成,準備轉交(Send the Success view)***********/
 				/*String url = "/front-end/product_order/listAllProduct_order.jsp";*/

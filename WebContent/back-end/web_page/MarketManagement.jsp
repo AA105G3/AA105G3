@@ -27,25 +27,21 @@
 }
 th{
 	text-align: center;
+	height: 50px;
 }
 .search-style{
 	padding-bottom: 30px;
+}
+.th-style{
+	background: #e2fede;
+}
+.page-style{
+	padding-top: 30px;
 }
 </style>
 
 </head>
 <body>
-
-<%-- 錯誤表列 --%>
-<c:if test="${not empty errorMsgs}">
-	<font color='red'>請修正以下錯誤:
-	<ul>
-		<c:forEach var="message" items="${errorMsgs}">
-			<li>${message}</li>
-		</c:forEach>
-	</ul>
-	</font>
-</c:if>
 
 
 
@@ -239,6 +235,16 @@ th{
 		<div class="col-xs-12 col-sm-12 col-sm-push-2 table-style">
 		
 		
+			<%-- 錯誤表列 --%>
+				<c:if test="${not empty errorMsgs}">
+					<font color='red'>請修正以下錯誤:
+					<ul>
+						<c:forEach var="message" items="${errorMsgs}">
+							<li>${message}</li>
+						</c:forEach>
+					</ul>
+					</font>
+				</c:if>
 		
 		
 			<div class="search-style">
@@ -264,13 +270,18 @@ th{
 					</div>
 				
 				</FORM>
+				
+				
+
+				
+
 			</div>
 
 
 
 
 			<table border='1' bordercolor='#CCCCFF' width='1000'>
-				<tr>
+				<tr class='th-style'>
 					<th>商品圖片</th>
 					<th>商品編號</th>
 					<th>商品名稱</th>
@@ -339,8 +350,10 @@ th{
 					</tr>
 				</c:forEach>
 			</table>
-			<%@ include file="pages/page2.file" %>
-
+			
+			<div class="col-xs-12 col-sm-4 col-sm-push-4 page-style">
+				<%@ include file="pages/page2.file" %>
+			</div>
 
 		</div>
 	</div>

@@ -1,10 +1,12 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8" %>
-<%@ page import="com.product.model.*"%>
+<%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
-
+<%@ page import="com.product_order_list.model.*"%>
+<%
+	Product_order_listVO product_order_listVO = (Product_order_listVO) request.getAttribute("product_order_listVO"); //Product_order_listServlet.java (Concroller), 存入req的product_order_listVO物件 (包括幫忙取出的product_order_listVO, 也包括輸入資料錯誤時的product_order_listVO物件)
+%>
 <html>
 <head>
-<title>商品詳細資料 - DisplayProduct.jsp</title>
+<title>商品訂單明細資料修改 - update_product_order_list_input.jsp</title>
 
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -13,45 +15,26 @@
 <link rel="stylesheet" href="/AA105G3/back-end/web_page/css/backpageCSS.css">
 
 <style>
-
-#mainTable{
-	width : 800px;
-	height : 600px;
-	margin : 0px auto;
-	/* background-color : #f5deb3; */
-}
-th, td {
-	height : 50px;
-	max-width : 200px;
-	padding-left : 60px;
-}
-#center{
-	padding-left : 0px;
-	text-align : center;
-}
-#productTextarea{
-	resize : none;
-	width : 250px;
-	height : 150px;
-}
-#img{
-	height : 150px;
-	width : auto;
-}
 .table-style{
-	padding-top : 50px;
+	padding-top: 75px;
+	padding-left: 250px;
 }
-.btn-style{
-	padding-top : 50px;
+.h3-style{
+	padding-bottom: 25px;
 }
-.h2-style{
-	background: #e2fede;
+.tr-style td{
+	padding-bottom: 25px;
 }
-
 </style>
 
 </head>
+<div id="popupcalendar" class="text"></div>
+
 <body>
+
+
+
+
 
 <nav class="navbar navbar-default" id="top_header">
 	<div class="navbar-header">
@@ -244,98 +227,70 @@ th, td {
 
 <div class="container">
 	<div class="row">
-		<div class="col-xs-12 col-sm-12 col-sm-push-1 table-style">
+		<div class="col-xs-12 col-sm-12 col-sm-push-2 table-style">
 
 
 
 
 
-			<table border='1' bordercolor='#CCCCFF' id="mainTable" cellspacing="0" >
-			
-				<tr class='h2-style'>
-					<td colspan="2" id="center" align="center" valign="center"><h2>商品詳細資料</h2></td>
-				</tr>
-				
-				<tr>
-					<td>商品編號：${productVO.prod_no}</td>
-					<td>商品名稱：${productVO.prod_name}</td>	
-				</tr>
-				
-				<tr>
-					<td>上架日期：${productVO.shelf_date}</td>
-					<td>下架日期：${productVO.shelf_date}</td>
-				</tr>
-				
-				<tr>
-					<td>銷售數量：${productVO.sales_volume}</td>
-					<td>庫存數量：${productVO.stor_capacity}</td>
-				</tr>
-										
-				<tr>
-					<td>商品單價：${productVO.unit_price}</td>
-					<td>優惠價格：${productVO.disc_price}</td>
-				</tr>
-										
-				<tr>
-					<td>
-						商品類別：
-						<c:if test="${productVO.prod_type == 'SPACE BAG'}" >
-							太空包
-						</c:if>
-						<c:if test="${productVO.prod_type == 'TABLEWARE'}" >
-							餐具
-						</c:if>
-						<c:if test="${productVO.prod_type == 'KITCHENWARE'}" >
-							廚具
-						</c:if>
-					</td>
-					<td id="searchTd">
-						銷售狀態：${productVO.sell_status==0 ? '缺貨中' : '販售中'}
-					</td>
-				</tr>
-											
-				<tr>
-					<td id="searchTd">
-						商品狀態：
-						<c:if test="${productVO.prod_status == '0'}" >
-							下架
-						</c:if>
-						<c:if test="${productVO.prod_status == '1'}" >
-							上架
-						</c:if>
-						<c:if test="${productVO.prod_status == '2'}" >
-							不再販售
-						</c:if>
-					</td>
-					<td id="searchTd">
-						優惠狀態：${productVO.disc_status==0 ? '非特價' : '特價中'}
-					</td>
-				</tr>
-								
-				<tr>
-					<td>優惠期使日期：${productVO.disc_start_date}</td>
-					<td>優惠結束日期：${productVO.disc_end_date}</td>
-				</tr>
-											
-				<tr>
-					<td>商品照片：
-						<div id="center"><img id="img" src="/AA105G3/ProductDBGifReader.do?name=${productVO.prod_no}"></div></td>
-					<td>商品描述：<br>
-						<textarea id="productTextarea" readonly="readonly">
-							${productVO.prod_description}
-						</textarea>
-					</td>
-				</tr>
-				
-			</table>
+<h3 class="h3-style">資料資料修改:</h3>
 
-<div class="text-center btn-style">
-	<form>
-		<a class="btn btn-primary" href="/AA105G3/back-end/web_page/MarketManagement.jsp">返回</a>
-	</form>
-</div>
+<%-- 錯誤表列 --%>
+<c:if test="${not empty errorMsgs}">
+	<font color='red'>請修正以下錯誤:
+	<ul>
+		<c:forEach var="message" items="${errorMsgs}">
+			<li>${message}</li>
+		</c:forEach>
+	</ul>
+	</font>
+</c:if>
 
-
+<FORM METHOD="post" ACTION="product_order_list.do" name="form1">
+<table border="0" class="tr-style">
+	<tr>
+		<td>訂單編號：<font color=red><b>*</b></font></td>
+		<td><%=product_order_listVO.getProd_ord_no()%></td>
+	</tr>
+	<tr>
+		<td>商品編號：<font color=red><b>*</b></font></td>
+		<td><%=product_order_listVO.getProd_no()%></td>
+	</tr>
+	<tr>
+		<td>單價：<font color=red><b>*</b></font></td>
+		<td><%=product_order_listVO.getUnit_price()%></td>
+	</tr>
+	<tr>
+		<td>數量：<font color=red><b>*</b></font></td>
+		<td><%=product_order_listVO.getProd_quantity()%></td>
+	</tr>
+	
+	<jsp:useBean id="productSvc" scope="page" class="com.product_order_list.model.Product_order_listService" />
+	<tr>
+		<td>訂單明細狀態：</td>
+		<td><select size="1" name="deli_status">
+				<option value="0" <%= ((product_order_listVO.getDeli_status()).equals("0"))?"selected":"" %> >未出貨
+				<option value="1" <%= ((product_order_listVO.getDeli_status()).equals("1"))?"selected":"" %> >出貨中
+				<option value="2" <%= ((product_order_listVO.getDeli_status()).equals("2"))?"selected":"" %> >已出貨
+				<option value="3" <%= ((product_order_listVO.getDeli_status()).equals("3"))?"selected":"" %> >已退貨已退款
+				<option value="4" <%= ((product_order_listVO.getDeli_status()).equals("4"))?"selected":"" %> >已退貨未退款
+			</select></td>
+	</tr>
+	
+	<tr>
+		<td>上架日期：</td>
+		<td><input type="date" name="deli_time" value="<%=product_order_listVO.getDeli_time()%>"></td>
+	</tr>
+	
+</table>
+<br>
+<a class="btn btn-default" href="/AA105G3/back-end/web_page/ListManagement.jsp">取消修改</a>
+<input type="hidden" name="action" value="update">
+<input type="hidden" name="prod_ord_no" value="<%=product_order_listVO.getProd_ord_no()%>">
+<input type="hidden" name="prod_no" value="<%=product_order_listVO.getProd_no()%>">
+<input type="hidden" name="unit_price" value="<%=product_order_listVO.getUnit_price()%>">
+<input type="hidden" name="prod_quantity" value="<%=product_order_listVO.getProd_quantity()%>">
+<input type="submit" value="送出修改" class="btn btn-primary"></FORM>
 
 
 
@@ -348,12 +303,17 @@ th, td {
 
 
 
+
 <footer id="the_footer">
 	<p class="lightcolor">Copyright &copy; 2016 Java Team 3</p>
 </footer>
 		
 <script src="https://code.jquery.com/jquery.js"></script>
 <script src="https://netdna.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+
+
+
+
 
 </body>
 </html>

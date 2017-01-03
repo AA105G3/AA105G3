@@ -228,7 +228,8 @@ public class Product_order_listServlet extends HttpServlet {
 								
 				/***************************3.查詢完成,準備轉交(Send the Success view)************/
 				req.setAttribute("product_order_listVO", product_order_listVO);         // 資料庫取出的product_order_listVO物件,存入req
-				String url = "/back-end/product_order_list/update_product_order_list_input.jsp";
+				/*String url = "/back-end/product_order_list/update_product_order_list_input.jsp";*/
+				String url = "/back-end/web_page/UpdateList.jsp";
 				RequestDispatcher successView = req.getRequestDispatcher(url);// 成功轉交 update_product_order_list_input.jsp
 				successView.forward(req, res);
 
@@ -322,8 +323,10 @@ public class Product_order_listServlet extends HttpServlet {
 				}
 				// Send the use back to the form, if there were errors
 				if (!errorMsgs.isEmpty()) {
+					/*RequestDispatcher failureView = req
+							.getRequestDispatcher("/back-end/product_order_list/select_page.jsp");*/
 					RequestDispatcher failureView = req
-							.getRequestDispatcher("/back-end/product_order_list/select_page.jsp");
+							.getRequestDispatcher("/back-end/web_page/ListManagement.jsp");
 					failureView.forward(req, res);
 					return;//程式中斷
 				}
@@ -336,8 +339,10 @@ public class Product_order_listServlet extends HttpServlet {
 				}
 				// Send the use back to the form, if there were errors
 				if (!errorMsgs.isEmpty()) {
+					/*RequestDispatcher failureView = req
+							.getRequestDispatcher("/back-end/product_order_list/select_page.jsp");*/
 					RequestDispatcher failureView = req
-							.getRequestDispatcher("/back-end/product_order_list/select_page.jsp");
+							.getRequestDispatcher("/back-end/web_page/ListManagement.jsp");
 					failureView.forward(req, res);
 					return;//程式中斷
 				}
@@ -351,15 +356,18 @@ public class Product_order_listServlet extends HttpServlet {
 				}
 				// Send the use back to the form, if there were errors
 				if (!errorMsgs.isEmpty()) {
+					/*RequestDispatcher failureView = req
+							.getRequestDispatcher("/back-end/product_order_list/select_page.jsp");*/
 					RequestDispatcher failureView = req
-							.getRequestDispatcher("/back-end/product_order_list/select_page.jsp");
+							.getRequestDispatcher("/back-end/web_page/ListManagement.jsp");
 					failureView.forward(req, res);
 					return;//程式中斷
 				}
 				
 				/***************************3.查詢完成,準備轉交(Send the Success view)*************/
 				req.setAttribute("product_order_listVO", product_order_listVO); // 資料庫取出的product_order_listVO物件,存入req
-				String url = "/back-end/product_order_list/listPartProduct_order_list.jsp";
+				/*String url = "/back-end/product_order_list/listPartProduct_order_list.jsp";*/
+				String url = "/back-end/web_page/DisplayProductOrderList.jsp";
 				RequestDispatcher successView = req.getRequestDispatcher(url); // 成功轉交 listOneProduct_order_list.jsp
 				successView.forward(req, res);
 
@@ -470,7 +478,8 @@ public class Product_order_listServlet extends HttpServlet {
 				
 				/***************************3.修改完成,準備轉交(Send the Success view)*************/
 				req.setAttribute("product_order_listVO", product_order_listVO); // 資料庫update成功後,正確的的product_order_listVO物件,存入req
-				String url = "/back-end/product_order_list/listOneProduct_order_list.jsp";
+				/*String url = "/back-end/product_order_list/listOneProduct_order_list.jsp";*/
+				String url = "/back-end/web_page/ListManagement.jsp";
 				RequestDispatcher successView = req.getRequestDispatcher(url); // 修改成功後,轉交listOneProduct_order_list.jsp
 				successView.forward(req, res);
 

@@ -1,26 +1,12 @@
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
-<%@ page import="com.product_order_list.model.*"%>
 <%@ page import="com.product_order.model.*"%>
-<%@ page import="com.member.model.*"%>
-<%@ page import="java.util.*"%>
 <%
-Product_orderVO product_orderVO = (Product_orderVO) request.getAttribute("product_orderVO");
-String amount =  (String) session.getAttribute("amount");
-int total = Integer.parseInt(amount);
-String quantity =  (String) session.getAttribute("quantity");
-
-MemberVO memberVO = (MemberVO) request.getAttribute("memberVO");
-
-Vector<Product_order_listVO> buylist = (Vector<Product_order_listVO>) session.getAttribute("shoppingcart");
-pageContext.setAttribute("buylist",buylist);
+	Product_orderVO product_orderVO = (Product_orderVO) request.getAttribute("product_orderVO"); //Product_orderServlet.java (Concroller), 存入req的product_orderVO物件 (包括幫忙取出的product_orderVO, 也包括輸入資料錯誤時的product_orderVO物件)
 %>
-
-<%@ page import="com.member.model.*"%>
-
 <html>
 <head>
-<title>商品訂單資料新增 - addMember.jsp</title>
+<title>商品訂單資料修改 - update_product_order_input.jsp</title>
 
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -58,14 +44,17 @@ pageContext.setAttribute("buylist",buylist);
 		bottom : 0px;
 		width : 100%;
 	}
+	.title-style{
+		padding-top : 50px;
+	}
 	.list-style{
-		padding-top : 100px;
-		padding-left : 320px;
+		padding-top : 75px;
+		padding-left : 350px;
 	}
 	th{
-		text-align : center;
+		height: 50px;
 	}
-	tr{
+	td{
 		height: 50px;
 	}
 </style>
@@ -79,10 +68,6 @@ pageContext.setAttribute("buylist",buylist);
 
 
 <div id="skin">
-
-
-
-
 
 <!--START SCROLL TOP BUTTON -->
 <a class="scrollToTop" href="#">
@@ -147,14 +132,14 @@ pageContext.setAttribute("buylist",buylist);
 
 
 <div class="container">
-		<div class="row">
-			<div class="list-style">
+	<div class="row">
+		<div class="list-style">
 
 
 
 
 
-<font size="+3">請填寫訂單資料： </font>
+<h3>商品訂單資料修改:</h3>
 <%-- 錯誤表列 --%>
 <c:if test="${not empty errorMsgs}">
 	<font color='red'>請修正以下錯誤:
@@ -168,100 +153,82 @@ pageContext.setAttribute("buylist",buylist);
 
 <FORM METHOD="post" ACTION="<%=request.getContextPath()%>/product_order/product_order.do" name="form1">
 <table border="0">
-
 	<tr>
-		<td>會員帳號：</td>
-		<td>${memberVO.mem_ac}</td>
+		<td>訂單編號：</td>
+		<td><%=product_orderVO.getProd_ord_no()%></td>
+	</tr>
+	<tr>
+		<td>會員編號：</td>
+		<td><%=product_orderVO.getMem_no()%></td>
+	</tr>
+	<tr>
+		<td>訂單成立時間：</td>
+		<td><%=product_orderVO.getProd_ord_time()%></td>
 	</tr>
 	<tr>
 		<td>信用卡卡號：</td>
-		<td><input type="TEXT" name="cred_card_no" size="45"
-			value="<%= (product_orderVO==null)? "A1B2C3D4E5F6G7H8" : product_orderVO.getCred_card_no()%>" /></td>
+		<td><%=product_orderVO.getCred_card_no().subSequence(0,4)%>********<%=product_orderVO.getCred_card_no().subSequence(12,16)%></td>
 	</tr>
 	<tr>
 		<td>信用卡有效時期：</td>
-		<td><input type="TEXT" name="valid_date"></td>
+		<td><%=product_orderVO.getValid_date()%></td>
 	</tr>
 	<tr>
-		<td>信用卡驗證碼：</td>
-		<td><input type="TEXT" name="valid_no" size="45"
-			value="<%= (product_orderVO==null)? "" : product_orderVO.getValid_no()%>" /></td>
-	</tr>
-	<tr>
-		<td>信用卡卡別：</td>
-		<td><select size="1" name="cred_card_type">
-				<option value="0" >VISA
-				<option value="1" >MASTER
-				<option value="2" >JCB
-			</select></td>
-	</tr>
-	<tr>
-		<td>收件人姓名：</td>
-		<td><input type="TEXT" name="ship_name" size="45"
-			value="${memberVO.mem_name}" /></td>
-	</tr>
-	<tr>
-		<td>郵遞區號：</td>
-		<td><input type="TEXT" name="post_code" size="45"
-			value="<%= (product_orderVO==null)? "" : product_orderVO.getPost_code()%>" /></td>
-	</tr>
-	<tr>
-		<td>寄送地址：</td>
-		<td><input type="TEXT" name="mem_adrs" size="45"
-			value="${memberVO.mem_adrs}" /></td>
-	</tr>
-	<tr>
-		<td>聯絡手機：</td>
-		<td><input type="TEXT" name="cell_phone" size="45"
-			value="${memberVO.mem_phone}" /></td>
-	</tr>
-	<tr>
-		<td>聯絡市話：</td>
-		<td><input type="TEXT" name="tel_phone" size="45"
-			value="<%= (product_orderVO==null)? "" : product_orderVO.getTel_phone()%>" /></td>
+		<td>信用卡卡別：<%=product_orderVO.getCred_card_type()%></td>
+		<td>
+			<c:if test="${product_orderVO.cred_card_type == '0'}" >
+				VISA
+			</c:if>
+			<c:if test="${product_orderVO.cred_card_type == '1'}" >
+				MASTER
+			</c:if>
+			<c:if test="${product_orderVO.cred_card_type == '2'}" >
+				JCB
+			</c:if>
+		</td>
 	</tr>
 	<tr>
 		<td>訂單總金額：</td>
-		<td>NT$ <font color="red"><b><%=amount%></b></font></td>
+		<td><%=product_orderVO.getTotal_money()%></td>
+	</tr>
+	<tr>
+		<td>收件人姓名:</td>
+		<td><input type="TEXT" name="ship_name" size="45"
+			value="<%= (product_orderVO==null)? "地球人" : product_orderVO.getShip_name()%>" /></td>
+	</tr>
+	<tr>
+		<td>郵遞區號:</td>
+		<td><input type="TEXT" name="post_code" size="45"
+			value="<%= (product_orderVO==null)? "32099" : product_orderVO.getPost_code()%>" /></td>
+	</tr>
+	<tr>
+		<td>寄送地址:</td>
+		<td><input type="TEXT" name="mem_adrs" size="45"
+			value="<%= (product_orderVO==null)? "太陽系第三行星-地球" : product_orderVO.getMem_adrs()%>" /></td>
+	</tr>
+	<tr>
+		<td>聯絡手機:</td>
+		<td><input type="TEXT" name="cell_phone" size="45"
+			value="<%= (product_orderVO==null)? "0987654321" : product_orderVO.getCell_phone()%>" /></td>
+	</tr>
+	<tr>
+		<td>聯絡市話:</td>
+		<td><input type="TEXT" name="tel_phone" size="45"
+			value="<%= (product_orderVO==null)? "03-4567891" : product_orderVO.getTel_phone()%>" /></td>
 	</tr>
 
 </table>
 <br>
-
-<div class="col-xs-12 col-sm-6">
-	<a href="/AA105G3/front-end/web_page/Market.jsp" class="btn btn-default">取消</a>
-</div>
-
-<div class="col-xs-12 col-sm-2">
-	<input type="hidden" name="action" value="insertWithList">
-	<input type="submit" class="btn btn-danger" value="結帳" onClick="alert('感謝您的購買！')">
-	<input type="hidden" name="mem_no" value="${memberVO.mem_no}">
-	<input type="hidden" name="total_money" value="<%=total%>">
-	
-	<c:forEach var="Product_order_listVO" items="${buylist}">
-		<input type="hidden" name="prod_no" value="${Product_order_listVO.prod_no}">
-		<input type="hidden" name="unit_price" value="${Product_order_listVO.unit_price}">
-		<input type="hidden" name="prod_quantity" value="${Product_order_listVO.prod_quantity}">
-		<input type="hidden" name="deli_status" value="0">
-		<input type="hidden" name="deli_time" value="2017-12-31">	
-	</c:forEach>
-	
-	<%-- <%
-	 for (int index = 0; index < buylist.size(); index++) {
-		Product_order_listVO order = buylist.get(index);
-	%>
-	<input type="hidden" name="prod_no" value="<%=order.getProd_no()%>">
-	<input type="hidden" name="unit_price" value="<%=order.getUnit_price()%>">
-	<input type="hidden" name="prod_quantity" value="<%=order.getProd_quantity()%>">
-	
-	<input type="hidden" name="deli_status" value="0">
-	<input type="hidden" name="deli_time" value="2017-12-31">
-	
-	<%}%> --%>
-	
-</div>
-
-</FORM>
+<input type="hidden" name="action" value="update">
+<input type="hidden" name="prod_ord_no" value="<%=product_orderVO.getProd_ord_no()%>">
+<input type="hidden" name="mem_no" value="<%=product_orderVO.getMem_no()%>">
+<input type="hidden" name="prod_ord_time" value="<%=product_orderVO.getProd_ord_time()%>">
+<input type="hidden" name="cred_card_no" value="<%=product_orderVO.getCred_card_no()%>">
+<input type="hidden" name="valid_date" value="<%=product_orderVO.getValid_date()%>">
+<input type="hidden" name="valid_no" value="<%=product_orderVO.getValid_no()%>">
+<input type="hidden" name="cred_card_type" value="<%=product_orderVO.getCred_card_type()%>">
+<input type="hidden" name="total_money" value="<%=product_orderVO.getTotal_money()%>">
+<input type="submit" value="送出修改"></FORM>
 
 
 
@@ -271,15 +238,12 @@ pageContext.setAttribute("buylist",buylist);
 	</div>
 </div>
 
-
-
-
+</div>
 
 <footer id="theFooter">
 	Copyright &copy; 2016 Java Team 3 
 </footer>
-
-
+		
 <script src="https://code.jquery.com/jquery.js"></script>
 <script src="https://netdna.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
 
@@ -287,7 +251,5 @@ pageContext.setAttribute("buylist",buylist);
 
 
 
-</div>
 </body>
-
 </html>

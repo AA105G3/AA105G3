@@ -40,8 +40,14 @@ th, td {
 	height : 150px;
 	width : auto;
 }
+.table-style{
+	padding-top : 50px;
+}
 .btn-style{
 	padding-top : 50px;
+}
+.h2-style{
+	background: #e2fede;
 }
 
 </style>
@@ -273,7 +279,7 @@ th, td {
 
 			<table border='1' bordercolor='#CCCCFF' id="mainTable" cellspacing="0" >
 			
-				<tr>
+				<tr class='h2-style'>
 					<td colspan="2" id="center" align="center" valign="center"><h2>修改商品資料</h2></td>
 				</tr>
 				
