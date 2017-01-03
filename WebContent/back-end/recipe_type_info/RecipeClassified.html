@@ -632,8 +632,15 @@
 						 success:function (data){
 
 						 	if(data.ErrorMsg==null){
-						 		$("#type-info-input").modal('hide');
-						 			$('#'+recipe_no).append('<span class="recipe_type">、'+data.typeName+'<i class="glyphicon glyphicon-trash btn" name="'+data.recipe_type_no+'"></i></span>');
+						 		
+						 		if (!$.trim($('#'+recipe_no).html())){
+						 				$("#type-info-input").modal('hide');
+						 				$('#'+recipe_no).append('<span class="recipe_type">'+data.typeName+'<i class="glyphicon glyphicon-trash btn" name="'+data.recipe_type_no+'"></i></span>');
+						 			}else{
+						 				$("#type-info-input").modal('hide');
+							 			$('#'+recipe_no).append('<span class="recipe_type">、'+data.typeName+'<i class="glyphicon glyphicon-trash btn" name="'+data.recipe_type_no+'"></i></span>');
+						 			}
+						 		
 						 			
 							 swal(
 
@@ -667,6 +674,7 @@
 
 			//Search classified Recipe
 
+			
 			var Search = $('#search-classified').click(function(){
 
 				swal({
@@ -675,8 +683,7 @@
 					  	'<form class="form-horizontal" id="searchBar" action="/AA105G3/recipe/recipe.do" method="post" >'+
 					    '<input id="searchInput" class="searchInput" name="searchInput" autofocus>' +
 					    '<input type="hidden" name="searchCondition" value="recipe_name">' +
-					    '<input type="hidden" name="action" value="search">' +
-					    '<input type="hidden" name="requestEnd" value="back">' +
+					    '<input type="hidden" name="action" value="searchClassified">' +
 					    '</form>',
 					  preConfirm: function () {
 					  	$('#searchBar').submit();
@@ -689,9 +696,6 @@
 					    })
 					  }
 					})
-
-
-
 			})
 
 

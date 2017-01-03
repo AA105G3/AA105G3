@@ -221,10 +221,54 @@ public class RecipeServlet extends HttpServlet {
 				/***************************3.查詢完成,準備轉交(Send the Success view)************/
 				req.setAttribute("list", list);
 				req.setAttribute("title", searchInput);
-				if(requestEnd.equals("back")){
-					String url = "/back-end/recipe_type_info/RecipeClassified.jsp";
-				}
+				
 				String url = "/front-end/recipe/RecipeSearch.jsp";
+				RequestDispatcher successView = req.getRequestDispatcher(url);
+				successView.forward(req, res);
+
+				/***************************其他可能的錯誤處理**********************************/
+			} catch (Exception e) {
+				errorMsgs.add("查無資料:" + e.getMessage());
+				RequestDispatcher failureView = req
+						.getRequestDispatcher("/front-end/recipe/RecipeSearch.jsp");
+				failureView.forward(req, res);
+			}
+		}
+		
+		if("searchClassified".equals(action)){
+			
+			List<String> errorMsgs = new LinkedList<String>();
+			// Store this set in the request scope, in case we need to
+			// send the ErrorPage view.
+			req.setAttribute("errorMsgs", errorMsgs);
+			
+			try {
+				/***************************1.接收請求參數****************************************/
+				String searchInput =req.getParameter("searchInput");
+				
+				if(searchInput.length()==0 || searchInput.isEmpty()){
+					errorMsgs.add("搜尋條件請勿空白");
+				}
+				
+				if (!errorMsgs.isEmpty()) {
+					
+					RequestDispatcher failureView = req
+							.getRequestDispatcher("/back-end/recipe_type_info/RecipeNotClassified.jsp");
+					failureView.forward(req, res);
+					return; //程式中斷
+				}
+				
+				/***************************2.開始查詢資料****************************************/
+				RecipeService recipeSvc = new RecipeService();
+				
+				List<RecipeVO> list =null;
+				list = recipeSvc.serachClassified(searchInput);
+				
+								
+				/***************************3.查詢完成,準備轉交(Send the Success view)************/
+				req.setAttribute("list", list);
+				req.setAttribute("title", searchInput);
+				String url = "/back-end/recipe_type_info/RecipeClassified.jsp";
 				RequestDispatcher successView = req.getRequestDispatcher(url);
 				successView.forward(req, res);
 
@@ -232,12 +276,10 @@ public class RecipeServlet extends HttpServlet {
 			} catch (Exception e) {
 				errorMsgs.add("無法取得要修改的資料:" + e.getMessage());
 				RequestDispatcher failureView = req
-						.getRequestDispatcher("/front-end/recipe/listAllRecipe.jsp");
+						.getRequestDispatcher("/back-end/recipe_type_info/RecipeClassified.jsp");
 				failureView.forward(req, res);
 			}
-		}
-		
-			
+		}	
 			
 		
 		

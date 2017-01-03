@@ -205,6 +205,17 @@ public class RecipeService
 		return list2;
 		
 	}
+	public List<RecipeVO> serachClassified(String recipe_name){
+		List<RecipeVO> list= dao.serachByRecipe_name(recipe_name);
+		List<RecipeVO> list2 = new ArrayList<RecipeVO>();
+		for(RecipeVO aRecipe:list){
+			if(aRecipe.getRecipe_classify().equals("已分類")){
+				list2.add(aRecipe);
+			}
+		}
+		return list2;
+	}
+	
 	public List<RecipeVO> serachByRecipe_name(String recipe_name){
 		
 		List<RecipeVO> list= dao.serachByRecipe_name(recipe_name);

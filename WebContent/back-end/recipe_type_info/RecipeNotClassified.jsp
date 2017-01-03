@@ -6,7 +6,7 @@
 
 
 
-<% 		
+<% 	
 	RecipeService recipeSvc = new RecipeService();
 	List<RecipeVO> list = recipeSvc.getNotClassified();
 	pageContext.setAttribute("list",list);
@@ -110,7 +110,7 @@
 				font-size: 17px;
 			}
 			.recipe_name_head{
-				width: 200px;
+				width: 220px;
 				font-size: 17px;
 			}
 			.category_head{
@@ -159,9 +159,10 @@
 				height: 34px;
 			}
 
-			#recipeCompleteForm{
-				padding:0px;
-				margin:0px;
+			.recipeCompleteForm{
+				padding:0px !important;
+				margin:0px !important;
+				display:inline !important;
 			}
 			
 
@@ -562,7 +563,19 @@
 
 			//init
 		$().ready(function(){
-
+			
+			var errorMsg = "${errorMsgs[0]}"
+			if(errorMsg!=""){
+				swal({
+					 title: errorMsg,
+							type: 'error'
+					})
+					errorMsg="";
+      		  }
+			
+			
+			
+			
 			//showRecipeInput and init select options
 			var showRecipeInput = $('button.addType').click(function(){
 
@@ -716,8 +729,7 @@
 					  	'<form class="form-horizontal" id="searchBar" action="/AA105G3/recipe/recipe.do" method="post" >'+
 					    '<input id="searchInput" class="searchInput" name="searchInput" autofocus>' +
 					    '<input type="hidden" name="searchCondition" value="recipe_name">' +
-					    '<input type="hidden" name="action" value="search">' +
-					    '<input type="hidden" name="requestEnd" value="back">' +
+					    '<input type="hidden" name="action" value="searchClassified">' +
 					    '</form>',
 					  preConfirm: function () {
 					  	$('#searchBar').submit();
