@@ -1,6 +1,9 @@
 package com.recipe_l_type.model;
 
 import java.util.List;
+import java.util.Set;
+
+import com.recipe_m_type.model.Recipe_m_typeVO;
 
 
 public class Recipe_l_typeService {
@@ -45,4 +48,9 @@ public class Recipe_l_typeService {
 	public List<Recipe_l_typeVO> getAll(){
 		return dao.getAll();
 	}	
+	
+	public Set<Recipe_m_typeVO> getM_typesByL_Type_No(String parent_type){
+		Set<Recipe_m_typeVO> mTypes = dao.getM_typesByL_Type_No(parent_type);
+		return mTypes;
+	}
 }

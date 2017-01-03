@@ -180,6 +180,7 @@ public class Recipe_s_typeServlet extends HttpServlet {
 			try {
 				/***********************1.接收請求參數 - 輸入格式的錯誤處理*************************/
 				String s_type_name = req.getParameter("s_type_name").trim();
+				String recipe_m_type_no = req.getParameter("recipe_m_type_no").trim();
 				
 				Recipe_s_typeVO recipe_s_typeVO = new Recipe_s_typeVO();
 				recipe_s_typeVO.setS_type_name(s_type_name);
@@ -195,7 +196,7 @@ public class Recipe_s_typeServlet extends HttpServlet {
 				
 				/***************************2.開始新增資料***************************************/
 				Recipe_s_typeService recipe_s_typeSvc = new Recipe_s_typeService();
-				recipe_s_typeVO = recipe_s_typeSvc.addRecipe_s_type( s_type_name);
+				recipe_s_typeVO = recipe_s_typeSvc.addRecipe_s_type( s_type_name,recipe_m_type_no);
 				
 				/***************************3.新增完成,準備轉交(Send the Success view)***********/
 				String url = "/recipe_s_type/listAllRecipe_s_type.jsp";

@@ -14,11 +14,12 @@ public class Recipe_s_typeService {
 		dao = new Recipe_s_typeDAO();
 	}
 	
-	public Recipe_s_typeVO addRecipe_s_type(String s_type_name) {
+	public Recipe_s_typeVO addRecipe_s_type(String s_type_name,String parent_type) {
 
 		Recipe_s_typeVO recipe_s_typeVO = new Recipe_s_typeVO();
 
 		recipe_s_typeVO.setS_type_name(s_type_name);
+		recipe_s_typeVO.setParent_type(parent_type);
 		dao.insert(recipe_s_typeVO);
 
 		return recipe_s_typeVO;

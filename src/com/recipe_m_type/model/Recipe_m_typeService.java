@@ -1,6 +1,9 @@
 package com.recipe_m_type.model;
 
 import java.util.List;
+import java.util.Set;
+
+import com.recipe_s_type.model.Recipe_s_typeVO;
 
 
 public class Recipe_m_typeService {
@@ -12,11 +15,12 @@ public class Recipe_m_typeService {
 		dao = new Recipe_m_typeDAO();
 	}
 
-	public Recipe_m_typeVO addRecipe_m_type(String m_type_name) {
+	public Recipe_m_typeVO addRecipe_m_type(String m_type_name,String parent_type) {
 
 		Recipe_m_typeVO recipe_m_typeVO = new Recipe_m_typeVO();
 
 		recipe_m_typeVO.setM_type_name(m_type_name);
+		recipe_m_typeVO.setParent_type(parent_type);
 		dao.insert(recipe_m_typeVO);
 
 		return recipe_m_typeVO;
@@ -45,5 +49,9 @@ public class Recipe_m_typeService {
 	public List<Recipe_m_typeVO> getAll(){
 		return dao.getAll();
 	}		
-
+	
+	public Set<Recipe_s_typeVO> getS_typesByM_Type_No(String parent_type){
+		Set<Recipe_s_typeVO> sTypes = dao.getS_typesByM_Type_No(parent_type);
+		return sTypes;
+	}
 }

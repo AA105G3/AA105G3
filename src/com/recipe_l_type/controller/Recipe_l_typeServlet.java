@@ -6,14 +6,16 @@ import java.util.List;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import com.recipe_l_type.model.Recipe_l_typeVO;
+import com.recipe_m_type.model.*;
 import com.recipe_l_type.model.Recipe_l_typeService;
 
-
+@WebServlet("/recipe_l_type/recipe_l_type.do")
 public class Recipe_l_typeServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	public void doGet(HttpServletRequest req, HttpServletResponse res)
@@ -134,7 +136,9 @@ public class Recipe_l_typeServlet extends HttpServlet {
 				/***************************1.接收請求參數 - 輸入格式的錯誤處理**********************/
 				String recipe_l_type_no = new String(req.getParameter("recipe_l_type_no").trim());
 				String l_type_name = req.getParameter("l_type_name").trim();
-								
+				String addM_type = req.getParameter("addAttachment");
+				String deleteM_type = req.getParameter("deleteAttachment");
+				
 				Recipe_l_typeVO recipe_l_typeVO = new Recipe_l_typeVO();
 				recipe_l_typeVO.setRecipe_l_type_no(recipe_l_type_no);
 				recipe_l_typeVO.setL_type_name(l_type_name);
@@ -152,9 +156,18 @@ public class Recipe_l_typeServlet extends HttpServlet {
 				Recipe_l_typeService recipe_l_typeSvc = new Recipe_l_typeService();
 				recipe_l_typeVO = recipe_l_typeSvc.updateRecipe_l_type(recipe_l_type_no, l_type_name);
 				
+				Recipe_m_typeService recipe_m_typeSvc = new Recipe_m_typeService();
+				
+				if(addM_type !="" || addM_type !=null){
+					Recipe_m_typeVO recipe_m_typeVO = recipe_m_typeSvc.addRecipe_m_type(addM_type,recipe_l_type_no);
+				}
+				
+				if(deleteM_type !="" || deleteM_type !=null){
+					recipe_m_typeSvc.deleteRecipe_m_type(deleteM_type);
+				}
 				/***************************3.修改完成,準備轉交(Send the Success view)*************/
 				req.setAttribute("recipe_l_typeVO", recipe_l_typeVO); // 資料庫update成功後,正確的的recipe_l_typeVO物件,存入req
-				String url = "/recipe_l_type/listOneRecipe_l_type.jsp";
+				String url = "/back-end/recipe_l_type/L_TypeList.jsp";
 				RequestDispatcher successView = req.getRequestDispatcher(url); // 修改成功後,轉交listOneRecipe_l_type.jsp
 				successView.forward(req, res);
 
@@ -162,7 +175,7 @@ public class Recipe_l_typeServlet extends HttpServlet {
 			} catch (Exception e) {
 				errorMsgs.add("修改資料失敗:"+e.getMessage());
 				RequestDispatcher failureView = req
-						.getRequestDispatcher("/recipe_l_type/update_recipe_l_type_input.jsp");
+						.getRequestDispatcher("/back-end/recipe_l_type/L_TypeList.jsp");
 				failureView.forward(req, res);
 			}
 		}
@@ -195,7 +208,7 @@ public class Recipe_l_typeServlet extends HttpServlet {
 				recipe_l_typeVO = recipe_l_typeSvc.addRecipe_l_type( l_type_name);
 				
 				/***************************3.新增完成,準備轉交(Send the Success view)***********/
-				String url = "/recipe_l_type/listAllRecipe_l_type.jsp";
+				String url = "/back-end/recipe_l_type/L_TypeList.jsp";
 				RequestDispatcher successView = req.getRequestDispatcher(url); // 新增成功後轉交listAllRecipe_l_type.jsp
 				successView.forward(req, res);				
 				
@@ -203,7 +216,7 @@ public class Recipe_l_typeServlet extends HttpServlet {
 			} catch (Exception e) {
 				errorMsgs.add(e.getMessage());
 				RequestDispatcher failureView = req
-						.getRequestDispatcher("/recipe_l_type/addRecipe_l_type.jsp");
+						.getRequestDispatcher("/back-end/recipe_l_type/L_TypeList.jsp");
 				failureView.forward(req, res);
 			}
 		}
@@ -225,7 +238,7 @@ public class Recipe_l_typeServlet extends HttpServlet {
 				recipe_l_typeSvc.deleteRecipe_l_type(recipe_l_type_no);
 				
 				/***************************3.刪除完成,準備轉交(Send the Success view)***********/								
-				String url = "/recipe_l_type/listAllRecipe_l_type.jsp";
+				String url = "/back-end/recipe_l_type/L_TypeList.jsp";
 				RequestDispatcher successView = req.getRequestDispatcher(url);// 刪除成功後,轉交回送出刪除的來源網頁
 				successView.forward(req, res);
 				
@@ -233,7 +246,7 @@ public class Recipe_l_typeServlet extends HttpServlet {
 			} catch (Exception e) {
 				errorMsgs.add("刪除資料失敗:"+e.getMessage());
 				RequestDispatcher failureView = req
-						.getRequestDispatcher("/recipe_l_type/listAllRecipe_l_type.jsp");
+						.getRequestDispatcher("/back-end/recipe_l_type/L_TypeList.jsp");
 				failureView.forward(req, res);
 			}
 		}
