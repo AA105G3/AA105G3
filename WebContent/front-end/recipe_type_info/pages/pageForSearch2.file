@@ -3,11 +3,11 @@
  <tr>
   <%if (rowsPerPage<rowNumber) {%>
     <%if(pageIndex>=rowsPerPage){%>
-        <td><A href="<%=request.getContextPath()%>/recipe/recipe.do?whichPage=<%=whichPage-1%>&action=searchClassified&searchInput=<%= searchInput%>">上一頁 </A>&nbsp;</td>
+        <td><A href="<%=request.getContextPath()%>/recipe_type_info/recipe_type_info.do?whichPage=<%=whichPage-1%>&action=findByTypeNo&recipe_type_no=<%= recipe_type_no%>">上一頁 </A>&nbsp;</td>
     <%}%>
   
     <%if(pageIndex<pageIndexArray[pageNumber-1]){%>
-        <td><A href="<%=request.getContextPath()%>/recipe/recipe.do?whichPage=<%=whichPage+1%>&action=searchClassified&searchInput=<%= searchInput%>">下一頁 </A>&nbsp;</td>
+        <td><A href="<%=request.getContextPath()%>/recipe_type_info/recipe_type_info.do?whichPage=<%=whichPage+1%>&action=findByTypeNo&recipe_type_no=<%= recipe_type_no%>">下一頁 </A>&nbsp;</td>
     <%}%>
   <%}%>  
  </tr>
