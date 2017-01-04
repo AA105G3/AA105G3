@@ -1,14 +1,18 @@
 package com.chat.model;
 
-import java.sql.*;
 import java.util.*;
-import javax.sql.DataSource;
+
 import javax.naming.Context;
 import javax.naming.InitialContext;
 import javax.naming.NamingException;
+import javax.sql.DataSource;
 
+import java.sql.*;
 
-public class ChatDAO  implements ChatDAO_interface{
+import com.chat.model.ChatVO;
+import com.chat.model.ChatDAO_interface;
+
+public class ChatDAO implements ChatDAO_interface {
 	
 	private static DataSource ds = null;
 	static {
@@ -20,7 +24,6 @@ public class ChatDAO  implements ChatDAO_interface{
 		}
 	}
 	
-	
 	private static final String INSERT_STMT = "INSERT INTO chat (chat_no, send_no, get_no, chat_text, chat_date ) VALUES ('CTN'||CHAT_SEQ.NEXTVAL,?,?,?,sysdate)";
 	private static final String GET_ALL_STMT = "SELECT chat_no, send_no, get_no, chat_text, chat_date FROM chat";
 	private static final String GET_ONE_STMT = "SELECT chat_no, send_no, get_no, chat_text, chat_date FROM chat where chat_no = ?";
@@ -29,8 +32,8 @@ public class ChatDAO  implements ChatDAO_interface{
 	
 	
 	@Override
-	public void insert(ChatVO chatVO) {
-		
+	public int insert(ChatVO chatVO) {
+		int updateCount = 0;
 		Connection con = null;
 		PreparedStatement pstmt = null;
 		
@@ -44,8 +47,7 @@ public class ChatDAO  implements ChatDAO_interface{
 			pstmt.setString(3, chatVO.getChat_text());
 			pstmt.executeUpdate();
 
-		
-			// Handle any SQL errors
+			// Handle any driver errors
 		} catch (SQLException se) {
 			throw new RuntimeException("A database error occured. "
 					+ se.getMessage());
@@ -66,12 +68,12 @@ public class ChatDAO  implements ChatDAO_interface{
 				}
 			}
 		}
-		
+		return updateCount;
 	}
 	
 	@Override
-	public void update(ChatVO chatVO) {
-		
+	public int update(ChatVO chatVO) {
+		int updateCount = 0;
 		Connection con = null;
 		PreparedStatement pstmt = null;
 
@@ -84,12 +86,11 @@ public class ChatDAO  implements ChatDAO_interface{
 			pstmt.setString(2, chatVO.getGet_no());
 			pstmt.setString(3, chatVO.getChat_text());
 			pstmt.setString(4, chatVO.getChat_no());
-		 
+		  //pstmt.setTimestamp(4,new Timestamp(new java.util.Date().getTime()));
 			
 			pstmt.executeUpdate();
 
-	
-			// Handle any SQL errors
+			// Handle any driver errors
 		} catch (SQLException se) {
 			throw new RuntimeException("A database error occured. "
 					+ se.getMessage());
@@ -110,12 +111,12 @@ public class ChatDAO  implements ChatDAO_interface{
 				}
 			}
 		}
-				
+		return updateCount;		
 	}
 
 	@Override
-	public void delete(String chat_no) {
-		
+	public int delete(String chat_no) {
+		int updateCount = 0;
 		Connection con = null;
 		PreparedStatement pstmt = null;
 
@@ -128,8 +129,7 @@ public class ChatDAO  implements ChatDAO_interface{
 
 			pstmt.executeUpdate();
 
-		
-			// Handle any SQL errors
+			// Handle any driver errors
 		} catch (SQLException se) {
 			throw new RuntimeException("A database error occured. "
 					+ se.getMessage());
@@ -150,7 +150,7 @@ public class ChatDAO  implements ChatDAO_interface{
 				}
 			}
 		}
-		
+		return updateCount;
 	}
 
 	@Override
@@ -171,16 +171,16 @@ public class ChatDAO  implements ChatDAO_interface{
 			rs = pstmt.executeQuery();
 
 			while (rs.next()) {
-				// recipe_MsgVO ¤]ºÙ¬° Domain objects
+				// recipe_MsgVO ä¹Ÿç¨±ç‚º Domain objects
 				chatVO = new ChatVO();
+				chatVO.setChat_no(rs.getString("chat_no"));
 				chatVO.setSend_no(rs.getString("send_no"));
 				chatVO.setGet_no(rs.getString("get_no"));
 				chatVO.setChat_text(rs.getString("chat_text"));
 				chatVO.setChat_date(rs.getTimestamp("chat_date"));				
 			}
 
-		
-			// Handle any SQL errors
+			// Handle any driver errors
 		} catch (SQLException se) {
 			throw new RuntimeException("A database error occured. "
 					+ se.getMessage());
@@ -228,7 +228,7 @@ public class ChatDAO  implements ChatDAO_interface{
 			rs = pstmt.executeQuery();
 
 			while (rs.next()) {
-				// recipe_MsgVO ¤]ºÙ¬° Domain objects
+				// recipe_MsgVO ä¹Ÿç¨±ç‚º Domain objects
 				chatVO = new ChatVO();
 				chatVO.setChat_no(rs.getString("chat_no"));
 				chatVO.setSend_no(rs.getString("send_no"));
@@ -238,8 +238,7 @@ public class ChatDAO  implements ChatDAO_interface{
 				list.add(chatVO); // Store the row in the list
 			}
 
-		
-			// Handle any SQL errors
+			// Handle any driver errors
 		} catch (SQLException se) {
 			throw new RuntimeException("A database error occured. "
 					+ se.getMessage());
@@ -270,5 +269,5 @@ public class ChatDAO  implements ChatDAO_interface{
 		return list;
 			
 	}
-	
+
 }

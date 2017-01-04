@@ -1,4 +1,4 @@
-package com.chat.model.*;
+package com.chat.model;
 
 import java.util.List;
 
