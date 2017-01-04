@@ -8,8 +8,9 @@
 <% 		
 	String typeName= request.getParameter("typeName");
 	String recipe_type_no= request.getParameter("recipe_type_no");
+	List list = (List)request.getAttribute("list");
+	pageContext.setAttribute("list",list);
 %>
-<jsp:useBean id="list" scope="request" type="java.util.List" />
 
 <jsp:useBean id="memberSvc" scope="page" class="com.member.model.MemberService" />
 
@@ -150,54 +151,57 @@
 				</div>
 			</div>
 	<%@ include file="pages/pageForSearch1.file" %> 
-	
-	<c:forEach var="recipeVO" items="${list}" varStatus="s" step="2" begin="<%=pageIndex%>" end="<%=pageIndex+rowsPerPage-1%>"> 
-			<div class="row recipe-row-wrapper">
-				<div class="col-xs-12 col-sm-6 recipe-item-wrapper">
-					<div class="col-xs-12 col-sm-5 recipe-item-left">
-					<a href="<%=request.getContextPath()%>/recipe/recipe.do?action=getOne_For_Display&recipe_no=${recipeVO.recipe_no}">
-						<img src="<%=request.getContextPath()%>/recipe/showRecipe_pic.do?recipe_no=${recipeVO.recipe_no}">
-					</a>
-					</div>
-					<div class="col-xs-12 col-sm-7 recipe-item-right">
-					<a href="<%=request.getContextPath()%>/recipe/recipe.do?action=getOne_For_Display&recipe_no=${recipeVO.recipe_no}">
-						<h3>${recipeVO.recipe_name}</h3>
+		<c:if test="${list.size()>0}">
+			<c:forEach var="recipeVO" items="${list}" varStatus="s" step="2" begin="<%=pageIndex%>" end="<%=pageIndex+rowsPerPage-1%>"> 
+				<div class="row recipe-row-wrapper">
+					<div class="col-xs-12 col-sm-6 recipe-item-wrapper">
+						<div class="col-xs-12 col-sm-5 recipe-item-left">
+						<a href="<%=request.getContextPath()%>/recipe/recipe.do?action=getOne_For_Display&recipe_no=${recipeVO.recipe_no}">
+							<img src="<%=request.getContextPath()%>/recipe/showRecipe_pic.do?recipe_no=${recipeVO.recipe_no}">
 						</a>
-						<p>by <a href="#">${memberSvc.getOneMember(recipeVO.mem_no).mem_name}</a></p>
-						<p class="recipe-intro">${recipeVO.recipe_intro}</p>
-						<p class="recipe-food-mater">食材：${recipeVO.food_mater}</p>
-						<p>
-							<i class="glyphicon glyphicon-eye-open">${recipeVO.recipe_total_views}</i>
-							<i class="glyphicon glyphicon-heart">${recipeVO.recipe_like}</i>
-						</p>
+						</div>
+						<div class="col-xs-12 col-sm-7 recipe-item-right">
+						<a href="<%=request.getContextPath()%>/recipe/recipe.do?action=getOne_For_Display&recipe_no=${recipeVO.recipe_no}">
+							<h3>${recipeVO.recipe_name}</h3>
+							</a>
+							<p>by <a href="#">${memberSvc.getOneMember(recipeVO.mem_no).mem_name}</a></p>
+							<p class="recipe-intro">${recipeVO.recipe_intro}</p>
+							<p class="recipe-food-mater">食材：${recipeVO.food_mater}</p>
+							<p>
+								<i class="glyphicon glyphicon-eye-open">${recipeVO.recipe_total_views}</i>
+								<i class="glyphicon glyphicon-heart">${recipeVO.recipe_like}</i>
+							</p>
+						</div>
 					</div>
-				</div>
-				<c:if test="${s.index+1 < list.size()}">
-				<div class="col-xs-12 col-sm-6 recipe-item-wrapper-right">
-					<div class="col-xs-12 col-sm-5 recipe-item-left">
-					<a href="<%=request.getContextPath()%>/recipe/recipe.do?action=getOne_For_Display&recipe_no=${list.get(s.index+1).recipe_no}">
-						<img src="<%=request.getContextPath()%>/recipe/showRecipe_pic.do?recipe_no=${list.get(s.index+1).recipe_no}">
-					</a>
-					</div>
-					<div class="col-xs-12 col-sm-7 recipe-item-right">
+					<c:if test="${s.index+1 < list.size()}">
+					<div class="col-xs-12 col-sm-6 recipe-item-wrapper-right">
+						<div class="col-xs-12 col-sm-5 recipe-item-left">
 						<a href="<%=request.getContextPath()%>/recipe/recipe.do?action=getOne_For_Display&recipe_no=${list.get(s.index+1).recipe_no}">
-							<h3>${list.get(s.index+1).recipe_name}</h3>
+							<img src="<%=request.getContextPath()%>/recipe/showRecipe_pic.do?recipe_no=${list.get(s.index+1).recipe_no}">
 						</a>
-						<p>by <a href="#">${memberSvc.getOneMember(list.get(s.index+1).mem_no).mem_name}</a></p>
-						<p class="recipe-intro">${list.get(s.index+1).recipe_intro}</p>
-						<p class="recipe-food-mater">食材：${list.get(s.index+1).food_mater}</p>
-						<p>
-							<i class="glyphicon glyphicon-eye-open">${list.get(s.index+1).recipe_total_views}</i>
-							<i class="glyphicon glyphicon-heart">${list.get(s.index+1).recipe_like}</i>
-						</p>
+						</div>
+						<div class="col-xs-12 col-sm-7 recipe-item-right">
+							<a href="<%=request.getContextPath()%>/recipe/recipe.do?action=getOne_For_Display&recipe_no=${list.get(s.index+1).recipe_no}">
+								<h3>${list.get(s.index+1).recipe_name}</h3>
+							</a>
+							<p>by <a href="#">${memberSvc.getOneMember(list.get(s.index+1).mem_no).mem_name}</a></p>
+							<p class="recipe-intro">${list.get(s.index+1).recipe_intro}</p>
+							<p class="recipe-food-mater">食材：${list.get(s.index+1).food_mater}</p>
+							<p>
+								<i class="glyphicon glyphicon-eye-open">${list.get(s.index+1).recipe_total_views}</i>
+								<i class="glyphicon glyphicon-heart">${list.get(s.index+1).recipe_like}</i>
+							</p>
+						</div>
 					</div>
+					</c:if>
 				</div>
-				</c:if>
+			</c:forEach>
+		</c:if>
+		<c:if test="${list.size()<1}">
+			<div class="row recipe-row-wrapper text-center">
+				<h3>該類別還沒有食譜</h3>
 			</div>
-		</c:forEach>
-
-			
-
+		</c:if>
 		<%@ include file="pages/pageForSearch2.file" %>
 		</div>
 		

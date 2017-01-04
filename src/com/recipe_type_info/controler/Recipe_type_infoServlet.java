@@ -129,7 +129,7 @@ public class Recipe_type_infoServlet extends HttpServlet {
 				for(Recipe_type_infoVO aTypeInfo:recipesByType){
 					RecipeVO recipeVO = recipeSvc.getOneRecipe(aTypeInfo.getRecipe_no());
 					
-					if(recipeVO.getRecipe_intro().length()>64){
+					if(recipeVO.getRecipe_intro()!=null && recipeVO.getRecipe_intro().length()>64){
 						String introSbsr= recipeVO.getRecipe_intro().substring(0,65)+"...";
 						recipeVO.setRecipe_intro(introSbsr);
 					}
@@ -161,12 +161,7 @@ public class Recipe_type_infoServlet extends HttpServlet {
 					errorMsgs.add("查無資料");
 				}
 				// Send the use back to the form, if there were errors
-				if (!errorMsgs.isEmpty()) {
-					RequestDispatcher failureView = req
-							.getRequestDispatcher("/front-end/recipe_type_info/categories.jsp");
-					failureView.forward(req, res);
-					return;//程式中斷
-				}
+				
 				/***************************3.查詢完成,準備轉交(Send the Success view)*************/
 				req.setAttribute("list", list); 
 				req.setAttribute("typeName", typeName); 

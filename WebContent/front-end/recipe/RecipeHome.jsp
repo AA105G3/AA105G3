@@ -5,7 +5,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 
 
-<jsp:useBean id="recipeSvc" scope="page" class="com.recipe.model.RecipeService" />
+<jsp:useBean id="recipeSvc" class="com.recipe.model.RecipeService" />
 <jsp:useBean id="memberSvc" scope="page" class="com.member.model.MemberService" />
 <jsp:useBean id="recipe_l_typeSvc" scope="page" class="com.recipe_l_type.model.Recipe_l_typeService" />
 <jsp:useBean id="recipe_m_typeSvc" scope="page" class="com.recipe_m_type.model.Recipe_m_typeService" />

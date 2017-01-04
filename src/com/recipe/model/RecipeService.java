@@ -174,7 +174,7 @@ public class RecipeService
 		List<RecipeVO> list2 = new ArrayList<RecipeVO>();
 		for(RecipeVO aRecipe:list){
 			
-			if(aRecipe.getRecipe_intro().length()>64){
+			if(aRecipe.getRecipe_intro()!=null&&aRecipe.getRecipe_intro().length()>64){
 				String introSbsr= aRecipe.getRecipe_intro().substring(0,65)+"...";
 				aRecipe.setRecipe_intro(introSbsr);
 			}
@@ -223,7 +223,7 @@ public class RecipeService
 		List<RecipeVO> list2 = new ArrayList<RecipeVO>();
 		for(RecipeVO aRecipe:list){
 			
-			if(aRecipe.getRecipe_intro().length()>64){
+			if(aRecipe.getRecipe_intro()!=null&&aRecipe.getRecipe_intro().length()>64){
 				String introSbsr= aRecipe.getRecipe_intro().substring(0,65)+"...";
 				aRecipe.setRecipe_intro(introSbsr);
 			}
@@ -262,7 +262,7 @@ public class RecipeService
 		List<RecipeVO> list2 = new ArrayList<RecipeVO>();
 		for(RecipeVO aRecipe:list){
 			
-			if(aRecipe.getRecipe_intro().length()>64){
+			if(aRecipe.getRecipe_intro()!=null&&aRecipe.getRecipe_intro().length()>64){
 				String introSbsr= aRecipe.getRecipe_intro().substring(0,65)+"...";
 				aRecipe.setRecipe_intro(introSbsr);
 			}
@@ -299,7 +299,7 @@ public class RecipeService
 		List<RecipeVO> list2 = new ArrayList<RecipeVO>();
 		for(RecipeVO aRecipe:list){
 			
-			if(aRecipe.getRecipe_intro().length()>64){
+			if(aRecipe.getRecipe_intro()!=null&&aRecipe.getRecipe_intro().length()>64){
 				String introSbsr= aRecipe.getRecipe_intro().substring(0,65)+"...";
 				aRecipe.setRecipe_intro(introSbsr);
 			}

@@ -9,9 +9,13 @@
 
 <%  
 	
-	
+	if(list.isEmpty()){
+		rowNumber = 1;
+	}else{
+		rowNumber = list.size();
+	}
 		
-	rowNumber = list.size();
+	
     
     if (rowNumber%rowsPerPage !=0)
      pageNumber=rowNumber/rowsPerPage +1;
