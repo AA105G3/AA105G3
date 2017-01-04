@@ -45,10 +45,6 @@ Product_orderVO product_orderVO = (Product_orderVO) request.getAttribute("produc
 			value="<%= (product_orderVO==null)? "M00000001" : product_orderVO.getMem_no()%>" /></td>
 	</tr>
 	<tr>
-		<td>訂單成立時間:</td>
-		<td><input type="date" name="prod_ord_time"></td>
-	</tr>
-	<tr>
 		<td>信用卡卡號:</td>
 		<td><input type="TEXT" name="cred_card_no" size="45"
 			value="<%= (product_orderVO==null)? "A1B2C3D4E5F6G7H8" : product_orderVO.getCred_card_no()%>" /></td>

@@ -275,7 +275,7 @@ public class AdvServlet extends HttpServlet {
 			} catch (Exception e) {
 				errorMsgs.add(e.getMessage());
 				RequestDispatcher failureView = req
-						.getRequestDispatcher("/front-end/adv/addAdv.jsp");
+						.getRequestDispatcher("/back-end/adv/addAdv.jsp");
 				failureView.forward(req, res);
 			}
 		}

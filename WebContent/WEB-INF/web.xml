@@ -88,6 +88,33 @@
     <url-pattern>/adv/adv.do</url-pattern>
   </servlet-mapping>
   <servlet>
+
+    <servlet-name>ChatServlet</servlet-name>
+    <servlet-class>com.chat.controller.ChatServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>ChatServlet</servlet-name>
+    <url-pattern>/chat/chat.do</url-pattern>
+  </servlet-mapping>
+  
+  
+  
+  <filter>
+    <filter-name>FLginFilter</filter-name>
+    <filter-class>com.front.filters.FLoginFilter</filter-class>
+  </filter>
+  <filter-mapping>
+    <filter-name>FLginFilter</filter-name>
+    <url-pattern>/front-end/product_order/select_page.jsp</url-pattern>
+    <url-pattern>/front-end/product_order_list/Cart.jsp</url-pattern>
+    <dispatcher>REQUEST</dispatcher>
+    <dispatcher>FORWARD</dispatcher>
+    <dispatcher>INCLUDE</dispatcher>
+    <dispatcher>ERROR</dispatcher>
+    <dispatcher>ASYNC</dispatcher>
+  </filter-mapping>
+  
+  <servlet>
     <servlet-name>Frd_listServlet</servlet-name>
     <servlet-class>com.frd_list.controller.Frd_listServlet</servlet-class>
   </servlet>
@@ -111,4 +138,5 @@
     <servlet-name>Customer_demandServlet</servlet-name>
     <url-pattern>/customer_demand/customer_demand.do</url-pattern>
   </servlet-mapping>
+
 </web-app>

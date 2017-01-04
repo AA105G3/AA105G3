@@ -4,11 +4,13 @@ import java.sql.*;
 
 public class ChatVO implements java.io.Serializable {
 
-	private String 		chat_no;   //°T®§½s¸¹,PK	
-	private String 		send_no;   //µo°e¤H½s¸¹		
-	private String 		get_no;	   //±µ¦¬¤H½s¸¹			
-	private String 		chat_text; //°T®§¤º®e		
-	private Timestamp   chat_date; //µo°e®É¶¡
+
+	private String 		chat_no;   //è¨Šæ¯ç·¨è™Ÿ,PK	
+	private String 		send_no;   //ç™¼é€äººç·¨è™Ÿ		
+	private String 		get_no;	   //æ¥æ”¶äººç·¨è™Ÿ			
+	private String 		chat_text; //è¨Šæ¯å…§å®¹		
+	private Timestamp   chat_date; //ç™¼é€æ™‚é–“
+
 	
 	
 	public String getChat_no() {

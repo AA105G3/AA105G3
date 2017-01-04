@@ -42,8 +42,8 @@
 		<th>會員編號</th>
 		<th>會員暱稱</th>
 		<th>會員帳號</th>
-		<th>會員密碼</th>
-		<!-- <th>會員頭像</th> -->
+		<!-- <th>會員密碼</th> -->
+		<th>會員頭像</th>
 		<th>會員性別</th>
 		<th>會員手機</th>
 		<th>會員電子郵件</th>
@@ -57,8 +57,8 @@
 
 	<c:forEach var="memberVO" items="${list}">
 
-		<tr align='center' valign='middle'>
 
+		<tr align='center' valign='middle'>
 			<td>${memberVO.mem_no}</td>
 			<td>${memberVO.mem_name}</td>
 			<td>${memberVO.mem_ac}</td>

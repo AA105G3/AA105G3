@@ -22,8 +22,10 @@ public class ChatJDBCDAO implements ChatDAO_interface{
 	
 	
 	@Override
-	public void insert(ChatVO chatVO) {
-		
+
+	public int insert(ChatVO chatVO) {
+		int updateCount = 0;
+
 		Connection con = null;
 		PreparedStatement pstmt = null;
 		
@@ -63,12 +65,14 @@ public class ChatJDBCDAO implements ChatDAO_interface{
 				}
 			}
 		}
-		
+
+		return updateCount;
 	}
 	
 	@Override
-	public void update(ChatVO chatVO) {
-		
+	public int update(ChatVO chatVO) {
+		int updateCount = 0;
+
 		Connection con = null;
 		PreparedStatement pstmt = null;
 
@@ -111,12 +115,14 @@ public class ChatJDBCDAO implements ChatDAO_interface{
 				}
 			}
 		}
-				
+
+		return updateCount;		
 	}
 
 	@Override
-	public void delete(String chat_no) {
-		
+	public int delete(String chat_no) {
+		int updateCount = 0;
+
 		Connection con = null;
 		PreparedStatement pstmt = null;
 
@@ -155,7 +161,9 @@ public class ChatJDBCDAO implements ChatDAO_interface{
 				}
 			}
 		}
-		
+
+		return updateCount;
+
 	}
 
 	@Override
@@ -290,45 +298,47 @@ public class ChatJDBCDAO implements ChatDAO_interface{
 		ChatJDBCDAO dao = new ChatJDBCDAO();
 		
 //		insert
-//		ChatVO chatVO1 = new ChatVO();
-//		chatVO1.setSend_no("M00000001");
-//		chatVO1.setGet_no("M00000002");
-//		chatVO1.setChat_text("你好~~");
-//		dao.insert(chatVO1);
-//		
+
+		/*ChatVO chatVO1 = new ChatVO();
+		chatVO1.setSend_no("M00000001");
+		chatVO1.setGet_no("M00000002");
+		chatVO1.setChat_text("你好~~");
+		dao.insert(chatVO1);*/
+		
 		
 		
 //		update
-//		ChatVO chatVO2 = new ChatVO();
-//		chatVO2.setSend_no("M00000001");
-//		chatVO2.setGet_no("M00000002");
-//		chatVO2.setChat_text("你在嗎~~");
-//		chatVO2.setChat_no("CTN1");
-//		dao.update(chatVO2);
+		/*ChatVO chatVO2 = new ChatVO();
+		chatVO2.setSend_no("M00000001");
+		chatVO2.setGet_no("M00000002");
+		chatVO2.setChat_text("你在嗎~~");
+		chatVO2.setChat_no("CTN6");
+		dao.update(chatVO2);*/
 		
 		
 //		delete
-//		dao.delete("CTN2");
+		/*dao.delete("CTN6");*/
 		
 		
 //		search target
-//		ChatVO chatVO3 = dao.findByPrimaryKey("CTN3");
-//		System.out.print(chatVO3.getSend_no() + " | ");
-//		System.out.print(chatVO3.getGet_no() + " | ");
-//		System.out.print(chatVO3.getChat_text() + " | ");
-//		System.out.print(chatVO3.getChat_date() + " | ");
+		/*ChatVO chatVO3 = dao.findByPrimaryKey("CTN1");
+		System.out.print(chatVO3.getSend_no() + " | ");
+		System.out.print(chatVO3.getGet_no() + " | ");
+		System.out.print(chatVO3.getChat_text() + " | ");
+		System.out.print(chatVO3.getChat_date() + " | ");*/
 
 		
 //		search all
-//		List<ChatVO> list = dao.getAll();
-//		for (ChatVO chatVO4 : list) {
-//			System.out.print(chatVO4.getChat_no() + " | ");
-//			System.out.print(chatVO4.getSend_no() + " | ");
-//			System.out.print(chatVO4.getGet_no() + " | ");
-//			System.out.print(chatVO4.getChat_text() + " | ");
-//			System.out.print(chatVO4.getChat_date() + " | ");
-//			System.out.println();
-//		}
+		List<ChatVO> list = dao.getAll();
+		for (ChatVO chatVO4 : list) {
+			System.out.print(chatVO4.getChat_no() + " | ");
+			System.out.print(chatVO4.getSend_no() + " | ");
+			System.out.print(chatVO4.getGet_no() + " | ");
+			System.out.print(chatVO4.getChat_text() + " | ");
+			System.out.print(chatVO4.getChat_date() + " | ");
+			System.out.println();
+		}
+
 		
 	}	
 

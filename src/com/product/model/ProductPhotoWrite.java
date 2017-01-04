@@ -20,7 +20,7 @@ public class ProductPhotoWrite {
           String userid = "foodtime";
           String passwd = "foodtime";
         
-          for(int i = 1; i <= 5; i++){
+          for(int i = 1; i <= 9; i++){
         	  
         	  String photo = "0" + i + ".png";
         	  

@@ -65,7 +65,6 @@ public class MemberJDBCDAO implements MemberDAO_interface {
 		+ " mem_own=?,"
 		+ " mem_history=?,"
 		+ " mem_online=? where mem_no = ?";
-	
 
 	private static final String GET_AC_STMT = 
 		"SELECT mem_no,"
@@ -79,7 +78,6 @@ public class MemberJDBCDAO implements MemberDAO_interface {
 		+ " mem_own,"
 		+ " mem_history,"
 		+ " mem_online FROM member where mem_ac = ?";
-	
 
 	@Override
 	public void insert(MemberVO memVO) {
@@ -369,7 +367,6 @@ public class MemberJDBCDAO implements MemberDAO_interface {
 		return list;
 	}
 	
-
 	@Override
 	public MemberVO findByAC(String mem_ac) {
 
@@ -439,7 +436,6 @@ public class MemberJDBCDAO implements MemberDAO_interface {
 		return memVO;
 	}
 	
-
 	public static void main(String[] args) {
 
 		MemberJDBCDAO dao = new MemberJDBCDAO();
@@ -490,6 +486,21 @@ public class MemberJDBCDAO implements MemberDAO_interface {
 		System.out.print(memVO3.getMem_history() + ",	");
 		System.out.print(memVO3.getMem_online());
 		System.out.println();*/
+		
+		// 查詢 - 單一(BY MEM_AC)
+		MemberVO memVO4 = dao.findByAC("SUPERCAT2017");
+		System.out.print(memVO4.getMem_no() + ",	");
+		System.out.print(memVO4.getMem_name() + ",	");
+		System.out.print(memVO4.getMem_ac() + ",	");
+		System.out.print(memVO4.getMem_pw() + ",	");
+		System.out.print(memVO4.getMem_sex() + ",	");
+		System.out.print(memVO4.getMem_phone() + ",	");
+		System.out.print(memVO4.getMem_email() + ",	");
+		System.out.print(memVO4.getMem_adrs() + ",	");
+		System.out.print(memVO4.getMem_own() + ",	");
+		System.out.print(memVO4.getMem_history() + ",	");
+		System.out.print(memVO4.getMem_online());
+		System.out.println();
 
 		
 		// 查詢 - 單一(BY MEM_AC)
@@ -525,7 +536,6 @@ public class MemberJDBCDAO implements MemberDAO_interface {
 			System.out.println();
 
 		}*/
-
 	}
 
 }

@@ -1,6 +1,7 @@
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ page import="java.util.*"%>
+<%@ page import="java.text.*"%>
 <%@ page import="com.product_order.model.*"%>
 <%-- 此頁練習採用 EL 的寫法取值 --%>
 
@@ -55,14 +56,20 @@
 		<th>聯絡手機</th>
 		<th>聯絡市話</th>
 		<th>修改</th>	
-		<th>查詢明細</th>
+
+		<!-- <th>查詢明細</th> -->
+
 	</tr>
  
 	<c:forEach var="product_orderVO" items="${list}" >
-		<tr align='center' valign='middle'>
+		<tr align='center' valign='middle' ${(product_orderVO.prod_ord_no==param.prod_ord_no) ? 'bgcolor=#CCCCFF':''}>
 			<td>${product_orderVO.prod_ord_no}</td>
 			<td>${product_orderVO.mem_no}</td>
-			<td>${product_orderVO.prod_ord_time}</td>
+			
+			<%-- <td>${product_orderVO.prod_ord_time}</td> --%>
+			<jsp:useBean id="product_orderVO" scope="page" class="com.product_order.model.Product_orderVO" />
+			<td><%=new SimpleDateFormat("yyyy/MM/dd HH:mm:ss").format(product_orderVO.getProd_ord_time())%></td>
+			
 			<td>${product_orderVO.cred_card_no.subSequence(0,4)}********${product_orderVO.cred_card_no.subSequence(12,16)}</td>
 			<td>${product_orderVO.valid_date}</td>
 			<%-- <td>${product_orderVO.valid_no}</td> --%>
@@ -89,12 +96,16 @@
 			     <input type="hidden" name="prod_ord_no" value="${product_orderVO.prod_ord_no}">
 			     <input type="hidden" name="action"	value="getOne_For_Update"></FORM>
 			</td>
-			<td>
+
+			<%-- <td>
+
 			  <FORM METHOD="post" ACTION="<%=request.getContextPath()%>/product_order/product_order.do">
 			    <input type="submit" value="送出查詢"> 
 			    <input type="hidden" name="prod_ord_no" value="${product_orderVO.prod_ord_no}">
 			    <input type="hidden" name="action" value="getPart_For_Display_By_One_PK"></FORM>
-			</td>
+
+			</td> --%>
+
 		</tr>
 	</c:forEach>
 </table>

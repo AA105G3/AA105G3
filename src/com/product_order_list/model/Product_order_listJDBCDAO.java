@@ -460,13 +460,59 @@ public class Product_order_listJDBCDAO implements Product_order_listDAO_interfac
 		return list;
 	}
 	
+	@Override
+	public void insertWithProduct_order (Product_order_listVO product_order_listVO , Connection con) {
+
+		PreparedStatement pstmt = null;
+
+		try {
+
+     		pstmt = con.prepareStatement(INSERT_STMT);
+
+     		pstmt.setString(1, product_order_listVO.getProd_ord_no());
+			pstmt.setString(2, product_order_listVO.getProd_no());
+			pstmt.setInt(3, product_order_listVO.getUnit_price());
+			pstmt.setInt(4, product_order_listVO.getProd_quantity());
+			pstmt.setString(5, product_order_listVO.getDeli_status());
+			pstmt.setDate(6, product_order_listVO.getDeli_time());
+
+			pstmt.executeUpdate();
+
+			// Handle any SQL errors
+		} catch (SQLException se) {
+			if (con != null) {
+				try {
+					// 3●設定於當有exception發生時之catch區塊內
+					System.err.print("Transaction is being ");
+					System.err.println("rolled back-由-product_order_list");
+					con.rollback();
+				} catch (SQLException excep) {
+					throw new RuntimeException("rollback error occured. "
+							+ excep.getMessage());
+				}
+			}
+			throw new RuntimeException("A database error occured. "
+					+ se.getMessage());
+			// Clean up JDBC resources
+		} finally {
+			if (pstmt != null) {
+				try {
+					pstmt.close();
+				} catch (SQLException se) {
+					se.printStackTrace(System.err);
+				}
+			}
+		}
+
+	}
+	
 	public static void main(String[] args) {
 
 		Product_order_listJDBCDAO dao = new Product_order_listJDBCDAO();
 		
 		//新增
 		/*Product_order_listVO prod_ord_listVO1 = new Product_order_listVO();
-		prod_ord_listVO1.setProd_ord_no("20150228-00000002");
+		prod_ord_listVO1.setProd_ord_no("20160820-00000002");
 		prod_ord_listVO1.setProd_no("1");
 		prod_ord_listVO1.setUnit_price(50);
 		prod_ord_listVO1.setProd_quantity(100);
@@ -508,7 +554,7 @@ public class Product_order_listJDBCDAO implements Product_order_listDAO_interfac
 		System.out.println();*/
 		
 		// 查詢 
-		List<Product_order_listVO> list2 = dao.findByPK("20160630-00000001");
+		/*List<Product_order_listVO> list2 = dao.findByPK("20160630-00000001");
 		for (Product_order_listVO partProduct_order_list : list2) {
 			System.out.print(partProduct_order_list.getProd_ord_no() + ",	");
 			System.out.print(partProduct_order_list.getProd_no() + ",	");
@@ -517,10 +563,10 @@ public class Product_order_listJDBCDAO implements Product_order_listDAO_interfac
 			System.out.print(partProduct_order_list.getDeli_status() + ",	");
 			System.out.print(partProduct_order_list.getDeli_time());		
 			System.out.println();
-		}
+		}*/
 
 		// 查詢 - 全部
-		/*List<Product_order_listVO> list = dao.getAll();
+		List<Product_order_listVO> list = dao.getAll();
 		for (Product_order_listVO aProduct_order_list : list) {
 			System.out.print(aProduct_order_list.getProd_ord_no() + ",	");
 			System.out.print(aProduct_order_list.getProd_no() + ",	");
@@ -529,7 +575,7 @@ public class Product_order_listJDBCDAO implements Product_order_listDAO_interfac
 			System.out.print(aProduct_order_list.getDeli_status() + ",	");
 			System.out.print(aProduct_order_list.getDeli_time());
 			System.out.println();
-		}*/
+		}
 	}
 
 }
