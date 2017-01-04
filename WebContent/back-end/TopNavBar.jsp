@@ -54,13 +54,20 @@
 			.login-emp{
 				
 			}
+			.logout-wrapper{
+				margin:0 10px;
+			}
 			li>a.logout{
 				font-size:18px;
-				padding-top:17px;
-				padding-bottom:0px;
-				color:red !important;
+				margin-top:14px;
+				
+				padding:2px;
+				border:1px solid;
 			}
-			
+			.glyphicon-log-out{
+			 	font-size:18px;
+			 	margin-top:;
+			}
 		</style>
 	</head>
 	<body>
@@ -74,7 +81,7 @@
 					<span class="icon-bar"></span>
 				</button>
 				<a href="#" id="navHome">
-					<img src="AA105G3/images/Logo.png" href="#" id="logo">
+					<img src="/AA105G3/images/Logo.png" href="#" id="logo">
 					FOOD TIME分享食光
 				</a>				
 			</div>
@@ -89,8 +96,8 @@
 
 				<ul class="nav navbar-nav navbar-right">
 					<li><i class="glyphicon glyphicon-user empPic"></i></li>
-					<li class="login-emp-wrapper"><span class="login-emp">${emp_name}</span>&nbsp;&nbsp;&nbsp;&nbsp;您好</li>
-					<li class="logout-wrapper"><a href="#" class="logout">登出</a></li>
+					<li class="login-emp-wrapper"><span class="login-emp">${emp_name}</span>&nbsp;&nbsp;您好</li>
+					<li class="logout-wrapper"><a href="#" class="logout">登出&nbsp;<i class="glyphicon glyphicon-log-out"></i></a></li>
 				</ul>
 			</div>
 			<!-- 手機隱藏選單區結束 -->

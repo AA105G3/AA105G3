@@ -149,33 +149,7 @@ thead{
 	</head>
 
 	<body>
-		<nav class="navbar navbar-default" id="top_header">
-			<div class="navbar-header">
-				<button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-ex1-collapse">
-					<span class="sr-only">選單切換</span>
-					<span class="icon-bar"></span>
-					<span class="icon-bar"></span>
-					<span class="icon-bar"></span>
-				</button>
-				<img src="images/New_Logo2.0.png" href="#" id="logo">				
-			</div>
-		
-			<!-- 手機隱藏選單區 -->
-			<div class="collapse navbar-collapse navbar-ex1-collapse" id="top_header">
-				<!-- 左選單 -->
-				<ul class="nav navbar-nav">
-					<li class="active"><a href="#" id=hyper_link>FOOD TIME分享食光</a></li>				
-				</ul>
-				<!-- 右選單 -->
-
-				<ul class="nav navbar-nav navbar-right">
-					<li><img src="images/頭像icon1.png" href="#" id="head_icon"></li>
-					<li><a href="#">傑利鼠您好</a></li>
-					<li><a href="#">登出</a></li>
-				</ul>
-			</div>
-			<!-- 手機隱藏選單區結束 -->
-		</nav>
+		 <c:import url="/back-end/TopNavBar.jsp" ></c:import>
 		
 
 			<div class="col-xs-12 col-sm-2" id="menu_zone">
