@@ -41,7 +41,7 @@ public class Product_orderServlet extends HttpServlet {
 				req.setAttribute("listPOList_ByProd_ord_no", set);    // 資料庫取出的set物件,存入request
 
 				/*String url = "/front-end/product_order/listPartProduct_order.jsp"; */             // 成功轉交 dept/listAllDept.jsp
-				String url = "/front-end/web_page/ListProductOrder.jsp";
+				String url = "/front-end/product_order/ListProductOrder.jsp";
 				
 				RequestDispatcher successView = req.getRequestDispatcher(url);
 				successView.forward(req, res);
@@ -168,7 +168,7 @@ public class Product_orderServlet extends HttpServlet {
 				/***************************3.查詢完成,準備轉交(Send the Success view)*************/
 				req.setAttribute("product_orderVO", product_orderVO); // 資料庫取出的product_orderVO物件,存入req
 				/*String url = "/front-end/product_order/listPartProduct_order.jsp";*/
-				String url = "/front-end/web_page/ListProductOrder.jsp";
+				String url = "/front-end/product_order/ListProductOrder.jsp";
 				RequestDispatcher successView = req.getRequestDispatcher(url); // 成功轉交 listOneProduct_order.jsp
 				successView.forward(req, res);
 
@@ -200,7 +200,7 @@ public class Product_orderServlet extends HttpServlet {
 				/***************************3.查詢完成,準備轉交(Send the Success view)************/
 				req.setAttribute("product_orderVO", product_orderVO);         // 資料庫取出的product_orderVO物件,存入req
 				/*String url = "/front-end/product_order/update_product_order_input.jsp";*/
-				String url = "/front-end/web_page/UpdateProductOrder.jsp";
+				String url = "/front-end/product_order/UpdateProductOrder.jsp";
 				RequestDispatcher successView = req.getRequestDispatcher(url);// 成功轉交 update_product_order_input.jsp
 				successView.forward(req, res);
 
@@ -312,7 +312,7 @@ public class Product_orderServlet extends HttpServlet {
 					/*RequestDispatcher failureView = req
 							.getRequestDispatcher("/front-end/product_order/update_product_order_input.jsp");*/
 					RequestDispatcher failureView = req
-							.getRequestDispatcher("/front-end/web_page/UpdateProductOrder.jsp");
+							.getRequestDispatcher("/front-end/product_order/UpdateProductOrder.jsp");
 					failureView.forward(req, res);
 					return; //程式中斷
 				}
@@ -325,7 +325,7 @@ public class Product_orderServlet extends HttpServlet {
 				/***************************3.修改完成,準備轉交(Send the Success view)*************/
 				req.setAttribute("product_orderVO", product_orderVO); // 資料庫update成功後,正確的的product_orderVO物件,存入req
 				/*String url = "/front-end/product_order/listPartProduct_order.jsp";*/
-				String url = "/front-end/web_page/ListProductOrder.jsp";
+				String url = "/front-end/product_order/ListProductOrder.jsp";
 				RequestDispatcher successView = req.getRequestDispatcher(url); // 修改成功後,轉交listOneProduct_order.jsp
 				successView.forward(req, res);
 
@@ -444,7 +444,7 @@ public class Product_orderServlet extends HttpServlet {
 					/*RequestDispatcher failureView = req
 							.getRequestDispatcher("/front-end/product_order/addProduct_order.jsp");*/
 					RequestDispatcher failureView = req
-							.getRequestDispatcher("/front-end/web_page/AddProductOrder.jsp");
+							.getRequestDispatcher("/front-end/product_order/AddProductOrder.jsp");
 					failureView.forward(req, res);
 					return;
 				}
@@ -456,7 +456,7 @@ public class Product_orderServlet extends HttpServlet {
 				
 				/***************************3.新增完成,準備轉交(Send the Success view)***********/
 				/*String url = "/front-end/product_order/listAllProduct_order.jsp";*/
-				String url = "/front-end/web_page/ListProductOrder.jsp";
+				String url = "/front-end/product_order/ListProductOrder.jsp";
 				RequestDispatcher successView = req.getRequestDispatcher(url); // 新增成功後轉交listAllProduct_order.jsp
 				successView.forward(req, res);				
 				
@@ -475,7 +475,8 @@ public class Product_orderServlet extends HttpServlet {
 			// Store this set in the request scope, in case we need to
 			// send the ErrorPage view.
 			req.setAttribute("errorMsgs", errorMsgs);
-
+			HttpSession session = req.getSession();
+			
 			try {
 				/***********************1.接收請求參數 - 輸入格式的錯誤處理*************************/
 				String mem_no = req.getParameter("mem_no").trim();
@@ -601,7 +602,7 @@ public class Product_orderServlet extends HttpServlet {
 					errorMsgs.add("請輸入商品出貨時間!");
 				}
 				
-				HttpSession session = req.getSession();
+				
 				Vector<Product_order_listVO> buylist = (Vector<Product_order_listVO>) session.getAttribute("shoppingcart");
 				
 				List<Product_order_listVO> list = new ArrayList<Product_order_listVO>();
@@ -655,7 +656,7 @@ System.out.println(deli_status);
 					/*RequestDispatcher failureView = req
 							.getRequestDispatcher("/front-end/product_order/addProduct_order.jsp");*/
 					RequestDispatcher failureView = req
-							.getRequestDispatcher("/front-end/web_page/AddProductOrder.jsp");
+							.getRequestDispatcher("/front-end/product_order/AddProductOrder.jsp");
 					failureView.forward(req, res);
 					return;
 				}
@@ -667,10 +668,12 @@ System.out.println(deli_status);
 						list);
 				
 				buylist.clear();
+				session.setAttribute("amount", null);
+				session.setAttribute("quantity", null);
 				
 				/***************************3.新增完成,準備轉交(Send the Success view)***********/
 				/*String url = "/front-end/product_order/listAllProduct_order.jsp";*/
-				String url = "/front-end/web_page/ListProductOrder.jsp";
+				String url = "/front-end/product_order/ListProductOrder.jsp";
 				RequestDispatcher successView = req.getRequestDispatcher(url); // 新增成功後轉交listAllProduct_order.jsp
 				successView.forward(req, res);				
 				

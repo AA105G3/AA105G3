@@ -10,7 +10,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
-<link rel="stylesheet" href="/AA105G3/back-end/web_page/css/backpageCSS.css">
+<link rel="stylesheet" href="/AA105G3/css/backpageCSS.css">
 
 <style>
 
@@ -61,7 +61,7 @@ th, td {
 			<span class="icon-bar"></span>
 			<span class="icon-bar"></span>
 		</button>
-		<img src="<%=request.getContextPath()%>/back-end/web_page/images/Logo.png" href="#" id="logo">				
+		<img src="<%=request.getContextPath()%>/images/Logo.png" href="#" id="logo">				
 	</div>
 		
 	<!-- 手機隱藏選單區 -->
@@ -331,7 +331,7 @@ th, td {
 
 <div class="text-center btn-style">
 	<form>
-		<a class="btn btn-primary" href="/AA105G3/back-end/web_page/MarketManagement.jsp">返回</a>
+		<a class="btn btn-primary" href="/AA105G3/back-end/product/MarketManagement.jsp">返回</a>
 	</form>
 </div>
 

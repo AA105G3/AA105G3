@@ -25,7 +25,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
-<link rel="stylesheet" href="/AA105G3/front-end/web_page/css/frontpageCSS.css">
+<link rel="stylesheet" href="/AA105G3/css/frontpageCSS.css">
 
 <style type="text/css" media="screen">
 	.select-menu{
@@ -57,7 +57,7 @@
 		height: 250px;
 	}
 	#top-img{
-		background-image: url(/AA105G3/front-end/web_page/images/product_title.jpg);
+		background-image: url(/AA105G3/images/Market/product_title.jpg);
 		height: 500px;
 		/* background-size: cover; */
 		background-position: center;
@@ -104,7 +104,7 @@
 	            <span class="icon-bar"></span>
 	            <span class="icon-bar"></span>
 			</button>
-			<a href="#home" class="foodtime"><img alt="FoodTime" src="<%=request.getContextPath()%>/front-end/web_page/images/Logo.png">分享食光</a>
+			<a href="#home" class="foodtime"><img alt="FoodTime" src="<%=request.getContextPath()%>/images/Logo.png">分享食光</a>
 		</div>
 		<div class="collapse navbar-collapse" id="navbar-ex-collapse">
 			<ul class="nav navbar-nav navbar-right mu-main-nav">
@@ -185,13 +185,13 @@
 <div id="sidebar-wrapper">
 	<ul class="shopping-cart">
 		<li>
-			<a href="<%=request.getContextPath()%>/front-end/web_page/Cart.jsp">
-				<img src="<%=request.getContextPath()%>/front-end/web_page/images/shopping-cart2.png" height="175" weight="175">
+			<a href="<%=request.getContextPath()%>/front-end/product_order_list/Cart.jsp">
+				<img src="<%=request.getContextPath()%>/images/Market/shopping-cart2.png" height="175" weight="175">
 			</a>
 		</li>
 		<li>目前購物車內有：<font color="red"><%= (quantity==null)? "0" : quantity%></font>個商品</li>
 		<li>小計：$	<font color="red"><%= (amount==null)? "0" : amount%></font>元</li>
-		<li><a class="btn btn-primary" href="<%=request.getContextPath()%>/front-end/web_page/Cart.jsp">查看購物車內容</a></li>
+		<li><a class="btn btn-primary" href="<%=request.getContextPath()%>/front-end/product_order_list/Cart.jsp">查看購物車內容</a></li>
 	</ul>
 </div>
 

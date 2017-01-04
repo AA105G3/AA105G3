@@ -1,7 +1,7 @@
 ﻿function checkMem(){
 	
-	var rightImage = "<img src='images/right.png' />";
-	var errorImage = "<img src='images/error.png' />";
+	var rightImage = "<img src='../../images/right.png' />";
+	var errorImage = "<img src='../../images/error.png' />";
 	
 	//驗證會員帳號(信箱)
 	document.getElementById('spanEmail').innerHTML = "例：foodtime@gmail.com"

@@ -80,7 +80,7 @@ public class MemberServlet extends HttpServlet {
 				if ("getOne_For_Display".equals(action))
 					url = "/front-end/member/listOneMember.jsp";
 				else if ("getOne_For_List".equals(action))
-					url = "/front-end/web_page/AddProductOrder.jsp";
+					url = "/front-end/product_order/AddProductOrder.jsp";
 				
 				RequestDispatcher successView = req.getRequestDispatcher(url); // 成功轉交 listOneMember.jsp
 				successView.forward(req, res);
