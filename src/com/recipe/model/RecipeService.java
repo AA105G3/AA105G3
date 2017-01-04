@@ -32,6 +32,7 @@ public class RecipeService
 	
 	public RecipeVO addRecipeWith_Recipe_conts(String mem_no,String recipe_name,String recipe_intro,String food_mater,byte[] recipe_pic,String recipe_edit,List<Recipe_contVO> list) {
 
+
 		RecipeVO recipeVO = new RecipeVO();
 
 		recipeVO.setMem_no(mem_no);
@@ -330,6 +331,8 @@ public class RecipeService
 		return list2;
 	}
 	
-	
-	
+	//for android by cyh
+	public byte[] getImage(String recipe_no) {  
+		return dao.getImage(recipe_no);
+	}
 }

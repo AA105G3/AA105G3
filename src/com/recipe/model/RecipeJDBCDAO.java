@@ -54,6 +54,8 @@ public class RecipeJDBCDAO implements RecipeDAO_interface
 					+ ",recipe_week_views,recipe_time,recipe_edit,recipe_classify from recipe where food_mater like ?";
 	private static final String UPDATE_CLASSIFY = 
 			"UPDATE recipe set recipe_classify = ? where recipe_no = ?";
+	// for android by cyh
+		private static final String GET_IMAGE_STMT = "SELECT recipe_pic FROM recipe where recipe_no=?"; 
 	
 	
 	@Override
@@ -1078,7 +1080,11 @@ public class RecipeJDBCDAO implements RecipeDAO_interface
 //		}
 	}
 
-
+	@Override
+	public byte[] getImage(String recipe_no) {
+		// TODO Auto-generated method stub
+		return null;
+	}
 
 	
 

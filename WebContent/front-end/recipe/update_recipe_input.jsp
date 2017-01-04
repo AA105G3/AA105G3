@@ -244,7 +244,7 @@
 		})
 
 		
-<<<<<<< HEAD
+
 	</tr>
 	<tr>
 		<td>
@@ -309,7 +309,6 @@
 					};
 			read.readAsDataURL(file);	
 		} 
->>>>>>> refs/heads/liquid-develop2
 
 	</script>
 </body>

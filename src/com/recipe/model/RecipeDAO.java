@@ -66,6 +66,9 @@ public class RecipeDAO implements RecipeDAO_interface
 	private static final String UPDATE_CLASSIFY = 
 			"UPDATE recipe set recipe_classify = ? where recipe_no = ?";
 	
+	// for android by cyh
+	private static final String GET_IMAGE_STMT = "SELECT recipe_pic FROM recipe where recipe_no=?"; 
+	
 	@Override
 	public void insert(RecipeVO recipeVO)
 	{
@@ -855,5 +858,47 @@ public class RecipeDAO implements RecipeDAO_interface
 			}
 		}
 		
+	}
+	//for android by cyh
+	@Override
+	public byte[] getImage(String recipe_no) {
+
+		byte[] recipe_pic = null;
+
+		Connection con = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+
+		try {
+			con = ds.getConnection();
+			pstmt = con.prepareStatement(GET_IMAGE_STMT);
+			pstmt.setString(1, recipe_no);
+			rs = pstmt.executeQuery();
+
+			if (rs.next()) {
+				recipe_pic = rs.getBytes("recipe_pic");
+			}
+
+			// Handle any driver errors
+		} catch (SQLException se) {
+			throw new RuntimeException("A database error occured. " + se.getMessage());
+		} finally {
+			if (pstmt != null) {
+				try {
+					pstmt.close();
+				} catch (SQLException se) {
+					se.printStackTrace(System.err);
+				}
+			}
+			if (con != null) {
+				try {
+					con.close();
+				} catch (SQLException se) {
+					se.printStackTrace(System.err);
+				}
+			}
+		}
+
+		return recipe_pic;
 	}
 }

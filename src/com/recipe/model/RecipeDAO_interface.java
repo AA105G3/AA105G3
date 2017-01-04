@@ -21,7 +21,10 @@ public interface RecipeDAO_interface
     public List<RecipeVO> serachByFood_Mater(String food_mater);
     public void updateClassify(RecipeVO recipeVO);
     
+    
   //同時新增食譜與食譜步驟內容 (實務上並不常用, 但,可用在訂單主檔與明細檔一次新增成功)
     public void insertWithRecipe_conts(RecipeVO recipeVO , List<Recipe_contVO> list);
     
+ // for android by cyh
+    public byte[] getImage(String recipe_no);
 }

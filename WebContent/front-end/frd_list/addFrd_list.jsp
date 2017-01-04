@@ -54,7 +54,7 @@ Frd_listVO frd_listVO = (Frd_listVO) request.getAttribute("frd_listVO");
 	<tr>
 		<td>好友申請況態:<font color=red><b>*</b></font></td>
 		<td><select size="1" name="friend_chk">
-				<option value="0"  >未申請(0)
+			<!--  	<option value="0"  >未申請(0)-->
 				<option value="1"  >已申請(1)
 		</select></td>
 	</tr>

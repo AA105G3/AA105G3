@@ -11,7 +11,7 @@ public interface Recipe_m_typeDAO_interface {
 	public Recipe_m_typeVO findByPrimaryKey(String recipe_m_type_no);
 	public List<Recipe_m_typeVO> getAll();
 	
-	 //æŸ¥è©¢å¤§é¡žåˆ¥è£¡çš„ä¸­é¡žåˆ¥
+	 //¬d¸ß¤jÃþ§O¸Ìªº¤¤Ãþ§O
     public Set<Recipe_s_typeVO> getS_typesByM_Type_No(String parent_type);
 
 }
