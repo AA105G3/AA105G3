@@ -16,57 +16,90 @@ public class MemberJDBCDAO implements MemberDAO_interface {
 	String passwd = "foodtime";
 	
 	private static final String INSERT_STMT = 
-		"INSERT INTO member (mem_no,"
-		+ " mem_name,"
-		+ " mem_ac,"
-		+ " mem_pw,"
-		+ " mem_sex,"
-		+ " mem_phone,"
-		+ " mem_email,"
-		+ " mem_adrs,"
-		+ " mem_own,"
-		+ " mem_history,"
-		+ " mem_online) "
-		+ "VALUES ('M'||LPAD(mem_seq.NEXTVAL,8,0), ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
-	private static final String GET_ALL_STMT = 
-		"SELECT mem_no,"
-		+ " mem_name,"
-		+ " mem_ac,"
-		+ " mem_pw,"
-		+ " mem_sex,"
-		+ " mem_phone,"
-		+ " mem_email,"
-		+ " mem_adrs,"
-		+ " mem_own,"
-		+ " mem_history,"
-		+ " mem_online FROM member order by mem_no";
-	private static final String GET_ONE_STMT = 
-		"SELECT mem_no,"
-		+ " mem_name,"
-		+ " mem_ac,"
-		+ " mem_pw,"
-		+ " mem_sex,"
-		+ " mem_phone,"
-		+ " mem_email,"
-		+ " mem_adrs,"
-		+ " mem_own,"
-		+ " mem_history,"
-		+ " mem_online FROM member where mem_no = ?";
-	private static final String DELETE = 
-		"DELETE FROM member where mem_no = ?";
-	private static final String UPDATE = 
-		"UPDATE member set mem_name=?,"
-		+ " mem_ac=?,"
-		+ " mem_pw=?,"
-		+ " mem_sex=?,"
-		+ " mem_phone=?,"
-		+ " mem_email=?,"
-		+ " mem_adrs=?,"
-		+ " mem_own=?,"
-		+ " mem_history=?,"
-		+ " mem_online=? where mem_no = ?";
-	
-	private static final String GET_IMAGE_STMT = "SELECT mem_image FROM member where mem_no=?";
+			"INSERT INTO member (mem_no,"
+			+ " mem_name,"
+			+ " mem_ac,"
+			+ " mem_pw,"
+			+ " mem_image,"
+			+ " mem_sex,"
+			+ " mem_phone,"
+			+ " mem_email,"
+			+ " mem_adrs,"
+			+ " mem_own,"
+			+ " mem_history,"
+			+ " mem_online) "
+			+ "VALUES ('M'||LPAD(mem_seq.NEXTVAL,8,0), ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+		private static final String GET_ALL_STMT = 
+			"SELECT mem_no,"
+			+ " mem_name,"
+			+ " mem_ac,"
+			+ " mem_pw,"
+			+ " mem_image,"
+			+ " mem_sex,"
+			+ " mem_phone,"
+			+ " mem_email,"
+			+ " mem_adrs,"
+			+ " mem_own,"
+			+ " mem_history,"
+			+ " mem_online FROM member order by mem_no";
+		private static final String GET_ONE_STMT = 
+			"SELECT mem_no,"
+			+ " mem_name,"
+			+ " mem_ac,"
+			+ " mem_pw,"
+			+ " mem_image,"
+			+ " mem_sex,"
+			+ " mem_phone,"
+			+ " mem_email,"
+			+ " mem_adrs,"
+			+ " mem_own,"
+			+ " mem_history,"
+			+ " mem_online FROM member where mem_no = ?";
+		private static final String GET_ONE_STMT_ANDROID = 
+				"SELECT mem_no,"
+				+ " mem_name,"
+				+ " mem_ac,"
+				+ " mem_pw,"
+				+ " mem_image,"
+				+ " mem_sex,"
+				+ " mem_phone,"
+				+ " mem_email,"
+				+ " mem_adrs,"
+				+ " mem_own,"
+				+ " mem_history,"
+				+ " mem_online FROM member where mem_no = ?";
+		private static final String DELETE = 
+			"DELETE FROM member where mem_no = ?";
+		private static final String UPDATE = 
+			"UPDATE member set mem_name=?,"
+			+ " mem_ac=?,"
+			+ " mem_pw=?,"
+			+ " mem_image=?,"
+			+ " mem_sex=?,"
+			+ " mem_phone=?,"
+			+ " mem_email=?,"
+			+ " mem_adrs=?,"
+			+ " mem_own=?,"
+			+ " mem_history=?,"
+			+ " mem_online=? where mem_no = ?";
+		private static final String UPDATE_ANDROID = 
+				"UPDATE member set mem_name=?,"
+				+ " mem_image=? where mem_no = ?";
+		
+		private static final String GET_IMAGE_STMT = "SELECT mem_image FROM member where mem_no=?";
+		
+		private static final String GET_AC_STMT = 
+				"SELECT mem_no,"
+				+ " mem_name,"
+				+ " mem_ac,"
+				+ " mem_pw,"
+				+ " mem_sex,"
+				+ " mem_phone,"
+				+ " mem_email,"
+				+ " mem_adrs,"
+				+ " mem_own,"
+				+ " mem_history,"
+				+ " mem_online FROM member where mem_ac = ?";
 	
 	@Override
 	public void insert(MemberVO memVO) {
@@ -471,6 +504,24 @@ public class MemberJDBCDAO implements MemberDAO_interface {
 			System.out.print(aMem.getMem_online());
 			System.out.println();
 		}
+	}
+
+	@Override
+	public void update(MemberVO memVO, Integer android) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public MemberVO findByPrimaryKey(String mem_no, Integer android) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public MemberVO findByAC(String mem_ac) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }

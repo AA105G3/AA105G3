@@ -139,7 +139,7 @@ public class MemberServletAndroid extends HttpServlet {
 				res.setContentType("image/jpeg");
 				res.setContentLength(mem_image.length);
 			} else {
-				InputStream in = getServletContext().getResourceAsStream("/noImages/noimage.jpg");
+				InputStream in = getServletContext().getResourceAsStream("/images/noimage.jpg");
 				mem_image = new byte[in.available()];
 				in.read(mem_image);
 				in.close();

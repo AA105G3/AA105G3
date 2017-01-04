@@ -52,6 +52,8 @@ public class RecipeJDBCDAO implements RecipeDAO_interface
 	private static final String SearchByFoodMater = 
 			"select recipe_no,mem_no,recipe_name,recipe_intro,food_mater,recipe_pic,recipe_like,recipe_total_views"
 					+ ",recipe_week_views,recipe_time,recipe_edit,recipe_classify from recipe where food_mater like ?";
+	// for android by cyh
+		private static final String GET_IMAGE_STMT = "SELECT recipe_pic FROM recipe where recipe_no=?"; 
 	
 	@Override
 	public void insert(RecipeVO recipeVO)
@@ -1023,6 +1025,12 @@ public class RecipeJDBCDAO implements RecipeDAO_interface
 //		System.out.print(recipeVO4.getRecipe_classify()+" | ");
 //			System.out.println();
 //		}
+	}
+
+	@Override
+	public byte[] getImage(String recipe_no) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 	
