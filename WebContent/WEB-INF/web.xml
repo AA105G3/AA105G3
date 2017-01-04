@@ -93,4 +93,39 @@
     <servlet-name>AdvServlet</servlet-name>
     <url-pattern>/adv/adv.do</url-pattern>
   </servlet-mapping>
+  <servlet>
+		<servlet-name>ChefServlet</servlet-name>
+		<servlet-class>com.chef.controller.ChefServlet</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>ChefServlet</servlet-name>
+		<url-pattern>/chef/chef.do</url-pattern>
+	</servlet-mapping>
+	
+	<servlet>
+		<servlet-name>Chef_order_listServlet</servlet-name>
+		<servlet-class>com.chef_order_list.controller.Chef_order_listServlet</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>Chef_order_listServlet</servlet-name>
+		<url-pattern>/chef_order_list/chef_order_list.do</url-pattern>
+	</servlet-mapping>
+	
+	<servlet>
+		<servlet-name>Chef_refundServlet</servlet-name>
+		<servlet-class>com.chef_refund.controller.Chef_refundServlet</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>Chef_refundServlet</servlet-name>
+		<url-pattern>/chef_refund/chef_refund.do</url-pattern>
+	</servlet-mapping>
+	
+	<servlet>
+		<servlet-name>Chef_scheduleServlet</servlet-name>
+		<servlet-class>com.chef_schedule.controller.Chef_scheduleServlet</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>Chef_scheduleServlet</servlet-name>
+		<url-pattern>/chef_schedule/chef_schedule.do</url-pattern>
+	</servlet-mapping>
 </web-app>
