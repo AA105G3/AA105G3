@@ -1,8 +1,10 @@
 package com.recipe_type_info.controler;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Set;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -11,9 +13,12 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import com.auth.model.AuthService;
-import com.auth.model.AuthVO;
 import com.emp.model.EmpService;
+import com.recipe.model.*;
+import com.recipe_m_type.model.Recipe_m_typeService;
+import com.recipe_m_type.model.Recipe_m_typeVO;
+import com.recipe_s_type.model.Recipe_s_typeService;
+import com.recipe_s_type.model.Recipe_s_typeVO;
 import com.recipe_type_info.model.*;
 
 
@@ -82,7 +87,96 @@ public class Recipe_type_infoServlet extends HttpServlet {
 			}
 		}
 		
-		
+		if ("findByTypeNo".equals(action)) { // 來自select_page.jsp的請求
+
+			List<String> errorMsgs = new LinkedList<String>();
+			// Store this set in the request scope, in case we need to
+			// send the ErrorPage view.
+			req.setAttribute("errorMsgs", errorMsgs);
+
+//			try {
+				/***************************1.接收請求參數 - 輸入格式的錯誤處理**********************/
+				String recipe_type_no = req.getParameter("recipe_type_no");
+				
+				// Send the use back to the form, if there were errors
+				if (!errorMsgs.isEmpty()) {
+					RequestDispatcher failureView = req
+							.getRequestDispatcher("/front-end/recipe_type_info/categories.jsp");
+					failureView.forward(req, res);
+					return;//程式中斷
+				}
+				
+				
+				/***************************2.開始查詢資料*****************************************/
+				String range = recipe_type_no.substring(1, 2);
+				String typeName = "";
+				if(range.equals("M")){
+					Recipe_m_typeService recipe_m_typeService =new Recipe_m_typeService();
+					Recipe_m_typeVO aMtype = recipe_m_typeService.getOneRecipe_m_type(recipe_type_no);
+					typeName = aMtype.getM_type_name();
+				}
+				if(range.equals("S")){
+					Recipe_s_typeService recipe_s_typeService =new Recipe_s_typeService();
+					Recipe_s_typeVO aStype = recipe_s_typeService.getOneRecipe_s_type(recipe_type_no);
+					typeName = aStype.getS_type_name();
+				}
+				
+				
+				Recipe_type_infoService recipe_type_infoSvc = new Recipe_type_infoService();
+				Set<Recipe_type_infoVO> recipesByType = recipe_type_infoSvc.findByType_no(recipe_type_no);
+				RecipeService recipeSvc = new RecipeService();
+				List<RecipeVO> list = new ArrayList();
+				for(Recipe_type_infoVO aTypeInfo:recipesByType){
+					RecipeVO recipeVO = recipeSvc.getOneRecipe(aTypeInfo.getRecipe_no());
+					
+					if(recipeVO.getRecipe_intro()!=null && recipeVO.getRecipe_intro().length()>64){
+						String introSbsr= recipeVO.getRecipe_intro().substring(0,65)+"...";
+						recipeVO.setRecipe_intro(introSbsr);
+					}
+					
+					String str = recipeVO.getFood_mater();
+					String[] tokens = str.split("-|\\+");
+					
+					StringBuffer ingredients = new StringBuffer();
+					
+					ingredients.append(tokens[0]);
+					for(int i =2;i<tokens.length-1;i+=2){
+						ingredients.append("、"+tokens[i]);
+					}
+					
+					String food_maters = null;
+					if(ingredients.length()>38){
+						food_maters = ingredients.substring(0,39)+"..."; 
+						
+					}else{
+						food_maters = new String(ingredients);
+					}
+					
+					recipeVO.setFood_mater(new String(food_maters));
+					
+					list.add(recipeVO);
+				}
+				
+				if (recipesByType.isEmpty()) {
+					errorMsgs.add("查無資料");
+				}
+				// Send the use back to the form, if there were errors
+				
+				/***************************3.查詢完成,準備轉交(Send the Success view)*************/
+				req.setAttribute("list", list); 
+				req.setAttribute("typeName", typeName); 
+				String url = "/front-end/recipe_type_info/categories.jsp";
+				RequestDispatcher successView = req.getRequestDispatcher(url); 
+				successView.forward(req, res);
+
+				/***************************其他可能的錯誤處理*************************************/
+//			} catch (Exception e) {
+//				errorMsgs.add("無法取得資料:" + e.getMessage());
+//				RequestDispatcher failureView = req
+//						.getRequestDispatcher("/front-end/recipe_type_info/categories.jsp");
+//				failureView.forward(req, res);
+//			}
+		}
 		
 		if ("insert".equals(action)) { // 來自addAuth.jsp的請求  
 			

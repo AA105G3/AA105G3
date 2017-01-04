@@ -1,0 +1,64 @@
+#top_header{
+ 	background: #f5f5dc; 
+}
+#hyper_link{
+	background: #f5f5dc;
+}
+#table_title{
+	font-size: 25px;
+}
+#menu_zone{
+	background: #f5deb3;
+}
+#accordion2{
+	margin-top: 15px;
+}
+#accordion2 div{
+	background: #fee4cd;
+}
+#logo{
+	width: 50px;
+	height: 50px;
+}
+#head_icon{
+	width: 25px;
+	height: 25px;
+	margin-top: 13px;
+}
+.panel-heading{	
+	/* width: 185px; */
+}
+
+thead{
+	background: #e2fede;
+}
+
+#the_footer{
+	clear:both;
+	text-align:center;
+	background: #2b1100;
+	clear: both;
+	position:fixed ;
+	bottom: 0px;
+	width: 100%;
+	float: none;
+}
+.lightcolor{
+	color: #fff;
+}
+.pagination{
+	margin-left: 300px;
+	margin-bottom: 100px;
+
+}
+#search{
+	width: 350px;
+	text-align: center;
+}
+#insert{
+	/* width: 300px; */
+}
+
+#chefInfo{
+	margin-bottom: 100px;
+}

@@ -63,6 +63,8 @@ public class RecipeJNDIDAO implements RecipeDAO_interface
 	private static final String SearchByFoodMater = 
 			"select recipe_no,mem_no,recipe_name,recipe_intro,food_mater,recipe_pic,recipe_like,recipe_total_views"
 					+ ",recipe_week_views,recipe_time,recipe_edit,recipe_classify from recipe where food_mater like ?";
+	private static final String UPDATE_CLASSIFY = 
+			"UPDATE recipe set recipe_classify = ? where recipe_no = ?";
 	
 	// for android by cyh
 	private static final String GET_IMAGE_STMT = "SELECT recipe_pic FROM recipe where recipe_no=?"; 
@@ -814,6 +816,44 @@ public class RecipeJNDIDAO implements RecipeDAO_interface
 			}
 		}
 		return list;
+	}
+	
+	@Override
+	public void updateClassify(RecipeVO recipeVO)
+	{
+		Connection con = null;
+		PreparedStatement pstmt = null;
+
+		try {
+
+			con = ds.getConnection();
+			pstmt = con.prepareStatement(UPDATE_CLASSIFY);
+
+			pstmt.setString(1, recipeVO.getRecipe_classify());
+			pstmt.setString(2, recipeVO.getRecipe_no());
+			
+
+			pstmt.executeUpdate();
+
+		}  catch (SQLException se) {
+			se.printStackTrace();
+		} finally {
+			if (pstmt != null) {
+				try {
+					pstmt.close();
+				} catch (SQLException se) {
+					se.printStackTrace();
+				}
+			}
+			if (con != null) {
+				try {
+					con.close();
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			}
+		}
+		
 	}
 	
 	//for android by cyh

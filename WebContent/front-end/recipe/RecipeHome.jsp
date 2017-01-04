@@ -1,9 +1,17 @@
 <%@ page contentType="text/html; charset=UTF-8"%>
 <%@ page import="com.recipe.model.*"%>
 <%@ page import="com.recipe_cont.model.*"%>
+
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
-<jsp:useBean id="recipeSvc" scope="page" class="com.recipe.model.RecipeService" />
+
+
+<jsp:useBean id="recipeSvc" class="com.recipe.model.RecipeService" />
 <jsp:useBean id="memberSvc" scope="page" class="com.member.model.MemberService" />
+<jsp:useBean id="recipe_l_typeSvc" scope="page" class="com.recipe_l_type.model.Recipe_l_typeService" />
+<jsp:useBean id="recipe_m_typeSvc" scope="page" class="com.recipe_m_type.model.Recipe_m_typeService" />
+<jsp:useBean id="recipe_s_typeSvc" scope="page" class="com.recipe_s_type.model.Recipe_s_typeService" />
+
+
 
 <!DOCTYPE html>
 <html lang="">
@@ -22,6 +30,9 @@
 	body{
 		background: #efede8;
 		padding-top: 50px;
+	}
+	#recipe-home{
+		margin-bottom:20px;
 	}
 
 	.recipe-search{
@@ -113,7 +124,10 @@
 	}
 	.borderless td,.borderless tr{
 		border:none !important;
+		width:190px;
+		padding:8px 0px;
 	}
+	
 	.list-group{
 		list-style-type: none;
 		padding-left: 7%;
@@ -122,9 +136,11 @@
 		font-size: 18px;
 		list-style-type: none;
 		color: #564e4a;
+		margin-left:5px;
 	}
 	.recipe-list-item{
 		color: #89817d;
+		margin-left:10px;
 	}
 	.glyphicon-triangle-right{
 		font-size: 2px;
@@ -143,7 +159,10 @@
 	.top-recipe a:hover,.news-recipe a:hover{
 		text-decoration:none;	
 	}
-	
+	.panel-body{
+		background:#f9f7f2;
+		padding:10px 15px;
+	}
 	</style>
 	
 	</head>
@@ -255,53 +274,44 @@
 				</div>
 			</div>
 		</div>
+	<c:forEach var="aLtype" items="${recipe_l_typeSvc.all}">
 		<div class="container recipe-type-wrapper">
 			<div class="row">
 				<div class="recipe-typename-wrapper">
-					<h4 class="title-recipe-type">家常菜</h4>
+					<h4 class="title-recipe-type">${aLtype.l_type_name }</h4>
 				</div>
 				<div class="panel-body">
 
-	                  <table class="table borderless">
+	                  <table class="borderless">
+	                  <c:forEach var="count" items="${recipe_l_typeSvc.getM_typesByL_Type_No(aLtype.recipe_l_type_no)}" varStatus="s" step="6">
 	                  	<tr>
-	                  		<td><a class="recipe-list-title" href="#">
-	                  		<i class="glyphicon glyphicon-triangle-right" aria-hidden="true"></i>涼拌</a></td>
-	                  		<td><a class="recipe-list-title" href="#"><i class="glyphicon glyphicon-triangle-right" aria-hidden="true"></i>炸物</a></td>
-	                  		<td><a class="recipe-list-title" href="#"><i class="glyphicon glyphicon-triangle-right" aria-hidden="true"></i>沙拉</a></td>
-	                  		<td><a class="recipe-list-title" href="#"><i class="glyphicon glyphicon-triangle-right" aria-hidden="true"></i>披薩</a></td>
-	                  		<td><a class="recipe-list-title" href="#"><i class="glyphicon glyphicon-triangle-right" aria-hidden="true"></i>滷肉</a></td>
-	                  		<td><a class="recipe-list-title" href="#"><i class="glyphicon glyphicon-triangle-right" aria-hidden="true"></i>烤肉</a></td>
+	                  	
+	                  	<c:forEach var="aMtype" items="${recipe_l_typeSvc.getM_typesByL_Type_No(aLtype.recipe_l_type_no)}" varStatus="x" begin="${s.index}" end="${s.index+5}">
+	                  
+	                  		<c:if test="${x.index>=s.index}">
+		                  		<td><a class="recipe-list-title" href="<%=request.getContextPath()%>/recipe_type_info/recipe_type_info.do?&action=findByTypeNo&recipe_type_no=${aMtype.recipe_m_type_no}">
+		                  		<i class="glyphicon glyphicon-triangle-right" aria-hidden="true">
+		                  			</i>${aMtype.m_type_name}</a>
+		                  		<c:if test="${recipe_m_typeSvc.getS_typesByM_Type_No(aMtype.recipe_m_type_no).size()>0}">
+			                  		<ul class="list-group">
+									<c:forEach var="aStype" items="${recipe_m_typeSvc.getS_typesByM_Type_No(aMtype.recipe_m_type_no)}" >                  		
+			                  			<li><a href="<%=request.getContextPath()%>/recipe_type_info/recipe_type_info.do?&action=findByTypeNo&recipe_type_no=${aStype.recipe_s_type_no}" class="recipe-list-item">${aStype.s_type_name}</a></li>
+			                  		</c:forEach>
+			                  		</ul>
+			                  	</c:if>
+		                  		</td>
+	                  		</c:if>
+	                  		<c:if test="${aMtype.m_type_name=='' && x.index<s.index+5}">
+	                  			<td></td>
+	                  		</c:if>
+	                  	</c:forEach>
 	                  	</tr>
-	                  	<tr>
-	                  		
-	                  		<td><a class="recipe-list-title" href="#"><i class="glyphicon glyphicon-triangle-right" aria-hidden="true"></i>焗烤</a>
-	                  		</td>
-	                  		<td><a class="recipe-list-title" href="#"><i class="glyphicon glyphicon-triangle-right" aria-hidden="true"></i>咖哩</a></td>
-	                  		<td><a class="recipe-list-title" href="#"><i class="glyphicon glyphicon-triangle-right" aria-hidden="true"></i>熱炒</a></td>
-	                  		<td><a class="recipe-list-title" href="#"><i class="glyphicon glyphicon-triangle-right" aria-hidden="true"></i>鍋物</a></td>
-	                  		<td><a class="recipe-list-title" href="#"><i class="glyphicon glyphicon-triangle-right" aria-hidden="true"></i>素食</a>
-							<ul class="list-group">
-	                  			<li><a href="#" class="recipe-list-item">全素</a></li>
-	                  			<li><a href="#" class="recipe-list-item">奶蛋素</a></li>
-	                  		</ul>
-	                  		</td>
-	                  		<td><a class="recipe-list-title" href="#"><i class="glyphicon glyphicon-triangle-right" aria-hidden="true"></i>米食</a>
-	                  		<ul class="list-group">
-	                  			<li><a href="#" class="recipe-list-item">炒飯</a></li>
-	                  			<li><a href="#" class="recipe-list-item">粥</a></li>
-	                  		</ul>
-	                  		</td>
-	                  	</tr>
-	                  	<tr>
-	                  		<td><a class="recipe-list-title" href="#"><i class="glyphicon glyphicon-triangle-right" aria-hidden="true"></i>麵食</a></td>
-	                  		<td><a class="recipe-list-title" href="#"><i class="glyphicon glyphicon-triangle-right" aria-hidden="true"></i>湯</a></td>
-	                  		<td><a class="recipe-list-title" href="#"></a></td>
-	                  	</tr>
+	                  </c:forEach>
 	                  </table>
 	              </div>
 			</div>
 		</div>
-		
+	</c:forEach>
 	</section>
 		<script src="https://code.jquery.com/jquery.js"></script>
 		<script src="https://netdna.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>

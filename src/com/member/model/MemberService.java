@@ -29,13 +29,10 @@ public class MemberService {
 		dao.insert(memberVO);
 		
 		return memberVO;
-	}
+	}	
 	
-	
-	public MemberVO updateMember(String mem_no, String mem_name, String mem_ac, 
-			String mem_pw, byte[] mem_image, String mem_sex, 
-			String mem_phone, String mem_email, String mem_adrs, 
-			String mem_own, String mem_history, String mem_online){
+	public MemberVO updateMember(String mem_no, String mem_name, String mem_ac, String mem_pw, byte[] mem_image, 
+			String mem_sex, String mem_phone, String mem_email, String mem_adrs, String mem_own, String mem_history, String mem_online){
 		
 		MemberVO memberVO = new MemberVO();
 		
@@ -55,7 +52,6 @@ public class MemberService {
 		
 		return memberVO;
 	}
-	
 	
 	public MemberVO updateMember(String mem_name, byte[] mem_image){
 		
@@ -91,4 +87,7 @@ public class MemberService {
 	public MemberVO getOneByMem_ac(String mem_ac) {
 		return dao.findByAC(mem_ac);
 	}
+
+
+
 }

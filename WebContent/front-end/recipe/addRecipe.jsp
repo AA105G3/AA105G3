@@ -226,7 +226,7 @@
 								<h3>步驟</h3>
 							</div>
 						<c:if test="${list.isEmpty()}">
-							<div class="row step-wrapper">
+							<div id="div_0" class="row step-wrapper">
 								<div class="col-xs-12 col-sm-4 step-left">
 									<img src="<%=request.getContextPath()%>/images/recipe_cont/stepNoPic.PNG" id="image1">
 									<input type="file" name="step_pic" class="upload" id="upload1" onchange="showImage(1)">
@@ -237,7 +237,7 @@
 										<input type="hidden" name="step" value="1">
 									</div>
 									<div class="col-xs-12 col-sm-6 step-trash-wrapper">
-										<a class="btn"><i class="glyphicon glyphicon-plus step-plus"></i></a>
+										<a class="btn"><i id="plus_0" class="glyphicon glyphicon-plus step-plus"></i></a>
 										<a class="btn"><i class="glyphicon glyphicon-trash step-trash"></i></a>
 									</div>
 									<div class="step-cont-wrapper">
@@ -317,7 +317,7 @@
 		
 		function appendRecipeCont(){
 			var step = $(".step-plus").length+1;
-			var html = '<div class="row step-wrapper">'+
+			var html = '<div id="div_'+step+'" class="row step-wrapper">'+
 						'<div class="col-xs-12 col-sm-4 step-left">'+
 						 '<img src="<%=request.getContextPath()%>/images/recipe_cont/stepNoPic.PNG" id="image'+step+'">'+
 						 '<input type="file" name="step_pic" id="upload'+step+'" onchange="showImage('+step+')">'+
@@ -325,14 +325,19 @@
 						'<div class="col-xs-12 col-sm-8 step-right">'+
 						'<div class="col-xs-12 col-sm-6">'+'<h2>'+step+'</h2>'+' <input type="hidden" name="step" value="'+step+'"></div>'+
 						'<div class="col-xs-12 col-sm-6 step-trash-wrapper">'+
-						 '<a class="btn"><i class="glyphicon glyphicon-plus step-plus"></i></a>'+
+						 '<a class="btn"><i id="plus_'+step+'" class="glyphicon glyphicon-plus step-plus"></i></a>'+
 						 '<a class="btn"><i class="glyphicon glyphicon-trash step-trash"></i></a>'+
 						'</div>'+
 						'<div class="step-cont-wrapper">'+
 						'<textarea name="step_cont" rows="4" cols="55" placeholder="請輸入食譜步驟內容" style="resize: none"></textarea>'+
 						'</div>'+'</div>'+'</div>';
-
-			$(this).parent().parent().parent().parent().parent().append(html);
+			
+			var indexNo=$(this).attr("id").replace("plus_","");
+			$(html).insertAfter("#div_"+indexNo);
+			var stepArray = $("h2")
+			for(var i = 0;i<=stepArray.length;i++){
+				stepArray[i].innerHTML=i+1;
+			}
 		}
 	//步驟區垃圾桶
 

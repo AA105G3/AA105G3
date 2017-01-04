@@ -586,4 +586,7 @@ public class MemberJNDIDAO implements MemberDAO_interface {
 		return memVO;
 	}
 
+
+
+
 }

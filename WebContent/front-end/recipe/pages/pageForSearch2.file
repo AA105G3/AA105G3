@@ -3,7 +3,7 @@
  <tr>
   <%if (rowsPerPage<rowNumber) {%>
     <%if(pageIndex>=rowsPerPage){%>
-        <td><A href="<%=request.getContextPath()%>/recipe/recipe.do?whichPage=<%=whichPage-1%>&action=search&searchCondition=<%= searchCondition%>&searchInput=<%= searchInput%>"">上一頁 </A>&nbsp;</td>
+        <td><A href="<%=request.getContextPath()%>/recipe/recipe.do?whichPage=<%=whichPage-1%>&action=search&searchCondition=<%= searchCondition%>&searchInput=<%= searchInput%>">上一頁 </A>&nbsp;</td>
     <%}%>
   
     <%if(pageIndex<pageIndexArray[pageNumber-1]){%>

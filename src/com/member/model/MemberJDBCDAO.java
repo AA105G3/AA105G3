@@ -100,7 +100,8 @@ public class MemberJDBCDAO implements MemberDAO_interface {
 				+ " mem_own,"
 				+ " mem_history,"
 				+ " mem_online FROM member where mem_ac = ?";
-	
+
+
 	@Override
 	public void insert(MemberVO memVO) {
 
@@ -437,6 +438,77 @@ public class MemberJDBCDAO implements MemberDAO_interface {
 	}
 
 	
+
+
+	@Override
+	public MemberVO findByAC(String mem_ac) {
+
+		MemberVO memVO = null;
+		Connection con = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+
+		try {
+
+			Class.forName(driver);
+			con = DriverManager.getConnection(url, userid, passwd);
+			pstmt = con.prepareStatement(GET_AC_STMT);
+
+			pstmt.setString(1, mem_ac);
+
+			rs = pstmt.executeQuery();
+
+			while (rs.next()) {
+				// memVO 也稱為 Domain objects
+				memVO = new MemberVO();
+				memVO.setMem_no(rs.getString("mem_no"));
+				memVO.setMem_name(rs.getString("mem_name"));
+				memVO.setMem_ac(rs.getString("mem_ac"));
+				memVO.setMem_pw(rs.getString("mem_pw"));
+				memVO.setMem_sex(rs.getString("mem_sex"));
+				memVO.setMem_phone(rs.getString("mem_phone"));
+				memVO.setMem_email(rs.getString("mem_email"));
+				memVO.setMem_adrs(rs.getString("mem_adrs"));
+				memVO.setMem_own(rs.getString("mem_own"));
+				memVO.setMem_history(rs.getString("mem_history"));
+				memVO.setMem_online(rs.getString("mem_online"));
+			}
+
+			// Handle any driver errors
+		} catch (ClassNotFoundException e) {
+			throw new RuntimeException("Couldn't load database driver. "
+					+ e.getMessage());
+			// Handle any SQL errors
+		} catch (SQLException se) {
+			throw new RuntimeException("A database error occured. "
+					+ se.getMessage());
+			// Clean up JDBC resources
+		} finally {
+			if (rs != null) {
+				try {
+					rs.close();
+				} catch (SQLException se) {
+					se.printStackTrace(System.err);
+				}
+			}
+			if (pstmt != null) {
+				try {
+					pstmt.close();
+				} catch (SQLException se) {
+					se.printStackTrace(System.err);
+				}
+			}
+			if (con != null) {
+				try {
+					con.close();
+				} catch (Exception e) {
+					e.printStackTrace(System.err);
+				}
+			}
+		}
+		return memVO;
+	}
+	
 	public static void main(String[] args) {
 
 		MemberJDBCDAO dao = new MemberJDBCDAO();
@@ -487,6 +559,22 @@ public class MemberJDBCDAO implements MemberDAO_interface {
 		System.out.print(memVO3.getMem_history() + ",	");
 		System.out.print(memVO3.getMem_online());
 		System.out.println();*/
+		
+		// 查詢 - 單一(BY MEM_AC)
+		MemberVO memVO4 = dao.findByAC("SUPERCAT2017");
+		System.out.print(memVO4.getMem_no() + ",	");
+		System.out.print(memVO4.getMem_name() + ",	");
+		System.out.print(memVO4.getMem_ac() + ",	");
+		System.out.print(memVO4.getMem_pw() + ",	");
+		System.out.print(memVO4.getMem_sex() + ",	");
+		System.out.print(memVO4.getMem_phone() + ",	");
+		System.out.print(memVO4.getMem_email() + ",	");
+		System.out.print(memVO4.getMem_adrs() + ",	");
+		System.out.print(memVO4.getMem_own() + ",	");
+		System.out.print(memVO4.getMem_history() + ",	");
+		System.out.print(memVO4.getMem_online());
+		System.out.println();
+
 
 		// 查詢 - 全部
 		List<MemberVO> list = dao.getAll();
@@ -503,6 +591,7 @@ public class MemberJDBCDAO implements MemberDAO_interface {
 			System.out.print(aMem.getMem_history() + ",	");
 			System.out.print(aMem.getMem_online());
 			System.out.println();
+
 		}
 	}
 
@@ -518,10 +607,5 @@ public class MemberJDBCDAO implements MemberDAO_interface {
 		return null;
 	}
 
-	@Override
-	public MemberVO findByAC(String mem_ac) {
-		// TODO Auto-generated method stub
-		return null;
-	}
 
 }

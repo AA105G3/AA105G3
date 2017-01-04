@@ -63,6 +63,8 @@ public class RecipeDAO implements RecipeDAO_interface
 	private static final String SearchByFoodMater = 
 			"select recipe_no,mem_no,recipe_name,recipe_intro,food_mater,recipe_pic,recipe_like,recipe_total_views"
 					+ ",recipe_week_views,recipe_time,recipe_edit,recipe_classify from recipe where food_mater like ?";
+	private static final String UPDATE_CLASSIFY = 
+			"UPDATE recipe set recipe_classify = ? where recipe_no = ?";
 	
 	// for android by cyh
 	private static final String GET_IMAGE_STMT = "SELECT recipe_pic FROM recipe where recipe_no=?"; 
@@ -500,12 +502,13 @@ public class RecipeDAO implements RecipeDAO_interface
 			ResultSet rs = pstmt.getGeneratedKeys();
 			if (rs.next()) {
 				next_recipe_no = rs.getString(1);
+				System.out.println("自增主鍵值= " + next_recipe_no +"(剛新增成功的食譜編號)");
 			} else {
+				System.out.println("未取得自增主鍵值");
 			}
 			rs.close();
 			// 再同時新增食譜內容
 			Recipe_contJNDIDAO dao = new Recipe_contJNDIDAO();
-			System.out.println("list.size()-A="+list.size());
 			for (Recipe_contVO aRecipe_cont : list) {
 				aRecipe_cont.setRecipe_no(next_recipe_no);;
 				dao.insert2(aRecipe_cont,con);
@@ -514,6 +517,9 @@ public class RecipeDAO implements RecipeDAO_interface
 			// 2●設定於 pstm.executeUpdate()之後
 			con.commit();
 			con.setAutoCommit(true);
+			System.out.println("list.size()-B="+list.size());
+			System.out.println("新增食譜編號" + next_recipe_no + "時,共有步驟" + list.size()
+					+ "條同時被新增");
 			
 			// Handle any driver errors
 		} catch (SQLException se) {
@@ -816,6 +822,43 @@ public class RecipeDAO implements RecipeDAO_interface
 		return list;
 	}
 	
+	@Override
+	public void updateClassify(RecipeVO recipeVO)
+	{
+		Connection con = null;
+		PreparedStatement pstmt = null;
+
+		try {
+
+			con = ds.getConnection();
+			pstmt = con.prepareStatement(UPDATE_CLASSIFY);
+
+			pstmt.setString(1, recipeVO.getRecipe_classify());
+			pstmt.setString(2, recipeVO.getRecipe_no());
+			
+
+			pstmt.executeUpdate();
+
+		}  catch (SQLException se) {
+			se.printStackTrace();
+		} finally {
+			if (pstmt != null) {
+				try {
+					pstmt.close();
+				} catch (SQLException se) {
+					se.printStackTrace();
+				}
+			}
+			if (con != null) {
+				try {
+					con.close();
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			}
+		}
+		
+	}
 	//for android by cyh
 	@Override
 	public byte[] getImage(String recipe_no) {

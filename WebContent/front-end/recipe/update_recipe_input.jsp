@@ -244,6 +244,19 @@
 		})
 
 		
+
+	</tr>
+	<tr>
+		<td>
+		<input type="file" name="recipe_pic" id = "upLoadFile" onchange="showImage()"></td>
+	</tr>
+</table>
+<br>
+<input type="hidden" name="action" value="update">
+<input type="hidden" name="recipe_no" value=${recipeVO.recipe_no}>
+<input type="submit" value="送出修改"></FORM>
+<img id="image" src="<%=request.getContextPath()%>/recipe/showRecipe_pic.do?recipe_no=${recipeVO.recipe_no}" style="width:300px;"/>
+=======
 	// 食材區初始垃圾桶event	
 		$(".ingredients-trash").click(function(){
 			$(this).parent().parent().empty().remove();	
