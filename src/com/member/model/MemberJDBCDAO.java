@@ -101,18 +101,6 @@ public class MemberJDBCDAO implements MemberDAO_interface {
 				+ " mem_history,"
 				+ " mem_online FROM member where mem_ac = ?";
 
-	private static final String GET_AC_STMT = 
-		"SELECT mem_no,"
-		+ " mem_name,"
-		+ " mem_ac,"
-		+ " mem_pw,"
-		+ " mem_sex,"
-		+ " mem_phone,"
-		+ " mem_email,"
-		+ " mem_adrs,"
-		+ " mem_own,"
-		+ " mem_history,"
-		+ " mem_online FROM member where mem_ac = ?";
 
 	@Override
 	public void insert(MemberVO memVO) {
@@ -604,7 +592,7 @@ public class MemberJDBCDAO implements MemberDAO_interface {
 			System.out.print(aMem.getMem_online());
 			System.out.println();
 
-		}*/
+		}
 	}
 
 	@Override
