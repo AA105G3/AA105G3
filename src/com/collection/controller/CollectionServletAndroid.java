@@ -23,16 +23,15 @@ import com.collection.model.CollectionVO;
 
 import util.SendResponse;
 
-
 @SuppressWarnings("serial")
 @WebServlet("/CollectionServletAndroid")
 public class CollectionServletAndroid extends HttpServlet {
-	public void doGet(HttpServletRequest req, HttpServletResponse res)throws ServletException, IOException {
+	public void doGet(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
 		doPost(req, res);
 	}
-	
-	public void doPost(HttpServletRequest req, HttpServletResponse res)throws ServletException, IOException {
-		
+
+	public void doPost(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
+
 		req.setCharacterEncoding("UTF-8");
 		Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd HH:mm:ss").create();
 		CollectionService collectionSvc = new CollectionService();
@@ -50,39 +49,61 @@ public class CollectionServletAndroid extends HttpServlet {
 
 		String action = jsonObject.get("action").getAsString();
 		System.out.println("Collection action = " + action);
-		StringBuffer outStr = new StringBuffer();		
+		StringBuffer outStr = new StringBuffer();
 
 		if ("getOne_For_Display".equals(action)) {
-			
+
 		}
-		
-		if ("getAllByMem_no_For_Display".equals(action)) { 
+
+		if ("getAllByMem_no_For_Display".equals(action)) {
 			String mem_noJson = jsonObject.get("mem_no").getAsString();
 			JsonReader reader = new JsonReader(new StringReader(mem_noJson));
 			reader.setLenient(true);
-			String mem_no = gson.fromJson(reader, String.class);System.out.println("CollectionServletAndroid(63 line) mem_no:" + mem_no);
-			List<CollectionVO> collectionVOList = collectionSvc.getAllByMem_noCollection(mem_no); 
-			
+			String mem_no = gson.fromJson(reader, String.class);
+			System.out.println("CollectionServletAndroid(63 line) mem_no:" + mem_no);
+			List<CollectionVO> collectionVOList = collectionSvc.getAllByMem_noCollection(mem_no);
+
 			outStr.append(gson.toJson(collectionVOList));
 			SendResponse.writeText(res, outStr.toString());
 			return;
 		}
 
-        if ("insert".equals(action)) { 
-        	
+		if ("insert".equals(action)) {
+			String mem_no = jsonObject.get("mem_no").getAsString();
+			String all_no = jsonObject.get("all_no").getAsString();
+			String class_no = String.valueOf(all_no.charAt(0));
+			// System.out.println("insert to collection mem_no=" + mem_no + "
+			// all_no= " + all_no + " class_no= " + class_no );
+//			try {
+				CollectionVO collectionVO = collectionSvc.findByMem_noAndAll_no(mem_no, all_no);
+//			} catch (Exception e) {
+//				collectionSvc.addCollection(mem_no, all_no, class_no);
+//			}
+//			System.out.println("all no " + collectionVO.getAll_no() + "coll_no" + collectionVO.getColl_no()
+//					+ collectionVO.getMem_no());
+			if (collectionVO == null) {
+				collectionVO = collectionSvc.addCollection(mem_no, all_no, class_no);				
+			} else {
+				collectionVO = null;
+			}
+
+			// System.out.println("collectionVO= " + collectionVO.getAll_no());
+
+			outStr.append(gson.toJson(collectionVO));
+			SendResponse.writeText(res, outStr.toString());
 		}
-        
-		if ("delete".equals(action)) { 
-			
+
+		if ("delete".equals(action)) {
+
 		}
-		
-		if ("getOne_For_Update".equals(action)) { 
-			
+
+		if ("getOne_For_Update".equals(action)) {
+
 		}
-		
-		if ("update".equals(action)) { 
-			
+
+		if ("update".equals(action)) {
+
 		}
 	}
-	
+
 }

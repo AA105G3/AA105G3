@@ -49,4 +49,8 @@ public class CollectionService {
 	public List<CollectionVO> getAll() {
 		return dao.getAll();
 	}
+	
+	public CollectionVO findByMem_noAndAll_no(String mem_no, String all_no){
+		return dao.findByMem_noAndAll_no(mem_no, all_no);
+	}
 }
