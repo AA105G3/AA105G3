@@ -24,7 +24,7 @@ public class MemberServlet extends HttpServlet {
 		req.setCharacterEncoding("UTF-8");
 		String action = req.getParameter("action");
 		
-		if ("getOne_For_Display".equals(action)) { // 來自select_page.jsp的請求
+		if ("getOne_For_Display".equals(action) || "getOne_For_List".equals(action)) { // 來自select_page.jsp的請求
 
 			List<String> errorMsgs = new LinkedList<String>();
 			// Store this set in the request scope, in case we need to
@@ -75,7 +75,13 @@ public class MemberServlet extends HttpServlet {
 				
 				/***************************3.查詢完成,準備轉交(Send the Success view)*************/
 				req.setAttribute("memberVO", memberVO); // 資料庫取出的memberVO物件,存入req
-				String url = "/front-end/member/listOneMember.jsp";
+				
+				String url = null;
+				if ("getOne_For_Display".equals(action))
+					url = "/front-end/member/listOneMember.jsp";
+				else if ("getOne_For_List".equals(action))
+					url = "/front-end/product_order/AddProductOrder.jsp";
+				
 				RequestDispatcher successView = req.getRequestDispatcher(url); // 成功轉交 listOneMember.jsp
 				successView.forward(req, res);
 
@@ -129,7 +135,9 @@ public class MemberServlet extends HttpServlet {
 				/***************************1.接收請求參數 - 輸入格式的錯誤處理**********************/
 				String mem_no = req.getParameter("mem_no").trim();
 				if(mem_no == ""){
+
 					errorMsgs.add("請輸入會員編號.");
+
 				}
 				
 				String mem_name = req.getParameter("mem_name").trim();

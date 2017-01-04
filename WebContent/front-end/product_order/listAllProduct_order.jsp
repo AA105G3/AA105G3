@@ -1,14 +1,17 @@
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ page import="java.util.*"%>
+<%@ page import="java.text.*"%>
 <%@ page import="com.product_order.model.*"%>
 <%-- 此頁練習採用 EL 的寫法取值 --%>
 
 <%
-    Product_orderService product_orderSvc = new Product_orderService();
+	Product_orderService product_orderSvc = new Product_orderService();
     List<Product_orderVO> list = product_orderSvc.getAll();
     pageContext.setAttribute("list",list);
 %>
+
+<%-- <jsp:useBean id="product_orderSvc" scope="page" class="com.product_order.model.Product_orderService" /> --%>
 
 <html>
 <head>
@@ -19,7 +22,7 @@
 <table border='1' cellpadding='5' cellspacing='0' width='1500'>
 	<tr bgcolor='#CCCCFF' align='center' valign='middle' height='20'>
 		<td>
-		<h3>所有商品資料 - listAllProduct.jsp</h3>
+		<h3>所有商品資料 - listAllProduct_order.jsp</h3>
 		<a href="<%=request.getContextPath()%>/front-end/product_order/select_page.jsp">
 		<img src="<%=request.getContextPath()%>/front-end/product_order/images/back.png" width="70" height="70" border="0">回首頁</a>
 		</td>
@@ -53,13 +56,20 @@
 		<th>聯絡手機</th>
 		<th>聯絡市話</th>
 		<th>修改</th>	
+
+		<!-- <th>查詢明細</th> -->
+
 	</tr>
  
 	<c:forEach var="product_orderVO" items="${list}" >
-		<tr align='center' valign='middle'>
+		<tr align='center' valign='middle' ${(product_orderVO.prod_ord_no==param.prod_ord_no) ? 'bgcolor=#CCCCFF':''}>
 			<td>${product_orderVO.prod_ord_no}</td>
 			<td>${product_orderVO.mem_no}</td>
-			<td>${product_orderVO.prod_ord_time}</td>
+			
+			<%-- <td>${product_orderVO.prod_ord_time}</td> --%>
+			<jsp:useBean id="product_orderVO" scope="page" class="com.product_order.model.Product_orderVO" />
+			<td><%=new SimpleDateFormat("yyyy/MM/dd HH:mm:ss").format(product_orderVO.getProd_ord_time())%></td>
+			
 			<td>${product_orderVO.cred_card_no.subSequence(0,4)}********${product_orderVO.cred_card_no.subSequence(12,16)}</td>
 			<td>${product_orderVO.valid_date}</td>
 			<%-- <td>${product_orderVO.valid_no}</td> --%>
@@ -86,9 +96,23 @@
 			     <input type="hidden" name="prod_ord_no" value="${product_orderVO.prod_ord_no}">
 			     <input type="hidden" name="action"	value="getOne_For_Update"></FORM>
 			</td>
+
+			<%-- <td>
+
+			  <FORM METHOD="post" ACTION="<%=request.getContextPath()%>/product_order/product_order.do">
+			    <input type="submit" value="送出查詢"> 
+			    <input type="hidden" name="prod_ord_no" value="${product_orderVO.prod_ord_no}">
+			    <input type="hidden" name="action" value="getPart_For_Display_By_One_PK"></FORM>
+
+			</td> --%>
+
 		</tr>
 	</c:forEach>
 </table>
+
+<%if (request.getAttribute("listPOList_ByProd_ord_no")!=null){%>
+       <jsp:include page="listPartProduct_order_list.jsp" />
+<%} %>
 
 </body>
 </html>

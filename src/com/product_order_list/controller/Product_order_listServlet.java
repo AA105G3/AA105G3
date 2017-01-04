@@ -6,6 +6,7 @@ import java.util.*;
 import javax.servlet.*;
 import javax.servlet.http.*;
 
+import com.product.model.ProductVO;
 import com.product_order_list.model.*;
 
 public class Product_order_listServlet extends HttpServlet {
@@ -20,6 +21,103 @@ public class Product_order_listServlet extends HttpServlet {
 
 		req.setCharacterEncoding("UTF-8");
 		String action = req.getParameter("action");
+		
+		
+		HttpSession session = req.getSession();
+		Vector<Product_order_listVO> buylist = (Vector<Product_order_listVO>) session.getAttribute("shoppingcart");
+		
+
+		// 刪除購物車中的商品
+		if (action.equals("DELETE_PRODUCT")) {
+			String del = req.getParameter("del");
+			for(int index = 0; index < buylist.size(); index++){
+				if(buylist.elementAt(index).getProd_no().toString().equals(del)){
+					buylist.removeElementAt(index);
+				}
+			}
+			
+			int total = 0;
+			for (int i = 0; i < buylist.size(); i++) {
+				Product_order_listVO product_order_listVO = buylist.get(i);
+				int unit_price = product_order_listVO.getUnit_price();
+				int prod_quantity = product_order_listVO.getProd_quantity();
+				total += (unit_price * prod_quantity);
+			}
+				
+			int total2 = 0;
+			for (int i = 0; i < buylist.size(); i++) {
+				Product_order_listVO product_order_listVO = buylist.get(i);
+				int unit_price = product_order_listVO.getUnit_price();
+				int prod_quantity = product_order_listVO.getProd_quantity();
+				total2 += (prod_quantity);
+			}
+
+			String amount = String.valueOf(total);
+			String quantity = String.valueOf(total2);
+			
+			session.setAttribute("amount", amount);
+			session.setAttribute("quantity", quantity);
+
+			String url = "/front-end/product_order_list/Cart.jsp";
+			RequestDispatcher successView = req.getRequestDispatcher(url);// 刪除成功後,轉交回送出刪除的來源網頁
+			successView.forward(req, res);
+		}
+			
+		// 新增商品至購物車中
+		if (action.equals("ADD_PRODUCT")) {
+			boolean match = false;
+
+			// 取得後來新增的商品
+			Product_order_listVO aproduct_order_list = getProduct(req);
+			
+			// 新增第一本商品至購物車時
+			if (buylist == null) {
+				buylist = new Vector<Product_order_listVO>();
+				buylist.add(aproduct_order_list);
+			} else {
+				for (int i = 0; i < buylist.size(); i++) {
+					Product_order_listVO product_order_list = buylist.get(i);
+
+					// 假若新增的商品和購物車的商品一樣時
+					if (product_order_list.getProd_no().equals(aproduct_order_list.getProd_no())) {
+						product_order_list.setProd_quantity(product_order_list.getProd_quantity()
+								+ aproduct_order_list.getProd_quantity());
+						buylist.setElementAt(product_order_list, i);
+						match = true;
+					} // end of if name matches
+				} // end of for
+
+				// 假若新增的商品和購物車的商品不一樣時
+				if (!match)
+					buylist.add(aproduct_order_list);
+			}
+				
+			int total = 0;
+			for (int i = 0; i < buylist.size(); i++) {
+				Product_order_listVO product_order_listVO = buylist.get(i);
+				int unit_price = product_order_listVO.getUnit_price();
+				int prod_quantity = product_order_listVO.getProd_quantity();
+				total += (unit_price * prod_quantity);
+			}
+				
+			int total2 = 0;
+			for (int i = 0; i < buylist.size(); i++) {
+				Product_order_listVO product_order_listVO = buylist.get(i);
+				int unit_price = product_order_listVO.getUnit_price();
+				int prod_quantity = product_order_listVO.getProd_quantity();
+				total2 += (prod_quantity);
+			}
+
+			String amount = String.valueOf(total);
+			String quantity = String.valueOf(total2);
+
+			session.setAttribute("amount", amount);
+			session.setAttribute("quantity", quantity);
+				
+			session.setAttribute("shoppingcart", buylist);
+			RequestDispatcher failureView = req.getRequestDispatcher("/front-end/product/Market.jsp");
+			failureView.forward(req, res);
+		}
 		
 		if ("getOne_For_Display".equals(action)) { // 來自select_page.jsp的請求
 
@@ -130,7 +228,8 @@ public class Product_order_listServlet extends HttpServlet {
 								
 				/***************************3.查詢完成,準備轉交(Send the Success view)************/
 				req.setAttribute("product_order_listVO", product_order_listVO);         // 資料庫取出的product_order_listVO物件,存入req
-				String url = "/back-end/product_order_list/update_product_order_list_input.jsp";
+				/*String url = "/back-end/product_order_list/update_product_order_list_input.jsp";*/
+				String url = "/back-end/product_order_list/UpdateList.jsp";
 				RequestDispatcher successView = req.getRequestDispatcher(url);// 成功轉交 update_product_order_list_input.jsp
 				successView.forward(req, res);
 
@@ -224,8 +323,10 @@ public class Product_order_listServlet extends HttpServlet {
 				}
 				// Send the use back to the form, if there were errors
 				if (!errorMsgs.isEmpty()) {
+					/*RequestDispatcher failureView = req
+							.getRequestDispatcher("/back-end/product_order_list/select_page.jsp");*/
 					RequestDispatcher failureView = req
-							.getRequestDispatcher("/back-end/product_order_list/select_page.jsp");
+							.getRequestDispatcher("/back-end/product_order_list/ListManagement.jsp");
 					failureView.forward(req, res);
 					return;//程式中斷
 				}
@@ -238,8 +339,10 @@ public class Product_order_listServlet extends HttpServlet {
 				}
 				// Send the use back to the form, if there were errors
 				if (!errorMsgs.isEmpty()) {
+					/*RequestDispatcher failureView = req
+							.getRequestDispatcher("/back-end/product_order_list/select_page.jsp");*/
 					RequestDispatcher failureView = req
-							.getRequestDispatcher("/back-end/product_order_list/select_page.jsp");
+							.getRequestDispatcher("/back-end/product_order_list/ListManagement.jsp");
 					failureView.forward(req, res);
 					return;//程式中斷
 				}
@@ -253,15 +356,18 @@ public class Product_order_listServlet extends HttpServlet {
 				}
 				// Send the use back to the form, if there were errors
 				if (!errorMsgs.isEmpty()) {
+					/*RequestDispatcher failureView = req
+							.getRequestDispatcher("/back-end/product_order_list/select_page.jsp");*/
 					RequestDispatcher failureView = req
-							.getRequestDispatcher("/back-end/product_order_list/select_page.jsp");
+							.getRequestDispatcher("/back-end/product_order_list/ListManagement.jsp");
 					failureView.forward(req, res);
 					return;//程式中斷
 				}
 				
 				/***************************3.查詢完成,準備轉交(Send the Success view)*************/
 				req.setAttribute("product_order_listVO", product_order_listVO); // 資料庫取出的product_order_listVO物件,存入req
-				String url = "/back-end/product_order_list/listPartProduct_order_list.jsp";
+				/*String url = "/back-end/product_order_list/listPartProduct_order_list.jsp";*/
+				String url = "/back-end/product_order_list/DisplayProductOrderList.jsp";
 				RequestDispatcher successView = req.getRequestDispatcher(url); // 成功轉交 listOneProduct_order_list.jsp
 				successView.forward(req, res);
 
@@ -372,7 +478,8 @@ public class Product_order_listServlet extends HttpServlet {
 				
 				/***************************3.修改完成,準備轉交(Send the Success view)*************/
 				req.setAttribute("product_order_listVO", product_order_listVO); // 資料庫update成功後,正確的的product_order_listVO物件,存入req
-				String url = "/back-end/product_order_list/listOneProduct_order_list.jsp";
+				/*String url = "/back-end/product_order_list/listOneProduct_order_list.jsp";*/
+				String url = "/back-end/product_order_list/ListManagement.jsp";
 				RequestDispatcher successView = req.getRequestDispatcher(url); // 修改成功後,轉交listOneProduct_order_list.jsp
 				successView.forward(req, res);
 
@@ -474,6 +581,20 @@ public class Product_order_listServlet extends HttpServlet {
 			return null;
 		}
 		return fileName;
+	}
+	
+	private Product_order_listVO getProduct(HttpServletRequest req) {
+
+		String prod_no = req.getParameter("prod_no");
+		String unit_price = req.getParameter("unit_price");
+		String prod_quantity = req.getParameter("prod_quantity");
+
+		Product_order_listVO product_order_listVO = new Product_order_listVO();
+
+		product_order_listVO.setProd_no(prod_no);
+		product_order_listVO.setUnit_price((new Integer(unit_price)).intValue());
+		product_order_listVO.setProd_quantity((new Integer(prod_quantity)).intValue());
+		return product_order_listVO;
 	}
 
 }

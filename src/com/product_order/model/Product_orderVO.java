@@ -1,11 +1,11 @@
 package com.product_order.model;
 
-import java.sql.Date;
+import java.sql.*;
 
 public class Product_orderVO implements java.io.Serializable{
 	private String prod_ord_no;
 	private String mem_no;
-	private Date prod_ord_time;
+	private Timestamp prod_ord_time;
 	private String cred_card_no;
 	private Date valid_date;
 	private String valid_no;
@@ -29,10 +29,10 @@ public class Product_orderVO implements java.io.Serializable{
 	public void setMem_no(String mem_no) {
 		this.mem_no = mem_no;
 	}
-	public Date getProd_ord_time() {
+	public Timestamp getProd_ord_time() {
 		return prod_ord_time;
 	}
-	public void setProd_ord_time(Date prod_ord_time) {
+	public void setProd_ord_time(Timestamp prod_ord_time) {
 		this.prod_ord_time = prod_ord_time;
 	}
 	public String getCred_card_no() {

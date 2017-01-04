@@ -16,56 +16,92 @@ public class MemberJDBCDAO implements MemberDAO_interface {
 	String passwd = "foodtime";
 	
 	private static final String INSERT_STMT = 
-		"INSERT INTO member (mem_no,"
-		+ " mem_name,"
-		+ " mem_ac,"
-		+ " mem_pw,"
-		+ " mem_sex,"
-		+ " mem_phone,"
-		+ " mem_email,"
-		+ " mem_adrs,"
-		+ " mem_own,"
-		+ " mem_history,"
-		+ " mem_online) "
-		+ "VALUES ('M'||LPAD(mem_seq.NEXTVAL,8,0), ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
-	private static final String GET_ALL_STMT = 
-		"SELECT mem_no,"
-		+ " mem_name,"
-		+ " mem_ac,"
-		+ " mem_pw,"
-		+ " mem_sex,"
-		+ " mem_phone,"
-		+ " mem_email,"
-		+ " mem_adrs,"
-		+ " mem_own,"
-		+ " mem_history,"
-		+ " mem_online FROM member order by mem_no";
-	private static final String GET_ONE_STMT = 
-		"SELECT mem_no,"
-		+ " mem_name,"
-		+ " mem_ac,"
-		+ " mem_pw,"
-		+ " mem_sex,"
-		+ " mem_phone,"
-		+ " mem_email,"
-		+ " mem_adrs,"
-		+ " mem_own,"
-		+ " mem_history,"
-		+ " mem_online FROM member where mem_no = ?";
-	private static final String DELETE = 
-		"DELETE FROM member where mem_no = ?";
-	private static final String UPDATE = 
-		"UPDATE member set mem_name=?,"
-		+ " mem_ac=?,"
-		+ " mem_pw=?,"
-		+ " mem_sex=?,"
-		+ " mem_phone=?,"
-		+ " mem_email=?,"
-		+ " mem_adrs=?,"
-		+ " mem_own=?,"
-		+ " mem_history=?,"
-		+ " mem_online=? where mem_no = ?";
-	
+			"INSERT INTO member (mem_no,"
+			+ " mem_name,"
+			+ " mem_ac,"
+			+ " mem_pw,"
+			+ " mem_image,"
+			+ " mem_sex,"
+			+ " mem_phone,"
+			+ " mem_email,"
+			+ " mem_adrs,"
+			+ " mem_own,"
+			+ " mem_history,"
+			+ " mem_online) "
+			+ "VALUES ('M'||LPAD(mem_seq.NEXTVAL,8,0), ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+		private static final String GET_ALL_STMT = 
+			"SELECT mem_no,"
+			+ " mem_name,"
+			+ " mem_ac,"
+			+ " mem_pw,"
+			+ " mem_image,"
+			+ " mem_sex,"
+			+ " mem_phone,"
+			+ " mem_email,"
+			+ " mem_adrs,"
+			+ " mem_own,"
+			+ " mem_history,"
+			+ " mem_online FROM member order by mem_no";
+		private static final String GET_ONE_STMT = 
+			"SELECT mem_no,"
+			+ " mem_name,"
+			+ " mem_ac,"
+			+ " mem_pw,"
+			+ " mem_image,"
+			+ " mem_sex,"
+			+ " mem_phone,"
+			+ " mem_email,"
+			+ " mem_adrs,"
+			+ " mem_own,"
+			+ " mem_history,"
+			+ " mem_online FROM member where mem_no = ?";
+		private static final String GET_ONE_STMT_ANDROID = 
+				"SELECT mem_no,"
+				+ " mem_name,"
+				+ " mem_ac,"
+				+ " mem_pw,"
+				+ " mem_image,"
+				+ " mem_sex,"
+				+ " mem_phone,"
+				+ " mem_email,"
+				+ " mem_adrs,"
+				+ " mem_own,"
+				+ " mem_history,"
+				+ " mem_online FROM member where mem_no = ?";
+		private static final String DELETE = 
+			"DELETE FROM member where mem_no = ?";
+		private static final String UPDATE = 
+			"UPDATE member set mem_name=?,"
+			+ " mem_ac=?,"
+			+ " mem_pw=?,"
+			+ " mem_image=?,"
+			+ " mem_sex=?,"
+			+ " mem_phone=?,"
+			+ " mem_email=?,"
+			+ " mem_adrs=?,"
+			+ " mem_own=?,"
+			+ " mem_history=?,"
+			+ " mem_online=? where mem_no = ?";
+		private static final String UPDATE_ANDROID = 
+				"UPDATE member set mem_name=?,"
+				+ " mem_image=? where mem_no = ?";
+		
+		private static final String GET_IMAGE_STMT = "SELECT mem_image FROM member where mem_no=?";
+		
+		private static final String GET_AC_STMT = 
+				"SELECT mem_no,"
+				+ " mem_name,"
+				+ " mem_ac,"
+				+ " mem_pw,"
+				+ " mem_sex,"
+				+ " mem_phone,"
+				+ " mem_email,"
+				+ " mem_adrs,"
+				+ " mem_own,"
+				+ " mem_history,"
+				+ " mem_online FROM member where mem_ac = ?";
+
+
 	@Override
 	public void insert(MemberVO memVO) {
 
@@ -354,6 +390,125 @@ public class MemberJDBCDAO implements MemberDAO_interface {
 		return list;
 	}
 	
+	@Override
+	public byte[] getImage(String mem_no) {
+
+		byte[] mem_image = null;
+
+		Connection con = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+
+		try {
+			Class.forName(driver);
+			con = DriverManager.getConnection(url, userid, passwd);
+			pstmt = con.prepareStatement(GET_IMAGE_STMT);
+			pstmt.setString(1, mem_no);
+			rs = pstmt.executeQuery();
+
+			if (rs.next()) {
+				mem_image = rs.getBytes("mem_image");
+			}
+
+			// Handle any driver errors
+		}catch (ClassNotFoundException e) {
+			throw new RuntimeException("Couldn't load database driver. "
+					+ e.getMessage());
+			// Handle any SQL errors
+		} catch (SQLException se) {
+			throw new RuntimeException("A database error occured. " + se.getMessage());
+		} finally {
+			if (pstmt != null) {
+				try {
+					pstmt.close();
+				} catch (SQLException se) {
+					se.printStackTrace(System.err);
+				}
+			}
+			if (con != null) {
+				try {
+					con.close();
+				} catch (SQLException se) {
+					se.printStackTrace(System.err);
+				}
+			}
+		}
+
+		return mem_image;
+	}
+
+	
+
+
+	@Override
+	public MemberVO findByAC(String mem_ac) {
+
+		MemberVO memVO = null;
+		Connection con = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+
+		try {
+
+			Class.forName(driver);
+			con = DriverManager.getConnection(url, userid, passwd);
+			pstmt = con.prepareStatement(GET_AC_STMT);
+
+			pstmt.setString(1, mem_ac);
+
+			rs = pstmt.executeQuery();
+
+			while (rs.next()) {
+				// memVO 也稱為 Domain objects
+				memVO = new MemberVO();
+				memVO.setMem_no(rs.getString("mem_no"));
+				memVO.setMem_name(rs.getString("mem_name"));
+				memVO.setMem_ac(rs.getString("mem_ac"));
+				memVO.setMem_pw(rs.getString("mem_pw"));
+				memVO.setMem_sex(rs.getString("mem_sex"));
+				memVO.setMem_phone(rs.getString("mem_phone"));
+				memVO.setMem_email(rs.getString("mem_email"));
+				memVO.setMem_adrs(rs.getString("mem_adrs"));
+				memVO.setMem_own(rs.getString("mem_own"));
+				memVO.setMem_history(rs.getString("mem_history"));
+				memVO.setMem_online(rs.getString("mem_online"));
+			}
+
+			// Handle any driver errors
+		} catch (ClassNotFoundException e) {
+			throw new RuntimeException("Couldn't load database driver. "
+					+ e.getMessage());
+			// Handle any SQL errors
+		} catch (SQLException se) {
+			throw new RuntimeException("A database error occured. "
+					+ se.getMessage());
+			// Clean up JDBC resources
+		} finally {
+			if (rs != null) {
+				try {
+					rs.close();
+				} catch (SQLException se) {
+					se.printStackTrace(System.err);
+				}
+			}
+			if (pstmt != null) {
+				try {
+					pstmt.close();
+				} catch (SQLException se) {
+					se.printStackTrace(System.err);
+				}
+			}
+			if (con != null) {
+				try {
+					con.close();
+				} catch (Exception e) {
+					e.printStackTrace(System.err);
+				}
+			}
+		}
+		return memVO;
+	}
+	
 	public static void main(String[] args) {
 
 		MemberJDBCDAO dao = new MemberJDBCDAO();
@@ -404,6 +559,22 @@ public class MemberJDBCDAO implements MemberDAO_interface {
 		System.out.print(memVO3.getMem_history() + ",	");
 		System.out.print(memVO3.getMem_online());
 		System.out.println();*/
+		
+		// 查詢 - 單一(BY MEM_AC)
+		MemberVO memVO4 = dao.findByAC("SUPERCAT2017");
+		System.out.print(memVO4.getMem_no() + ",	");
+		System.out.print(memVO4.getMem_name() + ",	");
+		System.out.print(memVO4.getMem_ac() + ",	");
+		System.out.print(memVO4.getMem_pw() + ",	");
+		System.out.print(memVO4.getMem_sex() + ",	");
+		System.out.print(memVO4.getMem_phone() + ",	");
+		System.out.print(memVO4.getMem_email() + ",	");
+		System.out.print(memVO4.getMem_adrs() + ",	");
+		System.out.print(memVO4.getMem_own() + ",	");
+		System.out.print(memVO4.getMem_history() + ",	");
+		System.out.print(memVO4.getMem_online());
+		System.out.println();
+
 
 		// 查詢 - 全部
 		List<MemberVO> list = dao.getAll();
@@ -420,7 +591,21 @@ public class MemberJDBCDAO implements MemberDAO_interface {
 			System.out.print(aMem.getMem_history() + ",	");
 			System.out.print(aMem.getMem_online());
 			System.out.println();
+
 		}
 	}
+
+	@Override
+	public void update(MemberVO memVO, Integer android) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public MemberVO findByPrimaryKey(String mem_no, Integer android) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 
 }

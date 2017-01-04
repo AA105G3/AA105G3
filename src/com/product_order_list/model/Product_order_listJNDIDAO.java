@@ -431,5 +431,51 @@ public class Product_order_listJNDIDAO implements Product_order_listDAO_interfac
 		}
 		return list;
 	}
+	
+	@Override
+	public void insertWithProduct_order (Product_order_listVO product_order_listVO , Connection con) {
+
+		PreparedStatement pstmt = null;
+
+		try {
+
+     		pstmt = con.prepareStatement(INSERT_STMT);
+
+     		pstmt.setString(1, product_order_listVO.getProd_ord_no());
+			pstmt.setString(2, product_order_listVO.getProd_no());
+			pstmt.setInt(3, product_order_listVO.getUnit_price());
+			pstmt.setInt(4, product_order_listVO.getProd_quantity());
+			pstmt.setString(5, product_order_listVO.getDeli_status());
+			pstmt.setDate(6, product_order_listVO.getDeli_time());
+
+			pstmt.executeUpdate();
+
+			// Handle any SQL errors
+		} catch (SQLException se) {
+			if (con != null) {
+				try {
+					// 3●設定於當有exception發生時之catch區塊內
+					System.err.print("Transaction is being ");
+					System.err.println("rolled back-由-product_order_list");
+					con.rollback();
+				} catch (SQLException excep) {
+					throw new RuntimeException("rollback error occured. "
+							+ excep.getMessage());
+				}
+			}
+			throw new RuntimeException("A database error occured. "
+					+ se.getMessage());
+			// Clean up JDBC resources
+		} finally {
+			if (pstmt != null) {
+				try {
+					pstmt.close();
+				} catch (SQLException se) {
+					se.printStackTrace(System.err);
+				}
+			}
+		}
+
+	}
 
 }

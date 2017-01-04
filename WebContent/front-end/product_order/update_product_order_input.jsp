@@ -44,7 +44,7 @@
 	</tr>
 	<tr>
 		<td>訂單成立時間:</td>
-		<td><input type="date" name="prod_ord_time" value="<%=product_orderVO.getProd_ord_time()%>"></td>
+		<td><%=product_orderVO.getProd_ord_time()%></td>
 	</tr>
 	<tr>
 		<td>信用卡卡號:</td>
@@ -104,6 +104,7 @@
 <input type="hidden" name="action" value="update">
 <input type="hidden" name="prod_ord_no" value="<%=product_orderVO.getProd_ord_no()%>">
 <input type="hidden" name="mem_no" value="<%=product_orderVO.getMem_no()%>">
+<input type="hidden" name="prod_ord_time" value="<%=product_orderVO.getProd_ord_time()%>">
 <input type="submit" value="送出修改"></FORM>
 
 </body>

@@ -71,12 +71,12 @@ DROP SEQUENCE mem_seq;
 CREATE TABLE MEMBER (
 	MEM_NO					VARCHAR2(20)		NOT NULL,
 	MEM_NAME				VARCHAR2(30)		NOT NULL,
-	MEM_AC					VARCHAR2(40)		NOT NULL,
+	MEM_AC					VARCHAR2(40)		NOT NULL UNIQUE,
 	MEM_PW					VARCHAR2(40)		NOT NULL,
 	MEM_IMAGE				BLOB						,
 	MEM_SEX					VARCHAR2(1)			NOT NULL,
 	MEM_PHONE				VARCHAR2(20)		NOT NULL,
-	MEM_EMAIL				VARCHAR2(60)		NOT NULL,
+	MEM_EMAIL				VARCHAR2(60)		NOT NULL UNIQUE,
 	MEM_ADRS				VARCHAR2(300)		NOT NULL,
 	MEM_OWN					VARCHAR2(1)			NOT NULL,
 	MEM_HISTORY			VARCHAR2(100)		,
@@ -99,6 +99,7 @@ INSERT INTO MEMBER VALUES ('M'||lpad(mem_seq.NEXTVAL,8,0), 'PANTHER', 'PANTHER-V
 
 commit;
 
+
 建立表格: recipe和seq
 --------------------------------------------------------------------------------------------------------
 
@@ -106,13 +107,16 @@ CREATE TABLE RECIPE (
  RECIPE_NO               VARCHAR2(20) NOT NULL,
  MEM_NO                  VARCHAR2(20) NOT NULL,
  RECIPE_NAME		 VARCHAR2(60) NOT NULL,
- RECIPE_INTRO		 CLOB NOT NULL,
- FOOD_MATER		 VARCHAR2(600) NOT NULL,
+ RECIPE_INTRO		 CLOB ,
+ FOOD_MATER		 VARCHAR2(600),
+
  RECIPE_PIC		 BLOB,
  RECIPE_LIKE		 NUMBER(10) DEFAULT 0,
  RECIPE_TOTAL_VIEWS	 NUMBER(10) DEFAULT 0,
  RECIPE_WEEK_VIEWS	 NUMBER(10) DEFAULT 0,
  RECIPE_TIME		 DATE default sysdate NOT NULL,
+ RECIPE_EDIT		 VARCHAR2(20) default '編輯中',
+ RECIPE_CLASSIFY	 VARCHAR2(20) default '未分類',
  
 
  
@@ -126,16 +130,7 @@ NOMAXVALUE
 NOCYCLE
 NOCACHE;
 
-INSERT INTO recipe (recipe_no,mem_no,recipe_name,recipe_intro,FOOD_MATER,RECIPE_LIKE,RECIPE_TOTAL_VIEWS,RECIPE_WEEK_VIEWS,RECIPE_TIME) 
-VALUES ('R'||lpad(recipe_seq.NEXTVAL,8,0),'M00000001','馬鈴薯燉肉','日式家常菜馬鈴薯燉肉，真的是一道非常簡單的燉菜！','梅花肉-600公克+洋蔥-1/2個',100,2333,400,TO_DATE('2015-04-26 18:30','YYYY-MM-DD HH24:mi'));
-INSERT INTO recipe (recipe_no,mem_no,recipe_name,recipe_intro,FOOD_MATER,RECIPE_LIKE,RECIPE_TOTAL_VIEWS,RECIPE_WEEK_VIEWS,RECIPE_TIME) 
-VALUES ('R'||lpad(recipe_seq.NEXTVAL,8,0),'M00000002','蘿蔔燒雞','白蘿蔔清甜, 俗語說“冬吃蘿蔔夏吃薑，不用醫生開藥方”。現在正值產季, 和雞肉一起紅燒, 份量十足, 味道棒極了!','雞肉-800g+白蘿蔔 (大)-1條',60,1222,300,TO_DATE('2016-09-14 13:23','YYYY-MM-DD HH24:mi'));
-INSERT INTO recipe (recipe_no,mem_no,recipe_name,recipe_intro,FOOD_MATER,RECIPE_LIKE,RECIPE_TOTAL_VIEWS,RECIPE_WEEK_VIEWS,RECIPE_TIME) 
-VALUES ('R'||lpad(recipe_seq.NEXTVAL,8,0),'M00000002','海鮮蕃茄義大利麵','採蕃茄、吃蕃茄；採得開心、吃得過癮。','蕃茄-適量+起士粉-少許',46,1300,200,TO_DATE('2016-10-14 20:11','YYYY-MM-DD HH24:mi'));
-INSERT INTO recipe (recipe_no,mem_no,recipe_name,recipe_intro,FOOD_MATER,RECIPE_LIKE,RECIPE_TOTAL_VIEWS,RECIPE_WEEK_VIEWS,RECIPE_TIME) 
-VALUES ('R'||lpad(recipe_seq.NEXTVAL,8,0),'M00000003','膠質滿滿！燉蔬菜牛尾湯。','蔬菜牛尾湯是我非常喜愛的冬日暖湯，裡面滿滿蔬菜熬出清甜，花時間燉煮的牛尾風味濃郁、肉質軟嫩，輕拉就馬上與骨頭分開，主要營養之一的膠質，在慢火燒煮下溶入整鍋湯裡，喝著熱湯也喝下滋養，嘴角感覺的到黏黏膠質！','牛尾-1公斤+麵粉-少許',333,4532,2222,TO_DATE('2016-10-15 07:50','YYYY-MM-DD HH24:mi'));
-INSERT INTO recipe (recipe_no,mem_no,recipe_name,recipe_intro,FOOD_MATER,RECIPE_LIKE,RECIPE_TOTAL_VIEWS,RECIPE_WEEK_VIEWS,RECIPE_TIME) 
-VALUES ('R'||lpad(recipe_seq.NEXTVAL,8,0),'M00000004','皮蛋瘦肉粥','屋內又飄漫著熬高湯的香氣，用這香噴噴的湯底將米飯煨煮到軟爛，再加入碎皮蛋與瘦肉，滿滿地營養與用心，讓你吃飽又吃巧，可說比買的還美味唷! ','白飯-1碗+皮蛋-1顆',50,1688,396,TO_DATE('2016-10-25 14:25','YYYY-MM-DD HH24:mi'));
+
 
 commit;
 ------------------------------------------------------------------------
@@ -148,7 +143,7 @@ CREATE TABLE RECIPE_CONT (
  RECIPE_NO               VARCHAR2(20) NOT NULL,
  STEP           	 NUMBER(2) NOT NULL,
  STEP_PIC		 BLOB,
- STEP_CONT		 CLOB NOT NULL,
+ STEP_CONT		 CLOB,
  
 
  CONSTRAINT recipe_cont_recipe_no_step_PK PRIMARY KEY (RECIPE_NO,STEP),
@@ -162,6 +157,7 @@ insert into recipe_cont values ('R00000001',2,null,'馬鈴薯去皮切滾刀塊�
 insert into recipe_cont values ('R00000001',3,null,'鑄鐵鍋中放少許油，油微熱後放入洋蔥炒過。');
 insert into recipe_cont values ('R00000001',4,null,'將洋蔥撥到一邊，空出來的地方放入肉塊，讓兩面煎熟。');
 insert into recipe_cont values ('R00000001',5,null,'放入紅蘿蔔翻炒一下，再加入醬汁中所有的材料，翻動一下讓醬汁均勻，蓋上鍋蓋煮約10分鐘。');
+
 
 insert into recipe_cont values ('R00000002',1,null,'白蘿蔔切塊; 雞肉(雞胸久煮易乾柴, 不適紅燒,其它部位都可以)切塊; 香菇泡水泡軟');
 insert into recipe_cont values ('R00000002',2,null,'取一炒鍋, 加入2大匙油、雞肉、老薑片中火煎至雞肉由紅轉白 (因為蘿蔔較吃油, 所以煎過雞肉的油就不倒出留在鍋內了, 不喜歡太油的朋友可以將多餘的油倒出另做它用)');
@@ -356,8 +352,8 @@ CONSTRAINT reci_t_info_reci_no_t_no_PK PRIMARY KEY (RECIPE_NO,RECIPE_TYPE_NO),
 
 
 INSERT INTO recipe_type_info VALUES ('R00000001','RS0001','2');
-INSERT INTO recipe_type_info VALUES ('R00000001','MS0001','1');
-INSERT INTO recipe_type_info VALUES ('R00000001','MS0003','1');
+INSERT INTO recipe_type_info VALUES ('R00000001','RM0001','1');
+INSERT INTO recipe_type_info VALUES ('R00000001','RM0003','1');
 INSERT INTO recipe_type_info VALUES ('R00000002','RS0002','2');
 INSERT INTO recipe_type_info VALUES ('R00000002','RS0005','2');
 
@@ -376,7 +372,7 @@ CREATE TABLE PRODUCT (
 	SALES_VOLUME			NUMBER					NOT NULL,
 	STOR_CAPACITY			NUMBER					NOT NULL,
 	UNIT_PRICE				NUMBER					NOT NULL,
-	PROD_DESCRIPTION	VARCHAR2(600)		,
+	PROD_DESCRIPTION	VARCHAR2(1000)		,
 	PROD_STATUS				VARCHAR2(1)			NOT NULL,
 	DISC_STATUS				VARCHAR2(1)			NOT NULL,
 	SELL_STATUS				VARCHAR2(1)			NOT NULL,
@@ -396,11 +392,15 @@ MAXVALUE 2000
 NOCYCLE
 NOCACHE;
 
-INSERT INTO PRODUCT VALUES (prod_seq.NEXTVAL, 'RICE', 'SPACE BAG', 100, 50, 300, 'THIS IS A RICE', '1', '1', '0', NULL, TO_DATE('2016-01-01','YYYY-MM-DD'), TO_DATE('2016-12-31','YYYY-MM-DD'), 200, TO_DATE('2016-02-01','YYYY-MM-DD'), TO_DATE('2016-05-31','YYYY-MM-DD'));
-INSERT INTO PRODUCT VALUES (prod_seq.NEXTVAL, 'MEAT', 'SPACE BAG', 50, 30, 180, 'THIS IS A MEAT', '1', '0', '1', NULL, TO_DATE('2016-02-01','YYYY-MM-DD'), TO_DATE('2017-12-31','YYYY-MM-DD'), 160, TO_DATE('2016-06-01','YYYY-MM-DD'), TO_DATE('2016-08-31','YYYY-MM-DD'));
-INSERT INTO PRODUCT VALUES (prod_seq.NEXTVAL, 'SOUP', 'SPACE BAG', 200, 80, 30, 'THIS IS A SOUP', '1', '1', '1', NULL, TO_DATE('2015-01-01','YYYY-MM-DD'), TO_DATE('2016-12-31','YYYY-MM-DD'), 15, TO_DATE('2016-01-01','YYYY-MM-DD'), TO_DATE('2016-10-31','YYYY-MM-DD'));
-INSERT INTO PRODUCT VALUES (prod_seq.NEXTVAL, 'KNIFE', 'TABLEWARE', 30, 10, 200, 'THIS IS A KNIFE', '1', '0', '1', NULL, TO_DATE('2014-01-01','YYYY-MM-DD'), TO_DATE('2020-12-31','YYYY-MM-DD'), 150, TO_DATE('2016-01-01','YYYY-MM-DD'), TO_DATE('2017-12-31','YYYY-MM-DD'));
-INSERT INTO PRODUCT VALUES (prod_seq.NEXTVAL, 'NOODLE', 'SPACE BAG', 100, 80, 50, 'THIS IS A NOODLE', '0', '1', '1', NULL, TO_DATE('2015-01-01','YYYY-MM-DD'), TO_DATE('2017-12-31','YYYY-MM-DD'), 20, TO_DATE('2016-03-01','YYYY-MM-DD'), TO_DATE('2016-04-30','YYYY-MM-DD'));
+INSERT INTO PRODUCT VALUES (prod_seq.NEXTVAL, '過年年菜禮盒', 'SPACE BAG', 100, 50, 600, '過年必吃的人氣限量商品，精心挑選出6道特色餐點，豐盛氣派簡易烹煮，每道年菜都是精心挑選的，讓你過年圍爐輕鬆料理也能嘗盡美食!!<br><br>內容物：<br>1.大白菜...1大顆<br>2.下港排骨酥...1斤<br>3.筍絲...1斤<br>4.海篸...1斤<br>5.魚皮...1斤<br>6.鮑魚...8顆<br>7.蹄筋...1斤<br>8.紅棗...15顆<br>9.鳥蛋...30顆<br>10.香菇...9朵<br>11.大蒜...2支<br>12.蝦米...1大匙<br>13.辣椒...1支<br>14.水...適量<br>15.白胡椒粉...多<br>16.醬油...適量<br>17.烏醋...少許<br>18.米酒...少許<br>19.蒜頭...15顆<br>20.芋頭...1顆', '1', '1', '0', NULL, TO_DATE('2016-12-31','YYYY-MM-DD'), TO_DATE('2017-02-28','YYYY-MM-DD'), 200, TO_DATE('2016-02-01','YYYY-MM-DD'), TO_DATE('2016-05-31','YYYY-MM-DD'));
+INSERT INTO PRODUCT VALUES (prod_seq.NEXTVAL, '日式豬排蓋飯', 'SPACE BAG', 50, 30, 80, '道地的日式豬排蓋飯，滑嫩的蛋液，微甜的醬汁，有點酥酥軟軟的香豬排配上白飯，吃完飽嘟嘟還會笑哩～<br><br>內容物：<br>1.豬里肌肉排...一片 (約150G)<br>2.洋蔥...半顆<br>3.蛋...四顆<br>4.柴魚片...些許<br>5.日式醬油...些許<br>6.味霖...些許<br>7.胡椒...些許<br>8.蒜頭...四顆<br>9.低筋麵粉...一大匙<br>10.麵包粉...二大匙', '1', '0', '1', NULL, TO_DATE('2017-01-01','YYYY-MM-DD'), TO_DATE('2017-03-31','YYYY-MM-DD'), 160, TO_DATE('2016-06-01','YYYY-MM-DD'), TO_DATE('2016-08-31','YYYY-MM-DD'));
+INSERT INTO PRODUCT VALUES (prod_seq.NEXTVAL, '泰式椒麻雞', 'SPACE BAG', 200, 80, 60, '又麻又香微微辣感，越吃越刷嘴～獨門椒麻醬汁，酸香夠味堪稱一絕！嚴選去骨雞腿、酥脆外皮與香嫩多汁雞肉，醃漬入味，辛香誘人胃口大開！最道地最開胃的泰國味，簡單料理即可上桌，深受全家喜愛！<br><br>內容物：<br>1.雞胸肉...一份<br>2.雞蛋...一顆<br>3.鹽巴胡椒...適量<br>4.太白粉...2匙<br>5.清酒...2匙左右<br>6.番薯粉...適量<br>7.辣椒...1-2條<br>8.醬油...1匙<br>9.米醋...2匙<br>10.魚露...2匙<br>11.蠔油...一匙<br>12.糖...一匙<br>13.檸檬...一顆<br>14.蒜末...3-4瓣<br>15.香菜...適量<br>16.水...3-4匙<br>17.花椒蔥油...1-2匙<br>18.花椒粉...適量', '1', '1', '1', NULL, TO_DATE('2017-01-01','YYYY-MM-DD'), TO_DATE('2017-02-28','YYYY-MM-DD'), 15, TO_DATE('2016-01-01','YYYY-MM-DD'), TO_DATE('2016-10-31','YYYY-MM-DD'));
+INSERT INTO PRODUCT VALUES (prod_seq.NEXTVAL, '義大利肉醬麵', 'SPACE BAG', 30, 10, 65, '以新鮮蕃茄佐特選25:75肥瘦比新鮮豬肉精燉的義大利風味肉醬，加入奶油溫潤口感，食指大動的正統肉醬麵。<br><br>內容物：<br>1.義大利天使細麵...80克<br>2.豬絞肉...100克<br>3.洋蔥...1/4個<br>4.大蒜...1粒<br>5.義大利番茄醬...4大匙<br>6.鹽巴...1/2小匙<br>7.義大利香料...1/2小匙<br>8.洋香菜...1/2小匙<br>9.橄欖油...2大匙<br>10.新鮮巴西里...適量', '1', '0', '1', NULL, TO_DATE('2017-02-01','YYYY-MM-DD'), TO_DATE('2017-02-28','YYYY-MM-DD'), 150, TO_DATE('2016-01-01','YYYY-MM-DD'), TO_DATE('2017-12-31','YYYY-MM-DD'));
+INSERT INTO PRODUCT VALUES (prod_seq.NEXTVAL, '日式豚骨拉麵', 'SPACE BAG', 100, 80, 110, '用豬骨以大火長時間熬煮出乳白色濃湯，因而又叫"白湯"，加上蔥、蒜、麻油調味的湯頭以及咬勁十足細面，濃厚的口味令人讚不絕口。<br><br>內容物：<br>1.豬大骨...兩支<br>2.洋蔥...一顆<br>3.紅蘿蔔...一根<br>4.青江菜...3-5顆<br>5.玉米...3根<br>6.蛋...一顆<br>7.鹽...2大匙<br>8.水...2000c.c<br>9.好勁道千羽拉麵...50g', '0', '1', '1', NULL, TO_DATE('2017-02-15','YYYY-MM-DD'), TO_DATE('2017-03-15','YYYY-MM-DD'), 20, TO_DATE('2016-03-01','YYYY-MM-DD'), TO_DATE('2016-04-30','YYYY-MM-DD'));
+INSERT INTO PRODUCT VALUES (prod_seq.NEXTVAL, '法式蘑菇濃湯', 'SPACE BAG', 50, 30, 45, '香濃滑順的蘑菇濃湯自己做就可以喔！只要有蘑菇、鮮奶、麵粉、蒜頭，就可以立刻變出一杯好喝的蘑菇濃湯啦！<br><br>內容物：<br>1.憶霖奶油白醬...600g<br>2.馬鈴薯(小)...8顆<br>3.蒜頭...2顆<br>4.洋蔥...半顆<br>5.洋菇...100g<br>6.水...1200ml<br>7.油...適量<br>8.黑胡椒粉...4包', '1', '0', '1', NULL, TO_DATE('2017-02-15','YYYY-MM-DD'), TO_DATE('2017-04-15','YYYY-MM-DD'), 160, TO_DATE('2017-03-15','YYYY-MM-DD'), TO_DATE('2016-08-31','YYYY-MM-DD'));
+INSERT INTO PRODUCT VALUES (prod_seq.NEXTVAL, '台灣小吃蚵仔煎', 'SPACE BAG', 200, 80, 75, '蚵仔煎是台灣美食小吃，但是想吃時總要移駕到要到夜市或知名觀光攤點還是有些不盡人意。若是在家中也擺上一攤，想吃就開張營業，方便又舒適，豈不快哉！今天開張營業試試。<br><br>內容物：<br>1.蚵仔...300g<br>2.綠色青菜...適量<br>3.蛋...4顆<br>4.地瓜粉...80g<br>5.太白粉...40g<br>6.水...370g<br>7.蔥花或韭菜...適量<br>8.鹽...1/3茶匙<br>9.白味噌...半湯匙<br>10.番茄醬...1湯匙<br>11.辣椒醬...2湯匙<br>12.糖...半湯匙<br>13.醬油膏...1湯匙<br>14.水...100cc<br>15.太白粉...3-4茶匙', '1', '1', '1', NULL, TO_DATE('2016-12-01','YYYY-MM-DD'), TO_DATE('2017-02-28','YYYY-MM-DD'), 15, TO_DATE('2016-01-01','YYYY-MM-DD'), TO_DATE('2016-10-31','YYYY-MM-DD'));
+INSERT INTO PRODUCT VALUES (prod_seq.NEXTVAL, '大腸麵線', 'SPACE BAG', 30, 10, 60, '物價上漲，自己動手做便宜又實在，想要吃多少料自己加，乾淨、新鮮度爆澎好吃。<br><br>內容物：<br>1.雞絲麵...1包<br>2.滷大腸...40g<br>3.鮮蚵...60g<br>4.香菜(九層塔)...少許<br>5.雞湯塊...2塊<br>6.油蔥...2大匙<br>7.柴魚片...1大匙<br>8.白胡椒粉...1小匙<br>9.味霖...1大匙<br>10.烏醋...1大匙', '1', '0', '1', NULL, TO_DATE('2017-02-15','YYYY-MM-DD'), TO_DATE('2017-03-31','YYYY-MM-DD'), 150, TO_DATE('2016-01-01','YYYY-MM-DD'), TO_DATE('2017-12-31','YYYY-MM-DD'));
+INSERT INTO PRODUCT VALUES (prod_seq.NEXTVAL, '四川麻婆豆腐', 'SPACE BAG', 100, 80, 85, '又麻又辣的味道，入味到不行的豆腐，濃濃的湯汁，拌飯吃超級過癮，根本媲美之前去大陸吃到的道地四川菜，在家簡單煮名菜喔!!<br><br>內容物：<br>1.豬絞肉...200克<br>2.硬豆腐...1件<br>3.草菇...半磅<br>4.乾蔥頭(切片)...2個<br>5蒜茸...1湯匙.<br>6.豆瓣醬...1湯匙<br>7.醬油...1茶匙<br>8.糖...1茶匙', '0', '1', '1', NULL, TO_DATE('2017-02-15','YYYY-MM-DD'), TO_DATE('2017-03-15','YYYY-MM-DD'), 20, TO_DATE('2016-03-01','YYYY-MM-DD'), TO_DATE('2016-04-30','YYYY-MM-DD'));
 
 commit;
 ---------------------------------------------------------------------------------
@@ -412,7 +412,7 @@ commit;
 CREATE TABLE PRODUCT_ORDER (
 	PROD_ORD_NO			VARCHAR2(20)		NOT NULL,
 	MEM_NO					VARCHAR2(20)		NOT NULL,
-	PROD_ORD_TIME		DATE						NOT NULL,
+	PROD_ORD_TIME		Timestamp DEFAULT SYSDATE NOT NULL,
 	CRED_CARD_NO		VARCHAR2(16)		NOT NULL,
 	VALID_DATE			DATE						NOT NULL,
 	VALID_NO				VARCHAR2(3)			NOT NULL,
@@ -434,11 +434,11 @@ MAXVALUE 2000
 NOCYCLE
 NOCACHE;
 
-INSERT INTO PRODUCT_ORDER VALUES ('20160630'||'-'||lpad(prod_ord_seq.NEXTVAL,8,0), 'M00000001', TO_DATE('2016-06-30','YYYY-MM-DD'), 'A1B2C3D4E5F6G7H8', TO_DATE('12/20','MM/YY'), '555', '0', 10000, 'CAT', '32011', 'HERE', '0987654321', '03-4567891');
-INSERT INTO PRODUCT_ORDER VALUES ('20160820'||'-'||lpad(prod_ord_seq.NEXTVAL,8,0), 'M00000001', TO_DATE('2015-08-20','YYYY-MM-DD'), 'I1J2K3L4M5N6O7P8', TO_DATE('12/19','MM/YY'), '269', '1', 50000, 'TIGER', '33022', 'THERE', '0912345678', '02-3456789');
-INSERT INTO PRODUCT_ORDER VALUES ('20160915'||'-'||lpad(prod_ord_seq.NEXTVAL,8,0), 'M00000002', TO_DATE('2016-09-15','YYYY-MM-DD'), 'Q1R2S3T4U5V6W7X8', TO_DATE('12/21','MM/YY'), '584', '0', 3000, 'LION', '34033', 'OVER THERE', '0924681357', '04-5678912');
-INSERT INTO PRODUCT_ORDER VALUES ('20161010'||'-'||lpad(prod_ord_seq.NEXTVAL,8,0), 'M00000003', TO_DATE('2016-10-10','YYYY-MM-DD'), 'A9B8C7D6E5F4G3H2', TO_DATE('12/22','MM/YY'), '666', '1', 9900, 'LEOPARD', '35044', 'OVER HERE', '0913579246', '05-6789123');
-INSERT INTO PRODUCT_ORDER VALUES ('20161225'||'-'||lpad(prod_ord_seq.NEXTVAL,8,0), 'M00000004', TO_DATE('2016-12-25','YYYY-MM-DD'), 'A1B3C5D7E9F2G4H6', TO_DATE('12/23','MM/YY'), '321', '2', 81000, 'PANTHER', '36055', 'I DONT KNOWN', '0988776655', '06-7891234');
+INSERT INTO PRODUCT_ORDER VALUES ('20160630'||'-'||lpad(prod_ord_seq.NEXTVAL,8,0), 'M00000001', TO_DATE('2016-06-30 08:00','YYYY-MM-DD HH24:MI'), 'A1B2C3D4E5F6G7H8', TO_DATE('12/20','MM/YY'), '555', '0', 10000, 'CAT', '32011', 'HERE', '0987654321', '03-4567891');
+INSERT INTO PRODUCT_ORDER VALUES ('20160820'||'-'||lpad(prod_ord_seq.NEXTVAL,8,0), 'M00000001', TO_DATE('2016-08-20 09:00','YYYY-MM-DD HH24:MI'), 'I1J2K3L4M5N6O7P8', TO_DATE('12/19','MM/YY'), '269', '1', 50000, 'TIGER', '33022', 'THERE', '0912345678', '02-3456789');
+INSERT INTO PRODUCT_ORDER VALUES ('20160915'||'-'||lpad(prod_ord_seq.NEXTVAL,8,0), 'M00000002', TO_DATE('2016-09-15 10:00','YYYY-MM-DD HH24:MI'), 'Q1R2S3T4U5V6W7X8', TO_DATE('12/21','MM/YY'), '584', '0', 3000, 'LION', '34033', 'OVER THERE', '0924681357', '04-5678912');
+INSERT INTO PRODUCT_ORDER VALUES ('20161010'||'-'||lpad(prod_ord_seq.NEXTVAL,8,0), 'M00000003', TO_DATE('2016-10-10 11:00','YYYY-MM-DD HH24:MI'), 'A9B8C7D6E5F4G3H2', TO_DATE('12/22','MM/YY'), '666', '1', 9900, 'LEOPARD', '35044', 'OVER HERE', '0913579246', '05-6789123');
+INSERT INTO PRODUCT_ORDER VALUES ('20161225'||'-'||lpad(prod_ord_seq.NEXTVAL,8,0), 'M00000004', TO_DATE('2016-12-25 12:00','YYYY-MM-DD HH24:MI'), 'A1B3C5D7E9F2G4H6', TO_DATE('12/23','MM/YY'), '321', '2', 81000, 'PANTHER', '36055', 'I DONT KNOWN', '0988776655', '06-7891234');
 
 commit;
 
@@ -748,15 +748,15 @@ NOCYCLE
 NOCACHE;
 
 INSERT INTO CUSTOMER_DEMAND (CUSDE_NO, MEM_NO, CUSDE_DETAIL, CUSDE_DATE, CUSDE_CREATE_DATE, CUSDE_TITLE) 
-VALUES ('CN'||CUSTOMER_DEMAND_seq.NEXTVAL,'M00000001','1黯然消魂飯',TO_DATE('2016-01-02 18:00','YYYY-MM-DD HH24:mi:ss'),TO_DATE('2016-01-01 18:00:01','YYYY-MM-DD HH24:mi:ss'),'1尋求食神');
+VALUES ('CN'||lpad(CUSTOMER_DEMAND_seq.NEXTVAL,8,0),'M00000001','1黯然消魂飯',TO_DATE('2016-01-02 18:00','YYYY-MM-DD HH24:mi:ss'),TO_DATE('2016-01-01 18:00:01','YYYY-MM-DD HH24:mi:ss'),'1尋求食神');
 INSERT INTO CUSTOMER_DEMAND (CUSDE_NO, MEM_NO, CUSDE_DETAIL, CUSDE_DATE, CUSDE_CREATE_DATE, CUSDE_TITLE) 
-VALUES ('CN'||CUSTOMER_DEMAND_seq.NEXTVAL,'M00000001','2大魯飯、乾麵、便當',TO_DATE('2016-01-03 18:00','YYYY-MM-DD HH24:mi:ss'),TO_DATE('2016-03-01 18:00:02','YYYY-MM-DD HH24:mi:ss'),'2尋求魯神');
+VALUES ('CN'||lpad(CUSTOMER_DEMAND_seq.NEXTVAL,8,0),'M00000001','2大魯飯、乾麵、便當',TO_DATE('2016-01-03 18:00','YYYY-MM-DD HH24:mi:ss'),TO_DATE('2016-03-01 18:00:02','YYYY-MM-DD HH24:mi:ss'),'2尋求魯神');
 INSERT INTO CUSTOMER_DEMAND (CUSDE_NO, MEM_NO, CUSDE_DETAIL, CUSDE_DATE, CUSDE_CREATE_DATE, CUSDE_TITLE) 
-VALUES ('CN'||CUSTOMER_DEMAND_seq.NEXTVAL,'M00000002','3佛跳牆、花好月圓、百年好合、永浴愛河',TO_DATE('2016-01-04 18:00','YYYY-MM-DD HH24:mi:ss'),TO_DATE('2016-04-01 18:00:03','YYYY-MM-DD HH24:mi:ss'),'3尋求愛神');
+VALUES ('CN'||lpad(CUSTOMER_DEMAND_seq.NEXTVAL,8,0),'M00000002','3佛跳牆、花好月圓、百年好合、永浴愛河',TO_DATE('2016-01-04 18:00','YYYY-MM-DD HH24:mi:ss'),TO_DATE('2016-04-01 18:00:03','YYYY-MM-DD HH24:mi:ss'),'3尋求愛神');
 INSERT INTO CUSTOMER_DEMAND (CUSDE_NO, MEM_NO, CUSDE_DETAIL, CUSDE_DATE, CUSDE_CREATE_DATE, CUSDE_TITLE) 
-VALUES ('CN'||CUSTOMER_DEMAND_seq.NEXTVAL,'M00000002','4清蒸JDBC、炭烤Servlet',TO_DATE('2016-01-05 18:00','YYYY-MM-DD HH24:mi:ss'),TO_DATE('2016-05-01 18:00:04','YYYY-MM-DD HH24:mi:ss'),'4尋求吳神');
+VALUES ('CN'||lpad(CUSTOMER_DEMAND_seq.NEXTVAL,8,0),'M00000002','4清蒸JDBC、炭烤Servlet',TO_DATE('2016-01-05 18:00','YYYY-MM-DD HH24:mi:ss'),TO_DATE('2016-05-01 18:00:04','YYYY-MM-DD HH24:mi:ss'),'4尋求吳神');
 INSERT INTO CUSTOMER_DEMAND (CUSDE_NO, MEM_NO, CUSDE_DETAIL, CUSDE_DATE, CUSDE_CREATE_DATE, CUSDE_TITLE) 
-VALUES ('CN'||CUSTOMER_DEMAND_seq.NEXTVAL,'M00000002','5優格',TO_DATE('2016-01-06 18:00','YYYY-MM-DD HH24:mi:ss'),TO_DATE('2016-06-01 18:00:05','YYYY-MM-DD HH24:mi:ss'),'5優格姐姐');
+VALUES ('CN'||lpad(CUSTOMER_DEMAND_seq.NEXTVAL,8,0),'M00000002','5優格',TO_DATE('2016-01-06 18:00','YYYY-MM-DD HH24:mi:ss'),TO_DATE('2016-06-01 18:00:05','YYYY-MM-DD HH24:mi:ss'),'5優格姐姐');
 
 commit;
 --------------------------------------------------------------------
@@ -784,15 +784,15 @@ NOCYCLE
 NOCACHE;
 
 INSERT INTO COLLECTION (COLL_NO, MEM_NO, ALL_NO, CLASS_NO) 
-VALUES ('CO'||COLLECTION_seq.NEXTVAL,'M00000001','C00000001','C');
+VALUES ('CO'||lpad(COLLECTION_seq.NEXTVAL,8,0),'M00000001','C00000001','C');
 INSERT INTO COLLECTION (COLL_NO, MEM_NO, ALL_NO, CLASS_NO) 
-VALUES ('CO'||COLLECTION_seq.NEXTVAL,'M00000001','R00000001','R');
+VALUES ('CO'||lpad(COLLECTION_seq.NEXTVAL,8,0),'M00000001','R00000001','R');
 INSERT INTO COLLECTION (COLL_NO, MEM_NO, ALL_NO, CLASS_NO) 
-VALUES ('CO'||COLLECTION_seq.NEXTVAL,'M00000001','M00000002','L');
+VALUES ('CO'||lpad(COLLECTION_seq.NEXTVAL,8,0),'M00000001','M00000002','L');
 INSERT INTO COLLECTION (COLL_NO, MEM_NO, ALL_NO, CLASS_NO) 
-VALUES ('CO'||COLLECTION_seq.NEXTVAL,'M00000001','F00000001','F');
+VALUES ('CO'||lpad(COLLECTION_seq.NEXTVAL,8,0),'M00000001','F00000001','F');
 INSERT INTO COLLECTION (COLL_NO, MEM_NO, ALL_NO, CLASS_NO) 
-VALUES ('CO'||COLLECTION_seq.NEXTVAL,'M00000001','C00000002','C');
+VALUES ('CO'||lpad(COLLECTION_seq.NEXTVAL,8,0),'M00000001','C00000002','C');
 
 commit;
 ------------------------------------------------

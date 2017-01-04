@@ -7,9 +7,10 @@ import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.LinkedHashSet;
 import java.util.List;
+import java.util.Set;
 
-import com.emp_auth.model.Emp_authVO;
 
 public class Recipe_type_infoJDBCDAO implements Recipe_type_infoDAO_interface
 {
@@ -30,6 +31,8 @@ public class Recipe_type_infoJDBCDAO implements Recipe_type_infoDAO_interface
 			"DELETE FROM recipe_type_info where (recipe_no=?) and (recipe_type_no=?)";
 	private static final String UPDATE = 
 			"UPDATE recipe_type_info set recipe_type_no = ? ,type_range = ? where (recipe_no = ? ) and (recipe_type_no = ?)";
+	private static final String GET_BY_TYPE = 
+			"select recipe_no,recipe_type_no,type_range from recipe_type_info where recipe_type_no = ?";
 	
 	@Override
 	public void insert(Recipe_type_infoVO recipe_type_infoVO)
@@ -223,7 +226,71 @@ public class Recipe_type_infoJDBCDAO implements Recipe_type_infoDAO_interface
 			}
 		}
 	}
-
+	
+	@Override
+	public Set<Recipe_type_infoVO> findByType_no(String recipe_type_no)
+	{
+		// TODO Auto-generated method stub
+		Set<Recipe_type_infoVO> set = new LinkedHashSet<Recipe_type_infoVO>();
+		Recipe_type_infoVO recipe_type_infoVO =null;
+		Connection con = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs =null;
+		try
+		{
+			Class.forName(driver);
+			con = DriverManager.getConnection(url,userid,psw);
+			pstmt = con.prepareStatement(GET_BY_TYPE);
+			
+			pstmt.setString(1,recipe_type_no);
+			rs = pstmt.executeQuery();
+				
+			while(rs.next())
+			{
+				recipe_type_infoVO = new Recipe_type_infoVO();
+				recipe_type_infoVO.setRecipe_no(rs.getString("recipe_no"));
+				recipe_type_infoVO.setRecipe_type_no(rs.getString("recipe_type_no"));
+				recipe_type_infoVO.setType_range(rs.getString("type_range"));
+				
+				set.add(recipe_type_infoVO);
+			}
+		} catch (ClassNotFoundException e)
+		{
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (SQLException e)
+		{
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}finally
+		{
+			if(pstmt !=null)
+			{
+				try
+				{
+					pstmt.close();
+				} catch (SQLException e)
+				{
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+			if(con !=null){
+				try
+				{
+					con.close();
+				} catch (SQLException e)
+				{
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+		}
+		return set;
+	}
+	
+	
+	
 	@Override
 	public List<Recipe_type_infoVO> findByPrimaryKey(String recipe_no)
 	{
@@ -387,6 +454,15 @@ public class Recipe_type_infoJDBCDAO implements Recipe_type_infoDAO_interface
 //			System.out.println();
 //		}
 		
+		//search by type
+//		Set<Recipe_type_infoVO> set =dao.findByType_no("RS0001");
+//		for(Recipe_type_infoVO recipe_type_infoVO3: set){
+//			System.out.print("| "+recipe_type_infoVO3.getRecipe_no()+" | ");
+//			System.out.print(recipe_type_infoVO3.getRecipe_type_no()+" | ");
+//			System.out.print(recipe_type_infoVO3.getType_range()+" | ");
+//			System.out.println();
+//		}
+		
 		//search all
 //		List<Recipe_type_infoVO> list =dao.getAll();
 //		for(Recipe_type_infoVO recipe_type_infoVO4: list){
@@ -397,4 +473,6 @@ public class Recipe_type_infoJDBCDAO implements Recipe_type_infoDAO_interface
 //		}
 		
 	}
+
+	
 }

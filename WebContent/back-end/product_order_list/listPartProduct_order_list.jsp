@@ -8,6 +8,7 @@
     List<Product_order_listVO> list = (List<Product_order_listVO>) request.getAttribute("product_order_listVO");
     pageContext.setAttribute("list",list);
 %>
+
 <jsp:useBean id="productSvc" scope="page" class="com.product.model.ProductService" />
 
 <html>
@@ -37,39 +38,38 @@
 		<th>商品出貨時間</th>
 	</tr>
 
-<c:forEach var="product_order_listVO" items="${list}">
-	<tr align='center' valign='middle'>
-		<td>${product_order_listVO.prod_ord_no}</td>
-		<td>
-			<c:forEach var="productVO" items="${productSvc.all}">
-
-				<c:if test="${product_order_listVO.prod_no==productVO.prod_no}">
-					${productVO.prod_name}
+	<c:forEach var="product_order_listVO" items="${list}">
+		<tr align='center' valign='middle'>
+			<td>${product_order_listVO.prod_ord_no}</td>
+			<td>
+				<c:forEach var="productVO" items="${productSvc.all}">
+					<c:if test="${product_order_listVO.prod_no==productVO.prod_no}">
+						${productVO.prod_name}
+					</c:if>
+				</c:forEach>
+			</td>
+			<td>${product_order_listVO.unit_price}</td>
+			<td>${product_order_listVO.prod_quantity}</td>
+			<td>
+				<c:if test="${product_order_listVO.deli_status == '0'}" >
+					未出貨
 				</c:if>
-			</c:forEach>
-		</td>
-		<td>${product_order_listVO.unit_price}</td>
-		<td>${product_order_listVO.prod_quantity}</td>
-		<td>
-			<c:if test="${product_order_listVO.deli_status == '0'}" >
-				未出貨
-			</c:if>
-			<c:if test="${product_order_listVO.deli_status == '1'}" >
-				出貨中
-			</c:if>
-			<c:if test="${product_order_listVO.deli_status == '2'}" >
-				已出貨
-			</c:if>
-			<c:if test="${product_order_listVO.deli_status == '3'}" >
-				已退貨已退款
-			</c:if>
-			<c:if test="${product_order_listVO.deli_status == '4'}" >
-				已退貨未退款
-			</c:if>
-		</td>
-		<td>${product_order_listVO.deli_time}</td>
-	</tr>
-</c:forEach>
+				<c:if test="${product_order_listVO.deli_status == '1'}" >
+					出貨中
+				</c:if>
+				<c:if test="${product_order_listVO.deli_status == '2'}" >
+					已出貨
+				</c:if>
+				<c:if test="${product_order_listVO.deli_status == '3'}" >
+					已退貨已退款
+				</c:if>
+				<c:if test="${product_order_listVO.deli_status == '4'}" >
+					已退貨未退款
+				</c:if>
+			</td>
+			<td>${product_order_listVO.deli_time}</td>
+		</tr>
+	</c:forEach>
 </table>
 
 </body>

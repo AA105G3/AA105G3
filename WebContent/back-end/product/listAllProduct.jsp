@@ -45,7 +45,7 @@
 		<th>銷售數量</th>
 		<th>庫存數量</th>
 		<th>單價</th>
-		<th>商品描述</th>
+		<th width='180'>商品描述</th>
 		<th>商品狀態</th>
 		<th>優惠狀態</th>
 		<th>銷售狀態</th>
@@ -77,7 +77,7 @@
 			<td>${productVO.sales_volume}</td>
 			<td>${productVO.stor_capacity}</td>
 			<td>${productVO.unit_price}</td>
-			<td>${productVO.prod_description}</td>
+			<td width='180'>${productVO.prod_description}</td>
 			<td>
 				<c:if test="${productVO.prod_status == '0'}" >
 					下架

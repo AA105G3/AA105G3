@@ -9,14 +9,13 @@
     <welcome-file>default.htm</welcome-file>
     <welcome-file>default.jsp</welcome-file>
   </welcome-file-list>
-  <!--連線池註冊 -->
   <resource-ref>
     <description>DB Connection</description>
     <res-ref-name>jdbc/FoodTimeDB</res-ref-name>
     <res-type>javax.sql.DataSource</res-type>
     <res-auth>Container</res-auth>
   </resource-ref>
-  <!--員工註冊 -->
+  
   <servlet>
     <servlet-name>EmpServlet</servlet-name>
     <servlet-class>com.emp.controller.EmpServlet</servlet-class>
@@ -25,7 +24,7 @@
     <servlet-name>EmpServlet</servlet-name>
     <url-pattern>/emp/emp.do</url-pattern>
   </servlet-mapping>
-  <!--權限 -->
+  
   <servlet>
     <servlet-name>AuthServlet</servlet-name>
     <servlet-class>com.auth.controller.AuthServlet</servlet-class>
@@ -34,7 +33,7 @@
     <servlet-name>AuthServlet</servlet-name>
     <url-pattern>/auth/auth.do</url-pattern>
   </servlet-mapping>
-  <!--員工權限註冊 -->
+  
   <servlet>
     <servlet-name>Emp_authServlet</servlet-name>
     <servlet-class>com.emp_auth.controller.Emp_authServlet</servlet-class>
@@ -43,7 +42,7 @@
     <servlet-name>Emp_authServlet</servlet-name>
     <url-pattern>/emp_auth/emp_auth.do</url-pattern>
   </servlet-mapping>
-  <!--食譜註冊 -->
+  
   <servlet>
     <servlet-name>RecipeServlet</servlet-name>
     <servlet-class>com.recipe.controller.RecipeServlet</servlet-class>
@@ -61,6 +60,7 @@
     <servlet-name>MemberServlet</servlet-name>
     <url-pattern>/member/member.do</url-pattern>
   </servlet-mapping>
+  
   <servlet>
     <servlet-name>ProductServlet</servlet-name>
     <servlet-class>com.product.controller.ProductServlet</servlet-class>
@@ -69,6 +69,7 @@
     <servlet-name>ProductServlet</servlet-name>
     <url-pattern>/product/product.do</url-pattern>
   </servlet-mapping>
+  
   <servlet>
     <servlet-name>Product_orderServlet</servlet-name>
     <servlet-class>com.product_order.controller.Product_orderServlet</servlet-class>
@@ -77,6 +78,7 @@
     <servlet-name>Product_orderServlet</servlet-name>
     <url-pattern>/product_order/product_order.do</url-pattern>
   </servlet-mapping>
+  
   <servlet>
     <servlet-name>Product_order_listServlet</servlet-name>
     <servlet-class>com.product_order_list.controller.Product_order_listServlet</servlet-class>
@@ -85,6 +87,7 @@
     <servlet-name>Product_order_listServlet</servlet-name>
     <url-pattern>/product_order_list/product_order_list.do</url-pattern>
   </servlet-mapping>
+  
   <servlet>
     <servlet-name>AdvServlet</servlet-name>
     <servlet-class>com.adv.controller.AdvServlet</servlet-class>
@@ -93,6 +96,7 @@
     <servlet-name>AdvServlet</servlet-name>
     <url-pattern>/adv/adv.do</url-pattern>
   </servlet-mapping>
+  
   <servlet>
 		<servlet-name>ChefServlet</servlet-name>
 		<servlet-class>com.chef.controller.ChefServlet</servlet-class>
@@ -128,4 +132,57 @@
 		<servlet-name>Chef_scheduleServlet</servlet-name>
 		<url-pattern>/chef_schedule/chef_schedule.do</url-pattern>
 	</servlet-mapping>
+
+<servlet>
+    <servlet-name>ChatServlet</servlet-name>
+    <servlet-class>com.chat.controller.ChatServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>ChatServlet</servlet-name>
+    <url-pattern>/chat/chat.do</url-pattern>
+  </servlet-mapping>
+  
+  
+  
+  <filter>
+    <filter-name>FLginFilter</filter-name>
+    <filter-class>com.front.filters.FLoginFilter</filter-class>
+  </filter>
+  <filter-mapping>
+    <filter-name>FLginFilter</filter-name>
+    <url-pattern>/front-end/product_order/select_page.jsp</url-pattern>
+    <url-pattern>/front-end/product_order_list/Cart.jsp</url-pattern>
+    <dispatcher>REQUEST</dispatcher>
+    <dispatcher>FORWARD</dispatcher>
+    <dispatcher>INCLUDE</dispatcher>
+    <dispatcher>ERROR</dispatcher>
+    <dispatcher>ASYNC</dispatcher>
+  </filter-mapping>
+  
+  <servlet>
+    <servlet-name>Frd_listServlet</servlet-name>
+    <servlet-class>com.frd_list.controller.Frd_listServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>Frd_listServlet</servlet-name>
+    <url-pattern>/frd_list/frd_list.do</url-pattern>
+  </servlet-mapping>
+  <servlet>
+    <servlet-name>CollectionServlet</servlet-name>
+    <servlet-class>com.collection.controller.CollectionServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>CollectionServlet</servlet-name>
+    <url-pattern>/collection/collection.do</url-pattern>
+  </servlet-mapping>
+  <servlet>
+    <servlet-name>Customer_demandServlet</servlet-name>
+    <servlet-class>com.customer_demand.controller.Customer_demandServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>Customer_demandServlet</servlet-name>
+    <url-pattern>/customer_demand/customer_demand.do</url-pattern>
+  </servlet-mapping>
+
+
 </web-app>
