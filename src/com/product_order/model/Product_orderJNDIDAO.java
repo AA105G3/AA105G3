@@ -105,13 +105,7 @@ public class Product_orderJNDIDAO implements Product_orderDAO_interface {
 		+ " cell_phone,"
 		+ " tel_phone FROM product_order where mem_no = ?";
 	
-	private static final String GET_STMT_BY_ONE_PK = 
-		"SELECT prod_ord_no,"
-		+ " prod_no,"
-		+ " unit_price,"
-		+ " prod_quantity,"
-		+ " deli_status,"
-		+ " deli_time FROM product_order_list where prod_ord_no = ? order by prod_ord_no";
+
 	
 	@Override
 	public void insert(Product_orderVO prod_ordVO) {
