@@ -8,6 +8,8 @@ import javax.naming.InitialContext;
 import javax.naming.NamingException;
 import javax.sql.DataSource;
 
+import com.recipe_s_type.model.Recipe_s_typeVO;
+
 public class Recipe_m_typeJDBCDAO implements Recipe_m_typeDAO_interface {
 	String driver = "oracle.jdbc.driver.OracleDriver";
 	String url = "jdbc:oracle:thin:@localhost:1521:XE";
@@ -32,6 +34,9 @@ public class Recipe_m_typeJDBCDAO implements Recipe_m_typeDAO_interface {
 	private static final String UPDATE = 
 		"UPDATE recipe_m_type set m_type_name=?,"
 		+ " parent_type=? where recipe_m_type_no = ?";
+	private static final String GET_S_Types_ByM_Type_NO = "SELECT recipe_s_type_no, s_type_name,"
+			+ " parent_type FROM recipe_s_type where parent_type = ?";
+	
 	
 	@Override
 	public void insert(Recipe_m_typeVO recipe_m_typeVO) {
@@ -288,41 +293,108 @@ public class Recipe_m_typeJDBCDAO implements Recipe_m_typeDAO_interface {
 		return list;
 	}
 	
+	@Override
+	public Set<Recipe_s_typeVO> getS_typesByM_Type_No(String parent_type)
+	{
+		Set<Recipe_s_typeVO> set = new LinkedHashSet<Recipe_s_typeVO>();
+		Recipe_s_typeVO recipe_s_typeVO = null;
+	
+		Connection con = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+	
+		try {
+	
+			Class.forName(driver);
+			con = DriverManager.getConnection(url, userid, passwd);
+			pstmt = con.prepareStatement(GET_S_Types_ByM_Type_NO);
+			pstmt.setString(1, parent_type);
+			rs = pstmt.executeQuery();
+	
+			while (rs.next()) {
+				recipe_s_typeVO = new Recipe_s_typeVO();
+				recipe_s_typeVO.setS_type_name(rs.getString("s_type_name"));
+				recipe_s_typeVO.setRecipe_s_type_no(rs.getString("recipe_s_type_no"));
+				recipe_s_typeVO.setParent_type(rs.getString("parent_type"));
+				set.add(recipe_s_typeVO); // Store the row in the vector
+			}
+	
+		} catch (ClassNotFoundException e) {
+			
+			e.printStackTrace();// Handle any SQL errors
+		} catch (SQLException se) {
+			throw new RuntimeException("A database error occured. "
+					+ se.getMessage());
+		} finally {
+			if (rs != null) {
+				try {
+					rs.close();
+				} catch (SQLException se) {
+					se.printStackTrace(System.err);
+				}
+			}
+			if (pstmt != null) {
+				try {
+					pstmt.close();
+				} catch (SQLException se) {
+					se.printStackTrace(System.err);
+				}
+			}
+			if (con != null) {
+				try {
+					con.close();
+				} catch (Exception e) {
+					e.printStackTrace(System.err);
+				}
+			}
+		}
+		return set;
+	}
+	
 	public static void main(String[] args) {
 
 		Recipe_m_typeJDBCDAO dao = new Recipe_m_typeJDBCDAO();
 		
 		//新增
-		/*Recipe_m_typeVO recipe_m_typeVO1 = new Recipe_m_typeVO();
-		recipe_m_typeVO1.setM_type_name("新的中類別");
-		recipe_m_typeVO1.setParent_type("RL0001");
-		dao.insert(recipe_m_typeVO1);*/
+//		Recipe_m_typeVO recipe_m_typeVO1 = new Recipe_m_typeVO();
+//		recipe_m_typeVO1.setM_type_name("新的中類別");
+//		recipe_m_typeVO1.setParent_type("RL0001");
+//		dao.insert(recipe_m_typeVO1);
 		
 		//修改
-		/*Recipe_m_typeVO recipe_m_typeVO2 = new Recipe_m_typeVO();
-		recipe_m_typeVO2.setRecipe_m_type_no("RM0009");
-		recipe_m_typeVO2.setM_type_name("修改中類別");
-		recipe_m_typeVO2.setParent_type("RL0003");
-		dao.update(recipe_m_typeVO2);*/
+//		Recipe_m_typeVO recipe_m_typeVO2 = new Recipe_m_typeVO();
+//		recipe_m_typeVO2.setRecipe_m_type_no("RM0009");
+//		recipe_m_typeVO2.setM_type_name("修改中類別");
+//		recipe_m_typeVO2.setParent_type("RL0003");
+//		dao.update(recipe_m_typeVO2);
 		
 		//刪除
-		/*dao.delete("RM0009");*/
+//		dao.delete("RM0009");
 		
 		// 查詢 - 單一
-		/*Recipe_m_typeVO recipe_m_typeVO3 = dao.findByPrimaryKey("RM0003");
-		System.out.print(recipe_m_typeVO3.getRecipe_m_type_no() + ",	");
-		System.out.print(recipe_m_typeVO3.getM_type_name() + ",	");
-		System.out.print(recipe_m_typeVO3.getParent_type());
-		System.out.println();*/
+//		Recipe_m_typeVO recipe_m_typeVO3 = dao.findByPrimaryKey("RM0003");
+//		System.out.print(recipe_m_typeVO3.getRecipe_m_type_no() + ",	");
+//		System.out.print(recipe_m_typeVO3.getM_type_name() + ",	");
+//		System.out.print(recipe_m_typeVO3.getParent_type());
+//		System.out.println();
 
 		// 查詢 - 全部
-		List<Recipe_m_typeVO> list = dao.getAll();
-		for (Recipe_m_typeVO arecipe_m_type : list) {
-			System.out.print(arecipe_m_type.getRecipe_m_type_no() + ",	");
-			System.out.print(arecipe_m_type.getM_type_name() + ",	");
-			System.out.print(arecipe_m_type.getParent_type());
-			System.out.println();
-		}
+//		List<Recipe_m_typeVO> list = dao.getAll();
+//		for (Recipe_m_typeVO arecipe_m_type : list) {
+//			System.out.print(arecipe_m_type.getRecipe_m_type_no() + ",	");
+//			System.out.print(arecipe_m_type.getM_type_name() + ",	");
+//			System.out.print(arecipe_m_type.getParent_type());
+//			System.out.println();
+//		}
+		
+		
+		//search by L_type_no
+//		Set<Recipe_s_typeVO> set = dao.getS_typesByM_Type_No("RM0006");
+//		for (Recipe_s_typeVO arecipe_s_type : set) {
+//			System.out.print(arecipe_s_type.getRecipe_s_type_no() + ",	");
+//			System.out.print(arecipe_s_type.getS_type_name() + ",	");
+//			System.out.print(arecipe_s_type.getParent_type());
+//			System.out.println();
+//		}
 	}
-
 }

@@ -24,6 +24,7 @@ public class Product_orderServlet extends HttpServlet {
 		req.setCharacterEncoding("UTF-8");
 		String action = req.getParameter("action");
 		
+
 		if ("getPartForDisplay".equals(action)) { // 來自select_page.jsp的請求
 
 			List<String> errorMsgs = new LinkedList<String>();
@@ -88,10 +89,12 @@ public class Product_orderServlet extends HttpServlet {
 			}
 		}
 		
+
 		if ("getPart_For_Display_By_One_PK".equals(action)) {
 
 			List<String> errorMsgs = new LinkedList<String>();
 			req.setAttribute("errorMsgs", errorMsgs);
+
 
 			try {
 				/*************************** 1.接收請求參數 ****************************************/
@@ -107,10 +110,12 @@ public class Product_orderServlet extends HttpServlet {
 				/*String url = "/front-end/product_order/listPartProduct_order.jsp"; */             // 成功轉交 dept/listAllDept.jsp
 				String url = "/front-end/product_order/ListProductOrder.jsp";
 				
+
 				RequestDispatcher successView = req.getRequestDispatcher(url);
 				successView.forward(req, res);
 
 				/*************************** 其他可能的錯誤處理 ***********************************/
+
 			} catch (Exception e) {
 				throw new ServletException(e);
 			}

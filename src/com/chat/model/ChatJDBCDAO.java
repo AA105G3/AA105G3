@@ -22,8 +22,10 @@ public class ChatJDBCDAO implements ChatDAO_interface{
 	
 	
 	@Override
+
 	public int insert(ChatVO chatVO) {
 		int updateCount = 0;
+
 		Connection con = null;
 		PreparedStatement pstmt = null;
 		
@@ -63,12 +65,14 @@ public class ChatJDBCDAO implements ChatDAO_interface{
 				}
 			}
 		}
+
 		return updateCount;
 	}
 	
 	@Override
 	public int update(ChatVO chatVO) {
 		int updateCount = 0;
+
 		Connection con = null;
 		PreparedStatement pstmt = null;
 
@@ -111,12 +115,14 @@ public class ChatJDBCDAO implements ChatDAO_interface{
 				}
 			}
 		}
+
 		return updateCount;		
 	}
 
 	@Override
 	public int delete(String chat_no) {
 		int updateCount = 0;
+
 		Connection con = null;
 		PreparedStatement pstmt = null;
 
@@ -155,7 +161,9 @@ public class ChatJDBCDAO implements ChatDAO_interface{
 				}
 			}
 		}
+
 		return updateCount;
+
 	}
 
 	@Override
@@ -290,6 +298,7 @@ public class ChatJDBCDAO implements ChatDAO_interface{
 		ChatJDBCDAO dao = new ChatJDBCDAO();
 		
 //		insert
+
 		/*ChatVO chatVO1 = new ChatVO();
 		chatVO1.setSend_no("M00000001");
 		chatVO1.setGet_no("M00000002");
@@ -329,6 +338,7 @@ public class ChatJDBCDAO implements ChatDAO_interface{
 			System.out.print(chatVO4.getChat_date() + " | ");
 			System.out.println();
 		}
+
 		
 	}	
 

@@ -56,6 +56,8 @@
 	</tr>
 
 	<c:forEach var="memberVO" items="${list}">
+
+
 		<tr align='center' valign='middle'>
 			<td>${memberVO.mem_no}</td>
 			<td>${memberVO.mem_name}</td>

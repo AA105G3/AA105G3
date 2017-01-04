@@ -2,7 +2,6 @@ package com.product_order.model;
 
 import java.util.*;
 
-import com.emp.model.EmpVO;
 import com.product_order_list.model.Product_order_listVO;
 
 public interface Product_orderDAO_interface {
@@ -11,6 +10,7 @@ public interface Product_orderDAO_interface {
 	public void delete(String prod_ord_no);
 	public Product_orderVO findByPrimaryKey(String prod_ord_no);
 	public List<Product_orderVO> getAll();
+
 	public List<Product_orderVO> findByMem_no(String mem_no);
 	
 	public Set<Product_order_listVO> findByPK(String prod_ord_no);

@@ -4,11 +4,13 @@ import java.sql.*;
 
 public class ChatVO implements java.io.Serializable {
 
+
 	private String 		chat_no;   //訊息編號,PK	
 	private String 		send_no;   //發送人編號		
 	private String 		get_no;	   //接收人編號			
 	private String 		chat_text; //訊息內容		
 	private Timestamp   chat_date; //發送時間
+
 	
 	
 	public String getChat_no() {

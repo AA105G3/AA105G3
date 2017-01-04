@@ -1,27 +1,32 @@
 package com.chat.controller;
 
-import java.io.*;
-import java.util.*;
 
-import javax.servlet.*;
-import javax.servlet.annotation.MultipartConfig;
-import javax.servlet.http.*;
+import java.io.IOException;
+import java.util.LinkedList;
+import java.util.List;
 
-import com.chat.model.*;
+import javax.servlet.RequestDispatcher;
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+import com.chat.model.ChatVO;
+import com.chat.model.ChatService;
 
 public class ChatServlet extends HttpServlet {
-	
-	public void doGet(HttpServletRequest req, HttpServletResponse res)
-			throws ServletException, IOException {
+	private static final long serialVersionUID = 1L;
+
+	public void doGet(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
 		doPost(req, res);
 	}
 
-	public void doPost(HttpServletRequest req, HttpServletResponse res)
-			throws ServletException, IOException {
+	public void doPost(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
 
 		req.setCharacterEncoding("UTF-8");
 		String action = req.getParameter("action");
-		
+
+
 		if ("getOne_For_Display".equals(action)) { // 來自select_page.jsp的請求
 
 			List<String> errorMsgs = new LinkedList<String>();
@@ -30,6 +35,7 @@ public class ChatServlet extends HttpServlet {
 			req.setAttribute("errorMsgs", errorMsgs);
 
 			try {
+
 				/***************************1.接收請求參數 - 輸入格式的錯誤處理**********************/
 				String str = req.getParameter("chat_no");
 				if (str == null || (str.trim()).length() == 0) {
@@ -43,10 +49,12 @@ public class ChatServlet extends HttpServlet {
 					return;//程式中斷
 				}
 				
+
 				String chat_no = null;
 				try {
 					chat_no = new String(str);
 				} catch (Exception e) {
+
 					errorMsgs.add("訊息編號格式不正確");
 				}
 				// Send the use back to the form, if there were errors
@@ -58,6 +66,7 @@ public class ChatServlet extends HttpServlet {
 				}
 				
 				/***************************2.開始查詢資料*****************************************/
+
 				ChatService chatSvc = new ChatService();
 				ChatVO chatVO = chatSvc.getOneChat(chat_no);
 				if (chatVO == null) {
@@ -65,6 +74,7 @@ public class ChatServlet extends HttpServlet {
 				}
 				// Send the use back to the form, if there were errors
 				if (!errorMsgs.isEmpty()) {
+
 					RequestDispatcher failureView = req
 							.getRequestDispatcher("/front-end/chat/select_page.jsp");
 					failureView.forward(req, res);
@@ -94,6 +104,7 @@ public class ChatServlet extends HttpServlet {
 			req.setAttribute("errorMsgs", errorMsgs);
 
 			try {
+
 				/***********************1.接收請求參數 - 輸入格式的錯誤處理*************************/
 				String send_no = req.getParameter("send_no").trim();
 				if(send_no == ""){
@@ -110,6 +121,7 @@ public class ChatServlet extends HttpServlet {
 					errorMsgs.add("請輸入訊息內容.");
 				}
 
+
 				ChatVO chatVO = new ChatVO();
 				chatVO.setSend_no(send_no);
 				chatVO.setGet_no(get_no);
@@ -118,6 +130,7 @@ public class ChatServlet extends HttpServlet {
 				// Send the use back to the form, if there were errors
 				if (!errorMsgs.isEmpty()) {
 					req.setAttribute("chatVO", chatVO); // 含有輸入格式錯誤的chatVO物件,也存入req
+
 					RequestDispatcher failureView = req
 							.getRequestDispatcher("/front-end/chat/addChat.jsp");
 					failureView.forward(req, res);
@@ -143,11 +156,11 @@ public class ChatServlet extends HttpServlet {
 		}
 			
 		if ("delete".equals(action)) { // 來自listOneChat.jsp
-
 			List<String> errorMsgs = new LinkedList<String>();
 			// Store this set in the request scope, in case we need to
 			// send the ErrorPage view.
 			req.setAttribute("errorMsgs", errorMsgs);
+
 	
 			try {
 				/***************************1.接收請求參數***************************************/
@@ -171,6 +184,7 @@ public class ChatServlet extends HttpServlet {
 			}
 		}
 		
+
 	}
 
 }

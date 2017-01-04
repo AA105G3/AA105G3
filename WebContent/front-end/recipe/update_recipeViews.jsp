@@ -46,14 +46,14 @@
 	<tr>
 		<td>食譜原總人氣:</td>
 		<td>${recipeVO.recipe_total_views}</td>
-		<td>要增加的人氣數:</td>
-		<td><input type="TEXT" name="recipe_total_viewsPlus" size="45" value="" /></td>
 	</tr>
 	<tr>
 		<td>食譜原周人氣:</td>
 		<td>${recipeVO.recipe_week_views}</td>
+	</tr>
+	<tr>		
 		<td>要增加的人氣數:</td>
-		<td><input type="TEXT" name="recipe_week_viewsPlus" size="45" value="" /></td>
+		<td><input type="TEXT" name="recipe_viewsPlus" size="45" value="" /></td>
 	</tr>
 </table>
 <br>

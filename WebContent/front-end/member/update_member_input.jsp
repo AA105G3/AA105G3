@@ -7,7 +7,9 @@
 <html>
 <head>
 <title>會員資料修改 - update_member_input.jsp</title></head>
+
 <script language="JavaScript" src="<%=request.getContextPath()%>/front-end/member/js/member_image.js"></script>
+
 <div id="popupcalendar" class="text"></div>
 
 <body>

@@ -1,4 +1,4 @@
-package com.chat.model;
+package com.chat.model.*;
 
 import java.util.List;
 
@@ -16,10 +16,12 @@ public class ChatService {
 		
 		ChatVO chatVO = new ChatVO();
 		
+
 		chatVO.setSend_no(send_no);
 		chatVO.setGet_no(get_no);
 		chatVO.setChat_text(chat_text);
 		dao.insert(chatVO);
+
 		
 		return chatVO;
 	}
@@ -35,5 +37,6 @@ public class ChatService {
 	public List<ChatVO> getAll() {
 		return dao.getAll();
 	}
+
 
 }

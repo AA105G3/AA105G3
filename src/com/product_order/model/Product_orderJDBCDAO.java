@@ -9,6 +9,7 @@ import javax.naming.NamingException;
 import javax.sql.DataSource;
 
 import com.product_order_list.model.Product_order_listJDBCDAO;
+
 import com.product_order_list.model.Product_order_listVO;
 
 public class Product_orderJDBCDAO implements Product_orderDAO_interface {
@@ -84,6 +85,7 @@ public class Product_orderJDBCDAO implements Product_orderDAO_interface {
 		+ " deli_status,"
 		+ " deli_time FROM product_order_list where prod_ord_no = ? order by prod_ord_no";
 	
+
 	private static final String GET_STMT_BY_MEM_NO = 
 		"SELECT prod_ord_no,"
 		+ " mem_no,"
@@ -99,6 +101,7 @@ public class Product_orderJDBCDAO implements Product_orderDAO_interface {
 		+ " cell_phone,"
 		+ " tel_phone FROM product_order where mem_no = ?";
 	
+
 	@Override
 	public void insert(Product_orderVO prod_ordVO) {
 
@@ -451,6 +454,7 @@ public class Product_orderJDBCDAO implements Product_orderDAO_interface {
 		return set;
 	}
 	
+
 	@Override
 	public List<Product_orderVO> findByMem_no(String mem_no) {
 		List<Product_orderVO> list2 = new ArrayList<Product_orderVO>();
@@ -613,6 +617,7 @@ public class Product_orderJDBCDAO implements Product_orderDAO_interface {
 
 	}
 	
+
 	public static void main(String[] args) {
 
 		Product_orderJDBCDAO dao = new Product_orderJDBCDAO();

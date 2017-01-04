@@ -56,7 +56,9 @@
 		<th>聯絡手機</th>
 		<th>聯絡市話</th>
 		<th>修改</th>	
+
 		<!-- <th>查詢明細</th> -->
+
 	</tr>
  
 	<c:forEach var="product_orderVO" items="${list}" >
@@ -94,12 +96,16 @@
 			     <input type="hidden" name="prod_ord_no" value="${product_orderVO.prod_ord_no}">
 			     <input type="hidden" name="action"	value="getOne_For_Update"></FORM>
 			</td>
+
 			<%-- <td>
+
 			  <FORM METHOD="post" ACTION="<%=request.getContextPath()%>/product_order/product_order.do">
 			    <input type="submit" value="送出查詢"> 
 			    <input type="hidden" name="prod_ord_no" value="${product_orderVO.prod_ord_no}">
 			    <input type="hidden" name="action" value="getPart_For_Display_By_One_PK"></FORM>
+
 			</td> --%>
+
 		</tr>
 	</c:forEach>
 </table>
