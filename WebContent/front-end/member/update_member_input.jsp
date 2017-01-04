@@ -103,9 +103,7 @@
 			<input type="RADIO" name="mem_online" value="0" <%= ((memberVO.getMem_online()).equals("0"))?"checked":"" %> />不在線</td> --%>
 	</tr>
 	
-	<tr>
-		<img id="img" src="/AA105G3/MemberDBGifReader.do?name=${memberVO.mem_no}" width='100'>
-	</tr>
+
 
 </table>
 <br>
