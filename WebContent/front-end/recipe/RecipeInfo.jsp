@@ -223,7 +223,7 @@
 			}
 			.recipe-author{
 				border:1px solid #e2e0db;
-				margin:20px 0px;
+				margin-top:20px;
 				padding:10px 10px;
 				background:#fff;
 			}
@@ -243,7 +243,8 @@
 			.display-recipe-newest{
 				border:1px solid #e2e0db;
 				padding:5px;
-				background:#fff; 
+				background:#fff;
+				margin-top:20px; 
 			}
 			.more-newest-title-wrapper{
 				border-bottom: 1px solid red;
@@ -271,7 +272,6 @@
 		</style>
 	</head>
 	<body>
-		
 		<div class="container">
 			<div class="row">
 				<div class="col-xs-12 col-sm-8 ">
@@ -299,6 +299,7 @@
 			</div>
 			<div class="col-xs-12 col-sm-12">
 				<div class="row">
+			<c:if test="${recipeVO.recipe_no !=null}">				
 					<div class="col-xs-12 col-sm-8 display-recipe-wrapper">
 						<div class="recipe-top-title-wrapper col-xs-12 col-sm-12">
 						<div class="col-xs-12 col-sm-6 display-recipe-title">
@@ -390,11 +391,16 @@
 						
 
 					</div>
-
-
+			</c:if>
+			<c:if test="${recipeVO.recipe_no ==null}">
+				<div class="col-xs-12 col-sm-8 display-recipe-wrapper text-center" style="color:red;">
+					<h2>該食譜已被刪除!</h2>
+				</div>
+			</c:if>
 
 					<div class="col-xs-12 col-sm-3 other-info">
 						<div class="col-xs-12 col-sm-12">
+					<c:if test="${recipeVO.recipe_no !=null}">
 							<div class="recipe-author">
 							<table>
 								<tr>
@@ -408,6 +414,7 @@
 								</tr>
 							</table>
 							</div>
+					</c:if>
 						</div>
 						<div class="col-xs-12 col-sm-12">
 							<div class="display-recipe-newest">
