@@ -24,6 +24,30 @@ public class MemberServlet extends HttpServlet {
 		req.setCharacterEncoding("UTF-8");
 		String action = req.getParameter("action");
 		
+		if ("signOut".equals(action)){
+			
+			List<String> errorMsgs = new LinkedList<String>();
+			// Store this set in the request scope, in case we need to
+			// send the ErrorPage view.
+			req.setAttribute("errorMsgs", errorMsgs);
+			
+			try {
+				
+				HttpSession session = req.getSession();
+				session.removeAttribute("mem_no");
+				session.removeAttribute("mem_ac");
+				session.removeAttribute("mem_name");
+				
+				RequestDispatcher failureView = req
+						.getRequestDispatcher("/front-end/frontNavbar.jsp");
+				failureView.forward(req, res);
+				
+				
+			} catch (Exception e) {
+
+			}
+		}
+		
 		if ("getOne_For_Display".equals(action) || "getOne_For_List".equals(action)) { // 來自select_page.jsp的請求
 
 			List<String> errorMsgs = new LinkedList<String>();
@@ -135,9 +159,7 @@ public class MemberServlet extends HttpServlet {
 				/***************************1.接收請求參數 - 輸入格式的錯誤處理**********************/
 				String mem_no = req.getParameter("mem_no").trim();
 				if(mem_no == ""){
-
 					errorMsgs.add("請輸入會員編號.");
-
 				}
 				
 				String mem_name = req.getParameter("mem_name").trim();
@@ -321,7 +343,7 @@ public class MemberServlet extends HttpServlet {
 				if (!errorMsgs.isEmpty()) {
 					req.setAttribute("memberVO", memberVO); // 含有輸入格式錯誤的memberVO物件,也存入req
 					RequestDispatcher failureView = req
-							.getRequestDispatcher("/front-end/member/addMember.jsp");
+							.getRequestDispatcher("/front-end/member/MemberSignUp.jsp");
 					failureView.forward(req, res);
 					return;
 				}
@@ -340,7 +362,7 @@ public class MemberServlet extends HttpServlet {
 			} catch (Exception e) {
 				errorMsgs.add(e.getMessage());
 				RequestDispatcher failureView = req
-						.getRequestDispatcher("/front-end/member/addMember.jsp");
+						.getRequestDispatcher("/front-end/member/MemberSignUp.jsp");
 				failureView.forward(req, res);
 			}
 		}

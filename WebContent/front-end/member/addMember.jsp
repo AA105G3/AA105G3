@@ -8,9 +8,7 @@ MemberVO memberVO = (MemberVO) request.getAttribute("memberVO");
 <html>
 <head>
 <title>會員資料新增 - addMember.jsp</title></head>
-
 <script language="JavaScript" src="<%=request.getContextPath()%>/front-end/member/js/member_image.js"></script>
-
 <div id="popupcalendar" class="text"></div>
 
 <body>

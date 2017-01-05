@@ -49,9 +49,14 @@
 	.list-style{
 		padding-top : 100px;
 		padding-left : 225px;
+		padding-bottom : 100px;
 	}
 	th{
 		text-align : center;
+		height: 50px;
+	}
+	td{
+		height: 50px;
 	}
 	.btn-style{
 		margin-top : 15px;
@@ -133,7 +138,7 @@
 
 
 
-			<div class="list-style">
+<div class="list-style">
 
 
 
@@ -218,7 +223,7 @@
 
 
 
-		</div>
+</div>
 
 
 

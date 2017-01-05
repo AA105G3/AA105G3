@@ -69,7 +69,7 @@
 	.shopping-cart{
 		position: absolute;
 		top: 650px;
-		left: 75px;
+		left: 25px;
 		width: 250px;
 		list-style: none;
 		margin: 0;

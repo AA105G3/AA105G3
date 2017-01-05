@@ -175,16 +175,16 @@ pageContext.setAttribute("buylist",buylist);
 	</tr>
 	<tr>
 		<td>信用卡卡號：</td>
-		<td><input type="TEXT" name="cred_card_no" size="45"
+		<td><input type="TEXT" name="cred_card_no" size="45" maxlength="16"
 			value="<%= (product_orderVO==null)? "A1B2C3D4E5F6G7H8" : product_orderVO.getCred_card_no()%>" /></td>
 	</tr>
 	<tr>
 		<td>信用卡有效時期：</td>
-		<td><input type="TEXT" name="valid_date"></td>
+		<td><input type="TEXT" name="valid_date" size="3"></td>
 	</tr>
 	<tr>
 		<td>信用卡驗證碼：</td>
-		<td><input type="TEXT" name="valid_no" size="45"
+		<td><input type="TEXT" name="valid_no" size="3" maxlength="3"
 			value="<%= (product_orderVO==null)? "" : product_orderVO.getValid_no()%>" /></td>
 	</tr>
 	<tr>
@@ -202,7 +202,7 @@ pageContext.setAttribute("buylist",buylist);
 	</tr>
 	<tr>
 		<td>郵遞區號：</td>
-		<td><input type="TEXT" name="post_code" size="45"
+		<td><input type="TEXT" name="post_code" size="3" maxlength="5"
 			value="<%= (product_orderVO==null)? "" : product_orderVO.getPost_code()%>" /></td>
 	</tr>
 	<tr>
@@ -212,12 +212,12 @@ pageContext.setAttribute("buylist",buylist);
 	</tr>
 	<tr>
 		<td>聯絡手機：</td>
-		<td><input type="TEXT" name="cell_phone" size="45"
+		<td><input type="TEXT" name="cell_phone" size="45" maxlength="10"
 			value="${memberVO.mem_phone}" /></td>
 	</tr>
 	<tr>
 		<td>聯絡市話：</td>
-		<td><input type="TEXT" name="tel_phone" size="45"
+		<td><input type="TEXT" name="tel_phone" size="45" maxlength="10"
 			value="<%= (product_orderVO==null)? "" : product_orderVO.getTel_phone()%>" /></td>
 	</tr>
 	<tr>

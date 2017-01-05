@@ -24,7 +24,6 @@ public class Product_orderServlet extends HttpServlet {
 		req.setCharacterEncoding("UTF-8");
 		String action = req.getParameter("action");
 		
-
 		if ("getPartForDisplay".equals(action)) { // 來自select_page.jsp的請求
 
 			List<String> errorMsgs = new LinkedList<String>();
@@ -35,32 +34,37 @@ public class Product_orderServlet extends HttpServlet {
 			try {
 				/***************************1.接收請求參數 - 輸入格式的錯誤處理**********************/
 				
-				
-
-				
 				/***************************2.開始查詢資料*****************************************/
+				//旗標
 				Product_orderService product_orderSvc = new Product_orderService();
 				List<Product_orderVO> list = product_orderSvc.getAll();
+				
 				Product_order_listService product_order_listSvc = new Product_order_listService();
 				
-				List<Product_orderVO> displayList =new ArrayList<Product_orderVO>();
-				boolean flag =false;
+				List<Product_orderVO> displayList = new ArrayList<Product_orderVO>();
+				
+				boolean flag = false;
 				
 				for(Product_orderVO aOrder:list){
+					
 					List<Product_order_listVO> list2 =  product_order_listSvc.getProduct_order_list_By_One_PK(aOrder.getProd_ord_no());
 					List<String> deliStatus = new ArrayList<String>();
+					
 					for(Product_order_listVO aOrderList:list2){
 						String status = aOrderList.getDeli_status();
 						deliStatus.add(status);
 					}
+					
 					if(deliStatus.contains("0") || deliStatus.contains("4")){
 						flag = true;
 					}
 					
-					if(flag==true){
+					if(flag == true){
 						displayList.add(aOrder);
 					}
-					flag =false;
+					
+					flag = false;
+					
 				}
 				
 				if (displayList == null) {
@@ -69,14 +73,14 @@ public class Product_orderServlet extends HttpServlet {
 				// Send the use back to the form, if there were errors
 				if (!errorMsgs.isEmpty()) {
 					RequestDispatcher failureView = req
-							.getRequestDispatcher("/front-end/product_order/select_page.jsp");
+							.getRequestDispatcher("/back-end/product_order/OrderManagement.jsp");
 					failureView.forward(req, res);
 					return;//程式中斷
 				}
 				
 				/***************************3.查詢完成,準備轉交(Send the Success view)*************/
 				req.setAttribute("list", displayList); // 資料庫取出的product_orderVO物件,存入req
-				String url = "/front-end/product_order/listOneProduct_order.jsp";
+				String url = "/back-end/product_order/OrderManagement.jsp";
 				RequestDispatcher successView = req.getRequestDispatcher(url); // 成功轉交 listOneProduct_order.jsp
 				successView.forward(req, res);
 
@@ -84,17 +88,15 @@ public class Product_orderServlet extends HttpServlet {
 			} catch (Exception e) {
 				errorMsgs.add("無法取得資料:" + e.getMessage());
 				RequestDispatcher failureView = req
-						.getRequestDispatcher("/front-end/product_order/select_page.jsp");
+						.getRequestDispatcher("/back-end/product_order/OrderManagement.jsp");
 				failureView.forward(req, res);
 			}
 		}
 		
-
-		if ("getPart_For_Display_By_One_PK".equals(action)) {
+		if ("getPart_For_Display_By_One_PK".equals(action) || "getOne_For_Backpage".equals(action)) {
 
 			List<String> errorMsgs = new LinkedList<String>();
 			req.setAttribute("errorMsgs", errorMsgs);
-
 
 			try {
 				/*************************** 1.接收請求參數 ****************************************/
@@ -108,14 +110,16 @@ public class Product_orderServlet extends HttpServlet {
 				req.setAttribute("listPOList_ByProd_ord_no", set);    // 資料庫取出的set物件,存入request
 
 				/*String url = "/front-end/product_order/listPartProduct_order.jsp"; */             // 成功轉交 dept/listAllDept.jsp
-				String url = "/front-end/product_order/ListProductOrder.jsp";
+				String url = null;
+				if ("getPart_For_Display_By_One_PK".equals(action))
+					url = "/front-end/product_order/ListProductOrder.jsp";
+				else if ("getOne_For_Backpage".equals(action))
+					url = "product_order.do?action=getPartForDisplay";
 				
-
 				RequestDispatcher successView = req.getRequestDispatcher(url);
 				successView.forward(req, res);
 
 				/*************************** 其他可能的錯誤處理 ***********************************/
-
 			} catch (Exception e) {
 				throw new ServletException(e);
 			}
@@ -750,7 +754,7 @@ System.out.println(deli_status);
 			} catch (Exception e) {
 				errorMsgs.add(e.getMessage());
 				RequestDispatcher failureView = req
-						.getRequestDispatcher("/front-end/product_order/addProduct_order.jsp");
+						.getRequestDispatcher("/front-end/product_order/AddProductOrder.jsp");
 				failureView.forward(req, res);
 			}
 		}

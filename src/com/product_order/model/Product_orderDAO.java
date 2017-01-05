@@ -11,7 +11,7 @@ import javax.sql.DataSource;
 import com.product_order_list.model.Product_order_listJDBCDAO;
 import com.product_order_list.model.Product_order_listVO;
 
-public class Product_orderJNDIDAO implements Product_orderDAO_interface {
+public class Product_orderDAO implements Product_orderDAO_interface {
 
 	private static DataSource ds = null;
 	static {
