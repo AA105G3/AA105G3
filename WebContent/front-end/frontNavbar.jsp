@@ -109,7 +109,7 @@ menuItems.click(function(e){
 						<a href="/AA105G3/front-end/member/MemberSignUp.jsp">註冊</a>
 					</li>
 					<li>
-						<a href="/AA105G3/front-end/Flogin/Flogin.html">登入</a>
+						<a href="/AA105G3/Login/Flogin.html">登入</a>
 					</li>
 	            </c:if>
 				<c:if test="${mem_name!=null}">

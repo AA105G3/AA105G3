@@ -68,7 +68,8 @@
 	}
 	.shopping-cart{
 		position: absolute;
-		top: 650px;
+		position: fixed;
+		top: 600px;
 		left: 25px;
 		width: 250px;
 		list-style: none;
@@ -87,13 +88,6 @@
 
 
 
-
-<!--START SCROLL TOP BUTTON -->
-<a class="scrollToTop" href="#">
-	<i class="fa fa-angle-up"></i>
-	<span>Top</span>
-</a>
-<!-- END SCROLL TOP BUTTON -->
 
 <div class="navbar navbar-default navbar-fixed-top navbar-inverse mu-main-navbar" >
 	<div class="container">

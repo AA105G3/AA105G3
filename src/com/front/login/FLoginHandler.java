@@ -103,10 +103,19 @@ public class FLoginHandler extends HttpServlet {
 		}*/
 		
 		if (!allowUser(mem_ac, mem_pw, session)) {          //【帳號 , 密碼無效時】
-			out.println("<HTML><HEAD><TITLE>Access Denied</TITLE></HEAD>");
+			/*out.println("<HTML><HEAD><TITLE>Access Denied</TITLE></HEAD>");
 			out.println("<BODY>你的帳號 , 密碼無效!<BR>");
-			out.println("請按此重新登入 <A HREF="+req.getContextPath()+"/front-end/Flogin/Flogin.html>重新登入</A>");
-			out.println("</BODY></HTML>");
+			out.println("請按此重新登入 <A HREF="+req.getContextPath()+"/Login/Flogin.jsp>重新登入</A>");
+			out.println("</BODY></HTML>");*/
+			
+			List<String> errorMsg = new LinkedList<String>();
+			errorMsg.add("帳號或密碼錯誤");
+			
+			req.setAttribute("errorMsg", errorMsg);
+			
+			String url = "/Login/Flogin.jsp";
+			RequestDispatcher successView = req.getRequestDispatcher(url);
+			successView.forward(req, res);
 		}
 		else {                                       //【帳號 , 密碼有效時, 才做以下工作】
 
@@ -119,7 +128,7 @@ public class FLoginHandler extends HttpServlet {
 				}
 			}catch (Exception ignored) {}
 
-			res.sendRedirect(req.getContextPath()+"/front-end/Flogin/Flogin_success.jsp");  //*工作3: (-->如無來源網頁:則重導至login_success.jsp)
+			res.sendRedirect(req.getContextPath()+"/front-end/frontNavbar.jsp");  //*工作3: (-->如無來源網頁:則重導至login_success.jsp)
 
 		}
 	}

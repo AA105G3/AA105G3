@@ -27,7 +27,7 @@ public class FLoginFilter implements Filter {
 		Object account = session.getAttribute("mem_ac");
 		if (account == null) {
 			session.setAttribute("location", req.getRequestURI());
-			res.sendRedirect(req.getContextPath() + "/front-end/Flogin/Flogin.html");
+			res.sendRedirect(req.getContextPath() + "/Login/Flogin.jsp");
 			return;
 		} else {
 			chain.doFilter(request, response);
