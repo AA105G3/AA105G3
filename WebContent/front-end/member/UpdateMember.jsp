@@ -2,20 +2,20 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ page import="com.member.model.*"%>
 <%
-MemberVO memberVO = (MemberVO) request.getAttribute("memberVO");
-%>
+	MemberVO memberVO = (MemberVO) request.getAttribute("memberVO");
 
+%>
 <html>
 <head>
 
-<title>會員註冊</title>
+<title>會員資料修改</title>
 
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
 <link rel="stylesheet" href="/AA105G3/css/frontpageCSS.css">
-<script src = "/AA105G3/js/memberSignUp.js"></script>
+<script src = "/AA105G3/js/memberUpdate.js"></script>
 
 <style type="text/css" media="screen">
 	.title-style{
@@ -39,7 +39,16 @@ MemberVO memberVO = (MemberVO) request.getAttribute("memberVO");
 </style>
 
 </head>
+
+<script language="JavaScript" src="<%=request.getContextPath()%>/front-end/member/js/member_image.js"></script>
+
+<div id="popupcalendar" class="text"></div>
+
 <body>
+
+
+
+
 
 <div class="navbar navbar-default navbar-fixed-top navbar-inverse mu-main-navbar" >
 	<div class="container">
@@ -96,7 +105,7 @@ MemberVO memberVO = (MemberVO) request.getAttribute("memberVO");
 
 
 <div class="col-xs-12 col-sm-12 text-center title-style">
-	<h1>會員註冊</h1>
+	<h1>會員資料修改</h1>
 	<%-- 錯誤表列 --%>
 	<c:if test="${not empty errorMsgs}">
 		<font color='red'>請修正以下錯誤:
@@ -109,12 +118,14 @@ MemberVO memberVO = (MemberVO) request.getAttribute("memberVO");
 	</c:if>
 </div>
 
-
-
-<form METHOD="post" ACTION="<%=request.getContextPath()%>/member/member.do" name="form1" enctype="multipart/form-data">
+<FORM METHOD="post" ACTION="member.do" name="form1" enctype="multipart/form-data">
 	<div class="container">
 		<div class="row">
 			<div class="list-style">
+
+
+
+
 
 <div class="col-xs-12 col-sm-12">
 	<div class="col-xs-12 col-sm-6 div-style">
@@ -123,7 +134,7 @@ MemberVO memberVO = (MemberVO) request.getAttribute("memberVO");
 				會員帳號
 			</div>
 			<input type="text" id="memAc" placeholder="請輸入帳號" class="form-control"
-			name="mem_ac" value="${memberVO==null ? '' : memberVO.mem_ac}">
+			name="mem_ac" value="${memberVO.mem_ac}" readonly="readonly">
 		</div>
 	</div>
 	<div class="col-xs-12 col-sm-6 span-style">
@@ -257,38 +268,33 @@ MemberVO memberVO = (MemberVO) request.getAttribute("memberVO");
 		<div id = "fileInfo"></div>
 	</div>
 	<div class="col-xs-12 col-sm-6 span-style">
-		<br><img id="img" src="<%=request.getContextPath()%>/front-end/member/images/No-image-found.png" height='150'><br>
+		<br><img id="img" src="/AA105G3/MemberDBGifReader.do?name=${memberVO.mem_no}" height='150'><br>
 	</div>
 </div>
 
 
 <div class="col-xs-12 col-sm-12 text-center">
 	<div class="col-xs-12 col-sm-12 buttonStyle">
-		<div class="col-xs-12 col-sm-2 col-sm-push-2">
+		<div class="col-xs-12 col-sm-3 col-sm-push-3">
 			<input type="button" class="btn btn-default" value="取消">
 		</div>
-		<div class="col-xs-12 col-sm-2 col-sm-push-2">	
-			<input type="reset" class="btn btn-default" value="重置" >
-		</div>
-		<div class="col-xs-12 col-sm-2 col-sm-push-2">	
+		<div class="col-xs-12 col-sm-3 col-sm-push-3">	
 			<input type="submit" class="btn btn-primary" value="確定">
 		</div>
-		<input type="hidden" name="action" value="insert">
+		<input type="hidden" name="action" value="update">
 		<input type="hidden" name="mem_history" value="F00000001">
 		<input type="hidden" name="mem_online" value="1">
+		<input type="hidden" name="mem_no" value="${memberVO.mem_no}">
+		<input type="hidden" name="mem_ac" value="${memberVO.mem_ac}">
 	</div>
 </div>
-
 
 
 
 			</div>
 		</div>
 	</div>
-</form>
-
-
-
+</FORM>
 
 
 
@@ -299,12 +305,11 @@ MemberVO memberVO = (MemberVO) request.getAttribute("memberVO");
 </footer>
 
 
+
+
+
 <script src="https://code.jquery.com/jquery.js"></script>
 <script src="https://netdna.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
-
-
-
-
 
 </body>
 </html>

@@ -13,27 +13,126 @@
 
 <style type="text/css" media="screen">
 	.header-style{
-		padding-top: 150px;
+		padding-top: 80px;
 	}
-	.top-style{
-		padding-top: 75px;
-		padding-bottom: 100px;
+	.search-style{
+		padding-bottom: 50px;
+	}
+	.member-style{
+		padding-top: 20px;
+		padding-bottom: 20px;
+		background: white;
 	}
 	.count-style{
 		padding-top: 10px;
 		padding-bottom: 30px;
 	}
+	.content-style{
+		background: white;
+		margin-top: 25px;
+	}
+	#href-style{
+		color: red;
+		border-bottom: 3px red solid;
+	}
+	
+	
+	
+	
+	body{
+		background: #efede8;
+		padding-top: 50px;
+		height : 100%;
+	}
+	.recipe-search-wrapper{
+		margin-bottom:20px;
+	}
+	.recipe-search{
+
+		text-align: right;
+	}
+
+	.recipe-select{
+		height: 50px;
+	}
+	.recipe-text{
+		height: 50px;
+		width:375px !important;
+	}
+	
+	.recipe-btn{
+		height: 50px;
+		color:#D9230F;
+		width: 50px;
+	}
+	.recipe-header-right{
+		text-align: right;
+		padding-right: 0px;
+	}
+	.write-recipe{
+		height: 50px;
+		font-weight: bold;
+	}
+			
+	
+	.page-top-title-wrapper{
+		background: #fff;
+		margin-bottom: 5px;
+		border:1px solid #d3d0c9;
+	}
+	.recipe-row-wrapper{
+		margin-bottom: 10px;
+	}
+	.recipe-row-wrapper img{
+		width:230px;
+		height:200px;
+	}
+	.recipe-item-wrapper{
+		background: #fff;
+		padding: 15px;
+		border:1px solid #d3d0c9;
+		height:230px;
+	}
+	.recipe-item-wrapper-right{
+		padding: 15px 15px 15px 15px;
+		background: #fff;
+		border:1px solid #d3d0c9;
+		height:230px;
+	}
+	.recipe-item-wrapper h3{
+		margin:0px 0px 5px 0px;	
+	}
+	.recipe-item-wrapper-right h3{
+		margin:0px 0px 5px 0px;
+	}
+	.recipe-item-left{
+		padding:0px;
+	}
+	.recipe-item-right{
+		padding:0px 0px 0px 10px;
+	}
+	.recipe-intro{
+		color:#706864;
+		height:60px;
+		word-break:break-all;
+	}
+	.recipe-food-mater{
+		color:#b6b0a5;
+		word-break:break-all;
+		height:40px;
+	}
+	#page-content{
+		min-height:700px;
+	}
+	footer{
+		position : absolute;
+	    bottom : 0px;
+		width : 100%;
+	}
 </style>
 
 </head>
 <body>
-
-<!--START SCROLL TOP BUTTON -->
-    <a class="scrollToTop" href="#">
-      <i class="fa fa-angle-up"></i>
-      <span>Top</span>
-    </a>
-  <!-- END SCROLL TOP BUTTON -->
 
  <div class="navbar navbar-default navbar-fixed-top navbar-inverse mu-main-navbar" >
      <div class="container">
@@ -99,9 +198,9 @@
 
 
 		<header class="header-style">
-			<div class="container">
+			<div class="container" id="page-content">
 				<div class="row">
-					<div class="col-xs-12 col-sm-8 ">
+					<div class="col-xs-12 col-sm-6 search-style">
 						<div class="recipe-search">
 								<form class="form-inline" action="<%=request.getContextPath()%>/recipe/recipe.do" method="POST">
 								    <select class="form-control recipe-select" name="searchCondition">
@@ -117,7 +216,8 @@
 								</form>
 							</div>
 					</div>
-					<div class="col-xs-12 col-sm-4 recipe-header-right">
+					
+					<div class="col-xs-12 col-sm-4 recipe-header-right search-style">
 						
 							<a href="addRecipe.jsp">
 							<button class="btn btn-default write-recipe">
@@ -125,9 +225,69 @@
 							寫食譜</button></a>
 						
 					</div>
+					
 				</div>
+				
+				<div class="col-xs-12 col-sm-8">
+	   				
+		   				<div role="tabpanel">
+							<nav class="nav navbar-default">
+						        <div class="container-fluid">
+						            <ul class="nav navbar-nav">
+						                <li><a data-toggle="tab" href="#home" id="href-style">食譜</a></li>
+						                <li><a data-toggle="tab" href="#menu1">收藏</a></li>
+						                <li><a data-toggle="tab" href="#menu2">好友</a></li>
+						            </ul>
+						        </div>
+						    </nav>
+						    
+						    <div class="col-xs-12 col-sm-12 content-style">
+								內容區
+								<br>
+								<br>
+								<br>
+								<br>
+								<br>
+								<br>
+								<br>
+								<br>
+								<br>
+								<br>
+								<br>
+								<br>
+								<br>
+							</div>		    
+						</div>	
+
+	    		</div>
+	    		<div class="col-xs-12 col-sm-3 col-sm-push-1 text-center member-style">
+			    	<img src="/AA105G3/MemberDBGifReader.do?name=${mem_no}" width='150' height='150'>
+			    	<h3>${mem_name}</h3>
+			
+					<div class="col-xs-12 col-sm-6 count-style">
+				    	<div>食譜數：0</div>
+				    </div>
+				    <div class="col-xs-12 col-sm-6 count-style">
+				    	<div>追隨數：0</div>
+				    </div>
+				    
+				    <div class="col-xs-12 col-sm-6">
+				    	<a class="btn btn-primary">加入追隨</a>
+				    </div>
+				    <div class="col-xs-12 col-sm-6">
+				    	<a class="btn btn-primary">加入好友</a>
+				    </div>
+			
+			    	
+			    </div>
 			</div>
 		</header>
+		
+		
+		
+	</div>
+</div>
+		
 
 
 
@@ -139,47 +299,11 @@
 
 
 
-   		<div class="col-xs-12 col-sm-7 top-style">
-   			<div role="tabpanel">
-			    <!-- 標籤面板：標籤區 -->
-			    <ul class="nav nav-tabs" role="tablist">
-			        <li role="presentation" class="active">
-			            <a href="#tab1" aria-controls="tab1" role="tab" data-toggle="tab">食譜</a>
-			        </li>
-			        <li role="presentation">
-			            <a href="#tab2" aria-controls="tab2" role="tab" data-toggle="tab">收藏</a>
-			        </li>
-			        <li role="presentation">
-			            <a href="#tab3" aria-controls="tab3" role="tab" data-toggle="tab">好友</a>
-			        </li>
-			    </ul>
-			
-			    <!-- 標籤面板：內容區 -->
-				    <div class="tab-content">
-				        <div role="tabpanel" class="tab-pane active" id="tab1">目前沒有任何的食譜或料理</div>
-				        <div role="tabpanel" class="tab-pane" id="tab2">收藏標籤的內容</div>
-				        <div role="tabpanel" class="tab-pane" id="tab3">好友標籤的內容</div>
-				    </div>
-				</div>
-    		</div>
+   		
 
     		
 
-    		<div class="col-xs-12 col-sm-5 text-center top-style">
-    			<img src="/AA105G3/MemberDBGifReader.do?name=${mem_no}" width='150' height='150'>
-    			<h3>${mem_name}</h3>
-
-				<div class="col-xs-12 col-sm-6 count-style">
-	    			<div>食譜數：0</div>
-	    		</div>
-	    		<div class="col-xs-12 col-sm-6 count-style">
-	    			<div>追隨數：0</div>
-	    		</div>
-
-    			<a class="btn btn-primary">追隨我</a>
-    		</div>
-    	</div>
-    </div>
+    		
 
 
 <footer>
