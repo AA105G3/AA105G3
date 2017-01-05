@@ -53,8 +53,8 @@ public class ChefServletAndroid extends HttpServlet {
 		if ("getOneByMem_no".equals(action)) {
 			String mem_no = jsonObject.get("mem_no").getAsString();
 			ChefVO chefVO = chefSvc.getOneByMem_no(mem_no);
-			
-			//照片設為NULL, 避免手機OOM
+
+			// 照片設為NULL, 避免手機OOM
 			chefVO.setChef_lic(null);
 			chefVO.setChef_image(null);
 			chefVO.setChef_movie1(null);
@@ -68,12 +68,12 @@ public class ChefServletAndroid extends HttpServlet {
 			outStr.append(gson.toJson(chefVO));
 			SendResponse.writeText(res, outStr.toString());
 		}
-		
+
 		if ("getOneByChef_no".equals(action)) {
 			String chef_no = jsonObject.get("chef_no").getAsString();
 			ChefVO chefVO = chefSvc.getOneChef(chef_no);
-			
-			//照片設為NULL, 避免手機OOM
+
+			// 照片設為NULL, 避免手機OOM
 			chefVO.setChef_lic(null);
 			chefVO.setChef_image(null);
 			chefVO.setChef_movie1(null);
@@ -110,127 +110,141 @@ public class ChefServletAndroid extends HttpServlet {
 		if ("delete".equals(action)) { // 來自listAllEmp.jsp
 
 		}
-		
+
 		if ("getImage".equals(action)) {
 			OutputStream os = res.getOutputStream();
-			String chef_no = jsonObject.get("chef_no").getAsString();
-			String buffer = jsonObject.get("buffer").getAsString();
-			
+			String chef_no = jsonObject.get("no").getAsString();//xx_no
+			String var = jsonObject.get("var").getAsString();// 所取的變數選
+
 			int imageSize = jsonObject.get("imageSize").getAsInt();
 			ChefVO chefVO = chefSvc.getOneChef(chef_no);
 			byte[] image = null;
-			System.out.println("chef_no " + chefVO.getChef_no() + " buffer " + buffer  );
-			if(buffer.equals("chef_image")){
-				image = chefVO.getChef_image();
-			}else if(buffer.equals("chef_reci_image1")){
-				image = chefVO.getChef_reci_image1();
-			}else if(buffer.equals("chef_reci_image2")){
-				image = chefVO.getChef_reci_image2();
-			}else if(buffer.equals("chef_reci_image3")){
-				image = chefVO.getChef_reci_image3();
-			}else if(buffer.equals("chef_reci_image4")){
-				image = chefVO.getChef_reci_image4();
-			}else if(buffer.equals("chef_reci_image5")){
-				image = chefVO.getChef_reci_image5();
+//			System.out.println("chef_no " + chef_no + " var " + var);
+			try {
+				if (var.equals("chef_image")) {
+					image = chefVO.getChef_image();
+				} else if (var.equals("chef_reci_image1")) {
+					image = chefVO.getChef_reci_image1();
+				} else if (var.equals("chef_reci_image2")) {
+					image = chefVO.getChef_reci_image2();
+				} else if (var.equals("chef_reci_image3")) {
+					image = chefVO.getChef_reci_image3();
+				} else if (var.equals("chef_reci_image4")) {
+					image = chefVO.getChef_reci_image4();
+				} else if (var.equals("chef_reci_image5")) {
+					image = chefVO.getChef_reci_image5();
+				}
+			} catch (Exception e) {
+				System.out.println(e.toString());
 			}
-			
-						
-			System.out.println("chef_no " + chef_no + " image is null: " + (image==null) + " imageSize " + imageSize);
+
+//			System.out.println("chef_no " + chef_no + " image is null: " + (image == null) + " imageSize " + imageSize);
 
 			if (image != null) {
 
 				image = ImageUtil.shrink(image, imageSize);
 				res.setContentType("image/jpeg");
 				res.setContentLength(image.length);
-			} else {
-				InputStream in = getServletContext().getResourceAsStream("/noImages/noimage.jpg");
-				image = new byte[in.available()];
-				in.read(image);
-				in.close();
 			}
+			// else {
+			// InputStream in =
+			// getServletContext().getResourceAsStream("/noImages/noimage.jpg");
+			// image = new byte[in.available()];
+			// in.read(image);
+			// in.close();
+			// }
 			os.write(image);
 			return;
 		}
 	}
 
-//	public String getFileNameFromPart(Part lic_part) {
-//		String header = lic_part.getHeader("content-disposition");
-//		String fileName = new File(header.substring(header.lastIndexOf("=") + 2, header.length() - 1)).getName();
-//		if (fileName.length() == 0) {
-//			return null;
-//		}
-//		return fileName;
-//	}
-//
-//	public String getFileNameFromPart2(Part c_img_part) {
-//		String header = c_img_part.getHeader("content-disposition");
-//		String fileName = new File(header.substring(header.lastIndexOf("=") + 2, header.length() - 1)).getName();
-//		if (fileName.length() == 0) {
-//			return null;
-//		}
-//		return fileName;
-//	}
-//
-//	public String getFileNameFromPart3(Part mov1_part) {
-//		String header = mov1_part.getHeader("content-disposition");
-//		String fileName = new File(header.substring(header.lastIndexOf("=") + 2, header.length() - 1)).getName();
-//		if (fileName.length() == 0) {
-//			return null;
-//		}
-//		return fileName;
-//	}
-//
-//	public String getFileNameFromPart4(Part mov2_part) {
-//		String header = mov2_part.getHeader("content-disposition");
-//		String fileName = new File(header.substring(header.lastIndexOf("=") + 2, header.length() - 1)).getName();
-//		if (fileName.length() == 0) {
-//			return null;
-//		}
-//		return fileName;
-//	}
-//
-//	public String getFileNameFromPart5(Part img1_part) {
-//		String header = img1_part.getHeader("content-disposition");
-//		String fileName = new File(header.substring(header.lastIndexOf("=") + 2, header.length() - 1)).getName();
-//		if (fileName.length() == 0) {
-//			return null;
-//		}
-//		return fileName;
-//	}
-//
-//	public String getFileNameFromPart6(Part img2_part) {
-//		String header = img2_part.getHeader("content-disposition");
-//		String fileName = new File(header.substring(header.lastIndexOf("=") + 2, header.length() - 1)).getName();
-//		if (fileName.length() == 0) {
-//			return null;
-//		}
-//		return fileName;
-//	}
-//
-//	public String getFileNameFromPart7(Part img3_part) {
-//		String header = img3_part.getHeader("content-disposition");
-//		String fileName = new File(header.substring(header.lastIndexOf("=") + 2, header.length() - 1)).getName();
-//		if (fileName.length() == 0) {
-//			return null;
-//		}
-//		return fileName;
-//	}
-//
-//	public String getFileNameFromPart8(Part img4_part) {
-//		String header = img4_part.getHeader("content-disposition");
-//		String fileName = new File(header.substring(header.lastIndexOf("=") + 2, header.length() - 1)).getName();
-//		if (fileName.length() == 0) {
-//			return null;
-//		}
-//		return fileName;
-//	}
-//
-//	public String getFileNameFromPart9(Part img5_part) {
-//		String header = img5_part.getHeader("content-disposition");
-//		String fileName = new File(header.substring(header.lastIndexOf("=") + 2, header.length() - 1)).getName();
-//		if (fileName.length() == 0) {
-//			return null;
-//		}
-//		return fileName;
-//	}
+	// public String getFileNameFromPart(Part lic_part) {
+	// String header = lic_part.getHeader("content-disposition");
+	// String fileName = new File(header.substring(header.lastIndexOf("=") + 2,
+	// header.length() - 1)).getName();
+	// if (fileName.length() == 0) {
+	// return null;
+	// }
+	// return fileName;
+	// }
+	//
+	// public String getFileNameFromPart2(Part c_img_part) {
+	// String header = c_img_part.getHeader("content-disposition");
+	// String fileName = new File(header.substring(header.lastIndexOf("=") + 2,
+	// header.length() - 1)).getName();
+	// if (fileName.length() == 0) {
+	// return null;
+	// }
+	// return fileName;
+	// }
+	//
+	// public String getFileNameFromPart3(Part mov1_part) {
+	// String header = mov1_part.getHeader("content-disposition");
+	// String fileName = new File(header.substring(header.lastIndexOf("=") + 2,
+	// header.length() - 1)).getName();
+	// if (fileName.length() == 0) {
+	// return null;
+	// }
+	// return fileName;
+	// }
+	//
+	// public String getFileNameFromPart4(Part mov2_part) {
+	// String header = mov2_part.getHeader("content-disposition");
+	// String fileName = new File(header.substring(header.lastIndexOf("=") + 2,
+	// header.length() - 1)).getName();
+	// if (fileName.length() == 0) {
+	// return null;
+	// }
+	// return fileName;
+	// }
+	//
+	// public String getFileNameFromPart5(Part img1_part) {
+	// String header = img1_part.getHeader("content-disposition");
+	// String fileName = new File(header.substring(header.lastIndexOf("=") + 2,
+	// header.length() - 1)).getName();
+	// if (fileName.length() == 0) {
+	// return null;
+	// }
+	// return fileName;
+	// }
+	//
+	// public String getFileNameFromPart6(Part img2_part) {
+	// String header = img2_part.getHeader("content-disposition");
+	// String fileName = new File(header.substring(header.lastIndexOf("=") + 2,
+	// header.length() - 1)).getName();
+	// if (fileName.length() == 0) {
+	// return null;
+	// }
+	// return fileName;
+	// }
+	//
+	// public String getFileNameFromPart7(Part img3_part) {
+	// String header = img3_part.getHeader("content-disposition");
+	// String fileName = new File(header.substring(header.lastIndexOf("=") + 2,
+	// header.length() - 1)).getName();
+	// if (fileName.length() == 0) {
+	// return null;
+	// }
+	// return fileName;
+	// }
+	//
+	// public String getFileNameFromPart8(Part img4_part) {
+	// String header = img4_part.getHeader("content-disposition");
+	// String fileName = new File(header.substring(header.lastIndexOf("=") + 2,
+	// header.length() - 1)).getName();
+	// if (fileName.length() == 0) {
+	// return null;
+	// }
+	// return fileName;
+	// }
+	//
+	// public String getFileNameFromPart9(Part img5_part) {
+	// String header = img5_part.getHeader("content-disposition");
+	// String fileName = new File(header.substring(header.lastIndexOf("=") + 2,
+	// header.length() - 1)).getName();
+	// if (fileName.length() == 0) {
+	// return null;
+	// }
+	// return fileName;
+	// }
 }
