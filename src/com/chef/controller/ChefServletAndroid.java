@@ -15,13 +15,14 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonObject;
 
+import util.ImageUtil;
 import util.SendResponse;
 
 @MultipartConfig(fileSizeThreshold = 1024 * 1024, maxFileSize = 10000 * 1024 * 1024, maxRequestSize = 1000 * 10000
 		* 1024 * 1024)
-
+//
 @SuppressWarnings("serial")
-@WebServlet("/ChefServletAndroid")
+@WebServlet("/ChefServletAndroid.do")
 public class ChefServletAndroid extends HttpServlet {
 
 	public void doGet(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
@@ -63,7 +64,26 @@ public class ChefServletAndroid extends HttpServlet {
 			chefVO.setChef_reci_image3(null);
 			chefVO.setChef_reci_image4(null);
 			chefVO.setChef_reci_image5(null);
+			System.out.println("@@@@@@@@@@@@@@@@@@@@@ chefVO.get=" + chefVO.getChef_name());
+			outStr.append(gson.toJson(chefVO));
+			SendResponse.writeText(res, outStr.toString());
+		}
+		
+		if ("getOneByChef_no".equals(action)) {
+			String chef_no = jsonObject.get("chef_no").getAsString();
+			ChefVO chefVO = chefSvc.getOneChef(chef_no);
 			
+			//照片設為NULL, 避免手機OOM
+			chefVO.setChef_lic(null);
+			chefVO.setChef_image(null);
+			chefVO.setChef_movie1(null);
+			chefVO.setChef_movie2(null);
+			chefVO.setChef_reci_image1(null);
+			chefVO.setChef_reci_image2(null);
+			chefVO.setChef_reci_image3(null);
+			chefVO.setChef_reci_image4(null);
+			chefVO.setChef_reci_image5(null);
+			System.out.println("@@@@@@@@@@@@@@@@@@@@@ chefVO.get=" + chefVO.getChef_name());
 			outStr.append(gson.toJson(chefVO));
 			SendResponse.writeText(res, outStr.toString());
 		}
@@ -89,6 +109,47 @@ public class ChefServletAndroid extends HttpServlet {
 
 		if ("delete".equals(action)) { // 來自listAllEmp.jsp
 
+		}
+		
+		if ("getImage".equals(action)) {
+			OutputStream os = res.getOutputStream();
+			String chef_no = jsonObject.get("chef_no").getAsString();
+			String buffer = jsonObject.get("buffer").getAsString();
+			
+			int imageSize = jsonObject.get("imageSize").getAsInt();
+			ChefVO chefVO = chefSvc.getOneChef(chef_no);
+			byte[] image = null;
+			System.out.println("chef_no " + chefVO.getChef_no() + " buffer " + buffer  );
+			if(buffer.equals("chef_image")){
+				image = chefVO.getChef_image();
+			}else if(buffer.equals("chef_reci_image1")){
+				image = chefVO.getChef_reci_image1();
+			}else if(buffer.equals("chef_reci_image2")){
+				image = chefVO.getChef_reci_image2();
+			}else if(buffer.equals("chef_reci_image3")){
+				image = chefVO.getChef_reci_image3();
+			}else if(buffer.equals("chef_reci_image4")){
+				image = chefVO.getChef_reci_image4();
+			}else if(buffer.equals("chef_reci_image5")){
+				image = chefVO.getChef_reci_image5();
+			}
+			
+						
+			System.out.println("chef_no " + chef_no + " image is null: " + (image==null) + " imageSize " + imageSize);
+
+			if (image != null) {
+
+				image = ImageUtil.shrink(image, imageSize);
+				res.setContentType("image/jpeg");
+				res.setContentLength(image.length);
+			} else {
+				InputStream in = getServletContext().getResourceAsStream("/noImages/noimage.jpg");
+				image = new byte[in.available()];
+				in.read(image);
+				in.close();
+			}
+			os.write(image);
+			return;
 		}
 	}
 

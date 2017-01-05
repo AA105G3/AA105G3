@@ -394,20 +394,20 @@ public class ChefJDBCDAO implements ChefDAO_interface {
 //		System.out.println("---------------------");
 
 		// 查詢
-		List<ChefVO> list = dao.getAll();
-		for (ChefVO aChef : list) {
-			System.out.print(aChef.getChef_no() + ",");
-			System.out.print(aChef.getMem_no() + ",");
-			System.out.print(aChef.getChef_chk_cond() + ",");
-			System.out.print(aChef.getChef_bnk() + ",");
-			System.out.print(aChef.getChef_bnk_ac() + ",");
-			System.out.print(aChef.getChef_skill() + ",");
-			System.out.print(aChef.getChef_id() + ",");
-			System.out.print(aChef.getChef_name() + ",");
-			System.out.print(aChef.getChef_area() + ",");
-			System.out.print(aChef.getChef_intr() + ",");
-			System.out.print(aChef.getChef_menu());
-			System.out.println();
-		}
+//		List<ChefVO> list = dao.getAll();
+//		for (ChefVO aChef : list) {
+//			System.out.print(aChef.getChef_no() + ",");
+//			System.out.print(aChef.getMem_no() + ",");
+//			System.out.print(aChef.getChef_chk_cond() + ",");
+//			System.out.print(aChef.getChef_bnk() + ",");
+//			System.out.print(aChef.getChef_bnk_ac() + ",");
+//			System.out.print(aChef.getChef_skill() + ",");
+//			System.out.print(aChef.getChef_id() + ",");
+//			System.out.print(aChef.getChef_name() + ",");
+//			System.out.print(aChef.getChef_area() + ",");
+//			System.out.print(aChef.getChef_intr() + ",");
+//			System.out.print(aChef.getChef_menu());
+//			System.out.println();
+//		}
 	}
 }

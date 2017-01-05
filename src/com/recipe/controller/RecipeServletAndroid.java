@@ -99,11 +99,11 @@ public class RecipeServletAndroid extends HttpServlet {
 		}
 		if ("getOneByRecipe_no_For_Display".equals(action)) { // 來自select_page.jsp的請求
 
-			String recipe_noJson = jsonObject.get("recipe_no").getAsString();
-			JsonReader reader = new JsonReader(new StringReader(recipe_noJson));
-			reader.setLenient(true);
+			String recipe_no = jsonObject.get("recipe_no").getAsString();
+//			JsonReader reader = new JsonReader(new StringReader(recipe_noJson));
+//			reader.setLenient(true);
 
-			String recipe_no = gson.fromJson(reader, String.class);
+//			String recipe_no = gson.fromJson(reader, String.class);
 			RecipeVO recipeVO = recipeSvc.getOneRecipe(recipe_no);
 			
 			recipeVO.setRecipe_pic(null);

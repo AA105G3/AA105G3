@@ -327,4 +327,10 @@ public class ChefJNDIDAO implements ChefDAO_interface {
 		}
 		return list;
 	}
+
+	@Override
+	public ChefVO findByMem_no(String mem_no) {
+		// TODO Auto-generated method stub
+		return null;
+	}
 }

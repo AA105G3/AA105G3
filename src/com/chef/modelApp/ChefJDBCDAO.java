@@ -410,4 +410,10 @@ public class ChefJDBCDAO implements ChefDAO_interface {
 			System.out.println();
 		}
 	}
+
+	@Override
+	public ChefVO findByMem_no(String mem_no) {
+		// TODO Auto-generated method stub
+		return null;
+	}
 }

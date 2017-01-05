@@ -194,7 +194,7 @@ public class ChefDAO implements ChefDAO_interface {
 		Connection con = null;
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
-
+System.out.println("chef_no: "+ chef_no);
 		try {
 
 			con = ds.getConnection();
