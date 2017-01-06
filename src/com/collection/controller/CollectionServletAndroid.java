@@ -94,7 +94,15 @@ public class CollectionServletAndroid extends HttpServlet {
 		}
 
 		if ("delete".equals(action)) {
+			String mem_no = jsonObject.get("mem_no").getAsString();
+			String coll_no = jsonObject.get("coll_no").getAsString();
+			collectionSvc.deleteCollection(coll_no);
+			
+			List<CollectionVO> collectionVOList = collectionSvc.getAllByMem_noCollection(mem_no);
 
+			outStr.append(gson.toJson(collectionVOList));
+			SendResponse.writeText(res, outStr.toString());
+			return;
 		}
 
 		if ("getOne_For_Update".equals(action)) {
