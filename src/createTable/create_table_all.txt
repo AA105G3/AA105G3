@@ -821,7 +821,7 @@ CREATE TABLE chef(
  CHEF_CHK_COND       VARCHAR2(1)     NOT NULL,
  CHEF_BNK            VARCHAR2(5)     NOT NULL,
  CHEF_BNK_AC         VARCHAR2(15)    NOT NULL,
- CHEF_SKILL          VARCHAR2(30)    NOT NULL,
+ CHEF_SKILL          VARCHAR2(300)    NOT NULL,
  CHEF_LIC            BLOB            ,
  CHEF_IMAGE          BLOB            ,
  CHEF_MOVIE1         BLOB            ,
