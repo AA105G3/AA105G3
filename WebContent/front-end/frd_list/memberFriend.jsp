@@ -221,6 +221,13 @@
 				width:150px;
 				height:150px;
 			}
+			.tab1 a,.tab2 a,.tab3 a{
+				color:#000;
+			}
+			.tab1.active a,.tab2.active a,.tab3.active a{
+				color:steelblue !important;
+				font-weight:bold ;
+			}
 		</style>
 
 	</head>
