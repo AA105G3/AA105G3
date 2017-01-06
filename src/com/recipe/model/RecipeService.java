@@ -362,4 +362,41 @@ public class RecipeService
 	public byte[] getImage(String recipe_no) {  
 		return dao.getImage(recipe_no);
 	}
+	//我的收藏用的
+	public RecipeVO getCollectRecipe(String recipe_no) {
+		
+		RecipeVO recipeVO = dao.findByPrimaryKey(recipe_no);
+		if(recipeVO!=null){
+			
+			if(recipeVO.getRecipe_intro()!=null&&recipeVO.getRecipe_intro().length()>64){
+				String introSbsr= recipeVO.getRecipe_intro().substring(0,65)+"...";
+				recipeVO.setRecipe_intro(introSbsr);
+			}
+			
+			String str = recipeVO.getFood_mater();
+			String[] tokens = str.split("-|\\+");
+			
+			StringBuffer ingredients = new StringBuffer();
+			
+			ingredients.append(tokens[0]);
+			for(int i =2;i<tokens.length-1;i+=2){
+				ingredients.append("、"+tokens[i]);
+			}
+			
+			String food_maters = null;
+			if(ingredients.length()>38){
+				food_maters = ingredients.substring(0,39)+"..."; 
+				
+			}else{
+				food_maters = new String(ingredients);
+			}
+			
+			recipeVO.setFood_mater(new String(food_maters));
+			if(recipeVO.getRecipe_edit().equals("已刪除")){
+				recipeVO=null;
+			}
+		}
+		return recipeVO;
+	}
+	
 }
