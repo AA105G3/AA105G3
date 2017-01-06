@@ -1,18 +1,12 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8" %>
-<%@ page import="com.product_order.model.*"%>
-<%@ page import="java.util.*"%>
-<%@ page import="java.text.*"%>
+<%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
-
+<%@ page import="com.adv.model.*"%>
 <%
-	Product_orderService product_orderSvc = new Product_orderService();
-	List<Product_orderVO> list = (List) request.getAttribute("list");
-    pageContext.setAttribute("list",list);
+	AdvVO advVO = (AdvVO) request.getAttribute("advVO"); //AdvServlet.java (Concroller), 存入req的advVO物件 (包括幫忙取出的advVO, 也包括輸入資料錯誤時的advVO物件)
 %>
-
 <html>
 <head>
-<title>訂單資料</title>
+<title>廣告資料修改</title>
 
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -21,41 +15,45 @@
 <link rel="stylesheet" href="/AA105G3/css/backpageCSS.css">
 
 <style>
-.table-style{
-	padding-top: 75px;
+
+#mainTable{
+	width : 600px;
+	height : 400px;
+	margin : 0px auto;
+	/* background-color : #f5deb3; */
 }
-th{
-	text-align: center;
-	height: 50px;
+th, td {
+	height : 50px;
+	max-width : 200px;
+	padding-left : 60px;
 }
-.search-style{
-	padding-bottom: 30px;
+#center{
+	padding-left : 0px;
+	text-align : center;
+}
+#productTextarea{
+	resize : none;
+	width : 250px;
+	height : 150px;
+}
+#img{
+	height : 300px;
+	width : auto;
 }
 .btn-style{
-	margin-top : 15px;
+	padding-top : 50px;
 }
-.th-style{
-	background: #e2fede;
+.table-style{
+	padding-top : 50px;
 }
-.th-style th{
-	font-size: 17px;
-}
-.page-style{
-	padding-top: 30px;
-}
-.list-style{
-	padding-bottom : 100px;
-}
+
 </style>
 
 </head>
+<script language="JavaScript" src="<%=request.getContextPath()%>/back-end/adv/js/adv_image.js"></script>
+<div id="popupcalendar" class="text"></div>
+
 <body>
-
-
-
-
-
-<div id="skin">
 
 
 
@@ -250,75 +248,133 @@ th{
 
 
 
-
-<div class="col-xs-12 col-sm-8 col-sm-push-1 table-style">
-
-
-
+<div class="container">
+	<div class="row">
+		<div class="col-xs-12 col-sm-12 col-sm-push-1 table-style">
 
 
-<div class="list-style">
-<font size="+3">商品訂單： </font>
-<p>
 
-<table border='1' bordercolor='#CCCCFF' width='1200'>
-	<tr class="th-style">
-		<th>訂單編號</th>
-		<th>訂單成立時間</th>
-		<th>信用卡卡號</th>
-		<th>訂單總金額</th>
-		<th>收件人姓名</th>
-		<th>郵遞區號</th>
-		<th>寄送地址</th>
-		<th>聯絡手機</th>
-		<th>聯絡市話</th>
-		<th>查詢明細</th>
+
+
+<%-- 錯誤表列 --%>
+<c:if test="${not empty errorMsgs}">
+	<font color='red'>請修正以下錯誤:
+	<ul>
+		<c:forEach var="message" items="${errorMsgs}">
+			<li>${message}</li>
+		</c:forEach>
+	</ul>
+	</font>
+</c:if>
+
+<FORM METHOD="post" ACTION="adv.do" name="form1" enctype="multipart/form-data">
+<table border='1' bordercolor='#CCCCFF' id="mainTable" cellspacing="0">
+
+	<%-- <tr>
+		<td>廣告編號:<font color=red><b>*</b></font></td>
+		<td><%=advVO.getAdv_no()%></td>
+	</tr>
+	<tr>
+		<td>員工編號:</td>
+		<td><input type="TEXT" name="emp_no" size="45" value="<%=advVO.getEmp_no()%>" /></td>
 	</tr>
 	
-	<%@ include file="pages/page1_ByCompositeQuery.file" %>
-	<c:forEach var="product_orderVO" items="${list}" begin="<%=pageIndex%>" end="<%=pageIndex+rowsPerPage-1%>">
-		<tr align='center' valign='middle' ${(product_orderVO.prod_ord_no==param.prod_ord_no) ? 'bgcolor=#f5deb3':''}>
-			<td>${product_orderVO.prod_ord_no}</td>
-			<jsp:useBean id="product_orderVO" scope="page" class="com.product_order.model.Product_orderVO" />
-			<td><%=new SimpleDateFormat("yyyy/MM/dd HH:mm:ss").format(product_orderVO.getProd_ord_time())%></td>
-			
-			<td>${product_orderVO.cred_card_no.subSequence(0,4)}********${product_orderVO.cred_card_no.subSequence(12,16)}</td>
-			<td>${product_orderVO.total_money}</td>
-			<td>${product_orderVO.ship_name}</td>
-			<td>${product_orderVO.post_code}</td>
-			<td>${product_orderVO.mem_adrs}</td>
-			<td>${product_orderVO.cell_phone}</td>
-			<td>${product_orderVO.tel_phone}</td>
-			<td>
-			  <FORM METHOD="post" ACTION="<%=request.getContextPath()%>/product_order/product_order.do">
-			    <input type="submit" class="btn btn-primary btn-style" value="查詢"> 
-			    <input type="hidden" name="prod_ord_no" value="${product_orderVO.prod_ord_no}">
-			    <input type="hidden" name="mem_no" value="${product_orderVO.mem_no}">
-			    <input type="hidden" name="whichPage"	value="<%=whichPage%>">
-			    <input type="hidden" name="action" value="getOne_For_Backpage">
-			    </FORM>
-			</td>
-			
+	<tr>
+		<td>廣告名稱:</td>
+		<td><input type="TEXT" name="adv_name" size="45" value="<%=advVO.getAdv_name()%>" /></td>
 	</tr>
-	</c:forEach>
-	<%@ include file="pages/page2_ByCompositeQuery.file" %>
+	
+	<tr>
+		<td>圖片名稱:</td>
+		<td><input type="TEXT" name="adv_image_name" size="45" value="<%=advVO.getAdv_image_name()%>" />
+	</tr>
+	
+	<tr>
+		<td>廣告圖片:</td>
+		<td><input accept="image/*" type="FILE" name="adv_image" id="adv_image" /></td>
+	</tr>
+
+	<tr>
+		<td>廣告連結:</td>
+		<td><input type="TEXT" name="adv_url" size="45" value="<%=advVO.getAdv_url()%>" />
+	</tr>
+	
+	<tr>
+		<img id="img" src="<%=request.getContextPath()%>/back-end/adv/images/No-image-found.png" width='100'>
+	</tr>
+	 --%>
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	<tr>
+		<td colspan="2" id="center" align="center" valign="center"><h2>修改廣告</h2></td>
+	</tr>
+	
+	<tr>
+		<td>
+			廣告編號：<font color=red><b>*</b></font><%=advVO.getAdv_no()%>
+		</td>
+	</tr>
+
+	<tr>
+		<td>
+			廣告名稱：
+			<input type="TEXT" name="adv_name" size="45" value="<%=advVO.getAdv_name()%>" />
+		</td>
+	</tr>
+	
+	<tr>
+		<td>圖片名稱：
+			<input type="TEXT" name="adv_image_name" size="45" value="<%=advVO.getAdv_image_name()%>" />
+		</td>
+	</tr>
+
+	<tr>
+		<td>
+			廣告連結：
+			<input type="TEXT" name="adv_url" size="45" value="<%=advVO.getAdv_url()%>" />
+		</td>
+	</tr>
+	
+	<tr>
+		<td>廣告圖片：
+			<input accept="image/*" type="FILE" name="adv_image" id="adv_image" />
+			<div id="center">
+				<img id="img" src="/AA105G3/AdvDBGifReader.do?name=${advVO.adv_no}">
+			</div>
+		</td>
+	</tr>
+
 </table>
-
-<br>
-<br>
 <br>
 
-<%if (request.getAttribute("listPOList_ByProd_ord_no")!=null){%>
-       <jsp:include page="ListProductOrderList.jsp" />
-<%} %>
+
+<div class="text-center btn-style">
+	<a class="btn btn-default" href="/AA105G3/back-end/adv/AdvManagement.jsp">取消修改</a>
+	
+	<input type="hidden" name="action" value="update">
+	<input type="hidden" name="adv_no" value="<%=advVO.getAdv_no()%>">
+	<input type="hidden" name="emp_no" value="<%=advVO.getEmp_no()%>">
+	<input type="hidden" name="whichPage" value="<%=request.getParameter("whichPage")%>">
+	<input class="btn btn-primary" type="submit" value="確認修改">
 </div>
 
+</FORM>
 
 
 
 
 
+		</div>
+	</div>
 </div>
+
 
 
 
@@ -329,12 +385,11 @@ th{
 </footer>
 		
 <script src="https://code.jquery.com/jquery.js"></script>
-<script src="https://netdna.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>		
+<script src="https://netdna.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
 
 
 
 
 
-</div>
 </body>
 </html>

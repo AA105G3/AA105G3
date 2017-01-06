@@ -175,8 +175,17 @@ pageContext.setAttribute("buylist",buylist);
 	</tr>
 	<tr>
 		<td>信用卡卡號：</td>
-		<td><input type="TEXT" name="cred_card_no" size="45" maxlength="16"
-			value="<%= (product_orderVO==null)? "A1B2C3D4E5F6G7H8" : product_orderVO.getCred_card_no()%>" /></td>
+		<td>
+			<input type="TEXT" id="text1" size="1" maxlength="4" value="">
+			-
+			<input type="TEXT" id="text2" size="1" maxlength="4" value="">
+			-
+			<input type="TEXT" id="text3" size="1" maxlength="4" value="">
+			-
+			<input type="TEXT" id="text4" size="1" maxlength="4" value="">
+			
+			<input type="hidden" name="cred_card_no" id="cred_card_no" value="" />
+		</td>
 	</tr>
 	<tr>
 		<td>信用卡有效時期：</td>
@@ -279,6 +288,43 @@ pageContext.setAttribute("buylist",buylist);
 	Copyright &copy; 2016 Java Team 3 
 </footer>
 
+<script type="text/javascript">
+
+function doFirst(){
+	
+	var count1 = document.getElementById('text1');
+	var count2 = document.getElementById('text2');
+	var count3 = document.getElementById('text3');
+	var count4 = document.getElementById('text4');
+	
+	count1.addEventListener('keyup', countCredCardNo, false);
+	count2.addEventListener('keyup', countCredCardNo, false);
+	count3.addEventListener('keyup', countCredCardNo, false);
+	count4.addEventListener('keyup', countCredCardNo, false);
+	
+	count1.addEventListener('blur', countCredCardNo, false);
+	count2.addEventListener('blur', countCredCardNo, false);
+	count3.addEventListener('blur', countCredCardNo, false);
+	count4.addEventListener('blur', countCredCardNo, false);
+	
+	function countCredCardNo(){
+		
+		var text1 = document.getElementById('text1').value;
+		var text2 = document.getElementById('text2').value;
+		var text3 = document.getElementById('text3').value;
+		var text4 = document.getElementById('text4').value;
+		
+		var cred_card_no = text1+text2+text3+text4;
+		
+		document.getElementById('cred_card_no').value = cred_card_no;
+		
+	}
+	
+}
+
+window.addEventListener('load', doFirst, false);
+
+</script>
 
 <script src="https://code.jquery.com/jquery.js"></script>
 <script src="https://netdna.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>

@@ -4,7 +4,13 @@
 <%@ page import="java.text.*"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 
-<jsp:useBean id="product_orderSvc" scope="page" class="com.product_order.model.Product_orderService" />
+<%
+	Product_orderService product_orderSvc = new Product_orderService();
+	String mem_no = request.getParameter("mem_no"); 
+	List list = product_orderSvc.getProduct_order_By_Mem_no(mem_no);
+	pageContext.setAttribute("list", list);	
+%>
+
 
 <html>
 <head>
@@ -165,7 +171,8 @@
 		<th>修改訂單</th>
 	</tr>
 	
-	<c:forEach var="product_orderVO" items="${product_orderSvc.getProduct_order_By_Mem_no(param.mem_no)}">
+	<%@ include file="pages/page1_ByCompositeQuery.file" %>
+	<c:forEach var="product_orderVO" items="${list}" begin="<%=pageIndex%>" end="<%=pageIndex+rowsPerPage-1%>">
 		<tr align='center' valign='middle' ${(product_orderVO.prod_ord_no==param.prod_ord_no) ? 'bgcolor=#f5deb3':''}>
 			<td>${product_orderVO.prod_ord_no}</td>
 			<%-- <td>${product_orderVO.mem_no}</td> --%>
@@ -199,16 +206,19 @@
 			    <input type="submit" class="btn btn-primary btn-style" value="查詢"> 
 			    <input type="hidden" name="prod_ord_no" value="${product_orderVO.prod_ord_no}">
 			    <input type="hidden" name="mem_no" value="${product_orderVO.mem_no}">
+			    <input type="hidden" name="whichPage"	value="<%=whichPage%>">
 			    <input type="hidden" name="action" value="getPart_For_Display_By_One_PK"></FORM>
 			</td>
 			<td>
 			  <FORM METHOD="post" ACTION="<%=request.getContextPath()%>/product_order/product_order.do">
 			     <input type="submit" class="btn btn-primary btn-style" value="修改">
 			     <input type="hidden" name="prod_ord_no" value="${product_orderVO.prod_ord_no}">
+			     <input type="hidden" name="whichPage"	value="<%=whichPage%>">
 			     <input type="hidden" name="action"	value="getOne_For_Update"></FORM>
 			</td>
 	</tr>
 	</c:forEach>
+	<%@ include file="pages/page2_ByCompositeQuery.file" %>
 </table>
 
 <br>
