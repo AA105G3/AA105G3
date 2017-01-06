@@ -138,7 +138,7 @@ public class MemberServletAndroid extends HttpServlet {
 			
 			MemberVO memberVO_pic = memberSvc.getOneMember(memberVO.getMem_no());
 			
-			memberVO.setMem_online("0");// login之後，表示在線上, mem_online = 1
+			memberVO.setMem_online("0");// logout，離線, mem_online = 0
 
 			memberSvc.updateMember(memberVO.getMem_no(), memberVO.getMem_name(), memberVO.getMem_ac(),
 					memberVO.getMem_pw(), memberVO_pic.getMem_image(), memberVO.getMem_sex(), memberVO.getMem_phone(),

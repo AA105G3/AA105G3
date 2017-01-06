@@ -74,7 +74,17 @@ public class RecipeServletAndroid extends HttpServlet {
 
 		if ("getAll".equals(action)) {
 			List<RecipeVO> recipelist = recipeSvc.getAll();
-			SendResponse.writeText(res, gson.toJson(recipelist));
+
+			List<RecipeVO> list2 = new ArrayList<RecipeVO>();
+			for (RecipeVO aRecipe : recipelist) {
+				if (aRecipe.getRecipe_edit().equals("已發布")) {
+					aRecipe.setRecipe_pic(null);
+					list2.add(aRecipe);
+					System.out.println("aRecipe.getRecipe_no()"+aRecipe.getRecipe_no() +"aRecipe.getRecipe_edit():"+aRecipe.getRecipe_edit());
+				}
+			}
+
+			SendResponse.writeText(res, gson.toJson(list2));
 			return;
 		}
 
@@ -100,14 +110,14 @@ public class RecipeServletAndroid extends HttpServlet {
 		if ("getOneByRecipe_no_For_Display".equals(action)) { // 來自select_page.jsp的請求
 
 			String recipe_no = jsonObject.get("recipe_no").getAsString();
-//			JsonReader reader = new JsonReader(new StringReader(recipe_noJson));
-//			reader.setLenient(true);
+			// JsonReader reader = new JsonReader(new
+			// StringReader(recipe_noJson));
+			// reader.setLenient(true);
 
-//			String recipe_no = gson.fromJson(reader, String.class);
+			// String recipe_no = gson.fromJson(reader, String.class);
 			RecipeVO recipeVO = recipeSvc.getOneRecipe(recipe_no);
-			
-			recipeVO.setRecipe_pic(null);
 
+			recipeVO.setRecipe_pic(null);
 
 			outStr.append(gson.toJson(recipeVO));
 			SendResponse.writeText(res, outStr.toString());
