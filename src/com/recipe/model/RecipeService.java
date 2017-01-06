@@ -163,6 +163,33 @@ public class RecipeService
 		
 		for(RecipeVO aRecipe : list){
 			if(aRecipe.getRecipe_edit().equals("編輯中")||aRecipe.getRecipe_edit().equals("已發布")){
+				
+				if(aRecipe.getRecipe_intro()!=null&&aRecipe.getRecipe_intro().length()>64){
+					String introSbsr= aRecipe.getRecipe_intro().substring(0,65)+"...";
+					aRecipe.setRecipe_intro(introSbsr);
+				}
+				
+				String str = aRecipe.getFood_mater();
+				String[] tokens = str.split("-|\\+");
+				
+				StringBuffer ingredients = new StringBuffer();
+				
+				ingredients.append(tokens[0]);
+				for(int i =2;i<tokens.length-1;i+=2){
+					ingredients.append("、"+tokens[i]);
+				}
+				
+				String food_maters = null;
+				if(ingredients.length()>38){
+					food_maters = ingredients.substring(0,39)+"..."; 
+					
+				}else{
+					food_maters = new String(ingredients);
+				}
+				
+				aRecipe.setFood_mater(new String(food_maters));
+				
+				
 				list2.add(aRecipe);
 			}
 		}

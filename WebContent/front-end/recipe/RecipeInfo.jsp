@@ -6,7 +6,7 @@
 
 
 
-<% session.setAttribute("mem_no", "M00000005"); %>
+<% session.setAttribute("mem_no", "M00000004"); %>
 
 
 <jsp:useBean id="recipe_cont_set" scope="request" type="java.util.Set" />
@@ -227,7 +227,7 @@
 				padding:10px 10px;
 				background:#fff;
 			}
-			.author-image{
+			#author-image{
 				width: 70px;	
 				height: 70px;	
 			}
@@ -405,11 +405,12 @@
 							<table>
 								<tr>
 									<td class="author-image-wrapper">
-										<a href="#"><img id="author-image" src="/<%=request.getContextPath()%>/MemberDBGifReader.do?name=${recipeVO.mem_no}"></a>
+										 <a href="<%=request.getContextPath()%>/member/member.do?action=getMemberInfo&mem_no=${recipeVO.mem_no}"><img id="author-image" src="<%=request.getContextPath()%>/MemberDBGifReader.do?name=${recipeVO.mem_no}"></a>
 									</td>
 									<td class="author-info">
-										<a href="#"><h4>${memberSvc.getOneMember(recipeVO.mem_no).mem_name}</h4></a>
-										<a href="#"><p>${recipeSvc.findByMem_no(recipeVO.mem_no).size()} 食譜</p></a>
+										<a href="<%=request.getContextPath()%>/member/member.do?action=getMemberInfo&mem_no=${recipeVO.mem_no}">
+										<h4>${memberSvc.getOneMember(recipeVO.mem_no).mem_name}</h4></a>
+										<a href="<%=request.getContextPath()%>/member/member.do?action=getMemberInfo&mem_no=${recipeVO.mem_no}"><p>${recipeSvc.findByMem_no(recipeVO.mem_no).size()} 食譜</p></a>
 									</td>
 								</tr>
 							</table>

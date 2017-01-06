@@ -5,7 +5,7 @@
 <%@ page import="com.frd_list.model.*"%>
 
 <% 		
-	session.setAttribute("mem_no","M00000001");
+	//session.setAttribute("mem_no","M00000001");
 	String mem_no =(String) session.getAttribute("mem_no");
 	Frd_listService frd_listSvc = new Frd_listService();
 	List list = frd_listSvc.getMyFriends(mem_no);
@@ -18,6 +18,8 @@
 %>
 
 <jsp:useBean id="memberSvc" scope="page" class="com.member.model.MemberService" />
+<jsp:useBean id="recipeSvc" scope="page" class="com.recipe.model.RecipeService" />
+
 
 <!DOCTYPE html>
 <html lang="">
@@ -48,7 +50,7 @@
 			}
 			.count-style{
 				padding-top: 10px;
-				padding-bottom: 30px;
+				padding-bottom: 15px;
 			}
 			.content-style{
 				background: white;
@@ -58,9 +60,6 @@
 				color: red;
 				border-bottom: 3px red solid;
 			}
-			
-			
-			
 			
 			body{
 				background: #efede8;
@@ -209,8 +208,18 @@
 				margin:0px !important;
 				display:inline !important;
 			}
-			.tab-pane{
-
+			.mem-email{
+				padding-left: 17px;
+				margin-bottom: 10px;
+				
+			}
+			.recipe-img-wrapper img{
+				width: 230px;
+				height: 200px;
+			}
+			#memImg{
+				width:150px;
+				height:150px;
 			}
 		</style>
 
@@ -317,9 +326,11 @@
 									<nav class="nav navbar-default">
 								        <div class="container-fluid">
 								            <ul class="nav navbar-nav">
-								                <li><a data-toggle="tab" href="#home" >食譜</a></li>
+								                <li><a  href="<%=request.getContextPath()%>/member/member.do?action=getMemberInfo&mem_no=${sessionScope.mem_no}" >食譜</a></li>
 								                <li><a data-toggle="tab" href="#menu1">收藏</a></li>
 								                <li><a data-toggle="tab" href="#menu2" id="href-style">好友</a></li>
+								                <li><a data-toggle="tab" href="#menu3">商品訂單
+								                	<i class="glyphicon glyphicon-new-window"></i></a></li>
 								            </ul>
 								        </div>
 								    </nav>
@@ -346,7 +357,7 @@
 									        			<c:forEach var="aFriend" items="${list}" varStatus="s" step="2">
 									        				<tr>
 									        					<td class="friend-img">
-									        						<img src="https://api.fnkr.net/testimg/120x120/00CED1/FFF/?text=img+placeholder">
+									        						<img src="<%=request.getContextPath()%>/MemberDBGifReader.do?name=${aFriend.friend_no}">
 									        					</td>
 									        					<td class="friend-name">
 									        						${memberSvc.getOneMember(aFriend.friend_no).mem_name}
@@ -374,7 +385,7 @@
 									        					</td>
 									        					<c:if test="${s.index+1 < list.size()}">
 									        					<td class="friend-img2">
-									        						<img src="https://api.fnkr.net/testimg/50x50/00CED1/FFF/?text=img+placeholder">
+									        						<img src="<%=request.getContextPath()%>/MemberDBGifReader.do?name=${list.get(s.index+1).friend_no}">
 									        					</td>
 									        					<td class="friend-name">
 									        						${memberSvc.getOneMember(list.get(s.index+1).friend_no).mem_name}
@@ -410,7 +421,7 @@
 									        	<c:forEach var="aFriend" items="${list2}" varStatus="s" step="2">
 								        				<tr>
 								        					<td class="friend-img">
-								        						<img src="https://api.fnkr.net/testimg/120x120/00CED1/FFF/?text=img+placeholder">
+								        						<img src="<%=request.getContextPath()%>/MemberDBGifReader.do?name=${aFriend.friend_no}">
 								        					</td>
 								        					<td class="friend-name">
 								        						${memberSvc.getOneMember(aFriend.friend_no).mem_name}
@@ -426,7 +437,7 @@
 								        					</td>
 								        					<c:if test="${s.index+1 < list2.size()}">
 								        					<td class="friend-img2">
-								        						<img src="https://api.fnkr.net/testimg/50x50/00CED1/FFF/?text=img+placeholder">
+								        						<img src="<%=request.getContextPath()%>/MemberDBGifReader.do?name=${list2.get(s.index+1).friend_no}">
 								        					</td>
 								        					<td class="friend-name">
 								        						${memberSvc.getOneMember(list2.get(s.index+1).friend_no).mem_name}
@@ -450,7 +461,7 @@
 									        	<c:forEach var="aFriend" items="${list3}" varStatus="s" step="2">
 								        				<tr>
 								        					<td class="friend-img">
-								        						<img src="https://api.fnkr.net/testimg/120x120/00CED1/FFF/?text=img+placeholder">
+								        						<img src="<%=request.getContextPath()%>/MemberDBGifReader.do?name=${aFriend.friend_no}">
 								        					</td>
 								        					<td class="friend-name">
 								        						${memberSvc.getOneMember(aFriend.friend_no).mem_name}
@@ -470,7 +481,7 @@
 								        					</td>
 								        					<c:if test="${s.index+1 < list3.size()}">
 								        					<td class="friend-img2">
-								        						<img src="https://api.fnkr.net/testimg/50x50/00CED1/FFF/?text=img+placeholder">
+								        						<img src="<%=request.getContextPath()%>/MemberDBGifReader.do?name=${list3.get(s.index+1).friend_no}">
 								        					</td>
 								        					<td class="friend-name">
 								        						${memberSvc.getOneMember(list3.get(s.index+1).friend_no).mem_name}
@@ -500,21 +511,18 @@
 
 			    		</div>
 			    		<div class="col-xs-12 col-sm-3 col-sm-push-1 text-center member-style">
-					    	<img src="https://api.fnkr.net/testimg/150x150/00CED1/FFF/?text=img+placeholder">
-	    					<h3>mem_name</h3>
+					    	<img id="memImg" src="<%=request.getContextPath()%>/MemberDBGifReader.do?name=${sessionScope.mem_no}">
+	    					<h3>${memberSvc.getOneMember(sessionScope.mem_no).mem_name}</h3>
 					
 							<div class="col-xs-12 col-sm-6 count-style">
-						    	<div>食譜數：0</div>
+						    	<div>食譜數：${recipeSvc.findByMem_no(sessionScope.mem_no).size()}</div>
 						    </div>
 						    <div class="col-xs-12 col-sm-6 count-style">
 						    	<div>追隨數：0</div>
 						    </div>
-						    
-						    <div class="col-xs-12 col-sm-6">
-						    	<a class="btn btn-primary">加入追隨</a>
-						    </div>
-						    <div class="col-xs-12 col-sm-6">
-						    	<button id="addFriend" class="btn btn-primary" value="M00000001">加入好友</button>
+						   
+						    <div class="col-xs-12 col-sm-12 text-left">
+						    	<div class="mem-email">${memberSvc.getOneMember(sessionScope.mem_no).mem_email.toLowerCase()}</div>
 						    </div>
 					
 					    	

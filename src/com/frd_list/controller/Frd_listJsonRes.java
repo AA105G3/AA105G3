@@ -39,8 +39,8 @@ public class Frd_listJsonRes extends HttpServlet {
 		if("addFriend".equals(action)){
 			
 			HttpSession session = request.getSession();
-//			String mem_no = (String)session.getAttribute("mem_no");
-			String mem_no = "M00000005";
+			String mem_no = (String)session.getAttribute("mem_no");
+//			String mem_no = "M00000005";
 			String friend_no = request.getParameter("friend_no");
 			Frd_listService frd_listSvc = new Frd_listService();
 			
