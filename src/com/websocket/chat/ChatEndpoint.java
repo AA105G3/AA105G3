@@ -6,6 +6,8 @@ import java.util.Set;
 import javax.websocket.server.PathParam;
 import javax.websocket.server.ServerEndpoint;
 
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import javax.websocket.Session;
 import javax.websocket.OnOpen;
@@ -16,23 +18,35 @@ import javax.websocket.CloseReason;
 import javax.websocket.EncodeException;
 
 
-@ServerEndpoint("/chat/{mem_no}/{frd_no}")
+@ServerEndpoint("/ChatEndpoint/{mem_no}/{frd_no}")
 public class ChatEndpoint
 {
 	private static HashMap<Session,String> users = new HashMap<>();
 	
 	@OnOpen
     public void onOpen(Session session, @PathParam("mem_no") String userId,@PathParam("frd_no") String frd_no) throws IOException, EncodeException {
-
+		System.out.println(session);
         users.put(session, userId);
+        System.out.println(userId);
         
     }
 	
 	@OnMessage
-    public void onMessage(Session session, Message message) throws IOException {
-
-        message.setFrom(users.get(session.getId()));
-        sendMessageToOneUser(message);
+    public void onMessage(Session session, String message) throws IOException {
+		
+		try
+		{
+			JSONObject jsonObjectIn = new JSONObject(message);
+			Message msg = new Message();
+			msg.setFrom(users.get(session.getId()));
+			msg.setTo(jsonObjectIn.getString("to"));
+			msg.setContent(jsonObjectIn.getString("content"));
+			sendMessageToOneUser(msg);
+		} catch (JSONException e)
+		{
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
     }
 	
 	@OnClose

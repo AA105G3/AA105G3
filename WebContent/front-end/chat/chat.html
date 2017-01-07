@@ -33,14 +33,14 @@
     var ws;
     var mem_no = "";//¦Û¤v
     var frd_no = "";//ªB¤Í
-    var path = document.location.pathname;
+    var path = window.location.pathname;
     var webCtx = path.substring(0, path.indexOf('/', 1));
-    var endPointURL = "ws://" + window.location.host + webCtx + "/ChatEndpoint/"+userId+"/"+frd_no;
     
     function connect() {
     	
         var mem_no = document.getElementById("username").value;
         var frd_no = document.getElementById("to").value;
+	    var endPointURL = "ws://" + window.location.host + webCtx + "/ChatEndpoint/"+mem_no+"/"+frd_no;
         ws = new WebSocket(endPointURL);
 
 
