@@ -80,7 +80,7 @@ public class RecipeServletAndroid extends HttpServlet {
 				if (aRecipe.getRecipe_edit().equals("已發布")) {
 					aRecipe.setRecipe_pic(null);
 					list2.add(aRecipe);
-					System.out.println("aRecipe.getRecipe_no()"+aRecipe.getRecipe_no() +"aRecipe.getRecipe_edit():"+aRecipe.getRecipe_edit());
+//					System.out.println("aRecipe.getRecipe_no()"+aRecipe.getRecipe_no() +"aRecipe.getRecipe_edit():"+aRecipe.getRecipe_edit());
 				}
 			}
 
@@ -107,6 +107,26 @@ public class RecipeServletAndroid extends HttpServlet {
 
 			return;
 		}
+		
+		if ("getAllByRecipe_name".equals(action)) {
+			String recipe_name = jsonObject.get("recipe_name").getAsString();
+			List<RecipeVO> recipeVOList = recipeSvc.serachByRecipe_name(recipe_name);
+
+			List<RecipeVO> list2 = new ArrayList<RecipeVO>();
+			for (RecipeVO aRecipe : recipeVOList) {
+				if (aRecipe.getRecipe_edit().equals("已發布")) {
+					aRecipe.setRecipe_pic(null);
+					list2.add(aRecipe);
+					System.out.println("aRecipe.getRecipe_no()"+aRecipe.getRecipe_no() +"aRecipe.getRecipe_name():"+aRecipe.getRecipe_name());
+				}
+			}
+
+			SendResponse.writeText(res, gson.toJson(list2));
+
+			return;
+		}
+		
+		
 		if ("getOneByRecipe_no_For_Display".equals(action)) { // 來自select_page.jsp的請求
 
 			String recipe_no = jsonObject.get("recipe_no").getAsString();
