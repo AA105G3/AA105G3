@@ -1,0 +1,71 @@
+<html>
+    <head>
+        <title>Chat</title>
+    </head>
+    <body>
+
+        <table>
+            <tr>
+                <td colspan="2">
+                    <input type="text" id="username" placeholder="Username"/>
+                    <button type="button" onclick="connect();" >Connect</button>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <textarea readonly="true" rows="10" cols="80" id="log"></textarea>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <input type="text" size="15" id="to" placeholder="To"/>
+                    <input type="text" size="51" id="msg" placeholder="Message"/>
+                    <button type="button" onclick="send();" >Send</button>
+                </td>
+            </tr>
+        </table>
+    </body>
+
+    <script>
+    
+    
+    
+    var ws;
+    var mem_no = "";//自己
+    var frd_no = "";//朋友
+    var path = document.location.pathname;
+    var webCtx = path.substring(0, path.indexOf('/', 1));
+    var endPointURL = "ws://" + window.location.host + webCtx + "/ChatEndpoint/"+userId+"/"+frd_no;
+    
+    function connect() {
+    	
+        var mem_no = document.getElementById("username").value;
+        var frd_no = document.getElementById("to").value;
+        ws = new WebSocket(endPointURL);
+
+
+        ws.onmessage = function(event) {
+        var messagesArea = document.getElementById("log");
+            console.log(event.data);
+            var message = JSON.parse(event.data);
+            messagesArea.innerHTML += message.from + " : " + message.content + "\n";
+            messagesArea.scrollTop = messagesArea.scrollHeight;
+        };
+    }
+
+    function send() {
+        var content = document.getElementById("msg").value;
+        var to = frd_no;//送訊息的目標id
+        var json = JSON.stringify({
+            "to":to,
+            "content":content
+        });
+
+        ws.send(json);
+        log.innerHTML += "我 : " + content + "\n";
+    }
+    
+    
+    </script>
+
+</html>
