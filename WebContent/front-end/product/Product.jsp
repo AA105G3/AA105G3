@@ -95,6 +95,12 @@
 
 
 
+<c:import url="/front-end/adv/Adv.jsp"></c:import>
+
+
+
+
+
 <div class="navbar navbar-default navbar-fixed-top navbar-inverse mu-main-navbar" >
 	<div class="container">
 		<div class="navbar-header">
