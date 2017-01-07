@@ -4,14 +4,8 @@
 <%@ page import="com.product.model.*"%>
 <%@ page import="com.product_order_list.model.*"%>
 
-<%
-    ProductService productSvc = new ProductService();
-    List<ProductVO> list = productSvc.getAll();
-    pageContext.setAttribute("list",list);
-%>
-
-<%
-	Vector<Product_order_listVO> buylist = (Vector<Product_order_listVO>) session.getAttribute("shoppingcart");
+<% 		
+	String searchInput =request.getParameter("searchInput");
 	String amount =  (String) session.getAttribute("amount");
 	String quantity =  (String) session.getAttribute("quantity");
 %>
@@ -83,6 +77,10 @@
 	.search-style{
 		padding-top: 50px;
 		margin: center;
+	}
+	div.message{
+		padding-top: 30px;
+		height: 249px;
 	}
 </style>
 
@@ -166,7 +164,7 @@
 
 <div class="col-xs-12 col-sm-12 select-menu">
 	<nobr class="select-item">
-		<a href="#" class="href-style">最新商品</a>
+		<a href="<%=request.getContextPath()%>/front-end/product/Market.jsp" class="href-style">最新商品</a>
 	</nobr>
 	<nobr class="select-item">
 		<a href="#" class="href-style">特價商品</a>
@@ -235,11 +233,20 @@
 				</FORM>
 			
 				<div class="col-xs-12 col-sm-12">
-					<h2>最新商品</h2>
+					<h3>搜尋「 ${title} 」的商品：</h3>
 				</div>
 				
 			</div>
 		</div>
+
+
+<%List<ProductVO> list =(List<ProductVO>) request.getAttribute("list");%>
+<%if(list.isEmpty()){%>
+	<div class="text-center message">
+		<font color= "red" size="10">非常抱歉，找不到相關的商品...</font><br><br>
+		<font color= "red" size="6">請嘗試更換其他關鍵字進行搜尋。</font>
+	</div>
+<%}%>
 
 <c:forEach var="productVO" items="${list}">
 
@@ -260,14 +267,6 @@
 </c:if>
 	
 </c:forEach>
-
-<!-- <div class="col-xs-12 col-sm-12">
-	<ul class="pager">
-		<li class="previous"><a href="#">&larr; 上一頁</a></li>
-		<li>第1頁	/	共X頁</li>
-		<li class="next"><a href="#">下一頁 &rarr;</a></li>
-	</ul>
-</div> -->
 
 	</div>
 </div>

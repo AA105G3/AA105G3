@@ -91,6 +91,93 @@ public class ProductDAO implements ProductDAO_interface {
 		+ " disc_start_date=?,"
 		+ " disc_end_date=? where prod_no = ?";
 	
+	private static final String SearchByName = 
+		"SELECT prod_no,"
+		+ " prod_name,"
+		+ " prod_type,"
+		+ " sales_volume,"
+		+ " stor_capacity,"
+		+ " unit_price,"
+		+ " prod_description,"
+		+ " prod_status,"
+		+ " disc_status,"
+		+ " sell_status,"
+		+ " prod_picture,"
+		+ " shelf_date,"
+		+ " remove_date,"
+		+ " disc_price,"
+		+ " disc_start_date,"
+		+ " disc_end_date FROM product where prod_name like ?";
+	
+	@Override
+	public List<ProductVO> serachByProduct_name(String prod_name)
+	{
+		// TODO Auto-generated method stub
+		List<ProductVO> list = new ArrayList<ProductVO>();
+		ProductVO productVO =null;
+		Connection con = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs =null;
+		
+		try
+		{
+			con = ds.getConnection();
+			pstmt = con.prepareStatement(SearchByName);
+			pstmt.setString(1, "%"+prod_name+"%");
+			rs = pstmt.executeQuery();
+			
+			while(rs.next())
+			{
+				productVO = new ProductVO();
+				productVO.setProd_no(rs.getString("prod_no"));
+				productVO.setProd_name(rs.getString("prod_name"));
+				productVO.setProd_type(rs.getString("prod_type"));
+				productVO.setSales_volume(rs.getInt("sales_volume"));
+				productVO.setStor_capacity(rs.getInt("stor_capacity"));
+				productVO.setUnit_price(rs.getInt("unit_price"));
+				productVO.setProd_description(rs.getString("prod_description"));
+				productVO.setProd_status(rs.getString("prod_status"));
+				productVO.setDisc_status(rs.getString("disc_status"));
+				productVO.setSell_status(rs.getString("sell_status"));
+				productVO.setShelf_date(rs.getDate("shelf_date"));
+				productVO.setRemove_date(rs.getDate("remove_date"));
+				productVO.setDisc_price(rs.getInt("disc_price"));
+				productVO.setDisc_start_date(rs.getDate("disc_start_date"));
+				productVO.setDisc_end_date(rs.getDate("disc_end_date"));
+				
+				list.add(productVO);
+			}
+		} catch (SQLException e)
+		{
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}finally
+		{
+			if(pstmt !=null)
+			{
+				try
+				{
+					pstmt.close();
+				} catch (SQLException e)
+				{
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+			if(con !=null){
+				try
+				{
+					con.close();
+				} catch (SQLException e)
+				{
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+		}
+		return list;
+	}
+	
 	@Override
 	public void insert(ProductVO prodVO) {
 

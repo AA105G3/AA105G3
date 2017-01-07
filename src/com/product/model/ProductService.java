@@ -1,5 +1,6 @@
 package com.product.model;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class ProductService {
@@ -71,6 +72,11 @@ public class ProductService {
 
 	public List<ProductVO> getAll() {
 		return dao.getAll();
+	}
+	
+	public List<ProductVO> serachByProduct_name(String prod_name){
+		List<ProductVO> list= dao.serachByProduct_name(prod_name);
+		return dao.serachByProduct_name(prod_name);
 	}
 
 }
