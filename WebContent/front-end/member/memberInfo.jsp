@@ -12,6 +12,7 @@
 <jsp:useBean id="frd_listSvc" scope="page" class="com.frd_list.model.Frd_listService" />
 <jsp:useBean id="memberSvc" scope="page" class="com.member.model.MemberService" />
 <jsp:useBean id="recipeSvc" scope="page" class="com.recipe.model.RecipeService" />
+<jsp:useBean id="collectionSvc" scope="page" class="com.collection.model.CollectionService" />
 <jsp:useBean id="memberVO" scope="request" class="com.member.model.MemberVO" />
 
 
@@ -276,11 +277,18 @@
 									<nav class="nav navbar-default">
 								        <div class="container-fluid">
 								            <ul class="nav navbar-nav">
-								                <li><a data-toggle="tab" href="#home" id="href-style" >食譜</a></li>
+								            	<c:if test="${memberVO.mem_no == sessionScope.mem_no}">
+								                	<li><a  href="<%=request.getContextPath()%>/member/member.do?action=getMemberInfo&mem_no=${sessionScope.mem_no}" id="href-style" >食譜</a></li>
+								                </c:if>
+								                <c:if test="${memberVO.mem_no != sessionScope.mem_no}">
+								                	<li><a href="<%=request.getContextPath()%>/member/member.do?action=getMemberInfo&mem_no=${memberVO.mem_no}" id="href-style" >食譜</a></li>
+								                </c:if>
 								                <c:if test="${memberVO.mem_no == sessionScope.mem_no}">
-								                <li><a data-toggle="tab" href="#menu1">收藏</a></li>
+								                <li><a href="<%=request.getContextPath()%>/front-end/collection/myCollection.jsp">收藏</a></li>
 								                <li><a href="<%=request.getContextPath()%>/front-end/frd_list/memberFriend.jsp">好友</a></li>
 								                <li><a data-toggle="tab" href="#menu3">商品訂單
+								                	<i class="glyphicon glyphicon-new-window"></i></a></li>
+								                <li><a href="#menu3">私廚訂單
 								                	<i class="glyphicon glyphicon-new-window"></i></a></li>
 								                </c:if>
 								            </ul>
@@ -328,9 +336,26 @@
 						    	<div class="mem-email">${memberVO.mem_email}</div>
 						    </div>
 						     <c:if test="${memberVO.mem_no != sessionScope.mem_no}">
-						    <div class="col-xs-12 col-sm-6">
-						    	<a class="btn btn-primary" value="${memberVO.mem_no}">加入追隨</a>
-						    </div>
+						     
+						     <c:set var="authorFlag" value="false" />
+						     <c:set var="coll_no" value="0" />
+						     <c:forEach var="aCollection" items="${collectionSvc.getMyAuthorCollection(sessionScope.mem_no)}" >
+						     	<c:if test="${aCollection.all_no == memberVO.mem_no}">
+						    		<c:set var="authorFlag" value="true" />
+						    		<c:set var="coll_no" value="${aCollection.coll_no}" />
+						    	</c:if>
+						     </c:forEach>
+							    <c:if test="${!authorFlag}">
+								    <div class="col-xs-12 col-sm-6">
+								    	<button id ="addCollection" class="btn btn-primary" value="${memberVO.mem_no}">加入追隨</button>
+								    </div>
+							    </c:if>
+							    <c:if test="${authorFlag}">
+								    <div class="col-xs-12 col-sm-6">
+								    	<button id="cancelCollection" class="btn btn-default" value="${memberVO.mem_no}">取消追隨</button>
+								    </div>
+							    </c:if>
+						    
 						    <c:set var="flag" value="false" />
 						    <c:forEach var="aFriend" items="${frd_listSvc.getFriendsByMem_no(sessionScope.mem_no)}" >
 						    	<c:if test="${aFriend.friend_no == memberVO.mem_no}">
@@ -344,9 +369,11 @@
 							     </c:if>
 							     <c:if test="${flag}">
 							    	<div class="col-xs-12 col-sm-6">
-							    		<button id="addFriend" class="btn btn-default" disabled="disabled" value="${memberVO.mem_no}">已加入好友</button>
+							    		<button class="btn btn-default" disabled="disabled" value="${memberVO.mem_no}">已加入好友</button>
 							   		 </div>
 							     </c:if>
+							     <input type="hidden" id="addNo" value="${memberVO.mem_no}">
+							     <input type="hidden" id="cancelNo" value="${coll_no}">
 							</c:if>
 					    	
 					    </div>
@@ -378,7 +405,7 @@
 				}
 
 
-
+				//好友區塊
 				var addFriend = $("#addFriend").click(function(){
 					var friend_no = $(this).val();
 					$.ajax({
@@ -400,7 +427,68 @@
 			             error:function(){alert('not found')}
 			         })
 				})
+				
+				//收藏區塊
+				//得到收藏的兩個號碼 一個刪除用 一個加入用
+				
+				var addCollection = function(){
+					var all_no = $(this).val();
+					 $.ajax({
+						 type:"POST",
+						 url:"/AA105G3/collection/collectionJsonRes.do",
+						 data:{"action":"addCollection","all_no":all_no},
+						 dataType:"json",
+						 success:function (data){
+
+							 swal({
+							   title: data.msg,
+							    type:'success'
+							  })
+							 $('#addCollection').text('取消追隨')
+							 $('#addCollection').attr("id","cancelCollection")
+							 $('#cancelCollection').removeClass('btn-primary');
+							 $('#cancelCollection').addClass('btn-default');
+							 $('#cancelCollection').unbind( "click",addCollection);
+							 $('#cancelCollection').click(cancelCollection);
+					     },
+			             error:function(){alert('not found')}
+			         }) 
+				}
+				//註冊方法
+				$("#addCollection").on("click",addCollection);
+				
+				var cancelCollection = function(){
+					var all_no = $(this).val();
+					 $.ajax({
+						 type:"POST",
+						 url:"/AA105G3/collection/collectionJsonRes.do",
+						 data:{"action":"delete","all_no":all_no},
+						 dataType:"json",
+						 success:function (data){
+
+							 swal({
+							   title:'已取消追隨',
+							    type:'success'
+							  })
+							 $('#cancelCollection').text('加入追隨')
+							 $('#cancelCollection').attr("id","addCollection")
+							 $('#addCollection').removeClass('btn-default');
+							 $('#addCollection').addClass('btn-primary');
+							 $('#addCollection').unbind( "click",cancelCollection);
+							 $('#addCollection').click(addCollection);
+					     },
+			             error:function(){alert('not found')}
+			         }) 
+				}
+				//註冊方法
+				$("#cancelCollection").on("click",cancelCollection);
+				
+				/* $('body').on('click',"#addCollection",addCollection);
+				$('body').on('click',"#cancelCollection",cancelCollection); */
 			})
+			
+			
+			
 		</script>
 	</body>
 

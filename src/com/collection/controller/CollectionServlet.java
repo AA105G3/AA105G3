@@ -9,6 +9,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import com.collection.model.*;
 
@@ -23,7 +24,7 @@ public class CollectionServlet extends HttpServlet {
 			throws ServletException, IOException {
 		
 		req.setCharacterEncoding("UTF-8");
-		String action = req.getParameter("action");System.out.println("action(CollectionServlet):"+ action);
+		String action = req.getParameter("action");
 		
 		if ("getOne_For_Display".equals(action)) { // 來自select_page.jsp的請求
 
@@ -205,26 +206,44 @@ public class CollectionServlet extends HttpServlet {
 			List<String> errorMsgs = new LinkedList<String>();
 			// Store this set in the request scope, in case we need to
 			// send the ErrorPage view.
-			req.setAttribute("errorMsgs", errorMsgs);
 	
 			try {
 				/***************************1.接收請求參數***************************************/
-				String coll_no = new String(req.getParameter("coll_no"));
+				String coll_no = req.getParameter("coll_no");
+				String tabID = req.getParameter("tabID");
+				
+				CollectionService collectionSvc = new CollectionService();
+				CollectionVO collectionVO =  collectionSvc.getOneCollection(coll_no);
+				
+				
+				String msg="";
+				if((collectionVO.getClass_no()).equals("M")||(collectionVO.getClass_no()).equals("C")){
+					msg = "已取消追隨";
+				}
+				if((collectionVO.getClass_no()).equals("R")){
+					msg = "已取消收藏";
+					
+				}
 				
 				/***************************2.開始刪除資料***************************************/
-				CollectionService collectionSvc = new CollectionService();
-				collectionSvc.deleteCollection(coll_no.toUpperCase());
+				collectionSvc.deleteCollection(coll_no);
 				
 				/***************************3.刪除完成,準備轉交(Send the Success view)***********/								
-				String url = "/front-end/collection/listAllCollection.jsp";
-				RequestDispatcher successView = req.getRequestDispatcher(url);// 刪除成功後,轉交回送出刪除的來源網頁
+				String url = "/front-end/collection/myCollection.jsp";
+				req.setAttribute("msg", msg);
+				req.setAttribute("tabID", tabID);
+				
+				
+				RequestDispatcher successView = req.getRequestDispatcher(url);
+				
+				// 刪除成功後,轉交回送出刪除的來源網頁
 				successView.forward(req, res);
 				
 				/***************************其他可能的錯誤處理**********************************/
 			} catch (Exception e) {
 				errorMsgs.add("刪除資料失敗:"+e.getMessage());
 				RequestDispatcher failureView = req
-						.getRequestDispatcher("/front-end/collection/listAllCollection.jsp");
+						.getRequestDispatcher("/front-end/collection/myCollection.jsp");
 				failureView.forward(req, res);
 			}
 		}

@@ -6,7 +6,7 @@
 
 
 
-<% session.setAttribute("mem_no", "M00000004"); %>
+<% //session.setAttribute("mem_no", "M00000004"); %>
 
 
 <jsp:useBean id="recipe_cont_set" scope="request" type="java.util.Set" />
@@ -16,6 +16,7 @@
 <jsp:useBean id="ingredients" scope="request" class="java.util.ArrayList"/>
 <jsp:useBean id="memberSvc" scope="page" class="com.member.model.MemberService" />
 <jsp:useBean id="quantity" scope="request" class="java.util.ArrayList"/>
+<jsp:useBean id="collectionSvc" scope="page" class="com.collection.model.CollectionService" />
 
 
 
@@ -27,6 +28,7 @@
 		<meta name="viewport" content="width=device-width, initial-scale=1">
 		<title>${recipeVO.recipe_name}</title>
 		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+		<link rel="stylesheet" href="https://cdn.jsdelivr.net/sweetalert2/6.2.9/sweetalert2.min.css">
 		<!--[if lt IE 9]>
 			<script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
 			<script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
@@ -127,6 +129,8 @@
 				padding:20px 0px 0px 0px;
 				margin: 0px;
 			}
+			
+			
 			.reciep-collect{
 				padding: 8px 20px;
 				background: #77716e;
@@ -136,6 +140,28 @@
 				margin-top: 10px;
 
 			}
+			.reciep-collect:hover{
+				color: #fff;
+				background: #9b9693;
+			}
+			
+			.reciep-collect-cancel{
+				padding: 8px 20px;
+				background: #fff;
+				border-radius: 20px;
+				color:#000;
+				font-size: 15px;
+				margin-top: 10px;
+				border:1px solid #d3d0c9;
+			}
+			.reciep-collect-cancel:hover{
+				color: #000;
+				opcity:0.8;
+				background: #fff;
+			}
+			
+			
+			
 			.glyphicon-heart-empty{
 				font-size: 16px;
 			}
@@ -149,10 +175,7 @@
 				width:300px;
 				text-align: right;
 			}
-			.reciep-collect:hover{
-				color: #fff;
-				background: #9b9693;
-			}
+			
 			.display-recipe-intro{
 				width: 480px;
 				margin: 15px 0px;
@@ -336,10 +359,24 @@
 									</div>
 										</td>
 										<td class="recipe-collect-right">
-										<c:if test="${recipeVO.mem_no != mem_no}">
-											<div class="reciep-collect btn">
-											<i class="glyphicon glyphicon-heart-empty"></i><span>收藏</span>
-											</div>
+										<c:if test="${recipeVO.mem_no != sessionScope.mem_no}">
+											
+											<c:set var="authorFlag" value="false" />
+											 <c:forEach var="aCollection" items="${collectionSvc.getMyRecipeCollection(sessionScope.mem_no)}" >
+										     	<c:if test="${aCollection.all_no == recipeVO.recipe_no}">
+										    		<c:set var="authorFlag" value="true" />
+										    	</c:if>
+										     </c:forEach>
+										<c:if test="${!authorFlag}">
+											<button class="reciep-collect btn" id="addCollection" value="${recipeVO.recipe_no}">
+											<i class="glyphicon glyphicon-heart-empty" ></i><span>收藏</span>
+											</button>
+										</c:if>
+										<c:if test="${authorFlag}">
+											<button class="reciep-collect-cancel btn" id="cancelCollection" value="${recipeVO.recipe_no}">
+											<i class="glyphicon glyphicon-heart-empty"></i><span>取消收藏</span>
+											</button>
+										</c:if>	
 										</c:if>
 										</td>
 									</tr>
@@ -464,6 +501,75 @@
 		
 		<script src="https://code.jquery.com/jquery.js"></script>
 		<script src="https://netdna.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/limonte-sweetalert2/6.2.9/sweetalert2.min.js"></script>
+		<script type="text/javascript">
+
+			//init
+			$().ready(function(){
+
+				//收藏區塊
+				
+				var addCollection = function(){
+					var all_no = $(this).val();
+					 $.ajax({
+						 type:"POST",
+						 url:"/AA105G3/collection/collectionJsonRes.do",
+						 data:{"action":"addCollection","all_no":all_no},
+						 dataType:"json",
+						 success:function (data){
+
+							 swal({
+							   title: data.msg,
+							    type:'success'
+							  })
+							 $('#addCollection span').text('取消收藏')
+							 $('#addCollection').attr("id","cancelCollection")
+							 $('#cancelCollection').removeClass('reciep-collect');
+							 $('#cancelCollection').addClass('reciep-collect-cancel');
+							 $('#cancelCollection').unbind( "click",addCollection);
+							 $('#cancelCollection').click(cancelCollection);
+							 $('glyphicon-heart-empty').css("color", "black");
+					     },
+			             error:function(){alert('not found')}
+			         }) 
+				}
+				//註冊方法
+				$("#addCollection").on("click",addCollection);
+				
+				var cancelCollection = function(){
+					var all_no = $(this).val();
+					 $.ajax({
+						 type:"POST",
+						 url:"/AA105G3/collection/collectionJsonRes.do",
+						 data:{"action":"delete","all_no":all_no},
+						 dataType:"json",
+						 success:function (data){
+
+							 swal({
+							   title:'已取消收藏',
+							    type:'success'
+							  })
+							 $('#cancelCollection span').text('收藏')
+							 $('#cancelCollection').attr("id","addCollection")
+							 $('#addCollection').removeClass('reciep-collect-cancel');
+							 $('#addCollection').addClass('reciep-collect');
+							 $('#addCollection').unbind( "click",cancelCollection);
+							 $('#addCollection').click(addCollection);
+							 $('glyphicon-heart-empty').css("color", "#fff");
+					     },
+			             error:function(){alert('not found')}
+			         }) 
+				}
+				//註冊方法
+				$("#cancelCollection").on("click",cancelCollection);
+				
+				/* $('body').on('click',"#addCollection",addCollection);
+				$('body').on('click',"#cancelCollection",cancelCollection); */
+			})
+			
+			
+			
+		</script>
 	</body>
 </html>
 

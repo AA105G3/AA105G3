@@ -182,7 +182,7 @@
 				padding-top:5px;	
 				padding-bottom: 5px;
 			}
-			.collection-author img{
+			.author-img img{
 				width: 80px;
 				height: 80px;
 			}
@@ -223,6 +223,10 @@
 			.collection-author-recipe-info{
 				padding-left: 5px;
 			}
+			.collection-recipe-img img{
+				width:100px;
+				height:80px;
+			}
 			.collection-author-recipe-info h4{
 				margin: 0px 0px 3px 0px;
 				font-weight: bold;
@@ -233,6 +237,13 @@
 			.collection-chef tr{
 				/*margin-top: 5px;*/
 				border-bottom: 1px solid #e2e0db;
+			}
+			td.chef-img{
+				padding:8px 0px;
+			}
+			td.chef-img img{
+				width: 80px;
+				height: 80px;
 			}
 			.chef-name{
 				width: 120px;
@@ -245,6 +256,7 @@
 			.collection-chef-info{
 				border-left: 1px solid #e2e0db;
 				padding:5px 0px 5px 5px;
+				width:499px;
 			}
 			.collection-chef-info p{
 				word-break:break-all;
@@ -271,6 +283,10 @@
 			.tab1.active a,.tab2.active a,.tab3.active a{
 				color:steelblue !important;
 				font-weight:bold ;
+			}
+			#memImg{
+				width:150px;
+				height:150px;
 			}
 		</style>
 
@@ -372,9 +388,9 @@
 									<nav class="nav navbar-default">
 								        <div class="container-fluid">
 								            <ul class="nav navbar-nav">
-								                <li><a href="#home" >食譜</a></li>
-								                <li><a href="#menu1" id="href-style">收藏</a></li>
-								                <li><a href="#menu2">好友</a></li>
+								                <li><a href="<%=request.getContextPath()%>/member/member.do?action=getMemberInfo&mem_no=${sessionScope.mem_no}" >食譜</a></li>
+								                <li><a href="<%=request.getContextPath()%>/front-end/collection/myCollection.jsp" id="href-style">收藏</a></li>
+								                <li><a href="<%=request.getContextPath()%>/front-end/frd_list/memberFriend.jsp">好友</a></li>
 								                <li><a href="#menu3">商品訂單
 								                	<i class="glyphicon glyphicon-new-window"></i></a></li>
 								                <li><a href="#menu3">私廚訂單
@@ -408,7 +424,7 @@
 										    		  	
 														<div class="recipe-wrapper row">
 															<div class="col-xs-12 col-sm-4 recipe-img-wrapper">
-																<img src="https://api.fnkr.net/testimg/200x180/00CED1/FFF/?text=img+placeholder">
+																<img src="<%=request.getContextPath()%>/recipe/showRecipe_pic.do?recipe_no=${recipeSvc.getCollectRecipe(aCollection.all_no).recipe_no}">
 															</div>
 															<div class="col-xs-12 col-sm-8 recipe-content">
 															<a>
@@ -425,7 +441,7 @@
 																			<i class="glyphicon glyphicon-heart">${recipeSvc.getCollectRecipe(aCollection.all_no).recipe_like + collectionSvc.getCollectionSize(aCollection.all_no)}</i>		
 																		</td>
 																		<td class="cancle-form">
-																			<form action="" class="text-right" method="post">
+																			<form action="<%=request.getContextPath()%>/collection/collection.do" class="text-right" method="post">
 																			<input type="submit" class="btn btn-danger btn-xs" value="取消追隨">
 																			<input type="hidden" name="action" value="delete">
 																			<input type="hidden" name="coll_no" value="${aCollection.coll_no}">
@@ -445,7 +461,7 @@
 															<c:forEach var="aCollection" items="${list2}" >
 																<tr>
 																	<td class="author-img">
-																		<img class="img-circle" src="https://api.fnkr.net/testimg/80x80/00CED1/FFF/?text=img+placeholder">
+																		<img class="img-circle" src="<%=request.getContextPath()%>/MemberDBGifReader.do?name=${memberSvc.getOneMember(aCollection.all_no).mem_no}">
 																	</td>
 																	<td class="author-info">
 																		<h3>${memberSvc.getOneMember(aCollection.all_no).mem_name}</h3>
@@ -456,14 +472,14 @@
 																		<h4>The Newest</h4>
 																	</td>
 																	<td class="collection-recipe-img">
-																		<img src="https://api.fnkr.net/testimg/100x80/00CED1/FFF/?text=img+placeholder">
+																	<c:set var="newestRecipe" value="${recipeSvc.findByMem_no(aCollection.all_no).get(0)}" />
+																		<img src="<%=request.getContextPath()%>/recipe/showRecipe_pic.do?recipe_no=${newestRecipe.recipe_no}">
 																	</td>
 																	<td class="collection-author-recipe-info">
-																	<c:set var="newestRecipe" value="${recipeSvc.findByMem_no(aCollection.all_no).get(0)}" />
 																		<h4>${newestRecipe.recipe_name}</h4>
 																		<p>${newestRecipe.recipe_intro}
 																		</p>
-																		<form action="" class="text-right" method="post">
+																		<form action="<%=request.getContextPath()%>/collection/collection.do" class="text-right" method="post">
 																			<input type="submit" class="btn btn-danger btn-xs" value="取消追隨">
 																			<input type="hidden" name="action" value="delete">
 																			<input type="hidden" name="coll_no" value="${aCollection.coll_no}">
@@ -478,27 +494,31 @@
 
 									    	        <div role="tabpanel" class="tab-pane" id="tab3">	
 									    	        	<table class="collection-chef">
+									    	        		<c:forEach var="aCollection" items="${list3}" >
 																<tr >
 																	<td class="chef-img">
-																		<img class="img-circle" src="https://api.fnkr.net/testimg/80x80/00CED1/FFF/?text=img+placeholder">
+																		<img class="img-circle" src="<%=request.getContextPath()%>/chef/chefImage.do?chef_no=${chefSvc.getOneChef(aCollection.all_no).chef_no}&chef_image=123">
 																	</td>
 																	<td class="chef-name">
-																		<h3>史提芬周</h3>
+																		<h3>${chefSvc.getOneChef(aCollection.all_no).chef_name }</h3>
 																		
 																	</td>
 																	<td class="collection-chef-info">
-																		<p class="chef-skill"><span>私廚專長：</span>湯是我非常喜愛的冬日暖湯，裡面滿滿蔬菜熬出清甜，花時間燉煮的牛尾風味濃郁、肉質軟嫩，輕拉就馬上與骨頭分開，主要營養之一的膠...
+																		<p class="chef-skill"><span>私廚專長：</span>
+																		${chefSvc.getOneChef(aCollection.all_no).chef_skill}
 																		</p>
-																		<p class="act-area"><span>活動地區：</span>湯是我非常喜愛的冬日暖湯，裡面滿滿蔬菜熬出清甜，花時間燉煮的牛尾風味濃郁、肉質軟嫩，輕拉就馬上與骨頭分開，主要營養之一的膠...
+																		<p class="act-area"><span>活動地區：</span>
+																		${chefSvc.getOneChef(aCollection.all_no).chef_area}
 																		</p>
-																		<form action="" class="text-right" method="post">
+																		<form action="<%=request.getContextPath()%>/collection/collection.do" class="text-right" method="post">
 																			<input type="submit" class="btn btn-danger btn-xs" value="取消追隨">
 																			<input type="hidden" name="action" value="delete">
-																			<input type="hidden" name="chef_no" value="">
+																			<input type="hidden" name="coll_no" value="${aCollection.coll_no}">
 																			<input type="hidden" name="tabID" value="tab3">
 																		</form>
 																	</td>
 																</tr>
+															</c:forEach>
 														</table>
 									    	        </div>
 									    	    </div>
@@ -509,23 +529,18 @@
 
 			    		</div>
 			    		<div class="col-xs-12 col-sm-3 col-sm-push-1 text-center member-style">
-					    	<img src="https://api.fnkr.net/testimg/150x150/00CED1/FFF/?text=img+placeholder">
-	    					<h3>mem_name</h3>
+					    	<img id="memImg" src="<%=request.getContextPath()%>/MemberDBGifReader.do?name=${sessionScope.mem_no}">
+	    					<h3>${memberSvc.getOneMember(sessionScope.mem_no).mem_name}</h3>
 					
 							<div class="col-xs-12 col-sm-6 count-style">
-						    	<div>食譜數：0</div>
+						    	<div>食譜數：${recipeSvc.findByMem_no(sessionScope.mem_no).size()}</div>
 						    </div>
 						    <div class="col-xs-12 col-sm-6 count-style">
 						    	<div>追隨數：0</div>
 						    </div>
+						   
 						    <div class="col-xs-12 col-sm-12 text-left">
-						    	<div class="mem-email">email:xxxx@gmail.com</div>
-						    </div>
-						    <div class="col-xs-12 col-sm-6">
-						    	<a class="btn btn-primary">加入追隨</a>
-						    </div>
-						    <div class="col-xs-12 col-sm-6">
-						    	<button id="addFriend" class="btn btn-primary" value="M00000001">加入好友</button>
+						    	<div class="mem-email">${memberSvc.getOneMember(sessionScope.mem_no).mem_email.toLowerCase()}</div>
 						    </div>
 					
 					    	
@@ -549,14 +564,22 @@
 			$().ready(function(){
 
 				//判斷是哪個tab
-				var tabId ="" ; 
+				var tabId ="${tabID}" ; 
 				if(tabId!=""){
 					$("#tab1").removeClass('active');
 					$("#"+tabId).addClass('active');
 					$(".tab1").removeClass('active');
 					$("."+tabId).addClass('active');
 				}
-
+				
+				var msg = "${msg}";
+				if(msg!=""){
+					swal({
+						   title: msg,
+						    type:'success'
+						  })
+					 <c:set var="msg" value="" />	 
+				}
 
 
 				var addFriend = $("#addFriend").click(function(){
