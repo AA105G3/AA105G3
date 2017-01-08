@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="">
+	<head>
+		<meta charset="utf-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<title>Chat Room</title>
+		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+		<!--[if lt IE 9]>
+			<script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+			<script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+		<![endif]-->
+		<style type="text/css">
+			#chatroom-wrapper{
+				margin: 0px;
+				padding:0px;
+			}
+			#messagesArea{
+				min-height: 150px;
+				min-width: 450px;
+				background: gray;
+			}
+			#chatroom-inputArea{
+				padding:0px;
+			}
+			#inputArea{
+				width:450px;
+				height: 80px;
+			}
+			#msgInput{
+				width:80px;
+				height: 80px;
+			}
+		</style>
+	</head>
+	<body>
+		
+		<div class="col-xs-12 col-sm-12 " id="chatroom-wrapper" >
+			<div id = "messagesArea">
+												
+			</div>
+			
+			<table>
+				<tr>
+					<td>
+						<textarea id = "inputArea" ></textarea>		
+					</td>
+					<td>
+						<button id="msgInput">Enter</button>
+					</td>
+				</tr>
+			</table>
+				
+				
+			
+				
+			
+						
+			
+
+		</div>
+		
+		
+		<script src="https://code.jquery.com/jquery.js"></script>
+		<script src="https://netdna.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+	</body>
+	<script type="text/javascript">
+	var width;
+		$().ready(function(){
+			$('#inputArea').width($(window).width()-90);
+			$('#messagesArea').height($(window).height()-85)
+		})
+		$(window).resize(function(){
+			$('#inputArea').width($(window).width()-90);
+			$('#messagesArea').height($(window).height()-85)
+		})
+	</script>
+</html>
