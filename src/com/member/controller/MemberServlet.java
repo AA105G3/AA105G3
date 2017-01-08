@@ -424,7 +424,7 @@ public class MemberServlet extends HttpServlet {
 				mailSvc.sendMail(usermail, subject, mailcontext);
 				
 				/***************************3.新增完成,準備轉交(Send the Success view)***********/
-				String url = "/front-end/member/listAllMember.jsp";
+				String url = "/front-end/member/MemberSignUpSuccess.jsp";
 				RequestDispatcher successView = req.getRequestDispatcher(url); // 新增成功後轉交listAllMember.jsp
 				successView.forward(req, res);				
 				
