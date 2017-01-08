@@ -38,8 +38,8 @@
     
     function connect() {
     	
-        var mem_no = document.getElementById("username").value;
-        var frd_no = document.getElementById("to").value;
+        mem_no = document.getElementById("username").value;
+        frd_no = document.getElementById("to").value;
 	    var endPointURL = "ws://" + window.location.host + webCtx + "/ChatEndpoint/"+mem_no+"/"+frd_no;
         ws = new WebSocket(endPointURL);
 

@@ -22,11 +22,14 @@ import javax.websocket.EncodeException;
 public class ChatEndpoint
 {
 	private static HashMap<Session,String> users = new HashMap<>();
+//	private static HashMap<String,Session> userSession = new HashMap<>();
 	
 	@OnOpen
     public void onOpen(Session session, @PathParam("mem_no") String userId,@PathParam("frd_no") String frd_no) throws IOException, EncodeException {
-		System.out.println(session);
         users.put(session, userId);
+//        userSession.put(session.getId(), session);
+        System.out.println(session);
+        System.out.println(session.getId());
         System.out.println(userId);
         
     }
@@ -38,7 +41,11 @@ public class ChatEndpoint
 		{
 			JSONObject jsonObjectIn = new JSONObject(message);
 			Message msg = new Message();
-			msg.setFrom(users.get(session.getId()));
+			
+			msg.setFrom(users.get(session));
+			
+			System.out.println(jsonObjectIn.getString("to"));
+			System.out.println(jsonObjectIn.getString("content"));
 			msg.setTo(jsonObjectIn.getString("to"));
 			msg.setContent(jsonObjectIn.getString("content"));
 			sendMessageToOneUser(msg);
@@ -60,7 +67,19 @@ public class ChatEndpoint
 			for (Session session : users.keySet()) {
 				synchronized(session) {
 					if (users.get(session).equals(message.getTo())) {
-						session.getAsyncRemote().sendObject(message);
+						
+						JSONObject msg = new JSONObject(); 
+						try
+						{
+							msg.put("from", message.getFrom());
+							msg.put("content", message.getContent());
+						} catch (JSONException e)
+						{
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						}
+						session.getAsyncRemote().sendText(msg.toString());
+						System.out.println(msg.toString());
 					}
 				}
 			}
