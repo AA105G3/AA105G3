@@ -8,6 +8,7 @@ import javax.servlet.annotation.MultipartConfig;
 import javax.servlet.http.*;
 
 import com.member.model.*;
+import com.product_order.model.MailService;
 
 @MultipartConfig(fileSizeThreshold = 1024 * 1024, maxFileSize = 5 * 1024 * 1024, maxRequestSize = 5 * 5 * 1024 * 1024)
 
@@ -23,6 +24,53 @@ public class MemberServlet extends HttpServlet {
 
 		req.setCharacterEncoding("UTF-8");
 		String action = req.getParameter("action");
+		
+		if("validation".equals(action)){
+			List<String> errorMsgs = new LinkedList<String>();
+			req.setAttribute("errorMsgs", errorMsgs);
+			
+			try {
+				/***************************1.接收請求參數 - 輸入格式的錯誤處理**********************/
+				String mem_own = req.getParameter("mem_own").trim();
+				String mem_email = req.getParameter("mem_email").trim();
+
+				MemberVO memberVO = new MemberVO();
+				memberVO.setMem_own(mem_own);
+				memberVO.setMem_email(mem_email);
+				
+
+				// Send the use back to the form, if there were errors
+				if (!errorMsgs.isEmpty()) {
+					req.setAttribute("memberVO", memberVO); // 含有輸入格式錯誤的memberVO物件,也存入req
+					/*RequestDispatcher failureView = req
+							.getRequestDispatcher("/front-end/member/update_member_input.jsp");*/
+					RequestDispatcher failureView = req
+							.getRequestDispatcher("/Login/Flogin.jsp");
+					failureView.forward(req, res);
+					return; //程式中斷
+				}
+				
+				/***************************2.開始修改資料*****************************************/
+				MemberService memberSvc = new MemberService();
+				memberVO = memberSvc.updateMemOwn("0",mem_email);
+
+				/***************************3.修改完成,準備轉交(Send the Success view)*************/
+				req.setAttribute("memberVO", memberVO); // 資料庫update成功後,正確的的memberVO物件,存入req
+				String url = "/Login/Flogin.jsp";
+				RequestDispatcher successView = req.getRequestDispatcher(url); // 修改成功後,轉交listOneMember.jsp
+				successView.forward(req, res);
+
+				/***************************其他可能的錯誤處理*************************************/
+			} catch (Exception e) {
+				errorMsgs.add("修改資料失敗:"+e.getMessage());
+				/*RequestDispatcher failureView = req
+						.getRequestDispatcher("/front-end/member/update_member_input.jsp");*/
+				RequestDispatcher failureView = req
+						.getRequestDispatcher("/Login/Flogin.jsp");
+				failureView.forward(req, res);
+			}
+			
+		}
 		
 		if ("signOut".equals(action)){
 			
@@ -272,6 +320,11 @@ public class MemberServlet extends HttpServlet {
 			// Store this set in the request scope, in case we need to
 			// send the ErrorPage view.
 			req.setAttribute("errorMsgs", errorMsgs);
+			
+			MailService mailSvc = new MailService();
+			String usermail = req.getParameter("mem_email");
+			String subject = "分享食光會員帳號驗證通知";
+			String mailcontext = null;
 
 			try {
 				/***********************1.接收請求參數 - 輸入格式的錯誤處理*************************/
@@ -357,6 +410,18 @@ public class MemberServlet extends HttpServlet {
 				MemberService memberSvc = new MemberService();
 				memberVO = memberSvc.addMember(mem_name, mem_ac, mem_pw, mem_image, mem_sex, mem_phone, mem_email, 
 						mem_adrs, mem_own, mem_history, mem_online);
+				
+				HttpSession session = req.getSession();
+				String sessionID = session.getId();
+				StringBuffer getRequestURL = req.getRequestURL();
+				
+				String loginURL = getRequestURL + "?action=validation" 
+				+ "&mem_own=0"
+				+ "&mem_email=" + mem_email 
+				+ "&sessionID=" + sessionID;
+				
+				mailcontext = mem_name + " 您好，感謝您在分享食光中的註冊，請點擊下列驗證碼完成帳號驗證\n" + loginURL;
+				mailSvc.sendMail(usermail, subject, mailcontext);
 				
 				/***************************3.新增完成,準備轉交(Send the Success view)***********/
 				String url = "/front-end/member/listAllMember.jsp";

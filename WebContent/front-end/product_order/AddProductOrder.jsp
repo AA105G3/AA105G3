@@ -245,6 +245,7 @@ pageContext.setAttribute("buylist",buylist);
 	<input type="hidden" name="action" value="insertWithList">
 	<input type="submit" class="btn btn-danger" value="結帳" onClick="alert('感謝您的購買！')">
 	<input type="hidden" name="mem_no" value="${memberVO.mem_no}">
+	<input type="hidden" name="mem_email" value="${memberVO.mem_email}">
 	<input type="hidden" name="total_money" value="<%=total%>">
 	
 	<c:forEach var="Product_order_listVO" items="${buylist}">

@@ -236,7 +236,7 @@ MemberVO memberVO = (MemberVO) request.getAttribute("memberVO");
 		<div class="input-group">
 			申請私廚資格：
 			<label class="radio-inline">
-				<input type="radio" name="mem_own" value="0" checked>不申請
+				<input type="radio" name="mem_own" value="2" checked>不申請
 			</label>
 			<label class="radio-inline">
 				<input type="radio" name="mem_own" value="1">我要申請

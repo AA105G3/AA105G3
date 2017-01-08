@@ -118,7 +118,26 @@ public class FLoginHandler extends HttpServlet {
 			successView.forward(req, res);
 		}
 		else {                                       //【帳號 , 密碼有效時, 才做以下工作】
-
+			
+			MemberService memberSvc = new MemberService();
+			MemberVO memberVO = memberSvc.getOneByMem_ac(mem_ac);
+			
+			String mem_own = memberVO.getMem_own();
+			
+			if(mem_own.equals("2")){			
+				List<String> errorMsg = new LinkedList<String>();
+				errorMsg.add("帳號未完成信箱驗證");
+				
+				req.setAttribute("errorMsg", errorMsg);
+				
+				String url = "/Login/Flogin.jsp";
+				RequestDispatcher successView = req.getRequestDispatcher(url);
+				successView.forward(req, res);
+				
+				return;
+				
+			}
+			
 			try {                                                        
 				String location = (String) session.getAttribute("location");
 				if (location != null) {

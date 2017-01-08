@@ -550,6 +550,11 @@ public class Product_orderServlet extends HttpServlet {
 			req.setAttribute("errorMsgs", errorMsgs);
 			HttpSession session = req.getSession();
 			
+			MailService mailSvc = new MailService();
+			String usermail = req.getParameter("mem_email");
+			String subject = "商品購買通知";
+			String mailcontext = null;
+			
 			try {
 				/***********************1.接收請求參數 - 輸入格式的錯誤處理*************************/
 				String mem_no = req.getParameter("mem_no").trim();
@@ -739,6 +744,9 @@ System.out.println(deli_status);
 				product_orderVO = product_orderSvc.addProduct_orderWithList(mem_no, cred_card_no, valid_date, 
 						valid_no, cred_card_type, total_money, ship_name, post_code, mem_adrs, cell_phone, tel_phone, 
 						list);
+				
+				mailcontext = ship_name + " 您好，感謝您在分享食光中的消費，本次消費金額為： $ " + total_money + "元。";
+				mailSvc.sendMail(usermail, subject, mailcontext);
 				
 				buylist.clear();
 				session.setAttribute("amount", null);

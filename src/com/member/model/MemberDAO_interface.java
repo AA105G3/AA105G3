@@ -12,4 +12,6 @@ public interface MemberDAO_interface {
 	public List<MemberVO> getAll();
 	public byte[] getImage(String mem_no);
 	public MemberVO findByAC(String mem_ac);
+	
+	public void updateMemOwn(MemberVO memVO);
 }
