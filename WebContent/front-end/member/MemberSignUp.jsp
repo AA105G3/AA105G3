@@ -34,7 +34,7 @@ MemberVO memberVO = (MemberVO) request.getAttribute("memberVO");
 	.buttonStyle{
 		padding-top : 35px;
 		padding-right : 150px;
-		padding-bottom : 22px;
+		padding-bottom : 24px;
 	}
 </style>
 
@@ -231,7 +231,7 @@ MemberVO memberVO = (MemberVO) request.getAttribute("memberVO");
 	</div>
 </div>
 
-<div class="col-xs-12 col-sm-12">
+<!-- <div class="col-xs-12 col-sm-12">
 	<div class="col-xs-12 col-sm-6 div-style">
 		<div class="input-group">
 			申請私廚資格：
@@ -239,14 +239,14 @@ MemberVO memberVO = (MemberVO) request.getAttribute("memberVO");
 				<input type="radio" name="mem_own" value="2" checked>不申請
 			</label>
 			<label class="radio-inline">
-				<input type="radio" name="mem_own" value="1">我要申請
+				<input type="radio" name="mem_own" value="2">我要申請
 			</label>
 		</div>
 	</div>
 	<div class="col-xs-12 col-sm-6 span-style">
 		<span id="spanOwn"></span>
 	</div>
-</div>
+</div> -->
 
 <div class="col-xs-12 col-sm-12">
 	<div class="col-xs-12 col-sm-6 div-style">
@@ -257,23 +257,24 @@ MemberVO memberVO = (MemberVO) request.getAttribute("memberVO");
 		<div id = "fileInfo"></div>
 	</div>
 	<div class="col-xs-12 col-sm-6 span-style">
-		<br><img id="img" src="<%=request.getContextPath()%>/front-end/member/images/No-image-found.png" height='150'><br>
+		<br><img id="img" src="<%=request.getContextPath()%>/front-end/member/images/No-image-found.png" height='200'><br>
 	</div>
 </div>
 
 
 <div class="col-xs-12 col-sm-12 text-center">
 	<div class="col-xs-12 col-sm-12 buttonStyle">
-		<div class="col-xs-12 col-sm-2 col-sm-push-2">
+		<div class="col-xs-12 col-sm-2 col-sm-push-3">
 			<input type="button" class="btn btn-default" value="取消">
 		</div>
-		<div class="col-xs-12 col-sm-2 col-sm-push-2">	
+		<div class="col-xs-12 col-sm-2 col-sm-push-3">	
 			<input type="reset" class="btn btn-default" value="重置" >
 		</div>
-		<div class="col-xs-12 col-sm-2 col-sm-push-2">	
+		<div class="col-xs-12 col-sm-2 col-sm-push-3">	
 			<input type="submit" class="btn btn-primary" value="確定">
 		</div>
 		<input type="hidden" name="action" value="insert">
+		<input type="hidden" name="mem_own" value="2">
 		<input type="hidden" name="mem_history" value="F00000001">
 		<input type="hidden" name="mem_online" value="1">
 	</div>
