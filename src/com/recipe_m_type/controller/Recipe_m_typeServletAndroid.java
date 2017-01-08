@@ -2,8 +2,10 @@ package com.recipe_m_type.controller;
 
 import java.io.BufferedReader;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Set;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -61,6 +63,17 @@ public class Recipe_m_typeServletAndroid extends HttpServlet {
 			SendResponse.writeText(res, gson.toJson(recipe_m_typelist));
 			return;
 
+		}
+		
+		if("getS_typesByM_Type_No".equals(action)){
+			String recipe_m_type_no = jsonObject.get("recipe_m_type_no").getAsString();
+			Set<Recipe_s_typeVO> recipe_s_typeSet = recipe_m_typeSvc.getS_typesByM_Type_No(recipe_m_type_no);
+		
+			List<Recipe_s_typeVO> recipe_s_typeList = new ArrayList<Recipe_s_typeVO>();
+			recipe_s_typeList.addAll(recipe_s_typeSet);
+			
+			SendResponse.writeText(res, gson.toJson(recipe_s_typeList));
+			return;
 		}
 
 		if ("getOne_For_Display".equals(action)) {

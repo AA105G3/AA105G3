@@ -82,7 +82,8 @@ public class RecipeServletAndroid extends HttpServlet {
 				if (aRecipe.getRecipe_edit().equals("已發布")) {
 					aRecipe.setRecipe_pic(null);
 					list2.add(aRecipe);
-//					System.out.println("aRecipe.getRecipe_no()"+aRecipe.getRecipe_no() +"aRecipe.getRecipe_edit():"+aRecipe.getRecipe_edit());
+					// System.out.println("aRecipe.getRecipe_no()"+aRecipe.getRecipe_no()
+					// +"aRecipe.getRecipe_edit():"+aRecipe.getRecipe_edit());
 				}
 			}
 
@@ -109,7 +110,7 @@ public class RecipeServletAndroid extends HttpServlet {
 
 			return;
 		}
-		
+
 		if ("getAllByRecipe_name".equals(action)) {
 			String recipe_name = jsonObject.get("recipe_name").getAsString();
 			List<RecipeVO> recipeVOList = recipeSvc.serachByRecipe_name(recipe_name);
@@ -119,7 +120,8 @@ public class RecipeServletAndroid extends HttpServlet {
 				if (aRecipe.getRecipe_edit().equals("已發布")) {
 					aRecipe.setRecipe_pic(null);
 					list2.add(aRecipe);
-					System.out.println("aRecipe.getRecipe_no()"+aRecipe.getRecipe_no() +"aRecipe.getRecipe_name():"+aRecipe.getRecipe_name());
+					System.out.println("aRecipe.getRecipe_no()" + aRecipe.getRecipe_no() + "aRecipe.getRecipe_name():"
+							+ aRecipe.getRecipe_name());
 				}
 			}
 
@@ -127,22 +129,31 @@ public class RecipeServletAndroid extends HttpServlet {
 
 			return;
 		}
-		if("getAllByRecipe_type_no".equals(action)){
+		if ("getAllByRecipe_type_no".equals(action)) {
 			String recipe_type_no = jsonObject.get("recipe_type_no").getAsString();
 			Recipe_type_infoService recipe_type_infoSvc = new Recipe_type_infoService();
 			Set<Recipe_type_infoVO> recipe_type_infoVOSet = recipe_type_infoSvc.findByType_no(recipe_type_no);
 			List<Recipe_type_infoVO> recipe_type_infoVOList = new ArrayList();
 			recipe_type_infoVOList.addAll(recipe_type_infoVOSet);
 			List<RecipeVO> recipeVOList = new ArrayList();
-			
-			for(Recipe_type_infoVO aRecipe_type_info: recipe_type_infoVOList){
-				recipeVOList.add(recipeSvc.getOneRecipe(aRecipe_type_info.getRecipe_no()));
+
+			List<RecipeVO> list = new ArrayList<RecipeVO>();
+			for (Recipe_type_infoVO aRecipe_type_info : recipe_type_infoVOList) {
+				list.add(recipeSvc.getOneRecipe(aRecipe_type_info.getRecipe_no()));
+			}
+
+			if (list != null && !list.isEmpty()) {
+				for (RecipeVO aRecipe : list) {
+					if (aRecipe != null && aRecipe.getRecipe_edit().equals("已發布")) {
+						aRecipe.setRecipe_pic(null);
+						recipeVOList.add(aRecipe);
+					}
+				}
 			}
 			SendResponse.writeText(res, gson.toJson(recipeVOList));
-			
+
 		}
-		
-		
+
 		if ("getOneByRecipe_no_For_Display".equals(action)) { // 來自select_page.jsp的請求
 
 			String recipe_no = jsonObject.get("recipe_no").getAsString();
