@@ -108,6 +108,50 @@ public class MemberJNDIDAO implements MemberDAO_interface {
 	
 	private static final String UPDATE_MEM_OWN = 
 			"UPDATE member set mem_own=? where mem_email = ?";
+	
+	private static final String UPDATE_MEM_PW = 
+			"UPDATE member set mem_pw=? where mem_email = ?";
+
+
+	@Override
+	public void updateMemPw(MemberVO memVO) {
+
+		Connection con = null;
+		PreparedStatement pstmt = null;
+
+		try {
+
+			con = ds.getConnection();
+			pstmt = con.prepareStatement(UPDATE_MEM_PW);
+
+			pstmt.setString(1, memVO.getMem_pw());
+			pstmt.setString(2, memVO.getMem_email());
+
+			pstmt.executeUpdate();
+
+			// Handle any driver errors
+		} catch (SQLException se) {
+			throw new RuntimeException("A database error occured. "
+					+ se.getMessage());
+			// Clean up JDBC resources
+		} finally {
+			if (pstmt != null) {
+				try {
+					pstmt.close();
+				} catch (SQLException se) {
+					se.printStackTrace(System.err);
+				}
+			}
+			if (con != null) {
+				try {
+					con.close();
+				} catch (Exception e) {
+					e.printStackTrace(System.err);
+				}
+			}
+		}
+
+	}
 
 
 	@Override

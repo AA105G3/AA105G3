@@ -25,6 +25,77 @@ public class MemberServlet extends HttpServlet {
 		req.setCharacterEncoding("UTF-8");
 		String action = req.getParameter("action");
 		
+		if("forgetPW".equals(action)){
+			List<String> errorMsgs = new LinkedList<String>();
+			req.setAttribute("errorMsgs", errorMsgs);
+			
+			MailService mailSvc = new MailService();
+			String usermail = req.getParameter("mem_email");
+
+			String subject = "分享食光會員帳號忘記密碼通知";
+			String mailcontext = null;
+			
+			try {
+				/***************************1.接收請求參數 - 輸入格式的錯誤處理**********************/
+				String mem_pw = "";
+				String mem_email = req.getParameter("mem_email").trim();
+				
+				MemberVO memberVO = new MemberVO();
+				memberVO.setMem_pw(mem_pw);
+				memberVO.setMem_email(mem_email);
+				
+
+				// Send the use back to the form, if there were errors
+				if (!errorMsgs.isEmpty()) {
+					req.setAttribute("memberVO", memberVO); // 含有輸入格式錯誤的memberVO物件,也存入req
+					/*RequestDispatcher failureView = req
+							.getRequestDispatcher("/front-end/member/update_member_input.jsp");*/
+					RequestDispatcher failureView = req
+							.getRequestDispatcher("/Login/Flogin.jsp");
+					failureView.forward(req, res);
+					return; //程式中斷
+				}
+				
+				/***************************2.開始修改資料*****************************************/
+				int index;
+				
+				String[] newPwArr = {"0","1","2","3","4","5","6","7","8","9","a","b","c","d","e","f","g","h","i","j",
+						"k","l","m","n","o","p","q","r","s","t","u","v","w","x","y","z","A","B","C","D","E","F","G","H","I",
+						"J","K","L","M","N","O","P","Q","R","S","T","U","V","W","X","Y","Z"};
+				
+				for(int i=0 ;i<6 ;i++){
+					index =(int) Math.floor((Math.random() * 62));
+					mem_pw+=newPwArr[index];
+				}
+
+				MemberVO memberVO2 = new MemberVO();
+				memberVO2.setMem_pw(mem_pw);
+				memberVO2.setMem_email(mem_email);
+				
+				MemberService memberSvc = new MemberService();
+				memberVO = memberSvc.updateMemPw(memberVO2);
+				
+				mailcontext = "親愛的會員您好，請使用以下的密碼登入您的帳號\n\n" + mem_pw + "\n\n並於登入後至您的會員個人頁面修改密碼，感謝您的配合！";
+				mailSvc.sendMail(usermail, subject, mailcontext);
+
+				/***************************3.修改完成,準備轉交(Send the Success view)*************/
+				req.setAttribute("memberVO", memberVO); // 資料庫update成功後,正確的的memberVO物件,存入req
+				String url = "/front-end/member/MemberForgetPasswordSuccess.jsp";
+				RequestDispatcher successView = req.getRequestDispatcher(url); // 修改成功後,轉交listOneMember.jsp
+				successView.forward(req, res);
+
+				/***************************其他可能的錯誤處理*************************************/
+			} catch (Exception e) {
+				errorMsgs.add("修改資料失敗:"+e.getMessage());
+				/*RequestDispatcher failureView = req
+						.getRequestDispatcher("/front-end/member/update_member_input.jsp");*/
+				RequestDispatcher failureView = req
+						.getRequestDispatcher("/Login/Flogin.jsp");
+				failureView.forward(req, res);
+			}
+			
+		}
+		
 		if("validation".equals(action)){
 			List<String> errorMsgs = new LinkedList<String>();
 			req.setAttribute("errorMsgs", errorMsgs);

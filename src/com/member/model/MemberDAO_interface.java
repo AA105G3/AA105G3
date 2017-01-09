@@ -14,4 +14,5 @@ public interface MemberDAO_interface {
 	public MemberVO findByAC(String mem_ac);
 	
 	public void updateMemOwn(MemberVO memVO);
+	public void updateMemPw(MemberVO memVO);
 }

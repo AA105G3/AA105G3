@@ -1,8 +1,4 @@
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
-<%@ page import="com.member.model.*"%>
-<%
-MemberVO memberVO = (MemberVO) request.getAttribute("memberVO");
-%>
 
 <html>
 <head>
@@ -27,8 +23,8 @@ MemberVO memberVO = (MemberVO) request.getAttribute("memberVO");
 	    bottom : 0px;
 		width : 100%;
 	}
-	#myModal{
-		padding-top : 220px;
+	h2{
+		color : black;
 	}
 </style>
 
@@ -99,23 +95,10 @@ MemberVO memberVO = (MemberVO) request.getAttribute("memberVO");
 
 	<div class="mu-login">
 		<div class="container">
-			<h1>Welcome</h1>
-			
-			<div>
-				<span class="errorMsg">${errorMsg}</span>
-			</div>
-			
-			<form class="form" action="/AA105G3/Floginhandler" method="post">
-				<input type="text" name="mem_ac" placeholder="Username">
-				<input type="password" name="mem_pw" placeholder="Password">
-				<button type="submit" id="login-button">Login</button><br>
-				<div class="wrapper-register">
-					<a href="#" data-toggle="modal" data-target="#myModal">忘記密碼</a>
-					
-					<a href="/AA105G3/front-end/member/MemberSignUp.jsp">立即註冊</a>
-				</div>
-					
-			</form>
+			<br><br><br>
+			<h1>已寄出忘記密碼通知到您的信箱</h1>
+			<h1>請至您的信箱確認通知</h1>
+			<h1>感謝您的配合！</h1>
 		</div>
 		
 		<ul class="bg-bubbles">
@@ -130,38 +113,6 @@ MemberVO memberVO = (MemberVO) request.getAttribute("memberVO");
 			<li></li>
 			<li></li>
 		</ul>
-	</div>
-	
-	<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-		<div class="modal-dialog">
-			<div class="modal-content">
-				<div class="modal-header">
-					<button type="button" class="close" data-dismiss="modal">
-						<span aria-hidden="true">&times;</span>
-						<span class="sr-only">Close</span>
-					</button>
-					<h3 class="text-center">請輸入註冊時所使用的信箱</h3>
-				</div>
-
-				<form METHOD="post" ACTION="<%=request.getContextPath()%>/member/member.do">
-					<div class="modal-body">
-						<div class="input-group">
-							<div class="input-group-addon">
-								請輸入信箱
-							</div>
-							<input type="text" name="mem_email" class="form-control" value="${memberVO.mem_email}">
-						</div>
-					</div>
-
-					<div class="modal-footer">
-						<button type="button" class="btn btn-default" data-dismiss="modal">返回</button>
-						<button type="submit" class="btn btn-primary">送出</button>
-						<input type="hidden" name="action" value="forgetPW">
-					</div>
-				</form>
-
-			</div>
-		</div>
 	</div>
 
 
