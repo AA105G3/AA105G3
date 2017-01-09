@@ -4,7 +4,6 @@
 <%@ page import="com.collection.model.*"%>
 
 <% 		
-	session.setAttribute("mem_no","M00000001");
 	String mem_no =(String) session.getAttribute("mem_no");
 	CollectionService collectionSvc = new CollectionService();
 	List list = collectionSvc.getMyRecipeCollection(mem_no);

@@ -6,9 +6,6 @@
 
 
 
-<% //session.setAttribute("mem_no", "M00000004"); %>
-
-
 <jsp:useBean id="recipe_cont_set" scope="request" type="java.util.Set" />
 <jsp:useBean id="recipeSvc" scope="page" class="com.recipe.model.RecipeService" />
 <jsp:useBean id="recipe_contSvc" scope="page" class="com.recipe_cont.model.Recipe_contService" />
