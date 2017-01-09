@@ -413,6 +413,9 @@ public class MemberServlet extends HttpServlet {
 				if(mem_pw == ""){
 					errorMsgs.add("請輸入會員密碼.");
 				}
+				if(!mem_pw.matches("^[A-Za-z0-9]{6,20}$")){
+					errorMsgs.add("密碼格式不正確.");
+				}
 				
 				Part part = req.getPart("mem_image");
 				byte[] mem_image = null;
@@ -441,10 +444,16 @@ public class MemberServlet extends HttpServlet {
 				if(mem_phone == ""){
 					errorMsgs.add("請輸入手機.");
 				}
+				if(!mem_phone.matches("^\\d{10}$")){
+					errorMsgs.add("手機格式不正確.");
+				}
 				
 				String mem_email = req.getParameter("mem_email").trim();
 				if(mem_email == ""){
 					errorMsgs.add("請輸入電子郵件.");
+				}
+				if(!mem_email.matches("^([a-z0-9A-Z]+[-|\\.]?)+[a-z0-9A-Z]@([a-z0-9A-Z]+(-[a-z0-9A-Z]+)?\\.)+[a-zA-Z]{2,}$")){
+					errorMsgs.add("電子郵件格式不正確.");
 				}
 				
 				String mem_adrs = req.getParameter("mem_adrs").trim();
@@ -479,6 +488,19 @@ public class MemberServlet extends HttpServlet {
 				
 				/***************************2.開始新增資料***************************************/
 				MemberService memberSvc = new MemberService();
+				
+				MemberVO memberVO1 = memberSvc.getOneByMem_ac(mem_ac);
+				if (memberVO1 != null) {
+					errorMsgs.add("帳號重複");
+				}
+				
+				if (!errorMsgs.isEmpty()) {
+					RequestDispatcher failureView = req
+							.getRequestDispatcher("/front-end/member/MemberSignUp.jsp");
+					failureView.forward(req, res);
+					return;//程式中斷
+				}
+				
 				memberVO = memberSvc.addMember(mem_name, mem_ac, mem_pw, mem_image, mem_sex, mem_phone, mem_email, 
 						mem_adrs, mem_own, mem_history, mem_online);
 				

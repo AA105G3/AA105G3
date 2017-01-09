@@ -25,7 +25,10 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+<link rel="stylesheet" href="<%=request.getContextPath()%>/css/sweetalert.css">
 <link rel="stylesheet" href="/AA105G3/css/frontpageCSS.css">
+<script type="text/javascript" src="<%=request.getContextPath()%>/js/sweetalert.min.js"></script>
+<script type="text/javascript" src="<%=request.getContextPath()%>/js/sweetalert-dev.js"></script>
 
 <style type="text/css" media="screen">
 	.select-menu{
@@ -86,8 +89,49 @@
 	}
 </style>
 
+<script>
+   var MyPoint = "/product/InformNewProduct";
+   var host = window.location.host;
+   var path = window.location.pathname;
+   var webCtx = path.substring(0, path.indexOf('/', 1));
+   var endPointURL = "ws://" + window.location.host + webCtx + MyPoint;
+   
+   var webSocket;
+   
+   function connect() {
+	   var prod_no = null;
+		// 建立 websocket 物件
+		webSocket = new WebSocket(endPointURL);
+		
+		//收到server傳來的訊息
+		webSocket.onmessage = function(event) {
+	       var jsonObj = JSON.parse(event.data);
+	       var message = jsonObj.message + "\r\n"; 
+	       prod_no = jsonObj.prod_no + "\r\n"; 
+	       swal({
+	    	   title: "全新商品上架了~！",
+	    	   text: message,
+	    	   showCancelButton: true,
+	    	   confirmButtonColor: "red",
+	    	   confirmButtonText: "前去購買！",
+	    	   cancelButtonColor: "blue",
+	    	   cancelButtonText: "等會再買！",
+	    	   closeOnConfirm: false
+	    	 },function(){
+	    	/* 	$('.thumbnail').first().focus(function(){ 
+	    			$(this).css("background", "red").blur(function(){getOne_For_Display&prod_no=${productVO.prod_no}
+	    				  $(this).css("background", "#fff"); 
+	    			}); 
+	    		 }); */
+	    		 window.location.href = '<%=request.getContextPath()%>/product/product.do?action=getOne_For_Display&prod_no='+prod_no+'';
+	    	 });
+		  };		
+      }	
+
+</script>
+
 </head>
-<body>
+<body onload="connect();" onunload="disconnect();">
 
 
 
