@@ -20,8 +20,6 @@
 	</head>
 	<body>
 		
-		<button class="chatButton" value = "BBB">button</button>
-		
 		
 		<script src="https://code.jquery.com/jquery.js"></script>
 		<script src="https://netdna.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
@@ -29,7 +27,7 @@
 		<script type="text/javascript">
 
 		var ws;
-	    var mem_no = "";//自己
+	    var mem_no = "${sessionScope.mem_no}";//自己
 	    var frd_no = "";//朋友
 	    var path = window.location.pathname;
 	    var webCtx = path.substring(0, path.indexOf('/', 1));
@@ -39,10 +37,6 @@
 
 	    function connect() {
 	    	
-	        // mem_no = document.getElementById("username").value;
-	        // frd_no = document.getElementById("to").value;
-	        mem_no = AAA;
-	        frd_no = BBB;
 		    var endPointURL = "ws://" + window.location.host + webCtx + "/InviteEndpoint/"+mem_no;
 	        ws = new WebSocket(endPointURL);
 
@@ -56,7 +50,7 @@
 	            if(message.content=='invite'){
 	            	swal({
 					  title: '聊天室邀請',
-					  text: message.from+"邀請您進入聊天室",
+					  text: message.memberName+"邀請您進入聊天室",
 					  type: 'info',
 					  showCancelButton: true,
 					  confirmButtonColor: '#3085d6',
@@ -69,7 +63,7 @@
 					}).then(function () {
 					  	//同意開啟聊天室並傳訊息同意聊天
 					  	agree(message.from);
-					  	var myWindow = window.open("http://www.google.com", "", "width=400,height=400");
+					  	var myWindow = window.open("/AA105G3/front-end/chat/chatRoom.jsp?friend_no="+message.from, "", "width=400,height=400");
 
 					}, function (dismiss) {
 					  // dismiss can be 'cancel', 'overlay',
@@ -86,18 +80,18 @@
 	            if(message.content=='true'){
 	            	swal({
 					  title: '對方同意邀請',
-					  text: "You won't be able to revert this!",
 					  type: 'info',
 					  confirmButtonColor: '#3085d6',
 					  confirmButtonText: '開啟聊天室'
 					}).then(function () {
 					  //打開新分頁
-					  	var myWindow = window.open("http://www.google.com", "", "width=400,height=400");
+					  alert(message.from);
+					  	var myWindow = window.open("/AA105G3/front-end/chat/chatRoom.jsp?friend_no="+message.from, "", "toolbar=no,menubar=no,width=400,height=400");
 					})
 	            }else if(message.content=='false'){
 	            	swal({
 					 title: '邀請被拒絕',
-					 text: "很抱歉，對方不同意您的聊天邀請!",
+					 text: "很抱歉，對方拒絕您的聊天邀請!",
 					 type:'success'
 					})
 	            }
@@ -142,12 +136,11 @@
 
 		$().ready(function(){
 			//when document ready then call connect;
-		    connect();
-		     $('.chatButton').on('click',invite);
+		     connect();
+		     $('.list-frd-chat').on('click',invite);
 		})
 		
-
-
+		
 	</script>
 	</body>
 </html>

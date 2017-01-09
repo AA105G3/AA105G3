@@ -375,7 +375,7 @@
 									        					<c:if test="${memberSvc.getOneMember(aFriend.friend_no).mem_online ==1}">
 									        						<div class="frd-online"></div>上線中
 									        						<div style="clear:both;"></div>
-								        							<button class="btn btn-info list-frd-chat">聊天</button>
+								        							<button class="btn btn-info list-frd-chat" value="${aFriend.friend_no}">聊天</button>
 								        							<form action="<%=request.getContextPath()%>/frd_list/frd_list.do" method="post" class="frd-form">
 								        								<input type="submit" class="btn btn-danger list-frd-delete" value="刪除">
 								        								<input type="hidden" name="friend_no" value="${aFriend.friend_no}">
@@ -403,7 +403,7 @@
 									        						<c:if test="${memberSvc.getOneMember(list.get(s.index+1).mem_no).mem_online ==1}">
 									        						<div class="frd-online"></div>上線中
 									        						<div style="clear:both;"></div>
-								        							<button class="btn btn-info list-frd-chat">聊天</button>
+								        							<button class="btn btn-info list-frd-chat" value="${list.get(s.index+1).friend_no}">聊天</button>
 								        							<form action="<%=request.getContextPath()%>/frd_list/frd_list.do" method="post" class="frd-form">
 								        								<input type="submit" class="btn btn-danger list-frd-delete" value="刪除">
 								        								<input type="hidden" name="friend_no" value="${list.get(s.index+1).friend_no}">
@@ -540,7 +540,7 @@
 				
 	    	</div>
 	  	</div>
-
+<c:import url="/front-end/chat/inviteChat.jsp" ></c:import>
 
 
 	<footer>

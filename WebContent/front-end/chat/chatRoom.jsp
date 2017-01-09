@@ -142,7 +142,7 @@
 
 
 		var ws;
-	    var mem_no = "${param.mem_no}";//自己
+	    var mem_no = "${sessionScope.mem_no}";//自己
 	    var frd_no = "${param.friend_no}";//朋友
 	    var path = window.location.pathname;
 	    var webCtx = path.substring(0, path.indexOf('/', 1));
@@ -150,7 +150,6 @@
 		$().ready(function(){
 			$('#inputArea').width($(window).width()-90);
 			$('#messagesArea').height($(window).height()-85)
-
 
 			//chat websocket
 			connect();
@@ -176,7 +175,7 @@
 	            console.log(event.data);
 	            var message = JSON.parse(event.data);
 	            var html = '<div class="direct-chat-message">'+
-							'<div class="frd-id">'+ message.from +'</div>'+
+							'<div class="frd-id">'+ message.memberName +'</div>'+
 							'<div class="direct-chat-text">'+ message.content+'</div>'+
 							'<div style="clear:left;"></div>'+
 							'</div>';
@@ -196,7 +195,8 @@
 						'</div>';
 
 	        var json = JSON.stringify({
-	            "to":to,
+	            "from":mem_no,
+	        	"to":to,
 	            "content":content
 	        });
 

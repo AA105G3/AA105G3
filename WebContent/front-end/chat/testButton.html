@@ -65,8 +65,10 @@
 					  buttonsStyling: false
 					}).then(function () {
 					  	//同意開啟聊天室並傳訊息同意聊天
+					  	
+					  	alert(message.from);
 					  	agree(message.from);
-					  	var myWindow = window.open("/AA105G3/front-end/chat/chatRoom.jsp?freind_no="+message.from+"&mem_no="+mem_no, "", "width=400,height=400");
+					  	var myWindow = window.open("/AA105G3/front-end/chat/chatRoom.jsp?friend_no="+message.from+"&mem_no="+mem_no, "", "width=400,height=400");
 
 					}, function (dismiss) {
 					  // dismiss can be 'cancel', 'overlay',
@@ -89,7 +91,7 @@
 					  confirmButtonText: '開啟聊天室'
 					}).then(function () {
 					  //打開新分頁
-					  	var myWindow = window.open("/AA105G3/front-end/chat/chatRoom.jsp?freind_no="+message.from+"&mem_no="+mem_no, "", "toolbar=no,menubar=no,width=400,height=400");
+					  	var myWindow = window.open("/AA105G3/front-end/chat/chatRoom.jsp?friend_no="+message.from+"&mem_no="+mem_no, "", "toolbar=no,menubar=no,width=400,height=400");
 					})
 	            }else if(message.content=='false'){
 	            	swal({

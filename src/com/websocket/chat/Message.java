@@ -5,7 +5,8 @@ public class Message
 	private String from;
     private String to;
     private String content;
-
+	private String memberName;
+    	
     @Override
     public String toString() {
         return super.toString();
@@ -34,4 +35,13 @@ public class Message
     public void setContent(String content) {
         this.content = content;
     }
+    public String getMemberName()
+   	{
+   		return memberName;
+   	}
+
+   	public void setMemberName(String memberName)
+   	{
+   		this.memberName = memberName;
+   	}
 }
