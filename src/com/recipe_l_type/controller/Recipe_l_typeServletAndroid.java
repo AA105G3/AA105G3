@@ -16,6 +16,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import com.recipe_l_type.model.Recipe_l_typeVO;
 import com.recipe_m_type.model.*;
+import com.recipe_s_type.model.*;
 
 import util.SendResponse;
 
@@ -57,22 +58,53 @@ public class Recipe_l_typeServletAndroid extends HttpServlet {
 		String action = jsonObject.get("action").getAsString();
 		System.out.println("Recipe L Type action = " + action);
 		StringBuffer outStr = new StringBuffer();
-		
+
 		if ("getAll".equals(action)) {
 			List<Recipe_l_typeVO> recipe_l_typelist = recipe_l_typeSvc.getAll();
 
 			SendResponse.writeText(res, gson.toJson(recipe_l_typelist));
 			return;
 		}
-		
-		if("getM_typesByL_Type_No".equals(action)){
+
+		if ("getM_typesByL_Type_No".equals(action)) {
 			String recipe_l_type_no = jsonObject.get("recipe_l_type_no").getAsString();
 			Set<Recipe_m_typeVO> recipe_m_typeSet = recipe_l_typeSvc.getM_typesByL_Type_No(recipe_l_type_no);
+
+			List<Recipe_m_typeVO> recipe_m_typeList = new ArrayList<Recipe_m_typeVO>();
+			recipe_m_typeList.addAll(recipe_m_typeSet);
+
+			SendResponse.writeText(res, gson.toJson(recipe_m_typeList));
+			return;
+		}
 		
+		if ("getBelow_typesByL_Type_No".equals(action)) {
+			String recipe_l_type_no = jsonObject.get("recipe_l_type_no").getAsString();
+			Set<Recipe_m_typeVO> recipe_m_typeSet = recipe_l_typeSvc.getM_typesByL_Type_No(recipe_l_type_no);
+
 			List<Recipe_m_typeVO> recipe_m_typeList = new ArrayList<Recipe_m_typeVO>();
 			recipe_m_typeList.addAll(recipe_m_typeSet);
 			
-			SendResponse.writeText(res, gson.toJson(recipe_m_typeList));
+			Recipe_m_typeService recipe_m_typeSvc = new Recipe_m_typeService();
+
+			List<String> type_noList = new ArrayList<String>();
+
+			for (Recipe_m_typeVO aRecipe_m_type : recipe_m_typeList) {
+				type_noList.add(aRecipe_m_type.getRecipe_m_type_no());
+				Set<Recipe_s_typeVO> recipe_s_typeSet = recipe_m_typeSvc
+						.getS_typesByM_Type_No(aRecipe_m_type.getRecipe_m_type_no());
+
+				List<Recipe_s_typeVO> recipe_s_typeList = new ArrayList<Recipe_s_typeVO>();
+
+				if (recipe_s_typeSet != null && !recipe_s_typeSet.isEmpty()) {
+					recipe_s_typeList.addAll(recipe_s_typeSet);
+					
+					for(Recipe_s_typeVO aRecipe_s_type : recipe_s_typeList){
+						type_noList.add(aRecipe_s_type.getRecipe_s_type_no());
+					}
+				}
+			}
+
+			SendResponse.writeText(res, gson.toJson(type_noList));
 			return;
 		}
 

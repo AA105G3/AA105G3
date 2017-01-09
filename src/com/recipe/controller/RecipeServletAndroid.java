@@ -9,6 +9,7 @@ import java.io.StringReader;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.LinkedHashSet;
 import java.util.LinkedList;
 import java.util.List;
@@ -34,8 +35,12 @@ import com.member.model.MemberService;
 import com.member.model.MemberVO;
 import com.recipe.model.*;
 import com.recipe_cont.model.*;
+import com.recipe_m_type.model.Recipe_m_typeService;
+import com.recipe_m_type.model.Recipe_m_typeVO;
+import com.recipe_s_type.model.Recipe_s_typeVO;
 import com.recipe_type_info.model.Recipe_type_infoService;
 import com.recipe_type_info.model.Recipe_type_infoVO;
+import com.recipe_l_type.model.*;
 
 import util.ImageUtil;
 import util.SendResponse;
@@ -129,10 +134,11 @@ public class RecipeServletAndroid extends HttpServlet {
 
 			return;
 		}
+
 		if ("getAllByRecipe_type_no".equals(action)) {
 			String recipe_type_no = jsonObject.get("recipe_type_no").getAsString();
 			Recipe_type_infoService recipe_type_infoSvc = new Recipe_type_infoService();
-			Set<Recipe_type_infoVO> recipe_type_infoVOSet = recipe_type_infoSvc.findByType_no(recipe_type_no);
+			Set<Recipe_type_infoVO> recipe_type_infoVOSet = recipe_type_infoSvc.findByType_no(recipe_type_no);// 食譜類別編號得食譜類別細項，食譜類別細項中有食譜編號
 			List<Recipe_type_infoVO> recipe_type_infoVOList = new ArrayList();
 			recipe_type_infoVOList.addAll(recipe_type_infoVOSet);
 			List<RecipeVO> recipeVOList = new ArrayList();
@@ -151,7 +157,140 @@ public class RecipeServletAndroid extends HttpServlet {
 				}
 			}
 			SendResponse.writeText(res, gson.toJson(recipeVOList));
+		}
 
+		if ("getAllByRecipe_l_type_no".equals(action)) {// 抓該類別底下所有子類別的食譜，須傳入recipe_l_type_no
+			String recipe_l_type_no = jsonObject.get("recipe_type_no").getAsString();
+			Recipe_l_typeService recipe_l_typeSvc = new Recipe_l_typeService();
+
+			Set<Recipe_m_typeVO> recipe_m_typeSet = recipe_l_typeSvc.getM_typesByL_Type_No(recipe_l_type_no);
+
+			List<Recipe_m_typeVO> recipe_m_typeList = new ArrayList<Recipe_m_typeVO>();
+			recipe_m_typeList.addAll(recipe_m_typeSet);
+
+			Recipe_m_typeService recipe_m_typeSvc = new Recipe_m_typeService();
+
+			List<String> type_noList = new ArrayList<String>();
+
+			for (Recipe_m_typeVO aRecipe_m_type : recipe_m_typeList) {
+				type_noList.add(aRecipe_m_type.getRecipe_m_type_no());
+				Set<Recipe_s_typeVO> recipe_s_typeSet = recipe_m_typeSvc
+						.getS_typesByM_Type_No(aRecipe_m_type.getRecipe_m_type_no());
+
+				List<Recipe_s_typeVO> recipe_s_typeList = new ArrayList<Recipe_s_typeVO>();
+
+				if (recipe_s_typeSet != null && !recipe_s_typeSet.isEmpty()) {
+					recipe_s_typeList.addAll(recipe_s_typeSet);
+
+					for (Recipe_s_typeVO aRecipe_s_type : recipe_s_typeList) {
+						type_noList.add(aRecipe_s_type.getRecipe_s_type_no()); // 得到recipe_l_type_no底下的所有m與s的type_no
+					}
+				}
+			}
+
+			Recipe_type_infoService recipe_type_infoSvc = new Recipe_type_infoService();
+			List<Recipe_type_infoVO> recipe_type_infoVOList = new ArrayList();
+
+			for (String atype_no : type_noList) {
+				Set<Recipe_type_infoVO> recipe_type_infoVOSet = recipe_type_infoSvc.findByType_no(atype_no);// 食譜類別編號得食譜類別細項，食譜類別細項中有食譜編號
+				recipe_type_infoVOList.addAll(recipe_type_infoVOSet);
+			}
+
+			List<RecipeVO> list = new ArrayList<RecipeVO>();
+			for (Recipe_type_infoVO aRecipe_type_info : recipe_type_infoVOList) {
+				list.add(recipeSvc.getOneRecipe(aRecipe_type_info.getRecipe_no()));
+			}
+
+			List<RecipeVO> recipeVOList = new ArrayList();
+			Set<RecipeVO> recipeVOSet = new LinkedHashSet<RecipeVO>();
+
+			if (list != null && !list.isEmpty()) {
+				for (RecipeVO aRecipe : list) {
+					if (aRecipe != null && aRecipe.getRecipe_edit().equals("已發布")) {
+						aRecipe.setRecipe_pic(null);
+						recipeVOSet.add(aRecipe);
+					}
+				}
+			}
+			recipeVOList.addAll(recipeVOSet);
+
+			SendResponse.writeText(res, gson.toJson(recipeVOList));
+		}
+
+		if ("getAllByRecipe_m_type_no".equals(action)) {// 抓該類別底下所有子類別的食譜，須傳入recipe_m_type_no
+			String recipe_m_type_no = jsonObject.get("recipe_type_no").getAsString();
+			Recipe_m_typeService recipe_m_typeSvc = new Recipe_m_typeService();
+
+			Set<Recipe_s_typeVO> recipe_s_typeSet = recipe_m_typeSvc.getS_typesByM_Type_No(recipe_m_type_no);
+
+			List<Recipe_s_typeVO> recipe_s_typeList = new ArrayList<Recipe_s_typeVO>();
+			recipe_s_typeList.addAll(recipe_s_typeSet);
+
+			List<String> type_noList = new ArrayList<String>();
+			type_noList.add(recipe_m_type_no); //要將點到的本身中類別編號加入
+			if (recipe_s_typeSet != null && !recipe_s_typeSet.isEmpty()) {
+				recipe_s_typeList.addAll(recipe_s_typeSet);
+
+				for (Recipe_s_typeVO aRecipe_s_type : recipe_s_typeList) {
+					type_noList.add(aRecipe_s_type.getRecipe_s_type_no()); // 得到recipe_m_type_no底下的所有s的type_no
+					System.out.println("aRecipe_s_type.getRecipe_s_type_no()"+aRecipe_s_type.getRecipe_s_type_no());
+				}
+			}
+
+			Recipe_type_infoService recipe_type_infoSvc = new Recipe_type_infoService();
+			List<Recipe_type_infoVO> recipe_type_infoVOList = new ArrayList();
+
+			for (String atype_no : type_noList) {
+				Set<Recipe_type_infoVO> recipe_type_infoVOSet = recipe_type_infoSvc.findByType_no(atype_no);// 食譜類別編號得食譜類別細項，食譜類別細項中有食譜編號
+				recipe_type_infoVOList.addAll(recipe_type_infoVOSet);
+			}
+
+			List<RecipeVO> list = new ArrayList<RecipeVO>();
+			for (Recipe_type_infoVO aRecipe_type_info : recipe_type_infoVOList) {
+				list.add(recipeSvc.getOneRecipe(aRecipe_type_info.getRecipe_no()));
+			}
+
+			List<RecipeVO> recipeVOList = new ArrayList();
+			Set<RecipeVO> recipeVOSet = new LinkedHashSet<RecipeVO>();
+
+			if (list != null && !list.isEmpty()) {
+				for (RecipeVO aRecipe : list) {
+					if (aRecipe != null && aRecipe.getRecipe_edit().equals("已發布")) {
+						aRecipe.setRecipe_pic(null);
+						recipeVOSet.add(aRecipe);
+					}
+				}
+			}
+			recipeVOList.addAll(recipeVOSet);
+
+			SendResponse.writeText(res, gson.toJson(recipeVOList));
+		}
+
+		if ("getBelowAllByRecipe_type_no".equals(action)) { // 抓該類別底下所有子類別的食譜，傳入拆好的type_no
+			String recipe_type_no = jsonObject.get("recipe_type_no").getAsString();
+
+			Recipe_type_infoService recipe_type_infoSvc = new Recipe_type_infoService();
+
+			Set<Recipe_type_infoVO> recipe_type_infoVOSet = recipe_type_infoSvc.findByType_no(recipe_type_no);
+
+			List<Recipe_type_infoVO> recipe_type_infoVOList = new ArrayList();
+			recipe_type_infoVOList.addAll(recipe_type_infoVOSet);
+			List<RecipeVO> recipeVOList = new ArrayList();
+
+			List<RecipeVO> list = new ArrayList<RecipeVO>();
+			for (Recipe_type_infoVO aRecipe_type_info : recipe_type_infoVOList) {
+				list.add(recipeSvc.getOneRecipe(aRecipe_type_info.getRecipe_no()));
+			}
+
+			if (list != null && !list.isEmpty()) {
+				for (RecipeVO aRecipe : list) {
+					if (aRecipe != null && aRecipe.getRecipe_edit().equals("已發布")) {
+						aRecipe.setRecipe_pic(null);
+						recipeVOList.add(aRecipe);
+					}
+				}
+			}
+			SendResponse.writeText(res, gson.toJson(recipeVOList));
 		}
 
 		if ("getOneByRecipe_no_For_Display".equals(action)) { // 來自select_page.jsp的請求

@@ -50,6 +50,29 @@ public class ChefServletAndroid extends HttpServlet {
 		System.out.println("Chef action = " + action);
 		StringBuffer outStr = new StringBuffer();
 
+		if ("getAll".equals(action)) {
+			List<ChefVO> chefVOList = chefSvc.getAll();
+			List<ChefVO> list2 = new ArrayList<ChefVO>();
+			for (ChefVO aChef : chefVOList) {
+				// 照片設為NULL, 避免手機OOM
+				aChef.setChef_lic(null);
+				aChef.setChef_image(null);
+				aChef.setChef_movie1(null);
+				aChef.setChef_movie2(null);
+				aChef.setChef_reci_image1(null);
+				aChef.setChef_reci_image2(null);
+				aChef.setChef_reci_image3(null);
+				aChef.setChef_reci_image4(null);
+				aChef.setChef_reci_image5(null);
+
+				list2.add(aChef);
+			}
+
+			SendResponse.writeText(res, gson.toJson(list2));
+			return;
+
+		}
+
 		if ("getOneByMem_no".equals(action)) {
 			String mem_no = jsonObject.get("mem_no").getAsString();
 			ChefVO chefVO = chefSvc.getOneByMem_no(mem_no);
@@ -113,13 +136,13 @@ public class ChefServletAndroid extends HttpServlet {
 
 		if ("getImage".equals(action)) {
 			OutputStream os = res.getOutputStream();
-			String chef_no = jsonObject.get("no").getAsString();//xx_no
+			String chef_no = jsonObject.get("no").getAsString();// xx_no
 			String var = jsonObject.get("var").getAsString();// 所取的變數選
 
 			int imageSize = jsonObject.get("imageSize").getAsInt();
 			ChefVO chefVO = chefSvc.getOneChef(chef_no);
 			byte[] image = null;
-//			System.out.println("chef_no " + chef_no + " var " + var);
+			// System.out.println("chef_no " + chef_no + " var " + var);
 			try {
 				if (var.equals("chef_image")) {
 					image = chefVO.getChef_image();
@@ -138,7 +161,8 @@ public class ChefServletAndroid extends HttpServlet {
 				System.out.println(e.toString());
 			}
 
-//			System.out.println("chef_no " + chef_no + " image is null: " + (image == null) + " imageSize " + imageSize);
+			// System.out.println("chef_no " + chef_no + " image is null: " +
+			// (image == null) + " imageSize " + imageSize);
 
 			if (image != null) {
 
