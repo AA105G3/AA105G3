@@ -34,6 +34,7 @@
 		<style type="text/css" media="screen">
 			.header-style{
 				padding-top: 80px;
+				margin-bottom:50px;
 			}
 			.search-style{
 				padding-bottom: 50px;
@@ -236,41 +237,14 @@
 	    </div>
 
 
-	    <div class="container">
-	    	<div class="row">
+	  
 
 			
-					<div class="container" id="page-content">
 					<header class="header-style">
-						<div class="row">
-							<div class="col-xs-12 col-sm-6 search-style">
-								<div class="recipe-search">
-										<form class="form-inline" action="<%=request.getContextPath()%>/recipe/recipe.do" method="POST">
-										    <select class="form-control recipe-select" name="searchCondition">
-										        <option value="recipe_name">找食譜名</option>
-										        <option value="food_mater">找食材</option>
-										    </select>
-										   <div class="input-group recipe-search-form">
-										    <input type="text" class="form-control recipe-text" placeholder="Search Recipe" name="searchInput">
-										        <span class="input-group-btn">
-										            <button class="btn btn-default recipe-btn" type="submit" name="action" value="search"><i class="glyphicon glyphicon-search"></i></button>
-										        </span>
-										    </div>
-										</form>
-									</div>
-							</div>
-							
-							<div class="col-xs-12 col-sm-4 recipe-header-right search-style">
-								
-									<a href="addRecipe.jsp">
-									<button class="btn btn-default write-recipe">
-									<span class="glyphicon glyphicon-pencil" aria-hidden="true"></span>
-									寫食譜</button></a>
-								
-							</div>
-							
-						</div>
+						<c:import url="/front-end/recipe/RecipeSearchBar.jsp" ></c:import>
 					</header>
+		<div class="container">
+	    	<div class="row">
 						<div class="col-xs-12 col-sm-8">
 			   				
 				   				<div role="tabpanel">
@@ -301,12 +275,15 @@
 									    <c:forEach var="recipeVO" items="${recipeSvc.findByMem_no(memberVO.mem_no)}" >
 									    	<div class="row recipe-wrapper">
 												<div class="col-xs-12 col-sm-4 recipe-img-wrapper">
+												<a href="<%=request.getContextPath()%>/recipe/recipe.do?action=getOne_For_Display&recipe_no=${recipeVO.recipe_no}">
 													<img src="<%=request.getContextPath()%>/recipe/showRecipe_pic.do?recipe_no=${recipeVO.recipe_no}">
+												</a>
 												</div>
 												<div class="col-xs-12 col-sm-8 recipe-content">
-														<a href="#"><h3>${recipeVO.recipe_name }</h3>
+														<a href="<%=request.getContextPath()%>/recipe/recipe.do?action=getOne_For_Display&recipe_no=${recipeVO.recipe_no}">
+														<h3>${recipeVO.recipe_name }</h3>
 														</a>
-														<p>by <a href="#">${memberVO.mem_name}</a></p>
+														<p>by <a href="<%=request.getContextPath()%>/member/member.do?action=getMemberInfo&mem_no=${recipeVO.mem_no}">${memberVO.mem_name}</a></p>
 														<p class="recipe-intro">${recipeVO.recipe_intro}</p>
 														<p class="recipe-food-mater">食材：${recipeVO.food_mater}</p>
 														<p>
@@ -330,7 +307,7 @@
 						    	<div>食譜數：${recipeSvc.findByMem_no(memberVO.mem_no).size()}</div>
 						    </div>
 						    <div class="col-xs-12 col-sm-6 count-style">
-						    	<div>追隨數：0</div>
+						    	<div>追隨數：${collectionSvc.getCollectionSize(sessionScope.mem_no)>0?collectionSvc.getCollectionSize(sessionScope.mem_no):0}</div>
 						    </div>
 						    <div class="col-xs-12 col-sm-12 text-left">
 						    	<div class="mem-email">${memberVO.mem_email}</div>

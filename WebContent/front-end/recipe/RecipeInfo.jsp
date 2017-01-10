@@ -289,43 +289,25 @@
 			.display-recipe-newest-box{
 				padding:0px 10px;
 			}
+			.recipe-header-right{
+				text-align: left !important;
+				padding-right: 0px;
+			}
 		</style>
 	</head>
 	<body>
-		<div class="container">
-			<div class="row">
-				<div class="col-xs-12 col-sm-8 ">
-					<div class="recipe-search">
-						<form class="form-inline text-center" action="<%=request.getContextPath()%>/recipe/recipe.do" method="POST">
-						    <select class="form-control recipe-search-select" name="searchCondition">
-						        <option value="recipe_name">找食譜名</option>
-						        <option value="food_mater">找食材</option>
-						    </select>
-						   <div class="input-group recipe-search-form">
-						    <input type="text" class="form-control recipe-search-text" placeholder="Search Recipe" name="searchInput">
-						        <span class="input-group-btn">
-						            <button class="btn btn-default recipe-search-btn" type="submit" name="action" value="search"><i class="glyphicon glyphicon-search"></i></button>
-						        </span>
-						    </div>
-						</form>
-					</div>
-				</div>
-				<div class="col-xs-12 col-sm-4 recipe-header-right">
-					<a href="<%=request.getContextPath()%>/front-end/recipe/addRecipe.jsp">
-						<button class="btn btn-default write-recipe">
-						<span class="glyphicon glyphicon-pencil" aria-hidden="true"></span>
-						寫食譜</button></a>
-				</div>
-			</div>
+		
+			<c:import url="/front-end/recipe/RecipeSearchBar.jsp" ></c:import>
+			<div class="container">
 			<div class="col-xs-12 col-sm-12">
 				<div class="row">
 			<c:if test="${recipeVO.recipe_no !=null}">				
 					<div class="col-xs-12 col-sm-8 display-recipe-wrapper">
 						<div class="recipe-top-title-wrapper col-xs-12 col-sm-12">
-						<div class="col-xs-12 col-sm-6 display-recipe-title">
+						<div class="col-xs-12 col-sm-8 display-recipe-title">
 							<div>${recipeVO.recipe_name}</div>
 						</div>
-						<div class="col-xs-12 col-sm-6 display-recipe-update">
+						<div class="col-xs-12 col-sm-4 display-recipe-update">
 							<c:if test="${recipeVO.mem_no == mem_no}">
 							<div class=" btn btn-default">
 								<a href="<%=request.getContextPath()%>/recipe/recipe.do?action=getOne_For_Update&recipe_no=${recipeVO.recipe_no}">
@@ -474,7 +456,7 @@
 										<td class="display-recipe-newest-box">
 											<a href="<%=request.getContextPath()%>/recipe/recipe.do?action=getOne_For_Display&recipe_no=${recipeVO.recipe_no}">
 											<h4>${recipeVO.recipe_name }</h4></a>
-											<p>by <a href="#">${memberSvc.getOneMember(recipeVO.mem_no).mem_name}</a></p>
+											<p>by <a href="<%=request.getContextPath()%>/member/member.do?action=getMemberInfo&mem_no=${recipeVO.mem_no}">${memberSvc.getOneMember(recipeVO.mem_no).mem_name}</a></p>
 										</td>
 									</tr>
 									</c:forEach>

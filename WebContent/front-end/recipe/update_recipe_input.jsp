@@ -127,6 +127,21 @@
 		h3 span{
 			font-size:16px;
 		}
+		.step-wrapper img{
+			border:2px solid #fff;
+			height: 121px;
+			width: 171px;
+			margin-bottom:3px;
+		}
+		.recipe-select{
+			margin-left:170px;
+		}
+		.write-recipe{
+			margin-right:190px;
+		}
+		.cancelRecipe-btn{
+		margin-top:10px;
+		}
 	</style>
 </head>
 <body>
@@ -140,7 +155,7 @@
 	</ul>
 	</font>
 </c:if>
-		
+		<c:import url="/front-end/recipe/RecipeSearchBar.jsp" ></c:import>
 	<div class="container">
 		<div class="row update-recipe-wrapper">
 			<div class="col-xs-12 col-sm-offset-2 col-sm-7">

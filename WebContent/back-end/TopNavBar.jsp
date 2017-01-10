@@ -19,15 +19,12 @@
 		<meta http-equiv="X-UA-Compatible" content="IE=edge">
 		<meta name="viewport" content="width=device-width, initial-scale=1">
 		<title>backEndTopNav</title>
-		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
 		<!--[if lt IE 9]>
 			<script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
 			<script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
 		<![endif]-->
 		<style type="text/css">
-			#menu_zone{
-				background: #f5deb3;
-			}
+			
 			#logo{
 				width: 50px;
 				height: 50px;
@@ -71,7 +68,6 @@
 		</style>
 	</head>
 	<body>
-	${sessionScope.emp_no}	
 		<nav class="navbar navbar-default" id="topnavBar">
 			<div class="navbar-header">
 				<button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-ex1-collapse">
@@ -104,7 +100,5 @@
 		</nav>
 		
 		
-		<script src="https://code.jquery.com/jquery.js"></script>
-		<script src="https://netdna.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
 	</body>
 </html>
