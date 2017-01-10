@@ -470,6 +470,7 @@
 						
 						
 						
+						<c:if test="${productSvc.serachByProduct_name(recipeVO.recipe_name).size() != '0'}">
 						<div class="col-xs-12 col-sm-12" style="margin:20px 0px;">
 							<div class="display-recipe-newest">
 								<div class="more-newest-title-wrapper">
@@ -494,37 +495,11 @@
 										</td>
 									</tr>
 									</c:forEach>
-									
-									
-									
-									
-									
-									<%-- <c:forEach var="productVO" items="${list}">
-
-										<c:if test="${productVO.prod_status == '1'}">
-										
-											<div class="col-xs-12 col-sm-4 first-col">
-												<a href='<%=request.getContextPath()%>/product/product.do?action=getOne_For_Display&prod_no=${productVO.prod_no}'>
-													<img src="/AA105G3/ProductDBGifReader.do?name=${productVO.prod_no}" width='350' height='250'>
-												</a>
-												<div class="col-xs-12 col-sm-6 front-style">
-													<h4>${productVO.prod_name}</h4>
-												</div>
-												<div class="col-xs-12 col-sm-6 text-right front-style">
-													<h4>NT$ ${productVO.unit_price}</h4>
-												</div>
-											</div>
-											
-										</c:if>
-										
-									</c:forEach> --%>
-									
-									
-									
 									</table>
 								</div>
 							</div>
 						</div>
+						</c:if>
 				</div>	
 				</div>
 				
