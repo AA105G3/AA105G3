@@ -19,7 +19,8 @@ public class ChefJDBCDAO implements ChefDAO_interface {
 		"DELETE FROM chef where chef_no = ?";
 	private static final String UPDATE = 
 		"UPDATE chef set chef_bnk=?, chef_bnk_ac=?, chef_skill=?, chef_lic=?, chef_image=?, chef_movie1=?, chef_movie2=?, chef_id=?, chef_name=?, chef_area=?, chef_intr=?, chef_menu=?, chef_reci_image1=?, chef_reci_image2=?, chef_reci_image3=?, chef_reci_image4=?, chef_reci_image5=? where chef_no = ?";
-
+	private static final String GET_CHEF_NAME_STMT = 
+		"SELECT chef_no,mem_no,chef_chk_cond,chef_bnk,chef_bnk_ac,chef_skill,chef_lic,chef_image,chef_movie1,chef_movie2,chef_id,chef_name,chef_area,chef_intr,chef_menu,chef_reci_image1,chef_reci_image2,chef_reci_image3,chef_reci_image4,chef_reci_image5 FROM chef where chef_name = ?";
 	@Override
 	public void insert(ChefVO chefVO) {
 
@@ -202,6 +203,83 @@ public class ChefJDBCDAO implements ChefDAO_interface {
 			pstmt = con.prepareStatement(GET_ONE_STMT);
 
 			pstmt.setString(1, chef_no);
+
+			rs = pstmt.executeQuery();
+
+			while (rs.next()) {
+				// chefVO 也稱為 Domain objects
+				chefVO = new ChefVO();
+				chefVO.setChef_no(rs.getString("chef_no"));
+				chefVO.setMem_no(rs.getString("mem_no"));
+				chefVO.setChef_chk_cond(rs.getString("chef_chk_cond"));
+				chefVO.setChef_bnk(rs.getString("chef_bnk"));
+				chefVO.setChef_bnk_ac(rs.getString("chef_bnk_ac"));
+				chefVO.setChef_skill(rs.getString("chef_skill"));
+				chefVO.setChef_lic(rs.getBytes("chef_lic"));
+				chefVO.setChef_image(rs.getBytes("chef_image"));
+				chefVO.setChef_movie1(rs.getBytes("chef_movie1"));
+				chefVO.setChef_movie2(rs.getBytes("chef_movie2"));
+				chefVO.setChef_id(rs.getString("chef_id"));
+				chefVO.setChef_name(rs.getString("chef_name"));
+				chefVO.setChef_area(rs.getString("chef_area"));
+				chefVO.setChef_intr(rs.getString("chef_intr"));
+				chefVO.setChef_menu(rs.getString("chef_menu"));
+				chefVO.setChef_reci_image1(rs.getBytes("chef_reci_image1"));
+				chefVO.setChef_reci_image2(rs.getBytes("chef_reci_image2"));
+				chefVO.setChef_reci_image3(rs.getBytes("chef_reci_image3"));
+				chefVO.setChef_reci_image4(rs.getBytes("chef_reci_image4"));
+				chefVO.setChef_reci_image5(rs.getBytes("chef_reci_image5"));
+			}
+
+			// Handle any driver errors
+		} catch (ClassNotFoundException e) {
+			throw new RuntimeException("Couldn't load database driver. "
+					+ e.getMessage());
+			// Handle any SQL errors
+		} catch (SQLException se) {
+			throw new RuntimeException("A database error occured. "
+					+ se.getMessage());
+			// Clean up JDBC resources
+		} finally {
+			if (rs != null) {
+				try {
+					rs.close();
+				} catch (SQLException se) {
+					se.printStackTrace(System.err);
+				}
+			}
+			if (pstmt != null) {
+				try {
+					pstmt.close();
+				} catch (SQLException se) {
+					se.printStackTrace(System.err);
+				}
+			}
+			if (con != null) {
+				try {
+					con.close();
+				} catch (Exception e) {
+					e.printStackTrace(System.err);
+				}
+			}
+		}
+		return chefVO;
+	}
+	
+	public ChefVO findByChef_name(String chef_name) {
+
+		ChefVO chefVO = null;
+		Connection con = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+
+		try {
+
+			Class.forName(driver);
+			con = DriverManager.getConnection(url, userid, passwd);
+			pstmt = con.prepareStatement(GET_CHEF_NAME_STMT);
+
+			pstmt.setString(1, chef_name);
 
 			rs = pstmt.executeQuery();
 

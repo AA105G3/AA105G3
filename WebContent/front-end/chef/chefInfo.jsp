@@ -2,7 +2,9 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ page import="java.util.*"%>
 <%@ page import="com.chef.model.*"%>
+<%@ page import="com.member.model.*"%>
 <%ChefVO chefVO=(ChefVO)request.getAttribute("chefVO"); %>>
+<%MemberVO memberVO=(MemberVO)request.getAttribute("memberVO"); %>>
 <!DOCTYPE html>
 <html lang="">
 
@@ -13,6 +15,7 @@
     <title>frontpage-chef</title>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
     <link rel="stylesheet" href="/AA105G3/css/frontpageCSS.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.6.4/css/bootstrap-datepicker.css">
     <!--[if lt IE 9]>
             <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
             <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
@@ -56,10 +59,20 @@
         padding-top: 18px;
         padding-bottom: 18px;
     }
-/*     #logo{ */
-/* 		height:50px; */
-/* 		border:1px solid;     */
-/*     } */
+	.shopping-cart{
+		position: absolute;
+		position: fixed;
+		top: 40%;
+		rightt: 25px;
+		width: 250px;
+		list-style: none;
+		margin: 0;
+		padding: 0;
+		font-size: 16px;
+	}
+	.shopping-cart li{
+		padding-bottom: 15px;
+	}
     </style>
 </head>
 
@@ -135,17 +148,20 @@
         <div class="row">
             <div class="container">
                 <div class="row">
-                    <div class="col-xs-12 col-sm-12 text-center">
+                    <div class="col-xs-12 col-sm-10 text-center">
                         <h2>私廚個人資訊</h2><button>追隨此私廚</button>
                     </div>
                 </div>
             </div>
             <br>
+            
+     		<div class="col-xs-12 col-sm-10">
+            
             <div class="col-xs-12 col-sm-10 col-sm-offset-1" id="chefInfo_zone">
                 <div class="row" style="border-bottom: 2px solid #d3d4d5">
                     <div class="col-xs-12 col-sm-4 col-sm-offset-4" >
                         <div class="thumbnail">
-                            <img src="<%=request.getContextPath()%>/chef/chefImage.do?chef_no=${chefVO.chef_no}&chef_image=123" class="img-responsive" style="width:px;height:px">
+                            <img src="<%=request.getContextPath()%>/chef/chefImage.do?chef_no=${chefVO.chef_no}&chef_image=123" class="img-circle" style="width:150px;height:200px">
                             <div class="caption">
                                 <h3 align="center">${chefVO.chef_name}</h3>
                                 <p></p>
@@ -239,19 +255,45 @@
                     </div>
                 </div>
             </div>
-<!--             <div class="col-xs-12 col-sm-12"> -->
-<!--                 <ul class="pager"> -->
-<!--                     <li class="previous"><a href="#">&larr; 上一頁</a></li> -->
-<!--                     <li>第1頁 / 共X頁</li> -->
-<!--                     <li class="next"><a href="#">下一頁 &rarr;</a></li> -->
-<!--                 </ul> -->
-<!--             </div> -->
-<!-- 			<div class="col-xs-12 col-sm-12"> -->
-<%-- 				<FORM METHOD="post" ACTION="<%=request.getContextPath()%>/chef/chef.do"> --%>
-<!-- 			     <input type="submit" value="修改"> -->
+            
+            </div>
+            
+            
+                <div id="sidebar-wrapper" >
+					<ul class="shopping-cart" style="width:180px">	
+						<FORM METHOD="post" ACTION="<%=request.getContextPath()%>/chef_order_list/chef_order_list.do">
+						<div class="form-group form-inline">							
+                        	<b>預約日期 : </b>
+                        	<input type="text" name="act_date" id="chef_act_date" class="form-control" placeholder="請點擊後選取日期" readonly>
+                        	
+                    	</div>
+   						<div class="form-group form-inline">
+							<b>預約時段 : </b>
+                        	<select class="form-control" name="act_time" id="chef_act_time">
+                            	<option value="">請選擇時段</option>
+                            	<option value="10:00">10:00~14:00</option>
+                            	<option value="16:00">16:00~20:00</option>                       
+                        	</select>
+                    	</div>
+                    	<div class="form-group form-inline">				
+			     			<input type="submit" value="下訂私廚">
+			     			<input type="hidden" name="chef_no" value="${chefVO.chef_no}">
+			     			<input type="hidden" name="mem_no" value="M00000001">
+			     			<input type="hidden" name="action"	value="getChefNo_For_addChefOrd">
+						</div>
+						</FORM>	
+					</ul>
+				</div>
+			
+            
+<!-- 			<div class="col-xs-12 col-sm-12 text-center">				 -->
+<%-- 				<FORM METHOD="post" ACTION="<%=request.getContextPath()%>/chef_order_list/chef_order_list.do"> --%>
+<!-- 			     <input type="submit" value="下訂私廚"> -->
 <%-- 			     <input type="hidden" name="chef_no" value="${chefVO.chef_no}"> --%>
-<!-- 			     <input type="hidden" name="action"	value="getOne_For_Update"></FORM> -->
+<!-- 			     <input type="hidden" name="mem_no" value="M00000001"> -->
+<!-- 			     <input type="hidden" name="action"	value="getChefNo_For_addChefOrd"></FORM> -->
 <!-- 			</div> -->
+
         </div>
     </div>
     <footer>
@@ -259,6 +301,20 @@
     </footer>
     <script src="https://code.jquery.com/jquery.js"></script>
     <script src="https://netdna.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.6.4/js/bootstrap-datepicker.js"></script>
+    <script type="text/javascript">
+    $('#chef_act_date').datepicker({
+        format: "yyyy/mm/dd",
+        startDate: '+3d',
+        endDate: '+1m +3d',
+        maxViewMode: 0,
+        todayBtn: "linked",
+        clearBtn: true,
+//         daysOfWeekDisabled: "0,6",
+        orientation: "bottom right"
+
+    });
+    </script>
 </body>
 
 </html>

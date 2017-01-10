@@ -62,6 +62,20 @@
         padding-top: 18px;
         padding-bottom: 18px;
     }
+    .shopping-cart{
+		position: absolute;
+		position: fixed;
+		top: 40%;
+		left: 25px;
+		width: 250px;
+		list-style: none;
+		margin: 0;
+		padding: 0;
+		font-size: 16px;
+	}
+	.shopping-cart li{
+		padding-bottom: 15px;
+	}
     </style>
 </head>
 
@@ -133,6 +147,19 @@
             <a href="#">成為私廚</a>
         </li>
     </ol>
+    
+    <c:if test="${not empty errorMsgs}">
+		<font color='red'>請修正以下錯誤:
+			<ul>
+				<c:forEach var="message" items="${errorMsgs}">
+					<li>${message}</li>
+				</c:forEach>
+			</ul>
+		</font>
+	</c:if>
+    
+    
+    
     <div class="container">
         <div class="row">
             <div class="container">
@@ -144,16 +171,51 @@
             </div>
             <div class="container">
                 <div class="row">
+                
+                	<div class="col-xs-12 col-sm-2 text-left" >
+                	<div id="sidebar-wrapper" >
+						<ul class="shopping-cart" style="width:180px">
+		
+							<li>
+    							<FORM METHOD="post" ACTION="<%=request.getContextPath()%>/chef/chef.do" >
+        							<b>輸入私廚姓名搜尋 :</b>
+        							<br>
+        							<input type="text" name="chef_name" style=width:150px>
+        							<br>
+        							<input type="submit" value="送出">
+        							<input type="hidden" name="action" value="getName_For_Display">
+    							</FORM>
+  							</li>
+   			
+							<li>
+								<FORM METHOD="post" ACTION="<%=request.getContextPath()%>/chef/chef.do" >
+       								<b>選擇私廚姓名:</b>
+       								<br>
+       								<select size="1" name="chef_no" style=width:150px>
+         								<c:forEach var="chefVO" items="${list}" > 
+          									<option value="${chefVO.chef_no}">${chefVO.chef_name}
+         								</c:forEach>   
+       								</select>
+       								<br>
+       								<input type="submit" value="送出">
+       								<input type="hidden" name="action" value="getOne_For_Display">
+     							</FORM>
+     						</li>	
+						</ul>
+					</div>
+					</div>
+                
                 	<%@ include file="chef_page1.file" %> 
 					<c:forEach var="chefVO" items="${list}" varStatus="s" step="2" begin="<%=pageIndex%>" end="<%=pageIndex+rowsPerPage-1%>">
+                    
                     <div class="col-xs-12 col-sm-10 col-sm-offset-1">
                         <div class="col-xs-12 col-sm-6" style="border: 2px double #ccc;">
                             <div class="col-xs-12 col-sm-6">
                                 <a href="<%=request.getContextPath()%>/chef/chef.do?action=getOne_For_Display&chef_no=${chefVO.chef_no}">
-                                <img src="<%=request.getContextPath()%>/chef/chefImage.do?chef_no=${chefVO.chef_no}&chef_image=123" class="img-responsive" style="width:200px;height:200px">
-                                <div class="col-xs-12 col-sm-12">
-                                    <h6 align="center">${chefVO.chef_name}</h6>
-                                </div>
+                                	<img src="<%=request.getContextPath()%>/chef/chefImage.do?chef_no=${chefVO.chef_no}&chef_image=123" class="img-circle" style="width:200px;height:200px">
+                                	<div class="col-xs-12 col-sm-12">
+                                    	<h6 align="center">${chefVO.chef_name}</h6>
+                                	</div>
                                 </a>
                             </div>
                             <div class="col-xs-12 col-sm-6">
@@ -176,10 +238,12 @@
                         <c:if test="${s.index+1<list.size()}">
                         <div class="col-xs-12 col-sm-6" style="border: 2px double #ccc;">
                             <div class="col-xs-12 col-sm-6">
-                                <img src="<%=request.getContextPath()%>/chef/chefImage.do?chef_no=${list.get(s.index+1).chef_no}&chef_image=123" class="img-responsive" href="#mu-chef" style="width:200px;height:200px">
-                                <div class="col-xs-12 col-sm-12">
-                                    <h6 align="center"><a href="#">${list.get(s.index+1).chef_name}</a></h6>
-                                </div>
+                            	<a href="<%=request.getContextPath()%>/chef/chef.do?action=getOne_For_Display&chef_no=${list.get(s.index+1).chef_no}">
+                                	<img src="<%=request.getContextPath()%>/chef/chefImage.do?chef_no=${list.get(s.index+1).chef_no}&chef_image=123" class="img-circle" href="#mu-chef" style="width:200px;height:200px">
+                                	<div class="col-xs-12 col-sm-12">
+                                    	<h6 align="center"><a href="#">${list.get(s.index+1).chef_name}</a></h6>
+                                	</div>
+                                </a>
                             </div>
                             <div class="col-xs-12 col-sm-6">
                                 <div class="col-xs-12 col-sm-12">.
@@ -191,21 +255,28 @@
                                 <div class="col-xs-12 col-sm-12">
                                     <p>評價:★★★★★</p>
                                 </div>
+                                <div class="col-xs-12 col-sm-12">
+                                    <a href="<%=request.getContextPath()%>/chef/chef.do?action=getOne_For_Display&chef_no=${list.get(s.index+1).chef_no}">
+                                       	 瀏覽詳情
+                                    </a>
+                                </div>
                             </div>
                         </div>
                         </c:if>
                     </div>
+                  
                     </c:forEach>
                 </div>
+                <%@ include file="chef_page2.file" %>
             </div>
-            <%@ include file="chef_page2.file" %>
-            <div class="col-xs-12 col-sm-12">
-                <ul class="pager">
-                    <li class="previous"><a href="#">&larr; 上一頁</a></li>
-                    <li>第1頁 / 共X頁</li>
-                    <li class="next"><a href="#">下一頁 &rarr;</a></li>
-                </ul>
-            </div>
+            
+<!--             <div class="col-xs-12 col-sm-12"> -->
+<!--                 <ul class="pager"> -->
+<!--                     <li class="previous"><a href="#">&larr; 上一頁</a></li> -->
+<!--                     <li>第1頁 / 共X頁</li> -->
+<!--                     <li class="next"><a href="#">下一頁 &rarr;</a></li> -->
+<!--                 </ul> -->
+<!--             </div> -->
         </div>
     </div>
     <footer>

@@ -34,7 +34,7 @@
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
             </button>
-            <img src="/AA105G3/images/New_Logo2.0.png" href="#" id="logo">
+            <img src="/AA105G3/images/Logo.png" href="#" id="logo">
         </div>
         <!-- 手機隱藏選單區 -->
         <div class="collapse navbar-collapse navbar-ex1-collapse" id="top_header">

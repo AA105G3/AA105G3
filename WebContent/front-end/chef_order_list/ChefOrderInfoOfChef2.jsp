@@ -4,9 +4,6 @@
 <%@ page import="com.chef_order_list.model.*"%>
 <%@ page import="com.member.model.*"%>
 <%
-	Chef_order_listVO chef_order_listVO = (Chef_order_listVO) request.getAttribute("chef_order_listVO"); //Chef_order_listServlet.java (Concroller), 存入req的chef_order_listVO物件 (包括幫忙取出的chef_order_listVO, 也包括輸入資料錯誤時的chef_order_listVO物件)
-%>
-<%
     Chef_order_listService chef_order_listSvc = new Chef_order_listService();
     List<Chef_order_listVO> list = chef_order_listSvc.getAll();
     pageContext.setAttribute("list",list);
@@ -31,6 +28,10 @@
 			<script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
 		<![endif]-->
     <style type="text/css" media="screen">
+    html, body{
+		background : white;
+		height : 100%;
+	}
     .first-col {
         padding-top: 25px;
         padding-bottom: 50px;
@@ -50,13 +51,6 @@
         height: 250px;
     }
     
-    #top-img {
-        background-image: url(/AA105G3/images/chef/chef_title.jpg);
-        height: 500px;
-        /* background-size: cover; */
-        background-position: center;
-    }
-    
     .front-style {
         background: #f5deb3;
         width: 175px;
@@ -69,6 +63,19 @@
         padding-top: 18px;
         padding-bottom: 18px;
     }
+    #theFooter{
+		/* 對應skin */
+		position : absolute;
+		bottom : 0px;
+		width : 100%;
+	}
+	.title-style{
+		padding-top : 50px;
+		padding-bottom : 50px;
+	}
+	.button-style{
+		padding-top : 50px;
+	}
     </style>
 </head>
 
@@ -129,12 +136,6 @@
             </div>
         </div>
     </div>
-    <section id="top-img">
-        <div class="col-xs-12 col-sm-12">
-            <div class="top-img"></div>
-            <!-- <img src="/AA105G3/images/title.jpg" height="500px" width="100%"> -->
-        </div>
-    </section>
     <ol class="breadcrumb">
         <li>
             <a href="#">成為私廚</a>
@@ -144,27 +145,23 @@
         <div class="row">
             <div class="container">
                 <div class="row">
-                    <div class="col-xs-12 col-sm-12 text-center">
-                        <h2>收到的私廚訂單明細</h2>
+                    <div class="col-xs-12 col-sm-12 text-center title-style">
+                        <h2>私廚訂單明細</h2>
                     </div>
                 </div>
             </div>
-            
-            
             <div class="col-xs-12 col-sm-10 col-sm-offset-1">
                 <div class="row" style="border-bottom: 2px solid #d3d4d5;">
                     <div class="col-xs-12 col-sm-4">
                         <h3 style="margin-top:0px"><b>下訂會員</b></h3>
                     </div>
-<%--                     <c:forEach var="chef_order_listVO" items="${list}"> --%>
-                    	<c:forEach var="memVO" items="${mem_list}">
-                    		<c:if test="${chef_order_listVO.mem_no==memVO.mem_no}">
-                    			<div class="col-xs-12 col-sm-6">
-                        			<b style="font-size:12pt">${memVO.mem_ac}</b>                    
-                    			</div>
-                    		</c:if>
-                    	</c:forEach>
-<%--                     </c:forEach> --%>
+                   	<c:forEach var="memVO" items="${mem_list}">
+                   		<c:if test="${chef_order_listVO.mem_no==memVO.mem_no}">
+                   			<div class="col-xs-12 col-sm-6">
+                       			<b style="font-size:12pt">${memVO.mem_ac}</b>                    
+                   			</div>
+                   		</c:if>
+                   	</c:forEach>
                 </div>
                 <br>
                 <div class="row" style="border-bottom: 2px solid #d3d4d5">
@@ -201,19 +198,15 @@
                         <b style="font-size:12pt">${chef_order_listVO.chef_ord_cnt}</b>
                     </div>
                 </div>
-                <div class="row" style="border-bottom: 2px solid #d3d4d5">
+                <%-- <div class="row" style="border-bottom: 2px solid #d3d4d5">
                     <div class="col-xs-12 col-sm-4">
                         <h3 style="margin-top:0px"><b>評價</b></h3>
                     </div>
                     <div class="col-xs-12 col-sm-6">
-                    	<div class="col-xs-12 col-sm-12">
-                        	<b style="font-size:12pt">${chef_order_listVO.chef_appr}</b>
-                        </div>	
-                        <div class="col-xs-12 col-sm-12">
-                        	<b style="font-size:12pt">${chef_order_listVO.chef_appr_cnt}</b>
-                        </div>
+                        <b style="font-size:12pt">${chef_order_listVO.chef_appr}</b>
+                        <b style="font-size:12pt">${chef_order_listVO.chef_appr_cnt}</b>
                     </div>
-                </div>
+                </div> --%>
                 <div class="row" style="border-bottom: 2px solid #d3d4d5">
                     <div class="col-xs-12 col-sm-4">
                         <h3 style="margin-top:0px"><b>下訂時間</b></h3>
@@ -222,31 +215,24 @@
                         <b style="font-size:12pt">${chef_order_listVO.chef_ord_date}</b>
                     </div>
                 </div>
-				
-				<FORM METHOD="post" ACTION="<%=request.getContextPath()%>/chef_order_list/chef_order_list.do" name="form1">
-                	<input type="hidden" name="action" value="update">
-					<input type="hidden" name="chef_ord_no" value="<%=chef_order_listVO.getChef_ord_no()%>">
-					<input type="hidden" name="mem_no" value="<%=chef_order_listVO.getMem_no()%>">
-					<input type="hidden" name="chef_no" value="<%=chef_order_listVO.getChef_no()%>">
-					<input type="hidden" name="chef_ord_cost" value="<%=chef_order_listVO.getChef_ord_cost()%>">
-					<input type="hidden" name="chef_act_date" value="<%=chef_order_listVO.getChef_act_date()%>">
-					<input type="hidden" name="chef_ord_place" value="<%=chef_order_listVO.getChef_ord_place()%>">
-					<input type="hidden" name="chef_ord_cnt" value="<%=chef_order_listVO.getChef_ord_cnt()%>">
-					<input type="hidden" name="chef_ord_con" value="1">
-					<input type="hidden" name="chef_ord_date" value="<%=chef_order_listVO.getChef_ord_date()%>">					
-					<input type="submit" value="修改訂單">
-				</FORM>	
-				<br>			
-<%-- 			  	<FORM METHOD="post" ACTION="<%=request.getContextPath()%>/chef_order_list/chef_order_list.do"> --%>
-<!-- 			    	<input type="submit" value="取消訂單"> -->
-<%-- 			    	<input type="hidden" name="chef_ord_no" value="${chef_order_listVO.chef_ord_no}"> --%>
-<!-- 			    	<input type="hidden" name="action"value="delete"> -->
-<!-- 			    </FORM> -->
-				
+                
+                
+                
+                <div class="col-xs-12 col-sm-12 text-center button-style">
+	                <c:if test="${chef_order_listVO.chef_ord_con != '2'}">
+		                <FORM METHOD="post" ACTION="<%=request.getContextPath()%>/chef_order_list/chef_order_list.do">
+					     <input type="submit" value="修改" class="btn btn-primary">
+					     <input type="hidden" name="chef_ord_no" value="${chef_order_listVO.chef_ord_no}">
+					     <input type="hidden" name="action"	value="getOne_For_ChefCheck"></FORM>
+	                </c:if>
+                </div>
+                
+                
+
             </div>
         </div>
     </div>
-    <footer>
+    <footer id="theFooter">
         Copyright &copy; 2016 Java Team 3
     </footer>
     <script src="https://code.jquery.com/jquery.js"></script>
