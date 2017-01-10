@@ -81,6 +81,10 @@ public class ChefService {
 	public ChefVO getOneChef(String chef_no) {
 		return dao.findByPrimaryKey(chef_no);
 	}
+	
+	public ChefVO getChef_name(String chef_name) {
+		return dao.findByChef_name(chef_name);
+	}
 
 	public List<ChefVO> getAll() {
 		return dao.getAll();

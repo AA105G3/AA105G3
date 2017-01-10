@@ -64,8 +64,7 @@
         height: 500px;
         /* background-size: cover; */
         background-position: center;
-    }
-    
+    }    
     .front-style {
         background: #f5deb3;
         width: 175px;
@@ -191,9 +190,9 @@
                         <th>操作</th>
                     </tr>
 				</thead>
-                <%@ include file="page1.file" %>
-                    <c:forEach var="chef_order_listVO" items="${list}" begin="<%=pageIndex%>" end="<%=pageIndex+rowsPerPage-1%>">
-<%--                         <c:if test="${chef_order_listVO.chef_ord_con.equals('0')}"> --%>
+
+                    <c:forEach var="chef_order_listVO" items="${list}">
+						<c:if test="${chef_order_listVO.chef_ord_con == '2'}">
                         <tbody>
                             <tr align='center' valign='middle'>
                                 
@@ -225,19 +224,9 @@
                                 </td>
                             </tr>
                         </tbody>
-<%--                         </c:if> --%>
+                    </c:if>
                     </c:forEach>
-            </table>
-            
-<!--             <div class="col-xs-12 col-sm-12"> -->
-<!--                 <ul class="pager"> -->
-<!--                     <li class="previous"><a href="#">&larr; 上一頁</a></li> -->
-<!--                     <li>第1頁 / 共X頁</li> -->
-<!--                     <li class="next"><a href="#">下一頁 &rarr;</a></li> -->
-<!--                 </ul> -->
-<!--             </div> -->
-
-			<%@ include file="page2.file" %>
+            </table>            
         </div>
     </div>
     <footer id="theFooter">
