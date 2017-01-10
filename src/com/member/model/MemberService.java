@@ -88,6 +88,22 @@ public class MemberService {
 		return dao.findByAC(mem_ac);
 	}
 
+	public MemberVO updateMemOwn(String mem_own, String mem_email){
+		
+		MemberVO memberVO = new MemberVO();
+		
+		memberVO.setMem_own(mem_own);
+		memberVO.setMem_email(mem_email);
+		dao.updateMemOwn(memberVO);
+		
+		return memberVO;
+	}
+	
+	public MemberVO updateMemPw(MemberVO memberVO){
 
+		dao.updateMemPw(memberVO);
+		
+		return memberVO;
+	}
 
 }

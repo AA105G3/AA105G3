@@ -74,8 +74,9 @@
 	}
 	.shopping-cart{
 		position: absolute;
-		top: 650px;
-		left: 75px;
+		position: fixed;
+		top: 600px;
+		left: 25px;
 		width: 250px;
 		list-style: none;
 		margin: 0;
@@ -94,12 +95,11 @@
 
 
 
-<!--START SCROLL TOP BUTTON -->
-<a class="scrollToTop" href="#">
-	<i class="fa fa-angle-up"></i>
-	<span>Top</span>
-</a>
-<!-- END SCROLL TOP BUTTON -->
+<c:import url="/front-end/adv/Adv.jsp"></c:import>
+
+
+
+
 
 <div class="navbar navbar-default navbar-fixed-top navbar-inverse mu-main-navbar" >
 	<div class="container">

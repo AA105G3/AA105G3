@@ -89,7 +89,7 @@ public class ChatEndpoint
 	
 	@OnError
 	public void onError(Session userSession, Throwable e){
-		e.printStackTrace();
+//		e.printStackTrace();
 	}
 	
 	private static void setNameToMap(String userId){

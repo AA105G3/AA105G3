@@ -46,7 +46,7 @@ public class RecipeJNDIDAO implements RecipeDAO_interface
 			+ ",recipe_week_views,recipe_time,recipe_edit,recipe_classify from recipe where recipe_no = ?";
 	private static final String GET_BY_Mem_No = 
 			"select recipe_no,mem_no,recipe_name,recipe_intro,food_mater,recipe_pic,recipe_like,recipe_total_views"
-			+ ",recipe_week_views,recipe_time,recipe_edit,recipe_classify from recipe where mem_no = ?";
+			+ ",recipe_week_views,recipe_time,recipe_edit,recipe_classify from recipe where mem_no = ? order by recipe_time desc";
 	private static final String DELETE = 
 			"DELETE FROM recipe where recipe_no = ?";
 	private static final String UPDATE = 

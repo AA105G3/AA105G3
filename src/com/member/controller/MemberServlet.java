@@ -8,6 +8,7 @@ import javax.servlet.annotation.MultipartConfig;
 import javax.servlet.http.*;
 
 import com.member.model.*;
+import com.product_order.model.MailService;
 
 @MultipartConfig(fileSizeThreshold = 1024 * 1024, maxFileSize = 5 * 1024 * 1024, maxRequestSize = 5 * 5 * 1024 * 1024)
 
@@ -23,6 +24,148 @@ public class MemberServlet extends HttpServlet {
 
 		req.setCharacterEncoding("UTF-8");
 		String action = req.getParameter("action");
+		
+		if("forgetPW".equals(action)){
+			List<String> errorMsgs = new LinkedList<String>();
+			req.setAttribute("errorMsgs", errorMsgs);
+			
+			MailService mailSvc = new MailService();
+			String usermail = req.getParameter("mem_email");
+
+			String subject = "分享食光會員帳號忘記密碼通知";
+			String mailcontext = null;
+			
+			try {
+				/***************************1.接收請求參數 - 輸入格式的錯誤處理**********************/
+				String mem_pw = "";
+				String mem_email = req.getParameter("mem_email").trim();
+				
+				MemberVO memberVO = new MemberVO();
+				memberVO.setMem_pw(mem_pw);
+				memberVO.setMem_email(mem_email);
+				
+
+				// Send the use back to the form, if there were errors
+				if (!errorMsgs.isEmpty()) {
+					req.setAttribute("memberVO", memberVO); // 含有輸入格式錯誤的memberVO物件,也存入req
+					/*RequestDispatcher failureView = req
+							.getRequestDispatcher("/front-end/member/update_member_input.jsp");*/
+					RequestDispatcher failureView = req
+							.getRequestDispatcher("/Login/Flogin.jsp");
+					failureView.forward(req, res);
+					return; //程式中斷
+				}
+				
+				/***************************2.開始修改資料*****************************************/
+				int index;
+				
+				String[] newPwArr = {"0","1","2","3","4","5","6","7","8","9","a","b","c","d","e","f","g","h","i","j",
+						"k","l","m","n","o","p","q","r","s","t","u","v","w","x","y","z","A","B","C","D","E","F","G","H","I",
+						"J","K","L","M","N","O","P","Q","R","S","T","U","V","W","X","Y","Z"};
+				
+				for(int i=0 ;i<6 ;i++){
+					index =(int) Math.floor((Math.random() * 62));
+					mem_pw+=newPwArr[index];
+				}
+
+				MemberVO memberVO2 = new MemberVO();
+				memberVO2.setMem_pw(mem_pw);
+				memberVO2.setMem_email(mem_email);
+				
+				MemberService memberSvc = new MemberService();
+				memberVO = memberSvc.updateMemPw(memberVO2);
+				
+				mailcontext = "親愛的會員您好，請使用以下的密碼登入您的帳號\n\n" + mem_pw + "\n\n並於登入後至您的會員個人頁面修改密碼，感謝您的配合！";
+				mailSvc.sendMail(usermail, subject, mailcontext);
+
+				/***************************3.修改完成,準備轉交(Send the Success view)*************/
+				req.setAttribute("memberVO", memberVO); // 資料庫update成功後,正確的的memberVO物件,存入req
+				String url = "/front-end/member/MemberForgetPasswordSuccess.jsp";
+				RequestDispatcher successView = req.getRequestDispatcher(url); // 修改成功後,轉交listOneMember.jsp
+				successView.forward(req, res);
+
+				/***************************其他可能的錯誤處理*************************************/
+			} catch (Exception e) {
+				errorMsgs.add("修改資料失敗:"+e.getMessage());
+				/*RequestDispatcher failureView = req
+						.getRequestDispatcher("/front-end/member/update_member_input.jsp");*/
+				RequestDispatcher failureView = req
+						.getRequestDispatcher("/Login/Flogin.jsp");
+				failureView.forward(req, res);
+			}
+			
+		}
+		
+		if("validation".equals(action)){
+			List<String> errorMsgs = new LinkedList<String>();
+			req.setAttribute("errorMsgs", errorMsgs);
+			
+			try {
+				/***************************1.接收請求參數 - 輸入格式的錯誤處理**********************/
+				String mem_own = req.getParameter("mem_own").trim();
+				String mem_email = req.getParameter("mem_email").trim();
+
+				MemberVO memberVO = new MemberVO();
+				memberVO.setMem_own(mem_own);
+				memberVO.setMem_email(mem_email);
+				
+
+				// Send the use back to the form, if there were errors
+				if (!errorMsgs.isEmpty()) {
+					req.setAttribute("memberVO", memberVO); // 含有輸入格式錯誤的memberVO物件,也存入req
+					/*RequestDispatcher failureView = req
+							.getRequestDispatcher("/front-end/member/update_member_input.jsp");*/
+					RequestDispatcher failureView = req
+							.getRequestDispatcher("/Login/Flogin.jsp");
+					failureView.forward(req, res);
+					return; //程式中斷
+				}
+				
+				/***************************2.開始修改資料*****************************************/
+				MemberService memberSvc = new MemberService();
+				memberVO = memberSvc.updateMemOwn("0",mem_email);
+
+				/***************************3.修改完成,準備轉交(Send the Success view)*************/
+				req.setAttribute("memberVO", memberVO); // 資料庫update成功後,正確的的memberVO物件,存入req
+				String url = "/Login/Flogin.jsp";
+				RequestDispatcher successView = req.getRequestDispatcher(url); // 修改成功後,轉交listOneMember.jsp
+				successView.forward(req, res);
+
+				/***************************其他可能的錯誤處理*************************************/
+			} catch (Exception e) {
+				errorMsgs.add("修改資料失敗:"+e.getMessage());
+				/*RequestDispatcher failureView = req
+						.getRequestDispatcher("/front-end/member/update_member_input.jsp");*/
+				RequestDispatcher failureView = req
+						.getRequestDispatcher("/Login/Flogin.jsp");
+				failureView.forward(req, res);
+			}
+			
+		}
+		
+		if ("signOut".equals(action)){
+			
+			List<String> errorMsgs = new LinkedList<String>();
+			// Store this set in the request scope, in case we need to
+			// send the ErrorPage view.
+			req.setAttribute("errorMsgs", errorMsgs);
+			
+			try {
+				
+				HttpSession session = req.getSession();
+				session.removeAttribute("mem_no");
+				session.removeAttribute("mem_ac");
+				session.removeAttribute("mem_name");
+				
+				RequestDispatcher failureView = req
+						.getRequestDispatcher("/front-end/frontNavbar.jsp");
+				failureView.forward(req, res);
+				
+				
+			} catch (Exception e) {
+
+			}
+		}
 		
 		if ("getOne_For_Display".equals(action) || "getOne_For_List".equals(action)) { // 來自select_page.jsp的請求
 
@@ -111,7 +254,8 @@ public class MemberServlet extends HttpServlet {
 								
 				/***************************3.查詢完成,準備轉交(Send the Success view)************/
 				req.setAttribute("memberVO", memberVO);         // 資料庫取出的memberVO物件,存入req
-				String url = "/front-end/member/update_member_input.jsp";
+				/*String url = "/front-end/member/update_member_input.jsp";*/
+				String url = "/front-end/member/UpdateMember.jsp";
 				RequestDispatcher successView = req.getRequestDispatcher(url);// 成功轉交 update_member_input.jsp
 				successView.forward(req, res);
 
@@ -135,9 +279,7 @@ public class MemberServlet extends HttpServlet {
 				/***************************1.接收請求參數 - 輸入格式的錯誤處理**********************/
 				String mem_no = req.getParameter("mem_no").trim();
 				if(mem_no == ""){
-
 					errorMsgs.add("請輸入會員編號.");
-
 				}
 				
 				String mem_name = req.getParameter("mem_name").trim();
@@ -213,8 +355,10 @@ public class MemberServlet extends HttpServlet {
 				// Send the use back to the form, if there were errors
 				if (!errorMsgs.isEmpty()) {
 					req.setAttribute("memberVO", memberVO); // 含有輸入格式錯誤的memberVO物件,也存入req
+					/*RequestDispatcher failureView = req
+							.getRequestDispatcher("/front-end/member/update_member_input.jsp");*/
 					RequestDispatcher failureView = req
-							.getRequestDispatcher("/front-end/member/update_member_input.jsp");
+							.getRequestDispatcher("/front-end/member/UpdateMember.jsp");
 					failureView.forward(req, res);
 					return; //程式中斷
 				}
@@ -233,8 +377,10 @@ public class MemberServlet extends HttpServlet {
 				/***************************其他可能的錯誤處理*************************************/
 			} catch (Exception e) {
 				errorMsgs.add("修改資料失敗:"+e.getMessage());
+				/*RequestDispatcher failureView = req
+						.getRequestDispatcher("/front-end/member/update_member_input.jsp");*/
 				RequestDispatcher failureView = req
-						.getRequestDispatcher("/front-end/member/update_member_input.jsp");
+						.getRequestDispatcher("/front-end/member/UpdateMember.jsp");
 				failureView.forward(req, res);
 			}
 		}
@@ -245,6 +391,11 @@ public class MemberServlet extends HttpServlet {
 			// Store this set in the request scope, in case we need to
 			// send the ErrorPage view.
 			req.setAttribute("errorMsgs", errorMsgs);
+			
+			MailService mailSvc = new MailService();
+			String usermail = req.getParameter("mem_email");
+			String subject = "分享食光會員帳號驗證通知";
+			String mailcontext = null;
 
 			try {
 				/***********************1.接收請求參數 - 輸入格式的錯誤處理*************************/
@@ -261,6 +412,9 @@ public class MemberServlet extends HttpServlet {
 				String mem_pw = req.getParameter("mem_pw").trim();
 				if(mem_pw == ""){
 					errorMsgs.add("請輸入會員密碼.");
+				}
+				if(!mem_pw.matches("^[A-Za-z0-9]{6,20}$")){
+					errorMsgs.add("密碼格式不正確.");
 				}
 				
 				Part part = req.getPart("mem_image");
@@ -290,10 +444,16 @@ public class MemberServlet extends HttpServlet {
 				if(mem_phone == ""){
 					errorMsgs.add("請輸入手機.");
 				}
+				if(!mem_phone.matches("^\\d{10}$")){
+					errorMsgs.add("手機格式不正確.");
+				}
 				
 				String mem_email = req.getParameter("mem_email").trim();
 				if(mem_email == ""){
 					errorMsgs.add("請輸入電子郵件.");
+				}
+				if(!mem_email.matches("^([a-z0-9A-Z]+[-|\\.]?)+[a-z0-9A-Z]@([a-z0-9A-Z]+(-[a-z0-9A-Z]+)?\\.)+[a-zA-Z]{2,}$")){
+					errorMsgs.add("電子郵件格式不正確.");
 				}
 				
 				String mem_adrs = req.getParameter("mem_adrs").trim();
@@ -321,18 +481,43 @@ public class MemberServlet extends HttpServlet {
 				if (!errorMsgs.isEmpty()) {
 					req.setAttribute("memberVO", memberVO); // 含有輸入格式錯誤的memberVO物件,也存入req
 					RequestDispatcher failureView = req
-							.getRequestDispatcher("/front-end/member/addMember.jsp");
+							.getRequestDispatcher("/front-end/member/MemberSignUp.jsp");
 					failureView.forward(req, res);
 					return;
 				}
 				
 				/***************************2.開始新增資料***************************************/
 				MemberService memberSvc = new MemberService();
+				
+				MemberVO memberVO1 = memberSvc.getOneByMem_ac(mem_ac);
+				if (memberVO1 != null) {
+					errorMsgs.add("帳號重複");
+				}
+				
+				if (!errorMsgs.isEmpty()) {
+					RequestDispatcher failureView = req
+							.getRequestDispatcher("/front-end/member/MemberSignUp.jsp");
+					failureView.forward(req, res);
+					return;//程式中斷
+				}
+				
 				memberVO = memberSvc.addMember(mem_name, mem_ac, mem_pw, mem_image, mem_sex, mem_phone, mem_email, 
 						mem_adrs, mem_own, mem_history, mem_online);
 				
+				HttpSession session = req.getSession();
+				String sessionID = session.getId();
+				StringBuffer getRequestURL = req.getRequestURL();
+				
+				String loginURL = getRequestURL + "?action=validation" 
+				+ "&mem_own=0"
+				+ "&mem_email=" + mem_email 
+				+ "&sessionID=" + sessionID;
+				
+				mailcontext = mem_name + " 您好，感謝您在分享食光中的註冊，請點擊下列驗證碼完成帳號驗證\n" + loginURL;
+				mailSvc.sendMail(usermail, subject, mailcontext);
+				
 				/***************************3.新增完成,準備轉交(Send the Success view)***********/
-				String url = "/front-end/member/listAllMember.jsp";
+				String url = "/front-end/member/MemberSignUpSuccess.jsp";
 				RequestDispatcher successView = req.getRequestDispatcher(url); // 新增成功後轉交listAllMember.jsp
 				successView.forward(req, res);				
 				
@@ -340,7 +525,7 @@ public class MemberServlet extends HttpServlet {
 			} catch (Exception e) {
 				errorMsgs.add(e.getMessage());
 				RequestDispatcher failureView = req
-						.getRequestDispatcher("/front-end/member/addMember.jsp");
+						.getRequestDispatcher("/front-end/member/MemberSignUp.jsp");
 				failureView.forward(req, res);
 			}
 		}
@@ -373,6 +558,54 @@ public class MemberServlet extends HttpServlet {
 				failureView.forward(req, res);
 			}
 		}
+		
+		if ("getMemberInfo".equals(action)) { // 來自select_page.jsp的請求
+
+			List<String> errorMsgs = new LinkedList<String>();
+			// Store this set in the request scope, in case we need to
+			// send the ErrorPage view.
+			req.setAttribute("errorMsgs", errorMsgs);
+
+			try {
+				/***************************1.接收請求參數 - 輸入格式的錯誤處理**********************/
+				String mem_no = req.getParameter("mem_no");
+				
+				/***************************2.開始查詢資料*****************************************/
+				MemberService memberSvc = new MemberService();
+				MemberVO memberVO = memberSvc.getOneMember(mem_no);
+				memberVO.setMem_email((memberVO.getMem_email()).toLowerCase());
+				
+				if (memberVO == null) {
+					errorMsgs.add("查無資料");
+				}
+				// Send the use back to the form, if there were errors
+				if (!errorMsgs.isEmpty()) {
+					RequestDispatcher failureView = req
+							.getRequestDispatcher("/front-end/member/select_page.jsp");
+					failureView.forward(req, res);
+					return;//程式中斷
+				}
+				/***************************3.查詢完成,準備轉交(Send the Success view)*************/
+				req.setAttribute("memberVO", memberVO); // 資料庫取出的memberVO物件,存入req
+				
+				String url = null;
+				
+					url = "/front-end/member/memberInfo.jsp";
+				
+				RequestDispatcher successView = req.getRequestDispatcher(url); // 成功轉交 listOneMember.jsp
+				successView.forward(req, res);
+
+				/***************************其他可能的錯誤處理*************************************/
+			} catch (Exception e) {
+				errorMsgs.add("無法取得資料:" + e.getMessage());
+				RequestDispatcher failureView = req
+						.getRequestDispatcher("/front-end/member/select_page.jsp");
+				failureView.forward(req, res);
+			}
+		}
+		
+		
+		
 		
 	}
 	

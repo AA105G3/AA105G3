@@ -82,6 +82,98 @@ public class ProductJDBCDAO implements ProductDAO_interface {
 		+ " disc_start_date=?,"
 		+ " disc_end_date=? where prod_no = ?";
 	
+	private static final String SearchByName = 
+		"SELECT prod_no,"
+		+ " prod_name,"
+		+ " prod_type,"
+		+ " sales_volume,"
+		+ " stor_capacity,"
+		+ " unit_price,"
+		+ " prod_description,"
+		+ " prod_status,"
+		+ " disc_status,"
+		+ " sell_status,"
+		+ " prod_picture,"
+		+ " shelf_date,"
+		+ " remove_date,"
+		+ " disc_price,"
+		+ " disc_start_date,"
+		+ " disc_end_date FROM product where prod_name like ?";
+	
+	@Override
+	public List<ProductVO> serachByProduct_name(String prod_name)
+	{
+		// TODO Auto-generated method stub
+		List<ProductVO> list = new ArrayList<ProductVO>();
+		ProductVO productVO =null;
+		Connection con = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs =null;
+		
+		try
+		{
+			Class.forName(driver);
+			con = DriverManager.getConnection(url, userid, passwd);
+			pstmt = con.prepareStatement(SearchByName);
+			pstmt.setString(1, "%"+prod_name+"%");
+			rs = pstmt.executeQuery();
+			
+			while(rs.next())
+			{
+				productVO = new ProductVO();
+				productVO.setProd_no(rs.getString("prod_no"));
+				productVO.setProd_name(rs.getString("prod_name"));
+				productVO.setProd_type(rs.getString("prod_type"));
+				productVO.setSales_volume(rs.getInt("sales_volume"));
+				productVO.setStor_capacity(rs.getInt("stor_capacity"));
+				productVO.setUnit_price(rs.getInt("unit_price"));
+				productVO.setProd_description(rs.getString("prod_description"));
+				productVO.setProd_status(rs.getString("prod_status"));
+				productVO.setDisc_status(rs.getString("disc_status"));
+				productVO.setSell_status(rs.getString("sell_status"));
+				productVO.setShelf_date(rs.getDate("shelf_date"));
+				productVO.setRemove_date(rs.getDate("remove_date"));
+				productVO.setDisc_price(rs.getInt("disc_price"));
+				productVO.setDisc_start_date(rs.getDate("disc_start_date"));
+				productVO.setDisc_end_date(rs.getDate("disc_end_date"));
+				
+				list.add(productVO);
+			}
+		} catch (ClassNotFoundException e) {
+			throw new RuntimeException("Couldn't load database driver. "
+					+ e.getMessage());
+			// Handle any SQL errors
+		} catch (SQLException e)
+		{
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}finally
+		{
+			if(pstmt !=null)
+			{
+				try
+				{
+					pstmt.close();
+				} catch (SQLException e)
+				{
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+			if(con !=null){
+				try
+				{
+					con.close();
+				} catch (SQLException e)
+				{
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+		}
+		return list;
+	}
+	
 	@Override
 	public void insert(ProductVO prodVO) {
 
@@ -450,7 +542,7 @@ public class ProductJDBCDAO implements ProductDAO_interface {
 		System.out.println();*/
 
 		// 查詢 - 全部
-		List<ProductVO> list = dao.getAll();
+		/*List<ProductVO> list = dao.getAll();
 		for (ProductVO aProd : list) {
 			System.out.print(aProd.getProd_no() + ",	");
 			System.out.print(aProd.getProd_name() + ",	");
@@ -467,6 +559,27 @@ public class ProductJDBCDAO implements ProductDAO_interface {
 			System.out.print(aProd.getDisc_price() + ",	");
 			System.out.print(aProd.getDisc_start_date() + ",	");
 			System.out.print(aProd.getDisc_end_date());
+			System.out.println();
+		}*/
+		
+		// 查詢 - 由商品名稱
+		List<ProductVO> list = dao.serachByProduct_name("麵");
+		for(ProductVO productVO4 : list){
+			System.out.print(productVO4.getProd_no() + ",	");
+			System.out.print(productVO4.getProd_name() + ",	");
+			System.out.print(productVO4.getProd_type() + ",	");
+			System.out.print(productVO4.getSales_volume() + ",	");
+			System.out.print(productVO4.getStor_capacity() + ",	");
+			System.out.print(productVO4.getUnit_price() + ",	");
+			System.out.print(productVO4.getProd_description() + ",	");
+			System.out.print(productVO4.getProd_status() + ",	");
+			System.out.print(productVO4.getDisc_status() + ",	");
+			System.out.print(productVO4.getSell_status() + ",	");
+			System.out.print(productVO4.getShelf_date() + ",	");
+			System.out.print(productVO4.getRemove_date() + ",	");
+			System.out.print(productVO4.getDisc_price() + ",	");
+			System.out.print(productVO4.getDisc_start_date() + ",	");
+			System.out.print(productVO4.getDisc_end_date());
 			System.out.println();
 		}
 	}

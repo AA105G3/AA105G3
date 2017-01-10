@@ -8,6 +8,13 @@
     ProductService productSvc = new ProductService();
     List<ProductVO> list = productSvc.getAll();
     pageContext.setAttribute("list",list);
+    
+    /* 計算筆數 */
+    int listsize = list.size()-1;
+    /* 取得最後一筆的產品編號 */
+    String prod_no = list.get(listsize).getProd_no();
+    /* 存入page，以利下面程式取得 */
+    pageContext.setAttribute("prod_no",prod_no);
 %>
 
 <html>
@@ -40,8 +47,43 @@ th{
 }
 </style>
 
+<script>
+   var MyPoint = "/product/InformNewProduct";
+   var host = window.location.host;
+   var path = window.location.pathname;
+   var webCtx = path.substring(0, path.indexOf('/', 1));
+   var endPointURL = "ws://" + window.location.host + webCtx + MyPoint;
+   
+   var webSocket;
+   
+   function connect() {
+		// 建立 websocket 物件
+		webSocket = new WebSocket(endPointURL);
+		
+		//建立連線
+		webSocket.onopen = function(event) {
+			document.getElementById('sendMessage').disabled = false;	
+		};
+		//收到server傳來的訊息
+		webSocket.onmessage = function(event) {
+	       var jsonObj = JSON.parse(event.data);
+	       var message = jsonObj.message + "\r\n"; 
+	       alert("通知成功");
+		};		
+      }
+ 	
+   //clinet發送的訊息
+   var prod_no = null;
+   function sendMessage() {
+	   prod_no = document.getElementById("prod_no").value;
+	   var jsonObj = {"prod_no": prod_no, "message" : "有新品上市囉，趕緊去看看!!"};
+	   webSocket.send(JSON.stringify(jsonObj));
+   }
+   
+</script>
+
 </head>
-<body>
+<body onload="connect();" onunload="disconnect();">
 
 
 
@@ -248,32 +290,37 @@ th{
 		
 		
 			<div class="search-style">
-				<div class="col-xs-12 col-sm-2">
-					<a class="btn btn-primary" href="/AA105G3/back-end/product/AddProduct.jsp">新增商品</a>
+				<div class="col-xs-12 col-sm-8">
+					<div class="col-xs-12 col-sm-2">
+						<a class="btn btn-primary" href="/AA105G3/back-end/product/AddProduct.jsp">新增商品</a>
+					</div>
+					
+				
+				
+				
+				
+					<FORM METHOD="post" ACTION="<%=request.getContextPath()%>/product/product.do">
+					
+						<div class="col-xs-12 col-sm-8 input-group">
+							<div class="input-group-addon">
+								輸入商品編號：
+							</div>
+							<input type="text" name="prod_no" class="form-control">
+							<input type="hidden" name="action" value="getOne_For_Backpage">
+							<div class="input-group-btn">
+								<button class="btn btn-primary">查詢資料</button>
+							</div>
+						</div>
+					
+					</FORM>
 				</div>
 				
-			
-			
-			
-			
-				<FORM METHOD="post" ACTION="<%=request.getContextPath()%>/product/product.do">
+				<div class="col-xs-12 col-sm-2">
+					<input type="submit" id="sendMessage" class="btn btn-primary" value="發布新產品" onclick="sendMessage();"/>
+					<input type="hidden" id="prod_no" value="${prod_no}"/>
+				</div>
 				
-					<div class="col-xs-12 col-sm-4 input-group">
-						<div class="input-group-addon">
-							輸入商品編號：
-						</div>
-						<input type="text" name="prod_no" class="form-control">
-						<input type="hidden" name="action" value="getOne_For_Backpage">
-						<div class="input-group-btn">
-							<button class="btn btn-primary">查詢資料</button>
-						</div>
-					</div>
-				
-				</FORM>
-				
-				
-
-				
+				<a href="<%=request.getContextPath()%>/product_order/product_order.do?action=getPartForDisplay" class="btn btn-primary">測試訂單</a>
 
 			</div>
 
