@@ -334,7 +334,6 @@ public class CollectionDAO implements CollectionDAO_interface{
 		return collectionVO;
 	}
 	
-}
   
 @Override
 	public int getCollectionSize(String all_no)

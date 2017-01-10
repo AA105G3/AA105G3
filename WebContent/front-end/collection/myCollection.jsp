@@ -13,6 +13,7 @@
 	pageContext.setAttribute("list2",list2);
 	pageContext.setAttribute("list3",list3);
 	pageContext.setAttribute("collectionSvc",collectionSvc);
+	session.setAttribute("mem_no","M00000001");
 	
 %>
 
