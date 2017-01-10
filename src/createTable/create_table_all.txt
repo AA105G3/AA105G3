@@ -395,7 +395,7 @@ CREATE TABLE PRODUCT (
  
 CREATE SEQUENCE prod_seq
 INCREMENT BY 1
-START WITH 0001
+START WITH 1001
 MAXVALUE 2000
 NOCYCLE
 NOCACHE;
@@ -468,11 +468,11 @@ CREATE TABLE PRODUCT_ORDER_LIST (
  	CONSTRAINT P_O_L_PROD_NO_FK FOREIGN KEY (PROD_NO) REFERENCES PRODUCT (PROD_NO),
  	CONSTRAINT P_O_L_PROD_ORD_NO_PROD_NO_PK PRIMARY KEY (PROD_ORD_NO, PROD_NO));
 
-INSERT INTO PRODUCT_ORDER_LIST VALUES ('20160630-00000001', '5', 50, 10, '2', TO_DATE('2016-07-05','YYYY-MM-DD'));
-INSERT INTO PRODUCT_ORDER_LIST VALUES ('20160820-00000002', '4', 200, 2, '0', TO_DATE('2016-08-23','YYYY-MM-DD'));
-INSERT INTO PRODUCT_ORDER_LIST VALUES ('20160915-00000003', '3', 30, 20, '2', TO_DATE('2016-09-18','YYYY-MM-DD'));
-INSERT INTO PRODUCT_ORDER_LIST VALUES ('20161010-00000004', '2', 180, 5, '1', TO_DATE('2016-10-13','YYYY-MM-DD'));
-INSERT INTO PRODUCT_ORDER_LIST VALUES ('20161225-00000005', '1', 30, 12, '1', TO_DATE('2016-12-27','YYYY-MM-DD'));
+INSERT INTO PRODUCT_ORDER_LIST VALUES ('20160630-00000001', '1005', 50, 10, '2', TO_DATE('2016-07-05','YYYY-MM-DD'));
+INSERT INTO PRODUCT_ORDER_LIST VALUES ('20160820-00000002', '1004', 200, 2, '0', TO_DATE('2016-08-23','YYYY-MM-DD'));
+INSERT INTO PRODUCT_ORDER_LIST VALUES ('20160915-00000003', '1003', 30, 20, '2', TO_DATE('2016-09-18','YYYY-MM-DD'));
+INSERT INTO PRODUCT_ORDER_LIST VALUES ('20161010-00000004', '1002', 180, 5, '1', TO_DATE('2016-10-13','YYYY-MM-DD'));
+INSERT INTO PRODUCT_ORDER_LIST VALUES ('20161225-00000005', '1001', 30, 12, '1', TO_DATE('2016-12-27','YYYY-MM-DD'));
 
 commit;
 -----------------------------------------
@@ -581,7 +581,7 @@ CREATE TABLE ADV (
 	ADV_NAME					VARCHAR2(20)		NOT NULL,
 	ADV_IMAGE_NAME		VARCHAR2(40)		,
 	ADV_IMAGE					BLOB						,
-	ADV_URL						VARCHAR2(200)		,
+	ADV_URL						VARCHAR2(600)		,
  
  	CONSTRAINT ADV_EMP_NO_FK FOREIGN KEY (EMP_NO) REFERENCES EMP (EMP_NO),
 	CONSTRAINT ADV_ADV_NO_PK PRIMARY KEY (ADV_NO));
@@ -593,11 +593,11 @@ MAXVALUE 2000
 NOCYCLE
 NOCACHE;
 
-INSERT INTO ADV VALUES (adv_seq.NEXTVAL, '1001', '新品上架', '新的太空包的圖', NULL, 'WWW.YAHOO.COM.TW');
-INSERT INTO ADV VALUES (adv_seq.NEXTVAL, '1002', '特價消息', '新的特價的圖', NULL, 'WWW.GOOGLE.COM');
-INSERT INTO ADV VALUES (adv_seq.NEXTVAL, '1003', '新品上架', '新的太空包的圖', NULL, 'WWW.SHOPPING.PCHOME.COM.TW');
-INSERT INTO ADV VALUES (adv_seq.NEXTVAL, '1002', '優惠活動', '新的活動的圖', NULL, 'WWW.FACEBOOK.COM');
-INSERT INTO ADV VALUES (adv_seq.NEXTVAL, '1001', '新品上架', '新的太空包的圖', NULL, 'WWW.TWITTER.COM');
+INSERT INTO ADV VALUES (adv_seq.NEXTVAL, '1001', '台灣紅藜禮盒', '新的太空包的圖', NULL, 'www.sinfongfarm.com/index.php/shop');
+INSERT INTO ADV VALUES (adv_seq.NEXTVAL, '1002', '琺瑯鑄鐵鍋具', '新的特價的圖', NULL, 'www.yilan.com.tw/html/modules/mymall/index.php?cid=55');
+INSERT INTO ADV VALUES (adv_seq.NEXTVAL, '1003', '礦泉氣泡水', '新的太空包的圖', NULL, 'market.icook.tw/products/antipodes');
+INSERT INTO ADV VALUES (adv_seq.NEXTVAL, '1002', '鷹獵米', '新的活動的圖', NULL, 'www.sofengimage.com.tw/product?id=60');
+INSERT INTO ADV VALUES (adv_seq.NEXTVAL, '1001', '聖光牌米粉', '新的太空包的圖', NULL, 'www.yungshen.com/product.php?lang=tw');
 
 commit;
 
@@ -821,7 +821,7 @@ CREATE TABLE chef(
  CHEF_CHK_COND       VARCHAR2(1)     NOT NULL,
  CHEF_BNK            VARCHAR2(5)     NOT NULL,
  CHEF_BNK_AC         VARCHAR2(15)    NOT NULL,
- CHEF_SKILL          VARCHAR2(300)    NOT NULL,
+ CHEF_SKILL          VARCHAR2(30)    NOT NULL,
  CHEF_LIC            BLOB            ,
  CHEF_IMAGE          BLOB            ,
  CHEF_MOVIE1         BLOB            ,
@@ -839,7 +839,7 @@ CREATE TABLE chef(
 
  CONSTRAINT CHEF_chef_id_UK UNIQUE(chef_id),
  CONSTRAINT CHEF_mem_id_UK UNIQUE(mem_no),
- CONSTRAINT CHEF_MEM_NO_FK FOREIGN KEY (MEM_NO) REFERENCES MEMBER (MEM_NO),
+ CONSTRAINT CHEFN_MEM_NO_FK FOREIGN KEY (MEM_NO) REFERENCES MEMBER (MEM_NO),
  CONSTRAINT CHEF_CHEF_NO_PK PRIMARY KEY (CHEF_NO)
  );
 
@@ -902,13 +902,13 @@ CREATE TABLE chef_order_list(
  MEM_NO            VARCHAR2(20)    NOT NULL,
  CHEF_NO           VARCHAR2(20)    NOT NULL,
  CHEF_ORD_COST     NUMBER(8,2)          ,
- CHEF_ACT_DATE     Timestamp       NOT NULL,
+ CHEF_ACT_DATE     DATE            NOT NULL,
  CHEF_ORD_PLACE    VARCHAR2(200)   NOT NULL,
  CHEF_ORD_CNT      VARCHAR2(500)   ,
  CHEF_ORD_CON      VARCHAR2(1)     NOT NULL,
  CHEF_APPR         VARCHAR2(1)     ,
  CHEF_APPR_CNT     VARCHAR2(300),
- CHEF_ORD_DATE	   Timestamp not null,
+ CHEF_ORD_DATE	   DATE not null,
 
  CONSTRAINT CHEF_ORDER_LIST_CHEF_ORD_NO_PK PRIMARY KEY (CHEF_ORD_NO),
  CONSTRAINT CHEF_ORDER_LIST_CHEF_NO_FK FOREIGN KEY (CHEF_NO) REFERENCES CHEF (CHEF_NO)
@@ -922,15 +922,15 @@ NOCACHE
 NOCYCLE;
 
 INSERT INTO chef_order_list VALUES ('COL' || lpad(chef_order_list_seq.NEXTVAL,6,0),'M00000001','C00000005',
-3000,TO_DATE('2017-01-01 10:00','YYYY-MM-DD HH24:mi'),'台北市','糖醋排骨教學','1','5','滿意',sysdate);
+3000,TO_DATE('2017-01-01','YYYY-MM-DD'),'台北市','糖醋排骨教學','1','5','滿意',sysdate);
 INSERT INTO chef_order_list VALUES ('COL' || lpad(chef_order_list_seq.NEXTVAL,6,0),'M00000002','C00000004',
-2000,TO_DATE('2017-01-02 10:00','YYYY-MM-DD HH24:mi'),'基隆市','咕咾肉','2','4','滿意',sysdate);
+2000,TO_DATE('2017-01-02','YYYY-MM-DD'),'基隆市','咕咾肉','2','4','滿意',sysdate);
 INSERT INTO chef_order_list VALUES ('COL' || lpad(chef_order_list_seq.NEXTVAL,6,0),'M00000003','C00000002',
-2300,TO_DATE('2017-01-03 16:00','YYYY-MM-DD HH24:mi'),'新北市','揚州炒飯','1','4','滿意',sysdate);
+2300,TO_DATE('2017-01-03','YYYY-MM-DD'),'新北市','揚州炒飯','1','4','滿意',sysdate);
 INSERT INTO chef_order_list VALUES ('COL' || lpad(chef_order_list_seq.NEXTVAL,6,0),'M00000004','C00000003',
-2500,TO_DATE('2017-01-04 10:00','YYYY-MM-DD HH24:mi'),'新竹市','炒米粉','1','3','滿意',sysdate);
+2500,TO_DATE('2017-01-04','YYYY-MM-DD'),'新竹市','炒米粉','1','3','滿意',sysdate);
 INSERT INTO chef_order_list VALUES ('COL' || lpad(chef_order_list_seq.NEXTVAL,6,0),'M00000005','C00000004',
-4500,TO_DATE('2017-01-05 16:00','YYYY-MM-DD HH24:mi'),'桃園市','左宗棠雞','1','5','滿意',sysdate);
+4500,TO_DATE('2017-01-05','YYYY-MM-DD'),'桃園市','左宗棠雞','1','5','滿意',sysdate);
 
 commit;
 ---------------------------------------------------------------------------
@@ -1009,7 +1009,7 @@ create table live(
 create table film(
 
  film_no  		varchar2(20) not null,
- mem_no			varchar2(20) not null,
+ recipe_no		varchar2(20) not null,
  film_title		varchar2(60) not null,
  film_content		CLOB,
  film_date		date default sysdate not null,
@@ -1017,8 +1017,8 @@ create table film(
  film_like		Number default 0,
  film_popular		Number default 0,
 
- CONSTRAINT film_film_no_PK PRIMARY KEY (film_no),
- CONSTRAINT film_mem_no_FK FOREIGN KEY (mem_no) REFERENCES  member(mem_no)
+ CONSTRAINT recipe_no_PK PRIMARY KEY (recipe_no),
+ CONSTRAINT recipe_FK FOREIGN KEY (recipe_no) REFERENCES  recipe(recipe_no)
  );
 
  CREATE SEQUENCE film_seq
@@ -1028,16 +1028,16 @@ create table film(
  NOCACHE
  NOCYCLE;
  
- INSERT INTO film(film_no,mem_no,film_title,film_content,film_date,film_like,film_popular)
-  values('F'||lpad(film_seq.NEXTVAL,8,0),'M00000004','title of film','bset film ever',to_date('2016-02-17 18:24','YYYY-MM-DD HH24:mi'),20,300);
- INSERT INTO film(film_no,mem_no,film_title,film_content,film_date,film_like,film_popular)
-  values('F'||lpad(film_seq.NEXTVAL,8,0),'M00000003','my film','world film collection',to_date('2016-03-17 20:40','YYYY-MM-DD HH24:mi'),40,500);
- INSERT INTO film(film_no,mem_no,film_title,film_content,film_date,film_like,film_popular)
-  values('F'||lpad(film_seq.NEXTVAL,8,0),'M00000002','pop film','my style',to_date('2016-03-24 10:20','YYYY-MM-DD HH24:mi'),30,312);
-  INSERT INTO film(film_no,mem_no,film_title,film_content,film_date,film_like,film_popular)
-  values('F'||lpad(film_seq.NEXTVAL,8,0),'M00000005','tech','quick slice',to_date('2016-04-10 20:33','YYYY-MM-DD HH24:mi'),120,2000);
- INSERT INTO film(film_no,mem_no,film_title,film_content,film_date,film_like,film_popular)
-  values('F'||lpad(film_seq.NEXTVAL,8,0),'M00000004','soup','finish in  3 minutes',to_date('2016-05-18 20:40','YYYY-MM-DD HH24:mi'),15,111);
+ INSERT INTO film(film_no,recipe_no,film_title,film_content,film_date,film_like,film_popular)
+  values('F'||lpad(film_seq.NEXTVAL,8,0),'R00000001','title of film','bset film ever',to_date('2016-02-17 18:24','YYYY-MM-DD HH24:mi'),20,300);
+ INSERT INTO film(film_no,recipe_no,film_title,film_content,film_date,film_like,film_popular)
+  values('F'||lpad(film_seq.NEXTVAL,8,0),'R00000002','my film','world film collection',to_date('2016-03-17 20:40','YYYY-MM-DD HH24:mi'),40,500);
+ INSERT INTO film(film_no,recipe_no,film_title,film_content,film_date,film_like,film_popular)
+  values('F'||lpad(film_seq.NEXTVAL,8,0),'R00000003','pop film','my style',to_date('2016-03-24 10:20','YYYY-MM-DD HH24:mi'),30,312);
+  INSERT INTO film(film_no,recipe_no,film_title,film_content,film_date,film_like,film_popular)
+  values('F'||lpad(film_seq.NEXTVAL,8,0),'R00000004','tech','quick slice',to_date('2016-04-10 20:33','YYYY-MM-DD HH24:mi'),120,2000);
+ INSERT INTO film(film_no,recipe_no,film_title,film_content,film_date,film_like,film_popular)
+  values('F'||lpad(film_seq.NEXTVAL,8,0),'R00000005','soup','finish in  3 minutes',to_date('2016-05-18 20:40','YYYY-MM-DD HH24:mi'),15,111);
 
  commit;
 
@@ -1056,10 +1056,7 @@ create table film_message(
  film_msg_content	varchar2(300) not null,
  film_msg_date		date default sysdate not null,
 
- CONSTRAINT film_message_PK PRIMARY KEY (film_msg_no),
- CONSTRAINT film_msg_mem_no_FK FOREIGN KEY (mem_no) REFERENCES  member(mem_no),
- CONSTRAINT film_msg_film_no_FK FOREIGN KEY (film_no) REFERENCES  film(film_no),
- CONSTRAINT film_msg_film_msg_ref_FK FOREIGN KEY (film_msg_ref) REFERENCES  film_message (film_msg_no)
+ CONSTRAINT film_message_PK PRIMARY KEY (film_msg_no)
 );
 
  CREATE SEQUENCE film_message_seq
