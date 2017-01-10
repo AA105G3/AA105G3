@@ -63,7 +63,7 @@ public class Chef_order_listServletAndroid extends HttpServlet {
 
 		}
 
-		if ("insert".equals(action)) {
+		if ("insert_con_0".equals(action)) {
 //			String mem_no, String chef_no, Double chef_ord_cost, ;
 //			Timestamp chef_act_date,String chef_ord_place, String chef_ord_cnt;
 			
@@ -73,17 +73,24 @@ public class Chef_order_listServletAndroid extends HttpServlet {
 			String chef_act_date = jsonObject.get("chef_act_date").getAsString();
 			String chef_ord_place = jsonObject.get("chef_ord_place").getAsString();
 			String chef_ord_cnt = jsonObject.get("chef_ord_cnt").getAsString();
+			String chef_ord_con = "0";
+			
+			SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+			String time = df.format(new Date());
+			Timestamp chef_ord_date = Timestamp.valueOf(time);
+			
 			
 			System.out.println("chef_act_date:" + chef_act_date);
-			SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss"); //("yyyy-MM-dd HH:mm:ss")
-			String tt = chef_act_date + " 03:04:05";
-			System.out.println("tt:" + tt);
+//			SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss"); //("yyyy-MM-dd HH:mm:ss")
+//			String tt = chef_act_date + " 10:00:00";
+//			System.out.println("tt:" + tt);
 //			String time = df.format(chef_act_date);
-			Timestamp chef_act_date_timestamp = Timestamp.valueOf(tt);
+//			Timestamp chef_act_date_timestamp = Timestamp.valueOf(tt);
+			Timestamp chef_act_date_timestamp = Timestamp.valueOf(chef_act_date);
 			
 			
-			Chef_order_listVO chef_order_listVO = chef_order_listSvc.addChef_order_list(mem_no, chef_no, chef_ord_cost, 
-					chef_act_date_timestamp, chef_ord_place, chef_ord_cnt);
+			Chef_order_listVO chef_order_listVO = chef_order_listSvc.addChef_order_list_con_0(mem_no, chef_no, chef_ord_cost, 
+					chef_act_date_timestamp, chef_ord_place, chef_ord_cnt, chef_ord_con, chef_ord_date);
 			
 //			if (chef_order_listVO == null) {
 //				chef_order_listVO = chef_order_listSvc.addCollection(mem_no, all_no, class_no);

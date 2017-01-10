@@ -11,8 +11,9 @@ public class Chef_order_listService {
 		dao = new Chef_order_listDAO();
 	}
 
-	public Chef_order_listVO addChef_order_list(String mem_no, String chef_no, Double chef_ord_cost, 
-			Timestamp chef_act_date,String chef_ord_place, String chef_ord_cnt) {
+	public Chef_order_listVO addChef_order_list_con_0(String mem_no, String chef_no, Double chef_ord_cost, 
+			Timestamp chef_act_date,String chef_ord_place, String chef_ord_cnt, String chef_ord_con,
+			Timestamp chef_ord_date) {
 
 		Chef_order_listVO chef_order_listVO = new Chef_order_listVO();
 
@@ -22,6 +23,8 @@ public class Chef_order_listService {
 		chef_order_listVO.setChef_act_date(chef_act_date);
 		chef_order_listVO.setChef_ord_place(chef_ord_place);
 		chef_order_listVO.setChef_ord_cnt(chef_ord_cnt);
+		chef_order_listVO.setChef_ord_con(chef_ord_con);
+		chef_order_listVO.setChef_ord_date(chef_ord_date);
 	
 		dao.insert(chef_order_listVO);
 
