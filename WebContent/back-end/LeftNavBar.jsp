@@ -64,7 +64,7 @@
 					    </div>
 					    <div id="bbb" class="panel-collapse collapse" role="tabpanel" aria-labelledby="panel2">
 					      	<div class="list-group">
-					      		<a href="#" class="list-group-item">員工資料管理</a>  
+					      		<a href="<%=request.getContextPath()%>/back-end/emp/EmpList.jsp" class="list-group-item">員工資料管理</a>  
 					      	</div>
 					    </div>
 					</div>
@@ -80,8 +80,8 @@
 					    </div>
 					    <div id="ddd" class="panel-collapse collapse" role="tabpanel" aria-labelledby="panel4">
 					      	<div class="list-group">
-					        	<a href="#" class="list-group-item">食譜類別管理</a>
-					      		<a href="#" class="list-group-item">未分類食譜管理</a>
+					        	<a href="<%=request.getContextPath()%>/back-end/recipe_l_type/L_TypeList.jsp" class="list-group-item">食譜類別管理</a>
+					      		<a href="<%=request.getContextPath()%>/back-end/recipe_type_info/RecipeNotClassified.jsp" class="list-group-item">未分類食譜管理</a>
 					      	</div>
 					    </div>
 					</div>

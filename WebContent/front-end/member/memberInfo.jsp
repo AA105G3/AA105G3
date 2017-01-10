@@ -33,7 +33,7 @@
 
 		<style type="text/css" media="screen">
 			.header-style{
-				padding-top: 80px;
+				padding-top: 40px;
 				margin-bottom:50px;
 			}
 			.search-style{
@@ -182,11 +182,10 @@
 	
 	
 	<body>
-
-			<c:import url="/front-end/frontNavbar.jsp" ></c:import>
-					<header class="header-style">
-						<c:import url="/front-end/recipe/RecipeSearchBar.jsp" ></c:import>
-					</header>
+		<c:import url="/front-end/frontNavbar.jsp" ></c:import>
+		<header class="header-style">
+			<c:import url="/front-end/recipe/RecipeSearchBar.jsp" ></c:import>
+		</header>
 		<div class="container">
 	    	<div class="row">
 						<div class="col-xs-12 col-sm-8">
@@ -243,6 +242,7 @@
 								</div>	
 
 			    		</div>
+			    		
 			    		<div class="col-xs-12 col-sm-3 col-sm-push-1 text-center member-style">
 					    	<img id="memImg" src="<%=request.getContextPath()%>/MemberDBGifReader.do?name=${memberVO.mem_no}">
 	    					<h3>${memberSvc.getOneMember(memberVO.mem_no).mem_name}</h3>
@@ -251,7 +251,7 @@
 						    	<div>食譜數：${recipeSvc.findByMem_no(memberVO.mem_no).size()}</div>
 						    </div>
 						    <div class="col-xs-12 col-sm-6 count-style">
-						    	<div>追隨數：${collectionSvc.getCollectionSize(sessionScope.mem_no)>0?collectionSvc.getCollectionSize(sessionScope.mem_no):0}</div>
+						    	<div >追隨數：<span id="count">${collectionSvc.getCollectionSize(memberVO.mem_no) > 0?collectionSvc.getCollectionSize(memberVO.mem_no):0}</span></div>
 						    </div>
 						    <div class="col-xs-12 col-sm-12 text-left">
 						    	<div class="mem-email">${memberVO.mem_email}</div>
@@ -369,6 +369,9 @@
 							 $('#cancelCollection').addClass('btn-default');
 							 $('#cancelCollection').unbind( "click",addCollection);
 							 $('#cancelCollection').click(cancelCollection);
+							 var text = $('#count').text() 
+							 var count = parseInt(text)+1;
+							 $('#count').text(count);
 					     },
 			             error:function(){alert('not found')}
 			         }) 
@@ -395,6 +398,9 @@
 							 $('#addCollection').addClass('btn-primary');
 							 $('#addCollection').unbind( "click",cancelCollection);
 							 $('#addCollection').click(addCollection);
+							 var text = $('#count').text() 
+							 var count = parseInt(text)-1;
+							 $('#count').text(count);
 					     },
 			             error:function(){alert('not found')}
 			         }) 

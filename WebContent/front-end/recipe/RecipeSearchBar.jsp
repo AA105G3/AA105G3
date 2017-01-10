@@ -64,7 +64,7 @@
 					</div>
 					<div class="col-xs-12 col-sm-4 recipe-header-right">
 						
-							<a href="addRecipe.jsp">
+							<a href="<%=request.getContextPath()%>/front-end/recipe/addRecipe.jsp">
 							<button class="btn btn-default write-recipe">
 							<span class="glyphicon glyphicon-pencil" aria-hidden="true"></span>
 							寫食譜</button></a>

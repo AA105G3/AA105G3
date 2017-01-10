@@ -2,7 +2,6 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ page import="com.recipe.model.*"%>
 <%@ page import="com.recipe_cont.model.*"%>
-<% session.setAttribute("mem_no", "M00000005"); %>
 
 <jsp:useBean id="recipeVO" scope="request" class="com.recipe.model.RecipeVO"/>
 <jsp:useBean id="ingredients" scope="request" class="java.util.ArrayList"/>
@@ -26,7 +25,7 @@
 	
 		body{
 			background: #efede8;
-			padding-top: 50px;
+			padding-top: 90px;
 		}
 		.recipe-title h3{
 			margin-bottom: 5px;
@@ -34,6 +33,8 @@
 		.sec-recipe-name{
 			margin-top: 5px;
 			margin-bottom: 10px;
+			font-size:20px;
+			height:40px;
 		}
 		#image0{
 			width: 300px;
@@ -136,8 +137,17 @@
 		.write-recipe{
 			margin-right:190px;
 		}
+		.createRecipe-btn{
+			margin-top:40px;
+			padding:5px 30px;
+		}
 		.cancelRecipe-btn{
-		margin-top:10px;
+			margin-top:10px;
+			padding:5px 30px;
+		}
+		.col-sm-offset-2.col-sm-7{
+			border:1px solid gray;
+			background:#fff;
 		}
 	</style>
 </head>
@@ -152,7 +162,7 @@
 	</ul>
 	</font>
 </c:if>
-	
+	<c:import url="/front-end/frontNavbar.jsp" ></c:import>
 	<header>
 	<c:import url="/front-end/recipe/RecipeSearchBar.jsp" ></c:import>
 	</header>
@@ -300,7 +310,7 @@
 					<button class="btn btn-primary createRecipe-btn" type="submit" name="action" value="insert">發布</button>
 				</div>
 				<div>
-					<button class="btn btn-danger cancelRecipe-btn" type="button" >取消</button>
+					<button class="btn btn-danger cancelRecipe-btn" id="cancelRecipe-btn" type="button" >取消</button>
 				</div>
 			</div>				
 
@@ -315,7 +325,11 @@
 	<script src="https://code.jquery.com/jquery.js"></script>
 	<script src="https://netdna.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
 	<script type="text/javascript">
-
+	
+	
+	$('#cancelRecipe-btn').click(function(){
+		window.history.go(-1);
+	})
 	
 	// 增加食材輸入區塊
 		$("#moreFoodMater").click(function(){

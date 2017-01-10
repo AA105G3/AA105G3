@@ -28,7 +28,7 @@
 	<style type="text/css">
 	body{
 		background: #efede8;
-		padding-top: 50px;
+		padding-top: 90px;
 	}
 	#recipe-home{
 		margin-bottom:20px;
@@ -158,6 +158,7 @@
 	
 	</head>
 	<body>
+	<c:import url="/front-end/frontNavbar.jsp" ></c:import>
 	<section id="recipe-home">
 		<header>
 			<c:import url="/front-end/recipe/RecipeSearchBar.jsp" ></c:import>

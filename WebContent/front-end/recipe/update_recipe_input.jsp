@@ -2,7 +2,6 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ page import="com.recipe.model.*"%>
 <%@ page import="com.recipe_cont.model.*"%>
-<% session.setAttribute("mem_no", "M00000005"); %>
 
 <jsp:useBean id="recipeVO" scope="request" class="com.recipe.model.RecipeVO"/>
 <jsp:useBean id="ingredients" scope="request" class="java.util.ArrayList"/>
@@ -24,12 +23,18 @@
 		<script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
 	<![endif]-->
 	<style type="text/css">
+	body{
+			background: #efede8;
+			padding-top: 90px;
+		}
 		.recipe-title h3{
 			margin-bottom: 5px;
 		}
 		.sec-recipe-name{
 			margin-top: 5px;
 			margin-bottom: 10px;
+			font-size:20px;
+			height:40px;
 		}
 		#image0{
 			width: 300px;
@@ -139,8 +144,15 @@
 		.write-recipe{
 			margin-right:190px;
 		}
+		.createRecipe-btn{
+			margin-top:40px;
+		}
 		.cancelRecipe-btn{
-		margin-top:10px;
+			margin-top:10px;
+		}
+		.col-sm-offset-2.col-sm-7{
+			border:1px solid gray;
+			background:#fff;
 		}
 	</style>
 </head>
@@ -155,6 +167,8 @@
 	</ul>
 	</font>
 </c:if>
+
+		<c:import url="/front-end/frontNavbar.jsp" ></c:import>
 		<c:import url="/front-end/recipe/RecipeSearchBar.jsp" ></c:import>
 	<div class="container">
 		<div class="row update-recipe-wrapper">
@@ -222,6 +236,29 @@
 							</div>
 						</c:forEach>
 						
+						<c:if test="${recipe_cont_set.isEmpty()}">
+							<div id="div_0" class="row step-wrapper">
+								<div class="col-xs-12 col-sm-4 step-left">
+									<img src="<%=request.getContextPath()%>/images/recipe_cont/stepNoPic.PNG" id="image1">
+									<input type="file" name="step_pic" class="upload" id="upload1" onchange="showImage(1)">
+								</div>
+								<div class="col-xs-12 col-sm-8 step-right">
+									<div class="col-xs-12 col-sm-6">
+										<h2>1</h2>
+										<input type="hidden" name="step" value="1">
+									</div>
+									<div class="col-xs-12 col-sm-6 step-trash-wrapper">
+										<a class="btn"><i id="plus_0" class="glyphicon glyphicon-plus step-plus"></i></a>
+										<a class="btn"><i class="glyphicon glyphicon-trash step-trash"></i></a>
+									</div>
+									<div class="step-cont-wrapper">
+										<textarea name="step_cont" rows="4" cols="55" placeholder="請輸入食譜步驟內容" style="resize: none"></textarea>	
+									</div>
+								</div>
+							</div>
+						</c:if>
+						
+						
 						</div>
 					</div>
 						
@@ -231,7 +268,7 @@
 				<div>
 					<input type="hidden" name="recipe_no" value=${param.recipe_no}>
 					<button class="btn btn-primary createRecipe-btn" type="submit" name="action" value="update">完成修改</button>
-					<button class="btn btn-primary createRecipe-btn" type="submit" name="action" value="delete">刪除食譜</button>
+					<button class="btn btn-danger cancelRecipe-btn" type="submit" name="action" value="delete">刪除食譜</button>
 				</div>
 				
 			</div>				

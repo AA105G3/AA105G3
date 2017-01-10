@@ -35,7 +35,7 @@
 		<style type="text/css">
 			body{
 				background: #efede8;
-				padding-top:50px;
+				padding-top:90px;
 			}
 			.recipe-search{
 		
@@ -298,7 +298,7 @@
 		</style>
 	</head>
 	<body>
-		
+		<c:import url="/front-end/frontNavbar.jsp" ></c:import>
 			<c:import url="/front-end/recipe/RecipeSearchBar.jsp" ></c:import>
 			<div class="container">
 			<div class="col-xs-12 col-sm-12">
