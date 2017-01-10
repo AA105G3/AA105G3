@@ -16,6 +16,8 @@ import javax.naming.InitialContext;
 import javax.naming.NamingException;
 import javax.sql.DataSource;
 
+import com.film.model.FilmJDBCDAO;
+import com.film.model.FilmVO;
 import com.recipe_cont.model.*;
 
 
@@ -465,7 +467,7 @@ public class RecipeDAO implements RecipeDAO_interface
 	}
 	
 	@Override
-	public void insertWithRecipe_conts(RecipeVO recipeVO, List<Recipe_contVO> list)
+	public void insertWithRecipe_conts(RecipeVO recipeVO, List<Recipe_contVO> list,FilmVO filmVO)
 	{
 		PreparedStatement pstmt = null;
 
@@ -513,7 +515,13 @@ public class RecipeDAO implements RecipeDAO_interface
 				aRecipe_cont.setRecipe_no(next_recipe_no);;
 				dao.insert2(aRecipe_cont,con);
 			}
-
+			
+			//再新增影片
+			FilmJDBCDAO filmDao = new FilmJDBCDAO(); 
+			filmVO.setRecipe_no(next_recipe_no);
+			System.out.println(filmVO.getFilm_file());
+			filmDao.insert2(filmVO, con);
+			
 			// 2●設定於 pstm.executeUpdate()之後
 			con.commit();
 			con.setAutoCommit(true);

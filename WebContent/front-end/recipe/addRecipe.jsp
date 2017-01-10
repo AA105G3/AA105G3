@@ -265,7 +265,7 @@
 						
 						<div class="col-xs-12 col-sm-12 video-area">
 						<h3>上傳影片</h3>
-							<input type="file" name="recipe_video">
+							<input type="file" name="film_file">
 						</div>
 						
 						

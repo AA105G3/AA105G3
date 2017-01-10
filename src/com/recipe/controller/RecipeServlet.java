@@ -22,6 +22,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import javax.servlet.http.Part;
 
+import com.film.model.FilmVO;
 import com.recipe.model.*;
 import com.recipe_cont.model.*;
 
@@ -629,6 +630,9 @@ public class RecipeServlet extends HttpServlet {
 					errorMsgs.add("請上傳食譜圖片");
 				}	
 				
+				
+				
+				
 				//取得食材及分量,並做簡單的輸入錯誤處理
 				String[] ingredientsStr =req.getParameterValues("ingredients");
 				String[] quantityStr =req.getParameterValues("quantity");
@@ -679,6 +683,19 @@ public class RecipeServlet extends HttpServlet {
 				
 				String food_mater = new String(str);
 				
+				//取得上傳的影片
+				Part video = req.getPart("film_file");
+				byte[] film_file = null;
+				if (getFileNameFromPart(video) != null && video.getContentType() != null) {	
+					InputStream in = video.getInputStream();
+					film_file = new byte[in.available()];
+					in.read(film_file);
+					in.close();
+				} 	
+				FilmVO filmVO = new FilmVO();
+				filmVO.setFilm_file(film_file);
+				
+				
 				//取得食譜內容
 				String[] step = req.getParameterValues("step");
 				String[] step_cont = req.getParameterValues("step_cont");
@@ -699,12 +716,15 @@ public class RecipeServlet extends HttpServlet {
 				for (Part recipe_contPic : parts) {
 						if(picIdx>4){
 							if (getFileNameFromPart(recipe_contPic) != null && recipe_contPic.getContentType() != null){
-								InputStream in = recipe_contPic.getInputStream();
-								byte[] step_pic = new byte[in.available()];
-								in.read(step_pic);
-								in.close();
-								step_pics.add(step_pic);
-								
+								String type = (recipe_contPic.getContentType()).substring(0,6);
+								if(type.equals("image")){
+									InputStream in = recipe_contPic.getInputStream();
+									byte[] step_pic = new byte[in.available()];
+									in.read(step_pic);
+									in.close();
+									step_pics.add(step_pic);
+								}
+									
 							}else if(getFileNameFromPart(recipe_contPic) == null){
 								InputStream in = part.getInputStream();
 								byte[] step_pic = null;
@@ -763,7 +783,7 @@ public class RecipeServlet extends HttpServlet {
 				
 				/***************************2.開始新增資料***************************************/
 				RecipeService recipeSvc = new RecipeService();
-				recipeVO = recipeSvc.addRecipeWith_Recipe_conts(mem_no, recipe_name, recipe_intro, food_mater, recipe_pic,"已發布", contList);
+				recipeVO = recipeSvc.addRecipeWith_Recipe_conts(mem_no, recipe_name, recipe_intro, food_mater, recipe_pic,"已發布", contList,filmVO);
 				
 				/***************************3.新增完成,準備轉交(Send the Success view)***********/
 				
