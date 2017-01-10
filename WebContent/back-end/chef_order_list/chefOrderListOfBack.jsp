@@ -1,12 +1,18 @@
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ page import="java.util.*"%>
-<%@ page import="com.chef.model.*"%>
+<%@ page import="com.chef_order_list.model.*"%>
+<%@ page import="com.member.model.*"%>
 
 <%
-    ChefService chefSvc = new ChefService();
-    List<ChefVO> list = chefSvc.getAll();
+    Chef_order_listService chef_order_listSvc = new Chef_order_listService();
+    List<Chef_order_listVO> list = chef_order_listSvc.getAll();
     pageContext.setAttribute("list",list);
+%>
+<%
+    MemberService memberSvc = new MemberService();
+    List<MemberVO> mem_list = memberSvc.getAll();
+    pageContext.setAttribute("mem_list",mem_list);
 %>
 <!DOCTYPE html>
 <html lang="">
@@ -34,7 +40,7 @@
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
             </button>
-            <img src="/AA105G3/images/New_Logo2.0.png" href="#" id="logo">
+            <img src="/AA105G3/images/Logo.png" href="#" id="logo">
         </div>
         <!-- 手機隱藏選單區 -->
         <div class="collapse navbar-collapse navbar-ex1-collapse" id="top_header">
@@ -230,32 +236,31 @@
 		</c:if>
         
         <table class="table table-hover table-striped table-bordered table-condensed">
-            <caption id="table_title">私廚資格審核清單</caption>
+            <caption id="table_title">私廚訂單列表</caption>
             <thead>
                 <tr>
-                    <th>私廚編號</th>
-                    <th>會員編號</th>
-                    <th>私廚審核情況</th>
-                    <th>真實姓名</th>
+                    <th>下訂會員</th>
+                    <th>執行時間</th>
+                    <th>執行地點</th>
+                    <th>金額</th>
                     <th>操作</th>
                 </tr>
             </thead>
             <%@ include file="page1.file" %>
-                <c:forEach var="chefVO" items="${list}" begin="<%=pageIndex%>" end="<%=pageIndex+rowsPerPage-1%>">
+                <c:forEach var="chef_order_listVO" items="${list}" begin="<%=pageIndex%>" end="<%=pageIndex+rowsPerPage-1%>">
                     <tbody>
                         <tr align='center' valign='middle'>
-                            <td>${chefVO.chef_no}</td>
-                            <td>${chefVO.mem_no}</td>
-                            <td>${chefVO.chef_chk_cond}</td>
-                            <td>${chefVO.chef_name}</td>
-                            <td>
-                                <FORM METHOD="post" ACTION="<%=request.getContextPath()%>/chef/chef.do">
-			     					<input type="submit" value="進入審核">
-			     					<input type="hidden" name="chef_no" value="${chefVO.chef_no}">
-<%-- 			     				<input type="hidden" name="chef_chk_cond" value="${chefVO.chef_chk_cond}"> --%>
-			     					<input type="hidden" name="action"	value="getOne_For_Check"></FORM>
-<%--                            <div class="btn btn-danger btn-xs" href="<%=request.getContextPath()%>/back-end/chef/ChefCheckPage.jsp">進入審核</div> --%>
-                            </td>
+                           <c:forEach var="memVO" items="${mem_list}">
+                                <c:if test="${chef_order_listVO.mem_no==memVO.mem_no}">
+                                	<td>${memVO.mem_ac}</td>
+                                </c:if>
+                           </c:forEach>
+                           <td>${chef_order_listVO.chef_act_date}</td>
+                           <td>${chef_order_listVO.chef_ord_place}</td>
+                           <td>${chef_order_listVO.chef_ord_cost}</td>
+                           <td>
+                                <div class="btn btn-danger btn-xs"><a href="<%=request.getContextPath()%>/chef_order_list/chef_order_list.do?action=getOne_For_Back&chef_ord_no=${chef_order_listVO.chef_ord_no}">瀏覽明細</a></div>
+                           </td>
                         </tr>
                     </tbody>
                 </c:forEach>

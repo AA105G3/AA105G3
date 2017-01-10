@@ -8,6 +8,9 @@ import javax.servlet.annotation.MultipartConfig;
 import javax.servlet.http.*;
 
 import com.chef.model.*;
+import com.member.model.*;
+import com.util.MailService;
+
 @MultipartConfig(fileSizeThreshold = 1024 * 1024, maxFileSize = 10000 * 1024 * 1024, maxRequestSize = 1000 * 10000 * 1024 * 1024)
 public class ChefServlet extends HttpServlet {
 
@@ -59,8 +62,9 @@ public class ChefServlet extends HttpServlet {
 				}
 				
 				/***************************2.開始查詢資料*****************************************/
-				ChefService chefSvc = new ChefService();
+				ChefService chefSvc = new ChefService();				
 				ChefVO chefVO = chefSvc.getOneChef(chef_no);
+				
 				if (chefVO == null) {
 					errorMsgs.add("查無資料");
 				}
@@ -86,6 +90,70 @@ public class ChefServlet extends HttpServlet {
 				failureView.forward(req, res);
 			}
 		}
+		
+		if ("getName_For_Display".equals(action)) { // 來自select_page.jsp的請求
+
+			List<String> errorMsgs = new LinkedList<String>();
+			// Store this set in the request scope, in case we need to
+			// send the ErrorPage view.
+			req.setAttribute("errorMsgs", errorMsgs);
+
+			try {
+				/***************************1.接收請求參數 - 輸入格式的錯誤處理**********************/
+				String str = req.getParameter("chef_name");			
+				if (str == null || (str.trim()).length() == 0) {
+					errorMsgs.add("請輸入私廚姓名");
+				}
+				// Send the use back to the form, if there were errors
+				if (!errorMsgs.isEmpty()) {
+					RequestDispatcher failureView = req
+							.getRequestDispatcher("/front-end/chef/chefList.jsp");
+					failureView.forward(req, res);
+					return;//程式中斷
+				}
+				
+				String chef_name = null;
+				try {
+					chef_name = new String(str);
+				} catch (Exception e) {
+					errorMsgs.add("私廚編號格式不正確");
+				}
+				// Send the use back to the form, if there were errors
+				if (!errorMsgs.isEmpty()) {
+					RequestDispatcher failureView = req
+							.getRequestDispatcher("/front-end/chef/select_page.jsp");
+					failureView.forward(req, res);
+					return;//程式中斷
+				}				
+				/***************************2.開始查詢資料*****************************************/
+				ChefService chefSvc = new ChefService();				
+				ChefVO chefVO = chefSvc.getChef_name(chef_name);
+				if (chefVO == null) {
+					errorMsgs.add("查無資料");
+				}
+				// Send the use back to the form, if there were errors
+				if (!errorMsgs.isEmpty()) {
+					RequestDispatcher failureView = req
+							.getRequestDispatcher("/front-end/chef/chefList.jsp");
+					failureView.forward(req, res);
+					return;//程式中斷
+				}
+				
+				/***************************3.查詢完成,準備轉交(Send the Success view)*************/
+				req.setAttribute("chefVO", chefVO); // 資料庫取出的chefVO物件,存入req
+				String url = "/front-end/chef/chefInfo.jsp";
+				RequestDispatcher successView = req.getRequestDispatcher(url); // 成功轉交 listOneChef.jsp
+				successView.forward(req, res);
+
+				/***************************其他可能的錯誤處理*************************************/
+			} catch (Exception e) {
+				errorMsgs.add("無法取得資料:" + e.getMessage());
+				RequestDispatcher failureView = req
+						.getRequestDispatcher("/front-end/chef/chefList.jsp");
+				failureView.forward(req, res);
+			}
+		}
+		
 		if("update_chk_cond".equals(action)){
 			List<String> errorMsgs = new LinkedList<String>();
 			// Store this set in the request scope, in case we need to
@@ -636,9 +704,18 @@ public class ChefServlet extends HttpServlet {
 				chefSvc.deleteChef(chef_no);
 				
 				/***************************3.刪除完成,準備轉交(Send the Success view)***********/								
-				String url = "/front-end/chef/listAllChef.jsp";
+				String url = "/back-end/chef/ChefCheckListPage.jsp";
 				RequestDispatcher successView = req.getRequestDispatcher(url);// 刪除成功後,轉交回送出刪除的來源網頁
 				successView.forward(req, res);
+				
+				/*寄送e-mail*/
+				
+				String to = req.getParameter("mem_email");
+				String subject = req.getParameter("mem_name")+"私廚申請審核未過通知";
+				String messageText = req.getParameter("rej_reason");
+				
+				MailService mailService = new MailService();
+			    mailService.sendMail(to, subject, messageText);
 				
 				/***************************其他可能的錯誤處理**********************************/
 			} catch (Exception e) {

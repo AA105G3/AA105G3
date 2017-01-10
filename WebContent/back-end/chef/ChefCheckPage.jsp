@@ -17,6 +17,7 @@
             <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
             <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
         <![endif]-->
+    
 </head>
 
 <body>
@@ -28,7 +29,7 @@
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
             </button>
-            <img src="/AA105G3/images/New_Logo2.0.png" href="#" id="logo">
+            <img src="/AA105G3/images/Logo.png" href="#" id="logo">
         </div>
         <!-- 手機隱藏選單區 -->
         <div class="collapse navbar-collapse navbar-ex1-collapse" id="top_header">
@@ -258,7 +259,7 @@
             <div>
                 上傳DEMO影片二:
                 <video id="chef_movie2" controls>
-                    <source src="<%=request.getContextPath()%>/chef/chefImage.do?chef_no=${chefVO.chef_no}&chef_movie2=123">
+                    <source src="<%=request.getContextPath()%>/chef/chefImage.do?chef_no=${chefVO.chef_no}&chef_movie2=123" type="video/mp4">
                 </video>
             </div>
             <div>
@@ -269,13 +270,42 @@
 			     	<input type="hidden" name="action"	value="update_chk_cond">
 			    </FORM>
             </div>
-            <div>
-                <FORM METHOD="post" ACTION="<%=request.getContextPath()%>/chef/chef.do">
-			    	<input type="submit" value="不通過刪除">
-			    	<input type="hidden" name="chef_no" value="${chefVO.chef_no}">
-			    	<input type="hidden" name="action"value="delete">
-			    </FORM>
+<!--             <div> -->
+<%--                 <FORM METHOD="post" ACTION="<%=request.getContextPath()%>/chef/chef.do"> --%>
+<!-- 			    	<input type="submit" value="不通過刪除"> -->
+<%-- 			    	<input type="hidden" name="chef_no" value="${chefVO.chef_no}"> --%>
+<!-- 			    	<input type="hidden" name="action"value="delete"> -->
+<!-- 			    </FORM> -->
+<!--             </div> -->
+
+			<div>
+            	<button type="button" class="btn btn-default" data-dismiss="modal" id="del_btn">不通過刪除</button>
             </div>
+            <div class="modal-content" id="delete_msg">
+		     	<FORM METHOD="post" ACTION="<%=request.getContextPath()%>/chef/chef.do">
+		        <div class="modal-header">
+		          <button type="button" class="close" data-dismiss="modal">&times;</button>
+		          <h3 class="modal-title">原因填寫</h3>
+		        </div>
+		        <div class="modal-body">
+
+		          	<div class="form-group form-inline">
+							<label  for="l_type_name" class="col-sm-4 control-label">未通過原因 : </label>
+						<div class="col-sm-8 text-left">
+							<textarea name="rej_reason" id="rej_reason" class="form-control" placeholder="請輸入原因"></textarea>
+						</div>
+					</div>
+		        </div>
+		        <div class="modal-footer">
+		          <input type="submit" class="btn btn-default" name="submitButton" value="送出">
+		          <input type="hidden" name="chef_no" value="${chefVO.chef_no}">
+		          <input type="hidden" name="action" value="delete">
+		          <button type="button" class="btn btn-default" data-dismiss="modal">關閉</button>
+		        </div>
+		        </FORM>
+		      </div>
+		      
+		      
         </div>
     </div>
     <!--     <footer id="the_footer">
@@ -283,6 +313,18 @@
     </footer> -->
     <script src="https://code.jquery.com/jquery.js"></script>
     <script src="https://netdna.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+    <script>
+    	document.getElementById("delete_msg").style.display="none";
+    
+    	function reason(){
+    		document.getElementById("delete_msg").style.display="";
+    	}
+    
+    	document.getElementById("del_btn").onclick=reason;
+    </script>
+    <script>
+    	
+    </script>
 </body>
 
 </html>
