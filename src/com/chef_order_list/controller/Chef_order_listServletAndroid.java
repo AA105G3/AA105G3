@@ -15,6 +15,8 @@ import com.collection.model.CollectionVO;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonObject;
+import com.google.gson.stream.JsonReader;
+import com.recipe.model.RecipeVO;
 
 import util.SendResponse;
 
@@ -98,6 +100,36 @@ public class Chef_order_listServletAndroid extends HttpServlet {
 
 		if ("delete".equals(action)) {
 
+		}
+		
+		if ("findByMem_no".equals(action)) {
+			String mem_no = jsonObject.get("mem_no").getAsString();
+			List<Chef_order_listVO> chef_order_listVOList = chef_order_listSvc.findByMem_no(mem_no);
+
+			List<Chef_order_listVO> list2 = new ArrayList<Chef_order_listVO>();
+			for (Chef_order_listVO aChef_order_list : chef_order_listVOList) {
+				list2.add(aChef_order_list);
+			}
+
+			outStr.append(gson.toJson(list2));
+			SendResponse.writeText(res, outStr.toString());
+
+			return;
+		}
+		
+		if ("findByChef_no".equals(action)) {
+			String chef_no = jsonObject.get("chef_no").getAsString();
+			List<Chef_order_listVO> chef_order_listVOList = chef_order_listSvc.findByChef_no(chef_no);
+
+			List<Chef_order_listVO> list2 = new ArrayList<Chef_order_listVO>();
+			for (Chef_order_listVO aChef_order_list : chef_order_listVOList) {
+				list2.add(aChef_order_list);
+			}
+
+			outStr.append(gson.toJson(list2));
+			SendResponse.writeText(res, outStr.toString());
+
+			return;
 		}
 	}
 }
