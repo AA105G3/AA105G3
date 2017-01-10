@@ -53,8 +53,10 @@ public class AdvServlet extends HttpServlet {
 				}
 				// Send the use back to the form, if there were errors
 				if (!errorMsgs.isEmpty()) {
+					/*RequestDispatcher failureView = req
+							.getRequestDispatcher("/back-end/adv/select_page.jsp");*/
 					RequestDispatcher failureView = req
-							.getRequestDispatcher("/back-end/adv/select_page.jsp");
+							.getRequestDispatcher("/back-end/adv/AdvManagement.jsp");
 					failureView.forward(req, res);
 					return;//程式中斷
 				}
@@ -67,23 +69,27 @@ public class AdvServlet extends HttpServlet {
 				}
 				// Send the use back to the form, if there were errors
 				if (!errorMsgs.isEmpty()) {
+					/*RequestDispatcher failureView = req
+							.getRequestDispatcher("/back-end/adv/select_page.jsp");*/
 					RequestDispatcher failureView = req
-							.getRequestDispatcher("/back-end/adv/select_page.jsp");
+							.getRequestDispatcher("/back-end/adv/AdvManagement.jsp");
 					failureView.forward(req, res);
 					return;//程式中斷
 				}
 				
 				/***************************3.查詢完成,準備轉交(Send the Success view)*************/
 				req.setAttribute("advVO", advVO); // 資料庫取出的advVO物件,存入req
-				String url = "/back-end/adv/listOneAdv.jsp";
+				String url = "/back-end/adv/DisplayAdv.jsp";
 				RequestDispatcher successView = req.getRequestDispatcher(url); // 成功轉交 listOneAdv.jsp
 				successView.forward(req, res);
 
 				/***************************其他可能的錯誤處理*************************************/
 			} catch (Exception e) {
 				errorMsgs.add("無法取得資料:" + e.getMessage());
+				/*RequestDispatcher failureView = req
+						.getRequestDispatcher("/back-end/adv/select_page.jsp");*/
 				RequestDispatcher failureView = req
-						.getRequestDispatcher("/back-end/adv/select_page.jsp");
+						.getRequestDispatcher("/back-end/adv/AdvManagement.jsp");
 				failureView.forward(req, res);
 			}
 		}
@@ -105,15 +111,18 @@ public class AdvServlet extends HttpServlet {
 								
 				/***************************3.查詢完成,準備轉交(Send the Success view)************/
 				req.setAttribute("advVO", advVO);         // 資料庫取出的advVO物件,存入req
-				String url = "/back-end/adv/update_adv_input.jsp";
+				/*String url = "/back-end/adv/update_adv_input.jsp";*/
+				String url = "/back-end/adv/UpdateAdv.jsp";
 				RequestDispatcher successView = req.getRequestDispatcher(url);// 成功轉交 update_adv_input.jsp
 				successView.forward(req, res);
 
 				/***************************其他可能的錯誤處理**********************************/
 			} catch (Exception e) {
 				errorMsgs.add("無法取得要修改的資料:" + e.getMessage());
+				/*RequestDispatcher failureView = req
+						.getRequestDispatcher("/back-end/adv/listAllAdv.jsp");*/
 				RequestDispatcher failureView = req
-						.getRequestDispatcher("/back-end/adv/listAllAdv.jsp");
+						.getRequestDispatcher("/back-end/adv/AdvManagement.jsp");
 				failureView.forward(req, res);
 			}
 		}
@@ -177,8 +186,10 @@ public class AdvServlet extends HttpServlet {
 				// Send the use back to the form, if there were errors
 				if (!errorMsgs.isEmpty()) {
 					req.setAttribute("advVO", advVO); // 含有輸入格式錯誤的advVO物件,也存入req
+					/*RequestDispatcher failureView = req
+							.getRequestDispatcher("/back-end/adv/update_adv_input.jsp");*/
 					RequestDispatcher failureView = req
-							.getRequestDispatcher("/back-end/adv/update_adv_input.jsp");
+							.getRequestDispatcher("/back-end/adv/UpdateAdv.jsp");
 					failureView.forward(req, res);
 					return; //程式中斷
 				}
@@ -189,15 +200,18 @@ public class AdvServlet extends HttpServlet {
 				
 				/***************************3.修改完成,準備轉交(Send the Success view)*************/
 				req.setAttribute("advVO", advVO); // 資料庫update成功後,正確的的advVO物件,存入req
-				String url = "/back-end/adv/listOneAdv.jsp";
+				/*String url = "/back-end/adv/listOneAdv.jsp";*/
+				String url = "/back-end/adv/AdvManagement.jsp";
 				RequestDispatcher successView = req.getRequestDispatcher(url); // 修改成功後,轉交listOneAdv.jsp
 				successView.forward(req, res);
 
 				/***************************其他可能的錯誤處理*************************************/
 			} catch (Exception e) {
 				errorMsgs.add("修改資料失敗:"+e.getMessage());
+				/*RequestDispatcher failureView = req
+						.getRequestDispatcher("/back-end/adv/update_adv_input.jsp");*/
 				RequestDispatcher failureView = req
-						.getRequestDispatcher("/back-end/adv/update_adv_input.jsp");
+						.getRequestDispatcher("/back-end/adv/UpdateAdv.jsp");
 				failureView.forward(req, res);
 			}
 		}
@@ -256,8 +270,10 @@ public class AdvServlet extends HttpServlet {
 				// Send the use back to the form, if there were errors
 				if (!errorMsgs.isEmpty()) {
 					req.setAttribute("advVO", advVO); // 含有輸入格式錯誤的advVO物件,也存入req
+					/*RequestDispatcher failureView = req
+							.getRequestDispatcher("/back-end/adv/addAdv2.jsp");*/
 					RequestDispatcher failureView = req
-							.getRequestDispatcher("/back-end/adv/addAdv.jsp");
+							.getRequestDispatcher("/back-end/adv/AddAdv.jsp");
 					failureView.forward(req, res);
 					return;
 				}
@@ -267,15 +283,18 @@ public class AdvServlet extends HttpServlet {
 				advVO = advSvc.addAdv(emp_no, adv_name, adv_image_name, adv_image, adv_url);
 				
 				/***************************3.新增完成,準備轉交(Send the Success view)***********/
-				String url = "/back-end/adv/listAllAdv.jsp";
+				/*String url = "/back-end/adv/listAllAdv.jsp";*/
+				String url = "/back-end/adv/AdvManagement.jsp";
 				RequestDispatcher successView = req.getRequestDispatcher(url); // 新增成功後轉交listAllAdv.jsp
 				successView.forward(req, res);				
 				
 				/***************************其他可能的錯誤處理**********************************/
 			} catch (Exception e) {
 				errorMsgs.add(e.getMessage());
+				/*RequestDispatcher failureView = req
+						.getRequestDispatcher("/back-end/adv/addAdv2.jsp");*/
 				RequestDispatcher failureView = req
-						.getRequestDispatcher("/back-end/adv/addAdv.jsp");
+						.getRequestDispatcher("/back-end/adv/AddAdv.jsp");
 				failureView.forward(req, res);
 			}
 		}
@@ -296,15 +315,18 @@ public class AdvServlet extends HttpServlet {
 				advSvc.deleteAdv(adv_no);
 				
 				/***************************3.刪除完成,準備轉交(Send the Success view)***********/								
-				String url = "/back-end/adv/listAllAdv.jsp";
+				/*String url = "/back-end/adv/listAllAdv.jsp";*/
+				String url = "/back-end/adv/AdvManagement.jsp";
 				RequestDispatcher successView = req.getRequestDispatcher(url);// 刪除成功後,轉交回送出刪除的來源網頁
 				successView.forward(req, res);
 				
 				/***************************其他可能的錯誤處理**********************************/
 			} catch (Exception e) {
 				errorMsgs.add("刪除資料失敗:"+e.getMessage());
+				/*RequestDispatcher failureView = req
+						.getRequestDispatcher("/back-end/adv/listAllAdv.jsp");*/
 				RequestDispatcher failureView = req
-						.getRequestDispatcher("/back-end/adv/listAllAdv.jsp");
+						.getRequestDispatcher("/back-end/adv/AdvManagement.jsp");
 				failureView.forward(req, res);
 			}
 		}

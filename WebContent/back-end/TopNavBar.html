@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="">
+	<head>
+		<meta charset="utf-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<title>backEndTopNav</title>
+		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+		<!--[if lt IE 9]>
+			<script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+			<script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+		<![endif]-->
+		<style type="text/css">
+			#menu_zone{
+				background: #f5deb3;
+			}
+			#logo{
+				width: 50px;
+				height: 50px;
+			}
+			#topnavBar{
+			 	background: #f5f5dc; 
+			}
+			.empPic{
+				padding:15px 0px;
+				font-size: 20px;
+
+			}
+			#navHome{
+				color:#000;
+				font-size: 20px;
+			}
+			#navHome:hover{
+				text-decoration: none;
+			}
+		</style>
+	</head>
+	<body>
+		
+		<nav class="navbar navbar-default" id="topnavBar">
+			<div class="navbar-header">
+				<button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-ex1-collapse">
+					<span class="sr-only">選單切換</span>
+					<span class="icon-bar"></span>
+					<span class="icon-bar"></span>
+					<span class="icon-bar"></span>
+				</button>
+				<a href="#" id="navHome">
+					<img src="AA105G3/images/Logo.png" href="#" id="logo">
+					FOOD TIME分享食光
+				</a>				
+			</div>
+		
+			<!-- 手機隱藏選單區 -->
+			<div class="collapse navbar-collapse navbar-ex1-collapse" id="top_header">
+				<!-- 左選單 -->
+				<ul class="nav navbar-nav">
+					<li class="active"></li>				
+				</ul>
+				<!-- 右選單 -->
+
+				<ul class="nav navbar-nav navbar-right">
+					<li><i class="glyphicon glyphicon-user empPic"></i></li>
+					<li><a href="#">傑利鼠您好</a></li>
+					<li><a href="#">登出</a></li>
+				</ul>
+			</div>
+			<!-- 手機隱藏選單區結束 -->
+		</nav>
+		
+		
+		<script src="https://code.jquery.com/jquery.js"></script>
+		<script src="https://netdna.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+	</body>
+</html>

@@ -1,5 +1,6 @@
 package com.product.model;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class ProductService {
@@ -7,7 +8,7 @@ public class ProductService {
 	private ProductDAO_interface dao;
 
 	public ProductService() {
-		dao = new ProductJNDIDAO();
+		dao = new ProductDAO();
 	}
 	
 	public ProductVO addProduct(String prod_name, String prod_type, Integer sales_volume, Integer stor_capacity, 
@@ -71,6 +72,11 @@ public class ProductService {
 
 	public List<ProductVO> getAll() {
 		return dao.getAll();
+	}
+	
+	public List<ProductVO> serachByProduct_name(String prod_name){
+		List<ProductVO> list= dao.serachByProduct_name(prod_name);
+		return dao.serachByProduct_name(prod_name);
 	}
 
 }

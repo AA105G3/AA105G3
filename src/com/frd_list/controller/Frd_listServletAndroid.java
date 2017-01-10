@@ -70,6 +70,12 @@ public class Frd_listServletAndroid extends HttpServlet {
 			List<Frd_listVO> frd_listVOList = frd_listSvc.getAllByMem_noFrd_list(mem_no); 
 			
 			List<HashMap> frd_listMemberVOList = new ArrayList<HashMap>();
+			
+			List<HashMap> frd_listMemberVOList_0 = new ArrayList<HashMap>();
+			List<HashMap> frd_listMemberVOList_1 = new ArrayList<HashMap>();
+			List<HashMap> frd_listMemberVOList_2 = new ArrayList<HashMap>();
+			
+			
 			MemberVO memberVO = new MemberVO();
 			for(Frd_listVO frd_list: frd_listVOList){
 				HashMap hashmap = new HashMap();
@@ -80,9 +86,22 @@ public class Frd_listServletAndroid extends HttpServlet {
 				hashmap.put("mem_name", memberVO.getMem_name());
 				hashmap.put("mem_own", memberVO.getMem_own());
 				hashmap.put("mem_online", memberVO.getMem_online());
-				frd_listMemberVOList.add(hashmap);
+				
+				//好友排序
+				if(frd_list.getFriend_chk().equals("0")){
+					frd_listMemberVOList_0.add(hashmap);
+				}else if(frd_list.getFriend_chk().equals("1")){
+					frd_listMemberVOList_1.add(hashmap);
+				}else if(frd_list.getFriend_chk().equals("2")){
+					frd_listMemberVOList_2.add(hashmap);
+				}
+				
+				
 //				System.out.println(hashmap.get("friend_chk"));
 			}
+			frd_listMemberVOList.addAll(frd_listMemberVOList_2);
+			frd_listMemberVOList.addAll(frd_listMemberVOList_0);
+			frd_listMemberVOList.addAll(frd_listMemberVOList_1);
 //			List<Frd_listVO, MemberVO> list2= new ArrayList<Frd_listVO, MemberVO>; 
 			
 			outStr.append(gson.toJson(frd_listMemberVOList));

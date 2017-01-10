@@ -1,5 +1,6 @@
 package com.collection.model;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class CollectionService {
@@ -48,5 +49,52 @@ public class CollectionService {
 	
 	public List<CollectionVO> getAll() {
 		return dao.getAll();
+	}
+	
+
+	public CollectionVO findByMem_noAndAll_no(String mem_no, String all_no){
+		return dao.findByMem_noAndAll_no(mem_no, all_no);
+  }
+
+	//拿到收藏的食譜
+	public List<CollectionVO> getMyRecipeCollection(String mem_no) {
+		List<CollectionVO> list = dao.findByMem_no(mem_no); 
+		List<CollectionVO> list2 =new ArrayList<CollectionVO>();
+		
+		for(CollectionVO aCollect: list){
+			if(aCollect.getClass_no().equals("R")){
+				list2.add(aCollect);
+			}
+		}
+		return list2;
+	}
+	
+	//拿到追隨的作者
+	public List<CollectionVO> getMyAuthorCollection(String mem_no) {
+		List<CollectionVO> list = dao.findByMem_no(mem_no); 
+		List<CollectionVO> list2 =new ArrayList<CollectionVO>();
+		
+		for(CollectionVO aCollect: list){
+			if(aCollect.getClass_no().equals("M")){
+				list2.add(aCollect);
+			}
+		}
+		return list2;
+	}
+	
+	//拿到追隨的私廚
+	public List<CollectionVO> getMyChefCollection(String mem_no) {
+		List<CollectionVO> list = dao.findByMem_no(mem_no); 
+		List<CollectionVO> list2 =new ArrayList<CollectionVO>();
+		
+		for(CollectionVO aCollect: list){
+			if(aCollect.getClass_no().equals("C")){
+				list2.add(aCollect);
+			}
+		}
+		return list2;
+	}
+	public int getCollectionSize(String all_no){
+		return dao.getCollectionSize(all_no);
 	}
 }

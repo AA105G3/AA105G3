@@ -25,7 +25,10 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+<link rel="stylesheet" href="<%=request.getContextPath()%>/css/sweetalert.css">
 <link rel="stylesheet" href="/AA105G3/css/frontpageCSS.css">
+<script type="text/javascript" src="<%=request.getContextPath()%>/js/sweetalert.min.js"></script>
+<script type="text/javascript" src="<%=request.getContextPath()%>/js/sweetalert-dev.js"></script>
 
 <style type="text/css" media="screen">
 	.select-menu{
@@ -68,8 +71,9 @@
 	}
 	.shopping-cart{
 		position: absolute;
-		top: 650px;
-		left: 75px;
+		position: fixed;
+		top: 57%;
+		left: 25px;
 		width: 250px;
 		list-style: none;
 		margin: 0;
@@ -79,21 +83,65 @@
 	.shopping-cart li{
 		padding-bottom: 15px;
 	}
+	.search-style{
+		padding-top: 50px;
+		margin: center;
+	}
 </style>
 
+<script>
+   var MyPoint = "/product/InformNewProduct";
+   var host = window.location.host;
+   var path = window.location.pathname;
+   var webCtx = path.substring(0, path.indexOf('/', 1));
+   var endPointURL = "ws://" + window.location.host + webCtx + MyPoint;
+   
+   var webSocket;
+   
+   function connect() {
+	   var prod_no = null;
+		// 建立 websocket 物件
+		webSocket = new WebSocket(endPointURL);
+		
+		//收到server傳來的訊息
+		webSocket.onmessage = function(event) {
+	       var jsonObj = JSON.parse(event.data);
+	       var message = jsonObj.message + "\r\n"; 
+	       prod_no = jsonObj.prod_no + "\r\n"; 
+	       swal({
+	    	   title: "全新商品上架了~！",
+	    	   text: message,
+	    	   showCancelButton: true,
+	    	   confirmButtonColor: "red",
+	    	   confirmButtonText: "前去購買！",
+	    	   cancelButtonColor: "blue",
+	    	   cancelButtonText: "等會再買！",
+	    	   closeOnConfirm: false
+	    	 },function(){
+	    	/* 	$('.thumbnail').first().focus(function(){ 
+	    			$(this).css("background", "red").blur(function(){getOne_For_Display&prod_no=${productVO.prod_no}
+	    				  $(this).css("background", "#fff"); 
+	    			}); 
+	    		 }); */
+	    		 window.location.href = '<%=request.getContextPath()%>/product/product.do?action=getOne_For_Display&prod_no='+prod_no+'';
+	    	 });
+		  };		
+      }	
+
+</script>
+
 </head>
-<body>
+<body onload="connect();" onunload="disconnect();">
 
 
 
 
 
-<!--START SCROLL TOP BUTTON -->
-<a class="scrollToTop" href="#">
-	<i class="fa fa-angle-up"></i>
-	<span>Top</span>
-</a>
-<!-- END SCROLL TOP BUTTON -->
+<c:import url="/front-end/adv/Adv.jsp"></c:import>
+
+
+
+
 
 <div class="navbar navbar-default navbar-fixed-top navbar-inverse mu-main-navbar" >
 	<div class="container">
@@ -162,7 +210,7 @@
 
 <div class="col-xs-12 col-sm-12 select-menu">
 	<nobr class="select-item">
-		<a href="#" class="href-style">最新消息</a>
+		<a href="#" class="href-style">最新商品</a>
 	</nobr>
 	<nobr class="select-item">
 		<a href="#" class="href-style">特價商品</a>
@@ -203,9 +251,37 @@
 	<div class="row">
 		<div class="container">
 			<div class="row">
+			
+				<%-- 錯誤表列 --%>
+				<c:if test="${not empty errorMsgs}">
+					<font color='red'>請修正以下錯誤:
+					<ul>
+						<c:forEach var="message" items="${errorMsgs}">
+							<li>${message}</li>
+						</c:forEach>
+					</ul>
+					</font>
+				</c:if>
+			
+				<FORM METHOD="post" ACTION="<%=request.getContextPath()%>/product/product.do">
+				
+					<div class="col-xs-12 col-sm-4 col-sm-push-4 input-group search-style">
+						<div class="input-group-addon">
+							搜尋商品：
+						</div>
+						<input type="text" name="searchInput" class="form-control">
+						<input type="hidden" name="action" value="search">
+						<div class="input-group-btn">
+							<button class="btn btn-primary">查詢</button>
+						</div>
+					</div>
+				
+				</FORM>
+			
 				<div class="col-xs-12 col-sm-12">
 					<h2>最新商品</h2>
 				</div>
+				
 			</div>
 		</div>
 

@@ -25,8 +25,8 @@ public class Chef_order_listServlet extends HttpServlet {
 		req.setCharacterEncoding("UTF-8");
 		String action = req.getParameter("action");
 		
+
 if ("updateByChef".equals(action)) { // 來自update_chef_order_list_input.jsp的請求
-			
 			List<String> errorMsgs = new LinkedList<String>();
 			// Store this set in the request scope, in case we need to
 			// send the ErrorPage view.
@@ -168,6 +168,7 @@ if ("updateByChef".equals(action)) { // 來自update_chef_order_list_input.jsp�
 				failureView.forward(req, res);
 			}
 		}
+
 		
 		if ("getOne_For_Display".equals(action)|| "getOne_For_Chef".equals(action)|| "getOne_For_Back".equals(action)) { // 來自select_page.jsp的請求
 
@@ -258,7 +259,9 @@ if ("updateByChef".equals(action)) { // 來自update_chef_order_list_input.jsp�
 				req.setAttribute("chef_order_listVO", chef_order_listVO);         // 資料庫取出的chef_order_listVO物件,存入req
 				String url = null;
 				if("getOne_For_Update".equals(action))
+
 					url = "/front-end/chef_order_list/endChefOrder.jsp";
+
 				else if("getOne_For_ChefCheck".equals(action))
 					url = "/front-end/chef_order_list/UpdateChefOrderList.jsp";
 				else if("getOne_For_BackCheck".equals(action))
@@ -475,13 +478,7 @@ if ("updateByChef".equals(action)) { // 來自update_chef_order_list_input.jsp�
 				/***************************1.接收請求參數 - 輸入格式的錯誤處理**********************/
 				String chef_ord_no = new String(req.getParameter("chef_ord_no").trim());
 				
-				Double chef_ord_cost = null;
-				try {
-					chef_ord_cost = new Double(req.getParameter("chef_ord_cost").trim());
-				} catch (NumberFormatException e) {
-					chef_ord_cost = 0.0;
-					errorMsgs.add("訂單金額請填數字.");
-				}
+				Double chef_ord_cost = 0.0;
 				
 				Timestamp chef_act_date = null;
 				try {

@@ -105,8 +105,6 @@ public class Product_orderJNDIDAO implements Product_orderDAO_interface {
 		+ " cell_phone,"
 		+ " tel_phone FROM product_order where mem_no = ?";
 	
-
-	
 	@Override
 	public void insert(Product_orderVO prod_ordVO) {
 

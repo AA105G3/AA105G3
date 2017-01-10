@@ -7,7 +7,7 @@ public class AdvService {
 	private AdvDAO_interface dao;
 
 	public AdvService() {
-		dao = new AdvJNDIDAO();
+		dao = new AdvDAO();
 	}
 	
 	public AdvVO addAdv(String emp_no, String adv_name, String adv_image_name, byte[] adv_image, String adv_url){

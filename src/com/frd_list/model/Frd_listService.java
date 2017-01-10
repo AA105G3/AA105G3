@@ -1,5 +1,6 @@
 package com.frd_list.model;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import com.frd_list.model.Frd_listDAO;
@@ -69,4 +70,65 @@ public class Frd_listService {
 	public List<Frd_listVO> getAll() {
 		return dao.getAll();
 	}
+	//相同方法使用新的方法名
+	public List<Frd_listVO> getFriendsByMem_no(String mem_no) {
+		return dao.findByMem_no(mem_no);
+	}
+	//得到已經是朋友
+	public List<Frd_listVO> getMyFriends(String mem_no) {
+		
+		List<Frd_listVO> list = dao.findByMem_no(mem_no); 
+		List<Frd_listVO> list2 = new ArrayList<Frd_listVO>();
+		
+		for(Frd_listVO aFriend:list){
+			if(aFriend.getFriend_chk().equals("2")){
+				list2.add(aFriend);
+			}
+		}
+		
+		return list2;
+	}
+	
+	//得到被邀請
+	public List<Frd_listVO> getInvited(String mem_no) {
+		
+		List<Frd_listVO> list = dao.findByMem_no(mem_no); 
+		List<Frd_listVO> list2 = new ArrayList<Frd_listVO>();
+		
+		for(Frd_listVO aFriend:list){
+			if(aFriend.getFriend_chk().equals("0")){
+				list2.add(aFriend);
+			}
+		}
+		
+		return list2;
+	}
+	
+	//得到邀請中好友
+	public List<Frd_listVO> getInviteFriend(String mem_no) {
+		
+		List<Frd_listVO> list = dao.findByMem_no(mem_no); 
+		List<Frd_listVO> list2 = new ArrayList<Frd_listVO>();
+		
+		for(Frd_listVO aFriend:list){
+			if(aFriend.getFriend_chk().equals("1")){
+				list2.add(aFriend);
+			}
+		}
+		
+		return list2;
+	}
+	
+	
+	
+	
+	public Frd_listVO getOneFriend(String mem_no, String friend_no){
+		return dao.findByTwoPrimaryKey(mem_no, friend_no);
+	}
+	
+	public void deleteOneFriend(Frd_listVO frd_listVO){
+		dao.deleteOne(frd_listVO);
+	}
+	
+	
 }

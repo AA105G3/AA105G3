@@ -106,14 +106,51 @@ public class MemberServletAndroid extends HttpServlet {
 			String mem_ac = jsonObject.get("mem_ac").getAsString();
 			String mem_pw = jsonObject.get("mem_pw").getAsString();
 			MemberVO memberVO = memberSvc.getOneByMem_ac(mem_ac);
-			
-			if(memberVO.getMem_pw().equals(mem_pw)){
-				memberVO.setMem_image(null);
+
+			if (memberVO.getMem_pw().equals(mem_pw)) {
+
 				outStr.append(gson.toJson(memberVO));
-			}else{
+
+				MemberVO memberVO_pic = memberSvc.getOneMember(memberVO.getMem_no());
+
+				memberVO.setMem_online("1");// login之後，表示在線上, mem_online = 1
+
+				memberSvc.updateMember(memberVO.getMem_no(), memberVO.getMem_name(), memberVO.getMem_ac(),
+						memberVO.getMem_pw(), memberVO_pic.getMem_image(), memberVO.getMem_sex(),
+						memberVO.getMem_phone(), memberVO.getMem_email(), memberVO.getMem_adrs(), memberVO.getMem_own(),
+						memberVO.getMem_history(), memberVO.getMem_online());
+				
+			} else {
 				memberVO = null;
 				outStr.append(gson.toJson(memberVO));
 			}
+
+			SendResponse.writeText(res, outStr.toString());
+		}
+
+		// ===============logout============
+		if ("logout".equals(action)) {
+			String mem_ac = jsonObject.get("mem_ac").getAsString();
+			String mem_pw = jsonObject.get("mem_pw").getAsString();
+			MemberVO memberVO = memberSvc.getOneByMem_ac(mem_ac);
+
+			// if(memberVO.getMem_pw().equals(mem_pw)){
+			
+			MemberVO memberVO_pic = memberSvc.getOneMember(memberVO.getMem_no());
+			
+			memberVO.setMem_online("0");// logout，離線, mem_online = 0
+
+			memberSvc.updateMember(memberVO.getMem_no(), memberVO.getMem_name(), memberVO.getMem_ac(),
+					memberVO.getMem_pw(), memberVO_pic.getMem_image(), memberVO.getMem_sex(), memberVO.getMem_phone(),
+					memberVO.getMem_email(), memberVO.getMem_adrs(), memberVO.getMem_own(), memberVO.getMem_history(),
+					memberVO.getMem_online());
+			//
+			//// memberVO.setMem_image(null);
+			//// outStr.append(gson.toJson(memberVO));
+			//// }else{
+			memberVO = null;
+			outStr.append(gson.toJson(memberVO));
+			// }
 
 			SendResponse.writeText(res, outStr.toString());
 		}
@@ -134,11 +171,12 @@ public class MemberServletAndroid extends HttpServlet {
 			System.out.println("mem_no " + mem_no + " mem_image " + mem_image + " imageSize " + imageSize);
 
 			if (mem_image != null) {
-
+				System.out.println("Get image @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@");
 				mem_image = ImageUtil.shrink(mem_image, imageSize);
 				res.setContentType("image/jpeg");
 				res.setContentLength(mem_image.length);
 			} else {
+				System.out.println("mem_image is nullllllllllllllllllllllllllllllllllllllllllllllllllllllll");
 				InputStream in = getServletContext().getResourceAsStream("/images/noimage.jpg");
 				mem_image = new byte[in.available()];
 				in.read(mem_image);
