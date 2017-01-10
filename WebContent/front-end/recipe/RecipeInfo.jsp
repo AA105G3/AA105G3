@@ -379,6 +379,23 @@
 							</div>
 							</c:forEach>
 						</div>
+						
+						
+						<div class="col-xs-12 col-sm-12 recipe-type-wraaper">
+							<div class="display-type-title">
+									食譜影片
+							</div>
+							<div class="type-cont" preload = "auto">
+								<video controls>
+				                    <source src="/AA105G3/FilmDBGifReader.do?name=${recipeVO.recipe_no}">
+				                </video>
+				                <!-- <video controls>
+				                    <source src="C:/Users/cuser/Desktop/DBimages/Film/01.mp4">
+				                </video> -->
+							</div>
+						</div>
+						
+						
 						<div class="col-xs-12 col-sm-12 display-recipeCont-wrapper">
 							<table id="cont-table">
 							<c:forEach var="recipe_contVO" items="${recipe_cont_set}">
@@ -401,19 +418,7 @@
 						
 						
 						
-						<div class="col-xs-12 col-sm-12 recipe-type-wraaper">
-							<div class="display-type-title">
-									食譜影片
-							</div>
-							<div class="type-cont" preload = "auto">
-								<video controls>
-				                    <source src="/AA105G3/FilmDBGifReader.do?name=${recipeVO.recipe_no}">
-				                </video>
-				                <!-- <video controls>
-				                    <source src="C:/Users/cuser/Desktop/DBimages/Film/01.mp4">
-				                </video> -->
-							</div>
-						</div>
+						
 						
 						
 						
