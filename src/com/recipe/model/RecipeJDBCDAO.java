@@ -11,6 +11,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.emp.model.EmpVO;
+import com.film.model.FilmJDBCDAO;
+import com.film.model.FilmVO;
 import com.recipe_cont.model.*;
 
 
@@ -664,7 +666,7 @@ public class RecipeJDBCDAO implements RecipeDAO_interface
 	
 	
 	@Override
-	public void insertWithRecipe_conts(RecipeVO recipeVO, List<Recipe_contVO> list)
+	public void insertWithRecipe_conts(RecipeVO recipeVO, List<Recipe_contVO> list,FilmVO filmVO)
 	{
 		Connection con = null;
 		PreparedStatement pstmt = null;
@@ -715,7 +717,13 @@ public class RecipeJDBCDAO implements RecipeDAO_interface
 				aRecipe_cont.setRecipe_no(next_recipe_no);;
 				dao.insert2(aRecipe_cont,con);
 			}
-
+			//再新增影片
+			FilmJDBCDAO filmDao = new FilmJDBCDAO(); 
+			filmVO.setRecipe_no(next_recipe_no);
+			System.out.println(filmVO.getFilm_file());
+			filmDao.insert2(filmVO, con);
+			
+			
 			// 2●設定於 pstm.executeUpdate()之後
 			con.commit();
 			con.setAutoCommit(true);
@@ -910,42 +918,49 @@ public class RecipeJDBCDAO implements RecipeDAO_interface
 		RecipeJDBCDAO dao = new RecipeJDBCDAO();
 		
 		//insertWithRecipe_conts
-//		File recipePic = new File("WebContent/images/recipe","1.jpg");
-//		InputStream rfis = new FileInputStream(recipePic);
-//		byte[] buffer = new byte[rfis.available()];
-//		
-//		RecipeVO recipeVO = new RecipeVO();
-//		recipeVO.setMem_no("M00000004");
-//		recipeVO.setRecipe_name("柳橙水果茶");
-//		recipeVO.setRecipe_intro("在這寒冷的低溫裡，運用時令盛產的柳橙來泡壺暖呼呼的水果茶吧，以新鮮柳橙汁為基底，很是淡雅、舒服＾＾");
-//		recipeVO.setFood_mater("錫蘭紅茶-2包+新鮮柳橙汁-100ml+水-300ml+砂糖（視喜愛甜度調整）-30g+喜愛的水果切丁-適量");
-//		recipeVO.setRecipe_edit("已發布");
-//		recipeVO.setRecipe_pic(buffer);
-//		
-//		List<Recipe_contVO> testList = new ArrayList<Recipe_contVO>();  //準備置入食譜步驟項目
-//		
-//		File recipe_cont1_pic = new File("WebContent/images/recipe_cont","1.jpg"); //第一個步驟
-//		InputStream rcfis = new FileInputStream(recipe_cont1_pic);
-//		buffer = new byte[rcfis.available()];
-//		
-//		Recipe_contVO recipe_contVO1 = new Recipe_contVO();
-//		recipe_contVO1.setStep(1);
-//		recipe_contVO1.setStep_pic(buffer);
-//		recipe_contVO1.setStep_cont("321321");
-//		
-//		File recipe_cont2_pic = new File("WebContent/images/recipe_cont","2.jpg"); //第二個步驟
-//		rcfis = new FileInputStream(recipe_cont1_pic);
-//		buffer = new byte[rcfis.available()];
-//		
-//		Recipe_contVO recipe_contVO2 = new Recipe_contVO();
-//		recipe_contVO2.setStep(2);
-//		recipe_contVO2.setStep_pic(buffer);
-//		recipe_contVO2.setStep_cont("123321");
-//		
-//		testList.add(recipe_contVO1);
-//		testList.add(recipe_contVO2);
-//		
-//		dao.insertWithRecipe_conts(recipeVO, testList);
+		File recipePic = new File("WebContent/images/recipe","1.jpg");
+		InputStream rfis = new FileInputStream(recipePic);
+		byte[] buffer = new byte[rfis.available()];
+		
+		RecipeVO recipeVO = new RecipeVO();
+		recipeVO.setMem_no("M00000004");
+		recipeVO.setRecipe_name("柳橙水果茶");
+		recipeVO.setRecipe_intro("在這寒冷的低溫裡，運用時令盛產的柳橙來泡壺暖呼呼的水果茶吧，以新鮮柳橙汁為基底，很是淡雅、舒服＾＾");
+		recipeVO.setFood_mater("錫蘭紅茶-2包+新鮮柳橙汁-100ml+水-300ml+砂糖（視喜愛甜度調整）-30g+喜愛的水果切丁-適量");
+		recipeVO.setRecipe_edit("已發布");
+		recipeVO.setRecipe_pic(buffer);
+		
+		List<Recipe_contVO> testList = new ArrayList<Recipe_contVO>();  //準備置入食譜步驟項目
+		
+		File recipe_cont1_pic = new File("WebContent/images/recipe_cont","1.jpg"); //第一個步驟
+		InputStream rcfis = new FileInputStream(recipe_cont1_pic);
+		buffer = new byte[rcfis.available()];
+		
+		Recipe_contVO recipe_contVO1 = new Recipe_contVO();
+		recipe_contVO1.setStep(1);
+		recipe_contVO1.setStep_pic(buffer);
+		recipe_contVO1.setStep_cont("321321");
+		
+		File recipe_cont2_pic = new File("WebContent/images/recipe_cont","2.jpg"); //第二個步驟
+		rcfis = new FileInputStream(recipe_cont2_pic);
+		buffer = new byte[rcfis.available()];
+		
+		Recipe_contVO recipe_contVO2 = new Recipe_contVO();
+		recipe_contVO2.setStep(2);
+		recipe_contVO2.setStep_pic(buffer);
+		recipe_contVO2.setStep_cont("123321");
+		
+		testList.add(recipe_contVO1);
+		testList.add(recipe_contVO2);
+		
+		File filmFile = new File("D:/videoplayback.mp4");
+		InputStream filmfis = new FileInputStream(filmFile);
+		buffer = new byte[filmfis.available()];
+		FilmVO filmVO = new FilmVO();
+		filmVO.setFilm_file(buffer);
+		
+		
+		dao.insertWithRecipe_conts(recipeVO, testList,filmVO);
 		
 		
 		//insert

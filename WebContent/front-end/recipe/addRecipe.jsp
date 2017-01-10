@@ -149,6 +149,17 @@
 			border:1px solid gray;
 			background:#fff;
 		}
+		.video-area{
+			border-top:1px solid #cfccbe;
+			border-bottom:1px solid #cfccbe;
+			margin:20px 2% 0px 2%;
+			width:96%;
+			padding:15px 5px;
+			
+		}
+		.video-area h3{
+			margin:0px 0px 10px 0px;
+		}
 	</style>
 </head>
 <body>
@@ -250,6 +261,15 @@
 								增加食材
 							</div>
 						</div>
+						
+						
+						<div class="col-xs-12 col-sm-12 video-area">
+						<h3>上傳影片</h3>
+							<input type="file" name="recipe_video">
+						</div>
+						
+						
+						
 						<div class="col-xs-12 col-sm-12 step-area">
 							<div class="step-title">
 								<h3>步驟</h3>
