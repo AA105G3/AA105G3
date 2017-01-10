@@ -36,6 +36,14 @@ MemberVO memberVO = (MemberVO) request.getAttribute("memberVO");
 		padding-right : 150px;
 		padding-bottom : 24px;
 	}
+	body{
+		height : 100%;
+	}
+	footer{
+		position : absolute;
+	    bottom : 0px;
+		width : 100%;
+	}
 </style>
 
 </head>

@@ -119,7 +119,7 @@
 	}
 	
 	//顯示私廚資料
-	document.getElementById('spanOwn').innerHTML = "〈申請私廚資格詳細內容請參閱...〉";
+	/*document.getElementById('spanOwn').innerHTML = "〈申請私廚資格詳細內容請參閱...〉";*/
 	
 	//顯示上傳圖片的資料
 	document.getElementById('uploadImage').onchange = fileChange;
