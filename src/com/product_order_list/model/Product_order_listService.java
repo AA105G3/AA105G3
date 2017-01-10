@@ -7,7 +7,7 @@ public class Product_order_listService {
 	private Product_order_listDAO_interface dao;
 
 	public Product_order_listService() {
-		dao = new Product_order_listJNDIDAO();
+		dao = new Product_order_listDAO();
 	}
 	
 	public Product_order_listVO addProduct_order_list(String prod_ord_no, String prod_no, Integer unit_price, Integer prod_quantity, String deli_status, java.sql.Date deli_time){

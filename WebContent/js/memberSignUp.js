@@ -3,7 +3,7 @@
 	var rightImage = "<img src='../../images/right.png' />";
 	var errorImage = "<img src='../../images/error.png' />";
 	
-	//驗證會員帳號(信箱)
+	//驗證會員信箱
 	document.getElementById('spanEmail').innerHTML = "例：foodtime@gmail.com"
 	
 	var memAc = document.getElementById('memEmail');
@@ -119,7 +119,7 @@
 	}
 	
 	//顯示私廚資料
-	document.getElementById('spanOwn').innerHTML = "〈申請私廚資格詳細內容請參閱...〉";
+	/*document.getElementById('spanOwn').innerHTML = "〈申請私廚資格詳細內容請參閱...〉";*/
 	
 	//顯示上傳圖片的資料
 	document.getElementById('uploadImage').onchange = fileChange;

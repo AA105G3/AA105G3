@@ -13,6 +13,8 @@
 <jsp:useBean id="ingredients" scope="request" class="java.util.ArrayList"/>
 <jsp:useBean id="memberSvc" scope="page" class="com.member.model.MemberService" />
 <jsp:useBean id="quantity" scope="request" class="java.util.ArrayList"/>
+<jsp:useBean id="productSvc" scope="page" class="com.product.model.ProductService" />
+<jsp:useBean id="productVO" scope="request" class="com.product.model.ProductVO"/>
 <jsp:useBean id="collectionSvc" scope="page" class="com.collection.model.CollectionService" />
 
 
@@ -394,6 +396,30 @@
 							</c:forEach>	
 							</table>
 						</div>
+						
+						
+						
+						
+						
+						<div class="col-xs-12 col-sm-12 recipe-type-wraaper">
+							<div class="display-type-title">
+									食譜影片
+							</div>
+							<div class="type-cont" preload = "auto">
+								<video controls>
+				                    <source src="/AA105G3/FilmDBGifReader.do?name=${recipeVO.recipe_no}">
+				                </video>
+				                <!-- <video controls>
+				                    <source src="C:/Users/cuser/Desktop/DBimages/Film/01.mp4">
+				                </video> -->
+							</div>
+						</div>
+						
+						
+						
+						
+						
+						
 						<div class="col-xs-12 col-sm-12 recipe-type-wraaper">
 							<div class="display-type-title">
 									更多食譜相關份類
@@ -464,6 +490,41 @@
 								</div>
 							</div>
 						</div>
+						
+						
+						
+						
+						
+						<c:if test="${productSvc.serachByProduct_name(recipeVO.recipe_name).size() != '0'}">
+						<div class="col-xs-12 col-sm-12" style="margin:20px 0px;">
+							<div class="display-recipe-newest">
+								<div class="more-newest-title-wrapper">
+									<div class="col-xs-12 col-sm-6" style="padding:0px;">
+										<h4 class="display-more-newest-title">相關商品</h4>			
+									</div>
+									<div style="clear:both;"></div>
+								</div>
+								<div class="display-newest-recipe-content">
+									<table>
+									<c:forEach var="productVO" items="${productSvc.serachByProduct_name(recipeVO.recipe_name)}">
+									<tr>
+										<td class="recipe-newest-image-wrapper">
+											<a href='<%=request.getContextPath()%>/product/product.do?action=getOne_For_Display&prod_no=${productVO.prod_no}'>
+											<img class="recipe-newest-image" src="/AA105G3/ProductDBGifReader.do?name=${productVO.prod_no}" title="${recipeVO.recipe_name }">
+											</a>
+										</td>
+										<td class="display-recipe-newest-box">
+											<a href="<%=request.getContextPath()%>/product/product.do?action=getOne_For_Display&prod_no=${productVO.prod_no}">
+											<h4>${productVO.prod_name}</h4></a>
+											<p>NT$： ${productVO.unit_price}</p>
+										</td>
+									</tr>
+									</c:forEach>
+									</table>
+								</div>
+							</div>
+						</div>
+						</c:if>
 				</div>	
 				</div>
 				

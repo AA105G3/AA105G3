@@ -233,7 +233,7 @@
 
 
 
-<h3 class="h3-style">資料資料修改:</h3>
+<h3 class="h3-style">訂單明細修改:</h3>
 
 <%-- 錯誤表列 --%>
 <c:if test="${not empty errorMsgs}">
@@ -284,7 +284,7 @@
 	
 </table>
 <br>
-<a class="btn btn-default" href="/AA105G3/back-end/product_order_list/ListManagement.jsp">取消修改</a>
+<a class="btn btn-default" href="/AA105G3/product_order/product_order.do?action=getPartForDisplay">取消修改</a>
 <input type="hidden" name="action" value="update">
 <input type="hidden" name="prod_ord_no" value="<%=product_order_listVO.getProd_ord_no()%>">
 <input type="hidden" name="prod_no" value="<%=product_order_listVO.getProd_no()%>">

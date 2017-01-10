@@ -18,35 +18,6 @@ MemberVO memberVO = (MemberVO) request.getAttribute("memberVO");
 <script src = "/AA105G3/js/memberSignUp.js"></script>
 
 <style type="text/css" media="screen">
-	html, body{
-		background : white;
-		height : 100%;
-	}
-
-	#skin{
-		/* border : solid red; */
-		/* background : #f5f5dc; */
-		width : 100%;
-		margin : 0px auto;
-				
-		/* 填滿skin */
-		min-height : 100%;
-		position : relative;
-	}
-	#id_wrapper{
-		min-height: 100%;
-		position: relative;
-	}
-	#id_footer{
-		position: absolute;
-    	bottom: 0;
-	}
-	#theFooter{
-		/* 對應skin */
-		position : absolute;
-		bottom : 0px;
-		width : 100%;
-	}
 	.title-style{
 		padding-top : 50px;
 	}
@@ -61,21 +32,22 @@ MemberVO memberVO = (MemberVO) request.getAttribute("memberVO");
 		padding-top : 32px;
 	}
 	.buttonStyle{
-		padding-top : 25px;
+		padding-top : 35px;
 		padding-right : 150px;
+		padding-bottom : 24px;
+	}
+	body{
+		height : 100%;
+	}
+	footer{
+		position : absolute;
+	    bottom : 0px;
+		width : 100%;
 	}
 </style>
 
 </head>
 <body>
-<div id="skin">
-
-<!--START SCROLL TOP BUTTON -->
-<a class="scrollToTop" href="#">
-	<i class="fa fa-angle-up"></i>
-	<span>Top</span>
-</a>
-<!-- END SCROLL TOP BUTTON -->
 
 <div class="navbar navbar-default navbar-fixed-top navbar-inverse mu-main-navbar" >
 	<div class="container">
@@ -159,7 +131,7 @@ MemberVO memberVO = (MemberVO) request.getAttribute("memberVO");
 				會員帳號
 			</div>
 			<input type="text" id="memAc" placeholder="請輸入帳號" class="form-control"
-			name="mem_ac" value="${memberVO==null ? 'FoodTime' : memberVO.mem_ac}">
+			name="mem_ac" value="${memberVO==null ? '' : memberVO.mem_ac}">
 		</div>
 	</div>
 	<div class="col-xs-12 col-sm-6 span-style">
@@ -174,7 +146,7 @@ MemberVO memberVO = (MemberVO) request.getAttribute("memberVO");
 				會員暱稱
 			</div>
 			<input type="text" id="memName" placeholder="請輸入暱稱" class="form-control" 
-			name="mem_name" value="${memberVO==null ? '新的會員' : memberVO.mem_name}">
+			name="mem_name" value="${memberVO==null ? '' : memberVO.mem_name}">
 		</div>
 	</div>
 	<div class="col-xs-12 col-sm-6 span-style">
@@ -189,7 +161,7 @@ MemberVO memberVO = (MemberVO) request.getAttribute("memberVO");
 				會員密碼
 			</div>
 			<input type="password" id="memPw1" placeholder="請輸入密碼" class="form-control" maxlength="12"
-			name="mem_pw" value="${memberVO==null ? 'foodtime123' : memberVO.mem_pw}" >
+			name="mem_pw" value="${memberVO==null ? '' : memberVO.mem_pw}" >
 		</div>
 	</div>
 	<div class="col-xs-12 col-sm-6 span-style">
@@ -232,7 +204,7 @@ MemberVO memberVO = (MemberVO) request.getAttribute("memberVO");
 				電子郵件
 			</div>
 			<input type="text" id="memEmail" placeholder="請輸入信箱" class="form-control"
-			name="mem_email" value="${memberVO==null ? 'foodtime@gmail.com' : memberVO.mem_email}">
+			name="mem_email" value="${memberVO==null ? '' : memberVO.mem_email}">
 		</div>
 	</div>
 	<div class="col-xs-12 col-sm-6 span-style">
@@ -246,8 +218,8 @@ MemberVO memberVO = (MemberVO) request.getAttribute("memberVO");
 			<div class="input-group-addon">
 				手機
 			</div>
-			<input type="text" id="memPhone" placeholder="請輸入手機號碼" class="form-control"
-			name="mem_phone" value="${memberVO==null ? '0963258741' : memberVO.mem_phone}">
+			<input type="text" id="memPhone" placeholder="請輸入手機號碼" class="form-control" maxlength="10"
+			name="mem_phone" value="${memberVO==null ? '' : memberVO.mem_phone}">
 		</div>
 	</div>
 	<div class="col-xs-12 col-sm-6 span-style">
@@ -262,27 +234,27 @@ MemberVO memberVO = (MemberVO) request.getAttribute("memberVO");
 				住址
 			</div>
 			<input type="text" id="memAdrs" placeholder="請輸入住址" class="form-control"
-			name="mem_adrs" value="${memberVO==null ? '太陽系第三行星-地球' : memberVO.mem_adrs}">
+			name="mem_adrs" value="${memberVO==null ? '' : memberVO.mem_adrs}">
 		</div>
 	</div>
 </div>
 
-<div class="col-xs-12 col-sm-12">
+<!-- <div class="col-xs-12 col-sm-12">
 	<div class="col-xs-12 col-sm-6 div-style">
 		<div class="input-group">
 			申請私廚資格：
 			<label class="radio-inline">
-				<input type="radio" name="mem_own" value="0" checked>不申請
+				<input type="radio" name="mem_own" value="2" checked>不申請
 			</label>
 			<label class="radio-inline">
-				<input type="radio" name="mem_own" value="1">我要申請
+				<input type="radio" name="mem_own" value="2">我要申請
 			</label>
 		</div>
 	</div>
 	<div class="col-xs-12 col-sm-6 span-style">
 		<span id="spanOwn"></span>
 	</div>
-</div>
+</div> -->
 
 <div class="col-xs-12 col-sm-12">
 	<div class="col-xs-12 col-sm-6 div-style">
@@ -293,17 +265,24 @@ MemberVO memberVO = (MemberVO) request.getAttribute("memberVO");
 		<div id = "fileInfo"></div>
 	</div>
 	<div class="col-xs-12 col-sm-6 span-style">
-		<br><img id="img" src="<%=request.getContextPath()%>/front-end/member/images/No-image-found.png" height='150'><br>
+		<br><img id="img" src="<%=request.getContextPath()%>/front-end/member/images/No-image-found.png" height='200'><br>
 	</div>
 </div>
 
 
 <div class="col-xs-12 col-sm-12 text-center">
 	<div class="col-xs-12 col-sm-12 buttonStyle">
-		<input type="button" value="取消">&nbsp;
-		<input type="reset" value="重置" >&nbsp;
-		<input type="submit" value="確定">
+		<div class="col-xs-12 col-sm-2 col-sm-push-3">
+			<input type="button" class="btn btn-default" value="取消">
+		</div>
+		<div class="col-xs-12 col-sm-2 col-sm-push-3">	
+			<input type="reset" class="btn btn-default" value="重置" >
+		</div>
+		<div class="col-xs-12 col-sm-2 col-sm-push-3">	
+			<input type="submit" class="btn btn-primary" value="確定">
+		</div>
 		<input type="hidden" name="action" value="insert">
+		<input type="hidden" name="mem_own" value="2">
 		<input type="hidden" name="mem_history" value="F00000001">
 		<input type="hidden" name="mem_online" value="1">
 	</div>
@@ -335,6 +314,6 @@ MemberVO memberVO = (MemberVO) request.getAttribute("memberVO");
 
 
 
-</div>
+
 </body>
 </html>

@@ -24,6 +24,50 @@ public class ProductServlet extends HttpServlet {
 		req.setCharacterEncoding("UTF-8");
 		String action = req.getParameter("action");
 		
+		if("search".equals(action)){
+			
+			List<String> errorMsgs = new LinkedList<String>();
+			// Store this set in the request scope, in case we need to
+			// send the ErrorPage view.
+			req.setAttribute("errorMsgs", errorMsgs);
+			
+			try {
+				/***************************1.接收請求參數****************************************/
+				String searchInput =req.getParameter("searchInput");
+				if(searchInput.length()==0 || searchInput.isEmpty()){
+					errorMsgs.add("搜尋條件請勿空白");
+				}
+				
+				if (!errorMsgs.isEmpty()) {
+					RequestDispatcher failureView = req
+							.getRequestDispatcher("/front-end/product/Market.jsp");
+					failureView.forward(req, res);
+					return; //程式中斷
+				}
+				
+				/***************************2.開始查詢資料****************************************/
+				ProductService productSvc = new ProductService();
+				
+				List<ProductVO> list = null;
+				list = productSvc.serachByProduct_name(searchInput);
+				
+				/***************************3.查詢完成,準備轉交(Send the Success view)************/
+				req.setAttribute("list", list);
+				req.setAttribute("title", searchInput);
+				
+				String url = "/front-end/product/SearchProduct.jsp";
+				RequestDispatcher successView = req.getRequestDispatcher(url);
+				successView.forward(req, res);
+
+				/***************************其他可能的錯誤處理**********************************/
+			} catch (Exception e) {
+				errorMsgs.add("查無資料:" + e.getMessage());
+				RequestDispatcher failureView = req
+						.getRequestDispatcher("/front-end/product/Market.jsp");
+				failureView.forward(req, res);
+			}
+		}
+		
 		if ("getOne_For_Display".equals(action) || "getOne_For_Backpage".equals(action)) { // 來自select_page.jsp的請求
 
 			List<String> errorMsgs = new LinkedList<String>();
