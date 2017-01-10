@@ -374,6 +374,54 @@ public class MemberServlet extends HttpServlet {
 			}
 		}
 		
+		if ("getMemberInfo".equals(action)) { // 來自select_page.jsp的請求
+
+			List<String> errorMsgs = new LinkedList<String>();
+			// Store this set in the request scope, in case we need to
+			// send the ErrorPage view.
+			req.setAttribute("errorMsgs", errorMsgs);
+
+			try {
+				/***************************1.接收請求參數 - 輸入格式的錯誤處理**********************/
+				String mem_no = req.getParameter("mem_no");
+				
+				/***************************2.開始查詢資料*****************************************/
+				MemberService memberSvc = new MemberService();
+				MemberVO memberVO = memberSvc.getOneMember(mem_no);
+				memberVO.setMem_email((memberVO.getMem_email()).toLowerCase());
+				
+				if (memberVO == null) {
+					errorMsgs.add("查無資料");
+				}
+				// Send the use back to the form, if there were errors
+				if (!errorMsgs.isEmpty()) {
+					RequestDispatcher failureView = req
+							.getRequestDispatcher("/front-end/member/select_page.jsp");
+					failureView.forward(req, res);
+					return;//程式中斷
+				}
+				/***************************3.查詢完成,準備轉交(Send the Success view)*************/
+				req.setAttribute("memberVO", memberVO); // 資料庫取出的memberVO物件,存入req
+				
+				String url = null;
+				
+					url = "/front-end/member/memberInfo.jsp";
+				
+				RequestDispatcher successView = req.getRequestDispatcher(url); // 成功轉交 listOneMember.jsp
+				successView.forward(req, res);
+
+				/***************************其他可能的錯誤處理*************************************/
+			} catch (Exception e) {
+				errorMsgs.add("無法取得資料:" + e.getMessage());
+				RequestDispatcher failureView = req
+						.getRequestDispatcher("/front-end/member/select_page.jsp");
+				failureView.forward(req, res);
+			}
+		}
+		
+		
+		
+		
 	}
 	
 	public String getFileNameFromPart(Part part){

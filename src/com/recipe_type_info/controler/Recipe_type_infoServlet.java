@@ -94,7 +94,7 @@ public class Recipe_type_infoServlet extends HttpServlet {
 			// send the ErrorPage view.
 			req.setAttribute("errorMsgs", errorMsgs);
 
-//			try {
+			try {
 				/***************************1.接收請求參數 - 輸入格式的錯誤處理**********************/
 				String recipe_type_no = req.getParameter("recipe_type_no");
 				
@@ -170,12 +170,12 @@ public class Recipe_type_infoServlet extends HttpServlet {
 				successView.forward(req, res);
 
 				/***************************其他可能的錯誤處理*************************************/
-//			} catch (Exception e) {
-//				errorMsgs.add("無法取得資料:" + e.getMessage());
-//				RequestDispatcher failureView = req
-//						.getRequestDispatcher("/front-end/recipe_type_info/categories.jsp");
-//				failureView.forward(req, res);
-//			}
+			} catch (Exception e) {
+				errorMsgs.add("無法取得資料:" + e.getMessage());
+				RequestDispatcher failureView = req
+						.getRequestDispatcher("/front-end/recipe_type_info/categories.jsp");
+				failureView.forward(req, res);
+			}
 		}
 		
 		if ("insert".equals(action)) { // 來自addAuth.jsp的請求  

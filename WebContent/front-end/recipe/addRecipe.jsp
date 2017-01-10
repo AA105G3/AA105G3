@@ -23,6 +23,11 @@
 		<script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
 	<![endif]-->
 	<style type="text/css">
+	
+		body{
+			background: #efede8;
+			padding-top: 50px;
+		}
 		.recipe-title h3{
 			margin-bottom: 5px;
 		}
@@ -120,8 +125,19 @@
 			margin-top:  10px;
 		}
 		.step-wrapper img{
+			border:2px solid #fff;
 			height: 121px;
 			width: 171px;
+			margin-bottom:3px;
+		}
+		.recipe-select{
+			margin-left:170px;
+		}
+		.write-recipe{
+			margin-right:190px;
+		}
+		.cancelRecipe-btn{
+		margin-top:10px;
 		}
 	</style>
 </head>
@@ -136,7 +152,10 @@
 	</ul>
 	</font>
 </c:if>
-		
+	
+	<header>
+	<c:import url="/front-end/recipe/RecipeSearchBar.jsp" ></c:import>
+	</header>
 	<div class="container">
 		<div class="row update-recipe-wrapper">
 			<div class="col-xs-12 col-sm-offset-2 col-sm-7">
@@ -279,6 +298,9 @@
 			<div class="col-xs-12 col-sm-1">
 				<div>
 					<button class="btn btn-primary createRecipe-btn" type="submit" name="action" value="insert">發布</button>
+				</div>
+				<div>
+					<button class="btn btn-danger cancelRecipe-btn" type="button" >取消</button>
 				</div>
 			</div>				
 
