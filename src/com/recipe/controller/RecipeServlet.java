@@ -49,7 +49,7 @@ public class RecipeServlet extends HttpServlet {
 			// send the ErrorPage view.
 			req.setAttribute("errorMsgs", errorMsgs);
 
-			try {
+//			try {
 				/***************************1.接收請求參數 - 輸入格式的錯誤處理**********************/
 				String recipe_no = req.getParameter("recipe_no");
 				if (recipe_no == null || (recipe_no.trim()).length() == 0) {
@@ -71,39 +71,45 @@ public class RecipeServlet extends HttpServlet {
 				}
 				
 				Recipe_contService recipe_contSvc = new Recipe_contService();
-				Set<Recipe_contVO> set = recipe_contSvc.getRecipe_cont(recipe_no);
-				if (set == null) {
-					errorMsgs.add("食譜內容步驟查無資料");
-				}
+				Set<Recipe_contVO> set = new LinkedHashSet<Recipe_contVO>();
+				
+				
 				
 				
 				// Send the use back to the form, if there were errors
-				if (!errorMsgs.isEmpty()) {
-					RequestDispatcher failureView = req
-							.getRequestDispatcher("/front-end/recipe/select_page.jsp");
-					failureView.forward(req, res);
-					return;//程式中斷
-				}
-				recipeSvc.updateRecipeViews(recipe_no, recipeVO.getRecipe_total_views()+1, recipeVO.getRecipe_week_views()+1);
-				recipeVO = recipeSvc.getOneRecipe(recipe_no);
-				
-				
-				
-				String str = recipeVO.getFood_mater();
-				String[] tokens = str.split("-|\\+");
-				
 				List<String> ingredients = new ArrayList<String>();
 				List<String> quantity = new ArrayList<String>();
 				
-				for(int i =0;i<tokens.length-1;i+=2){
-					ingredients.add(tokens[i]);
+				if(recipeVO != null){
+					set = recipe_contSvc.getRecipe_cont(recipe_no);
+					recipeSvc.updateRecipeViews(recipe_no, recipeVO.getRecipe_total_views()+1, recipeVO.getRecipe_week_views()+1);
+					recipeVO = recipeSvc.getOneRecipe(recipe_no);
+					String str = recipeVO.getFood_mater();
+					String[] tokens = str.split("-|\\+");
+					
+					
+					
+					for(int i =0;i<tokens.length-1;i+=2){
+						ingredients.add(tokens[i]);
+					}
+					for(int i =1;i<tokens.length;i+=2){
+						quantity.add(tokens[i]);
+					}
 				}
-				for(int i =1;i<tokens.length;i+=2){
-					quantity.add(tokens[i]);
+				
+				
+				
+				
+				if (!errorMsgs.isEmpty()) {
+					req.setAttribute("recipeVO", recipeVO); 
+					req.setAttribute("ingredients", ingredients);
+					req.setAttribute("quantity", quantity);
+					req.setAttribute("recipe_cont_set", set); 
+					String url = "/front-end/recipe/RecipeInfo.jsp";
+					RequestDispatcher successView = req.getRequestDispatcher(url); 
+					successView.forward(req, res);
+					return;//程式中斷
 				}
-				
-				
-				
 				
 				
 				/***************************3.查詢完成,準備轉交(Send the Success view)*************/
@@ -116,12 +122,12 @@ public class RecipeServlet extends HttpServlet {
 				successView.forward(req, res);
 
 				/***************************其他可能的錯誤處理*************************************/
-			} catch (Exception e) {
-				errorMsgs.add("無法取得資料:" + e.getMessage());
-				RequestDispatcher failureView = req
-						.getRequestDispatcher("/front-end/recipe/select_page.jsp");
-				failureView.forward(req, res);
-			}
+//			} catch (Exception e) {
+//				errorMsgs.add("無法取得資料:" + e.getMessage());
+//				RequestDispatcher failureView = req
+//						.getRequestDispatcher("/front-end/recipe/select_page.jsp");
+//				failureView.forward(req, res);
+//			}
 		}
 		
 		
@@ -797,10 +803,12 @@ public class RecipeServlet extends HttpServlet {
 				
 				/***************************2.開始刪除資料***************************************/
 				RecipeService recipeSvc = new RecipeService();
-				recipeSvc.deleteRecipe(recipe_no);
+				RecipeVO recipeVO = recipeSvc.getOneRecipe(recipe_no); 
+				recipeSvc.updateRecipe(recipeVO.getRecipe_no(), recipeVO.getRecipe_name(), recipeVO.getRecipe_intro(), recipeVO.getFood_mater(),
+						recipeVO.getRecipe_pic(), "已刪除");
 				
 				/***************************3.刪除完成,準備轉交(Send the Success view)***********/								
-				String url = "/front-end/recipe/listAllRecipe.jsp";
+				String url = "recipe.do?action=getOne_For_Display&recipe_no="+recipe_no;
 				RequestDispatcher successView = req.getRequestDispatcher(url);// 刪除成功後,轉交回送出刪除的來源網頁
 				successView.forward(req, res);
 				
@@ -808,7 +816,7 @@ public class RecipeServlet extends HttpServlet {
 			} catch (Exception e) {
 				errorMsgs.add("刪除資料失敗:"+e.getMessage());
 				RequestDispatcher failureView = req
-						.getRequestDispatcher("/front-end/recipe/listAllRecipe.jsp");
+						.getRequestDispatcher("/front-end/recipe/RecipeHome.jsp");
 				failureView.forward(req, res);
 			}
 		}

@@ -47,7 +47,7 @@ public class Recipe_contVO
     	if(obj != null && getClass() == obj.getClass()) { 
     		if(obj instanceof Recipe_contVO) {
     			Recipe_contVO e = (Recipe_contVO)obj;
-                if (step.equals(step) && recipe_no.equals(e.recipe_no)) {  
+                if (step.equals(e.step) && recipe_no.equals(e.recipe_no)) {  
                     return true;
                 }
         }

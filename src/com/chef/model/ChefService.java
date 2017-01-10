@@ -85,4 +85,7 @@ public class ChefService {
 	public List<ChefVO> getAll() {
 		return dao.getAll();
 	}
+	public ChefVO getOneChefByMem_no(String mem_no) {
+		return dao.findByMem_no(mem_no);
+	}
 }
