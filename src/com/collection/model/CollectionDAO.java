@@ -27,8 +27,9 @@ public class CollectionDAO implements CollectionDAO_interface{
 	private static final String DELETE = "DELETE FROM collection where coll_no = ?";
 	private static final String UPDATE = "UPDATE collection set mem_no = ?, all_no = ?, class_no = ? where coll_no = ? ";
 	private static final String GET_ALL_BY_MEM_NO = "select coll_no, mem_no, all_no, class_no from collection where mem_no = ?";
+	private static final String FIND_ON_BY_MEMNO_AND_ALLNO = "select coll_no, mem_no, all_no, class_no from collection where mem_no = ? and all_no = ?";
 	private static final String GET_COLLECTION_COUNT= "select count(all_no) as total from collection where all_no = ?";
-	
+
 	@Override
 	public void insert(CollectionVO collectionVO) {
 		Connection con = null;
@@ -283,7 +284,59 @@ public class CollectionDAO implements CollectionDAO_interface{
 		}
 		return list;
 	}	
+
+	
 	@Override
+	public CollectionVO findByMem_noAndAll_no(String mem_no, String all_no) {
+		CollectionVO collectionVO = null;
+		Connection con = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		ResultSetMetaData rsmd = null;
+		try {
+			con = ds.getConnection();
+
+			pstmt = con.prepareStatement(FIND_ON_BY_MEMNO_AND_ALLNO);
+
+			pstmt.setString(1, mem_no);
+			pstmt.setString(2, all_no);
+			rs = pstmt.executeQuery();
+
+			while (rs.next()) {
+				collectionVO = new CollectionVO();
+				collectionVO.setColl_no(rs.getString("coll_no"));
+				collectionVO.setMem_no(rs.getString("mem_no"));
+				collectionVO.setAll_no(rs.getString("all_no"));
+				collectionVO.setClass_no(rs.getString("class_no"));
+			}
+		}  catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} finally {
+			if (pstmt != null) {
+				try {
+					pstmt.close();
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+			if (con != null) {
+				try {
+					con.close();
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+		}
+
+		return collectionVO;
+	}
+	
+}
+  
+@Override
 	public int getCollectionSize(String all_no)
 	{
 		// TODO Auto-generated method stub
@@ -324,4 +377,6 @@ public class CollectionDAO implements CollectionDAO_interface{
 		}
 		return count;
 	}
+
 }
+

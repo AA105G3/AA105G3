@@ -389,5 +389,10 @@ public class CollectionJDBCDAO implements CollectionDAO_interface{
 //		}
 	}
 
-	
+
+	@Override
+	public CollectionVO findByMem_noAndAll_no(String mem_no, String all_no) {
+		// TODO Auto-generated method stub
+		return null;
+	}
 }

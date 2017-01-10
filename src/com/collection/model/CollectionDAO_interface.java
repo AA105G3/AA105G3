@@ -10,5 +10,6 @@ public interface CollectionDAO_interface {
     public List<CollectionVO> getAll();
     
     public List<CollectionVO> findByMem_no(String mem_no);
+    public CollectionVO findByMem_noAndAll_no(String mem_no, String all_no);
     public int getCollectionSize(String all_no);
 }

@@ -51,6 +51,11 @@ public class CollectionService {
 		return dao.getAll();
 	}
 	
+
+	public CollectionVO findByMem_noAndAll_no(String mem_no, String all_no){
+		return dao.findByMem_noAndAll_no(mem_no, all_no);
+  }
+
 	//拿到收藏的食譜
 	public List<CollectionVO> getMyRecipeCollection(String mem_no) {
 		List<CollectionVO> list = dao.findByMem_no(mem_no); 
