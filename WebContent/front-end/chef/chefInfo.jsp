@@ -258,7 +258,7 @@
             
             </div>
             
-            
+              <div class="col-xs-12 col-sm-2" style="padding:1px">
                 <div id="sidebar-wrapper" >
 					<ul class="shopping-cart" style="width:180px">	
 						<FORM METHOD="post" ACTION="<%=request.getContextPath()%>/chef_order_list/chef_order_list.do">
@@ -284,7 +284,7 @@
 						</FORM>	
 					</ul>
 				</div>
-			
+			</div>
             
 <!-- 			<div class="col-xs-12 col-sm-12 text-center">				 -->
 <%-- 				<FORM METHOD="post" ACTION="<%=request.getContextPath()%>/chef_order_list/chef_order_list.do"> --%>
