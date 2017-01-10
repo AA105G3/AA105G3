@@ -1,4 +1,4 @@
-package com.chef.model;
+package com.chef.modelApp;
 
 import java.util.*;
 
@@ -10,5 +10,6 @@ public interface ChefDAO_interface {
           public List<ChefVO> getAll();
           //萬用複合查詢(傳入參數型態Map)(回傳 List)
 //        public List<ChefVO> getAll(Map<String, String[]> map); 
+          
           public ChefVO findByMem_no(String mem_no);
 }

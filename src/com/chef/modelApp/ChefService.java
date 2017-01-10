@@ -1,4 +1,4 @@
-package com.chef.model;
+package com.chef.modelApp;
 
 import java.util.List;
 
@@ -85,7 +85,9 @@ public class ChefService {
 	public List<ChefVO> getAll() {
 		return dao.getAll();
 	}
-	public ChefVO getOneChefByMem_no(String mem_no) {
+	
+	public ChefVO getOneByMem_no(String mem_no) {
 		return dao.findByMem_no(mem_no);
 	}
+	
 }

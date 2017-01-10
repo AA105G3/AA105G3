@@ -1,4 +1,4 @@
-package com.chef.model;
+package com.chef.modelApp;
 
 import java.sql.*;
 import java.io.*;
@@ -26,7 +26,7 @@ public class ChefPhotoWrite {
         	  
         	  try {
         		  con = DriverManager.getConnection(url, userid, passwd);
-        		  File pic = new File("WebContent\\images\\chef_lic", photo); //相對路徑- picFrom
+        		  File pic = new File("C:\\project_picture\\chef_lic", photo); //相對路徑- picFrom
                   									 //絕對路徑- 譬如:
                                                      //File pic = new File("x:\\aa\\bb\\picFrom", picName);
         		  long flen = pic.length();
@@ -54,11 +54,11 @@ public class ChefPhotoWrite {
           
           for(int i = 1; i <= 5; i++){
         	  
-        	  String photo = "chef0" + i + ".jpg";
+        	  String photo = "0" + i + ".png";
         	  
         	  try {
         		  con = DriverManager.getConnection(url, userid, passwd);
-        		  File pic = new File("WebContent\\images\\chef", photo); //相對路徑- picFrom
+        		  File pic = new File("C:\\project_picture\\chef_image", photo); //相對路徑- picFrom
                   									 //絕對路徑- 譬如:
                                                      //File pic = new File("x:\\aa\\bb\\picFrom", picName);
         		  long flen = pic.length();
@@ -90,7 +90,7 @@ public class ChefPhotoWrite {
         	  
         	  try {
         		  con = DriverManager.getConnection(url, userid, passwd);
-        		  File pic = new File("WebContent\\images\\chef_movie1", video); //相對路徑- picFrom
+        		  File pic = new File("C:\\project_picture\\chef_movie1", video); //相對路徑- picFrom
                   									 //絕對路徑- 譬如:
                                                      //File pic = new File("x:\\aa\\bb\\picFrom", picName);
         		  long flen = pic.length();
@@ -154,7 +154,7 @@ public class ChefPhotoWrite {
         	  
         	  try {
         		  con = DriverManager.getConnection(url, userid, passwd);
-        		  File pic = new File("WebContent\\images\\chef_reci_image1", photo); //相對路徑- picFrom
+        		  File pic = new File("C:\\project_picture\\chef_reci_image1", photo); //相對路徑- picFrom
                   									 //絕對路徑- 譬如:
                                                      //File pic = new File("x:\\aa\\bb\\picFrom", picName);
         		  long flen = pic.length();
@@ -186,7 +186,7 @@ public class ChefPhotoWrite {
         	  
         	  try {
         		  con = DriverManager.getConnection(url, userid, passwd);
-        		  File pic = new File("WebContent\\images\\chef_reci_image2", photo); //相對路徑- picFrom
+        		  File pic = new File("C:\\project_picture\\chef_reci_image2", photo); //相對路徑- picFrom
                   									 //絕對路徑- 譬如:
                                                      //File pic = new File("x:\\aa\\bb\\picFrom", picName);
         		  long flen = pic.length();
@@ -218,7 +218,7 @@ public class ChefPhotoWrite {
         	  
         	  try {
         		  con = DriverManager.getConnection(url, userid, passwd);
-        		  File pic = new File("WebContent\\images\\chef_reci_image3", photo); //相對路徑- picFrom
+        		  File pic = new File("C:\\project_picture\\chef_reci_image3", photo); //相對路徑- picFrom
                   									 //絕對路徑- 譬如:
                                                      //File pic = new File("x:\\aa\\bb\\picFrom", picName);
         		  long flen = pic.length();

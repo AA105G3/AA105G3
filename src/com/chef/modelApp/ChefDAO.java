@@ -1,4 +1,4 @@
-package com.chef.model;
+package com.chef.modelApp;
 
 import java.util.*;
 import java.sql.*;
@@ -31,7 +31,8 @@ public class ChefDAO implements ChefDAO_interface {
 		"DELETE FROM chef where chef_no = ?";
 	private static final String UPDATE = 
 		"UPDATE chef set chef_bnk=?, chef_bnk_ac=?, chef_skill=?, chef_lic=?, chef_image=?, chef_movie1=?, chef_movie2=?, chef_id=?, chef_name=?, chef_area=?, chef_intr=?, chef_menu=?, chef_reci_image1=?, chef_reci_image2=?, chef_reci_image3=?, chef_reci_image4=?, chef_reci_image5=?,chef_chk_cond=? where chef_no = ?";
-	private static final String GET_ONE_BY_MEM_NO = 
+
+	private static final String GET_ONE_BY_MEMNO = 
 			"SELECT chef_no,mem_no,chef_chk_cond,chef_bnk,chef_bnk_ac,chef_skill,chef_lic,chef_image,chef_movie1,chef_movie2,chef_id,chef_name,chef_area,chef_intr,chef_menu,chef_reci_image1,chef_reci_image2,chef_reci_image3,chef_reci_image4,chef_reci_image5 FROM chef where mem_no = ?";
 	
 	@Override
@@ -193,7 +194,7 @@ public class ChefDAO implements ChefDAO_interface {
 		Connection con = null;
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
-
+System.out.println("chef_no: "+ chef_no);
 		try {
 
 			con = ds.getConnection();
@@ -330,10 +331,10 @@ public class ChefDAO implements ChefDAO_interface {
 		}
 		return list;
 	}
+	
 	@Override
-	public ChefVO findByMem_no(String mem_no)
-	{
-		// TODO Auto-generated method stub
+	public ChefVO findByMem_no(String mem_no) {
+
 		ChefVO chefVO = null;
 		Connection con = null;
 		PreparedStatement pstmt = null;
@@ -342,7 +343,7 @@ public class ChefDAO implements ChefDAO_interface {
 		try {
 
 			con = ds.getConnection();
-			pstmt = con.prepareStatement(GET_ONE_BY_MEM_NO);
+			pstmt = con.prepareStatement(GET_ONE_BY_MEMNO);
 
 			pstmt.setString(1, mem_no);
 
@@ -403,4 +404,5 @@ public class ChefDAO implements ChefDAO_interface {
 		}
 		return chefVO;
 	}
+
 }
