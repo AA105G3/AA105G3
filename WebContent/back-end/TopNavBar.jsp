@@ -93,7 +93,7 @@
 				<ul class="nav navbar-nav navbar-right">
 					<li><i class="glyphicon glyphicon-user empPic"></i></li>
 					<li class="login-emp-wrapper"><span class="login-emp">${emp_name}</span>&nbsp;&nbsp;您好</li>
-					<li class="logout-wrapper"><a href="#" class="logout">登出&nbsp;<i class="glyphicon glyphicon-log-out"></i></a></li>
+					<li class="logout-wrapper"><a href="<%=request.getContextPath()%>/emp/emp.do?action=signOut" class="logout">登出&nbsp;<i class="glyphicon glyphicon-log-out"></i></a></li>
 				</ul>
 			</div>
 			<!-- 手機隱藏選單區結束 -->

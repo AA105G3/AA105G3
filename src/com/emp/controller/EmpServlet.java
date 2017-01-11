@@ -13,6 +13,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import com.emp.model.EmpService;
 import com.emp.model.EmpVO;
@@ -336,6 +337,34 @@ public class EmpServlet extends HttpServlet {
 				failureView.forward(req, res);
 			}
 		}
+		
+		if ("signOut".equals(action)){
+			
+			List<String> errorMsgs = new LinkedList<String>();
+			// Store this set in the request scope, in case we need to
+			// send the ErrorPage view.
+			req.setAttribute("errorMsgs", errorMsgs);
+			
+			try {
+				
+				HttpSession session = req.getSession();
+				session.removeAttribute("emp_no");
+				session.removeAttribute("emp_account");
+				session.removeAttribute("emp_password");
+				session.removeAttribute("emp_auths");
+				
+				RequestDispatcher failureView = req
+						.getRequestDispatcher("/Login/Blogin.jsp");
+				failureView.forward(req, res);
+				
+				
+			} catch (Exception e) {
+
+			}
+		}
+		
+		
+		
 	}
 	
 	protected String getPassWord() {
