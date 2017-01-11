@@ -390,22 +390,42 @@
 			
 			var indexNo=$(this).attr("id").replace("plus_","");
 			$(html).insertAfter("#div_"+indexNo);
-			var stepArray = $("h2")
-			for(var i = 0;i<=stepArray.length;i++){
+			var stepArray = $(".step-wrapper h2")
+			
+			for(var i = 0;i<stepArray.length;i++){
 				stepArray[i].innerHTML=i+1;
 			}
+			
+			
 		}
 	//步驟區垃圾桶
-
+	$('body').click(function(){
+		step = $(".step-plus").length+1;
+		//image = $('.step-wrapper img');
+		stepDiv = $('.step-wrapper');
+		plus = $('.step-plus');
+		var stepValue = $('.step-wrapper input[name="step"]')
+		for(var i = 0;i<step-1;i++){
+			stepValue[i].value = i+1;
+			stepDiv[i].id = 'div_'+(i+1);
+			plus[i].id = 'plus_'+(i+1);
+		}
+		
+	})
+	
 	$('body').on('click', '.step-trash',dropStep);
 
 		function dropStep(){
 
 			$(this).parent().parent().parent().parent().empty().remove();
-			var stepArray = $("h2")
-			for(var i = 0;i<=stepArray.length;i++){
+			var stepArray = $(".step-wrapper h2")
+			
+			for(var i = 0;i<stepArray.length;i++){
 				stepArray[i].innerHTML=i+1;
 			}
+			
+			
+			
 		}
 
 		$('body').on('click', '.step-plus',appendRecipeCont);

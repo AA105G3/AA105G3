@@ -12,6 +12,7 @@
 <jsp:useBean id="recipeVO" scope="request" class="com.recipe.model.RecipeVO"/>
 <jsp:useBean id="ingredients" scope="request" class="java.util.ArrayList"/>
 <jsp:useBean id="memberSvc" scope="page" class="com.member.model.MemberService" />
+<jsp:useBean id="filmSvc" scope="page" class="com.film.model.FilmService" />
 <jsp:useBean id="quantity" scope="request" class="java.util.ArrayList"/>
 <jsp:useBean id="productSvc" scope="page" class="com.product.model.ProductService" />
 <jsp:useBean id="productVO" scope="request" class="com.product.model.ProductVO"/>
@@ -412,6 +413,7 @@
 						
 						
 						<!-- Button trigger modal -->
+						<c:if test="${filmSvc.getOneFilm(recipeVO.recipe_no).film_file !=null}">
 						<div class="col-xs-12 col-sm-12 recipe-type-wraaper">
 							<div class="display-video-title">
 								<button type="button" class="btn btn-primary btn-block btn-lg btn3d" data-toggle="modal" data-target="#myModal">
@@ -419,7 +421,7 @@
 								</button>
 							</div>
 						</div>
-						
+						</c:if>
 						
 						<div class="col-xs-12 col-sm-12 display-recipeCont-wrapper">
 							<table id="cont-table">

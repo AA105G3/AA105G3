@@ -26,6 +26,8 @@
 	body{
 			background: #efede8;
 			padding-top: 90px;
+			position : relative;
+		height : 100%;
 		}
 		.recipe-title h3{
 			margin-bottom: 5px;
@@ -47,6 +49,7 @@
 
 		.update-recipe-wrapper{
 			margin-top: 20px;
+			padding-bottom:50px;
 		}
 		.quantity{
 			width: 60px;
@@ -154,6 +157,29 @@
 			border:1px solid gray;
 			background:#fff;
 		}
+		.video-area{
+			border-top:1px solid #cfccbe;
+			border-bottom:1px solid #cfccbe;
+			margin:20px 2% 0px 2%;
+			width:96%;
+			padding:15px 5px;
+			
+		}
+		.video-area h3{
+			margin:0px 0px 10px 0px;
+		}
+		#theFooter{
+		/* 對應skin */
+		position : absolute;
+		bottom : 0px;
+		width : 100%;
+		
+		background: #222222;
+		color:#fff ;
+		font-size: 26px;
+		font-family: Reklame;
+		text-align: center;
+	}
 	</style>
 </head>
 <body>
@@ -209,6 +235,15 @@
 								增加食材
 							</div>
 						</div>
+						
+						
+						<div class="col-xs-12 col-sm-12 video-area">
+						<h3>上傳影片<span>(若無上傳影片，會延用之前上傳的影片)</span></h3>
+							<input type="file" name="film_file">
+						</div>
+						
+						
+						
 						<div class="col-xs-12 col-sm-12 step-area">
 							<div class="step-title">
 								<h3>步驟<span>(請重新上傳圖片)</span></h3>
@@ -278,7 +313,9 @@
 		</div>
 	</div>
 	
-	
+	<footer id="theFooter">
+		Copyright &copy; 2016 Java Team 3 
+	</footer>
 								
 
 	<script src="https://code.jquery.com/jquery.js"></script>

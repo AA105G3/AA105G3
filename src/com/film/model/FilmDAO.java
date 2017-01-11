@@ -32,7 +32,7 @@ public class FilmDAO implements FilmDAO_interface {
 			"SELECT recipe_no,"
 			+ " film_file FROM film where recipe_no = ?";
 		private static final String UPDATE = 
-			"UPDATE film set film_file=?,"
+			"UPDATE film set film_file=?"
 			+ "where recipe_no = ?";
 		
 	@Override
@@ -232,15 +232,12 @@ public class FilmDAO implements FilmDAO_interface {
 			pstmt = con.prepareStatement(INSERT_STMT);
 			
 			pstmt.setString(1, filmVO.getRecipe_no());
-			System.out.println(filmVO.getRecipe_no());
 			byte[] film_file = filmVO.getFilm_file();
 			
-			System.out.println(film_file);
 			if(film_file!=null){
 				long filmlen = film_file.length;
 				InputStream bais = new ByteArrayInputStream(film_file);
 				pstmt.setBinaryStream(2, bais, filmlen);
-				System.out.println("XXX");
 			}else{
 				pstmt.setBinaryStream(2, null);
 			}

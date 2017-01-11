@@ -3,7 +3,6 @@ package com.recipe.model;
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
 import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
@@ -16,7 +15,7 @@ import javax.naming.InitialContext;
 import javax.naming.NamingException;
 import javax.sql.DataSource;
 
-import com.film.model.FilmJDBCDAO;
+import com.film.model.FilmDAO;
 import com.film.model.FilmVO;
 import com.recipe_cont.model.*;
 
@@ -504,9 +503,7 @@ public class RecipeDAO implements RecipeDAO_interface
 			ResultSet rs = pstmt.getGeneratedKeys();
 			if (rs.next()) {
 				next_recipe_no = rs.getString(1);
-				System.out.println("自增主鍵值= " + next_recipe_no +"(剛新增成功的食譜編號)");
 			} else {
-				System.out.println("未取得自增主鍵值");
 			}
 			rs.close();
 			// 再同時新增食譜內容
@@ -517,17 +514,13 @@ public class RecipeDAO implements RecipeDAO_interface
 			}
 			
 			//再新增影片
-			FilmJDBCDAO filmDao = new FilmJDBCDAO(); 
+			FilmDAO filmDao = new FilmDAO(); 
 			filmVO.setRecipe_no(next_recipe_no);
-			System.out.println(filmVO.getFilm_file());
 			filmDao.insert2(filmVO, con);
 			
 			// 2●設定於 pstm.executeUpdate()之後
 			con.commit();
 			con.setAutoCommit(true);
-			System.out.println("list.size()-B="+list.size());
-			System.out.println("新增食譜編號" + next_recipe_no + "時,共有步驟" + list.size()
-					+ "條同時被新增");
 			
 			// Handle any driver errors
 		} catch (SQLException se) {
