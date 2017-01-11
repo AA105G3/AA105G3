@@ -396,12 +396,17 @@
 																		<h4>The Newest</h4>
 																	</td>
 																	<td class="collection-recipe-img">
+																 <c:if test="${recipeSvc.findByMem_no(aCollection.all_no).size()>0}">
 																	<c:set var="newestRecipe" value="${recipeSvc.findByMem_no(aCollection.all_no).get(0)}" />
 																	<a href="<%=request.getContextPath()%>/recipe/recipe.do?action=getOne_For_Display&recipe_no=${newestRecipe.recipe_no}">
 																		<img src="<%=request.getContextPath()%>/recipe/showRecipe_pic.do?recipe_no=${newestRecipe.recipe_no}">
 																	</a>
+																</c:if>
+																 
+																
 																	</td>
 																	<td class="collection-author-recipe-info">
+																	<c:if test="${recipeSvc.findByMem_no(aCollection.all_no).size()>0}">
 																		<a href="<%=request.getContextPath()%>/recipe/recipe.do?action=getOne_For_Display&recipe_no=${newestRecipe.recipe_no}">
 																		<h4>${newestRecipe.recipe_name}</h4>
 																		</a>
@@ -413,6 +418,10 @@
 																			<input type="hidden" name="coll_no" value="${aCollection.coll_no}">
 																			<input type="hidden" name="tabID" value="tab2">
 																		</form>
+																	</c:if>
+																	<c:if test="${recipeSvc.findByMem_no(aCollection.all_no).size()<1}">
+																	<h2>該會員尚無食譜!</h2>
+																	</c:if>
 																	</td>
 																</tr>
 															</c:forEach>
