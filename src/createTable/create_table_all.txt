@@ -1008,11 +1008,11 @@ create table live(
 
 create table film(
 
- film_no  		varchar2(20) not null,
- recipe_no		varchar2(20) not null,
- film_title		varchar2(60) not null,
+ film_no  		varchar2(20) ,
+ recipe_no		varchar2(20) ,
+ film_title		varchar2(60) ,
  film_content		CLOB,
- film_date		date default sysdate not null,
+ film_date		date default sysdate ,
  film_file		BLOB,
  film_like		Number default 0,
  film_popular		Number default 0,
