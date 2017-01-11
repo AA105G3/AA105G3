@@ -538,11 +538,13 @@ NOCYCLE
 NOCACHE;
 
 
-INSERT INTO AUTH VALUES (lpad(auth_seq.NEXTVAL,3,0),'員工資料管理');
-INSERT INTO AUTH VALUES (lpad(auth_seq.NEXTVAL,3,0),'會員資料管理');
-INSERT INTO AUTH VALUES (lpad(auth_seq.NEXTVAL,3,0),'私廚管理');
-INSERT INTO AUTH VALUES (lpad(auth_seq.NEXTVAL,3,0),'食譜類別管理');
-INSERT INTO AUTH VALUES (lpad(auth_seq.NEXTVAL,3,0),'檢舉管理');
+INSERT INTO AUTH VALUES (lpad(auth_seq.NEXTVAL,3,0),'會員管理');
+INSERT INTO AUTH VALUES (lpad(auth_seq.NEXTVAL,3,0),'員工管理');
+INSERT INTO AUTH VALUES (lpad(auth_seq.NEXTVAL,3,0),'食譜管理');
+INSERT INTO AUTH VALUES (lpad(auth_seq.NEXTVAL,3,0),'廣告管理');
+INSERT INTO AUTH VALUES (lpad(auth_seq.NEXTVAL,3,0),'市集管理');
+INSERT INTO AUTH VALUES (lpad(auth_seq.NEXTVAL,3,0),'商品訂單管理');
+INSERT INTO AUTH VALUES (lpad(auth_seq.NEXTVAL,3,0),'私廚平台管理');
 
 commit;
 ---------------------------------------
