@@ -1,3 +1,7 @@
+<%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+
+
 <!DOCTYPE html>
 <html lang="">
 	<head>
@@ -429,7 +433,7 @@
 					</li>
 					<li id="Logo">
 						<a href="#">
-						<img src="/images/Logo.png">
+						<img src="<%=request.getContextPath()%>/images/Logo.png">
 							
 							<h3 class="cbp-ig-title">－FoodTime－</h3>
 						
@@ -462,18 +466,20 @@
 						</a>
 					</li>
 					<li class="even">
-						<!-- <a href="#">
+					<c:if test="${sessionScope.mem_no ==null}">
+						 <a href="#">
 							<span class="cbp-ig-icon glyphicon glyphicon-registration-mark"></span>
 							<h3 class="cbp-ig-title">Register</h3>
 							<span class="cbp-ig-category">立即註冊</span>
-						</a> -->
-
+						</a>
+					</c:if>
+					<c:if test="${sessionScope.mem_no !=null}">
 						<a href="#">
 							<span class="fa fa-user cbp-ig-icon" aria-hidden="true"></span>
 							<h3 class="cbp-ig-title">Profile</h3>
 							<span class="cbp-ig-category">前往個人頁面</span>
 						</a>
-
+					</c:if>
 					</li>
 				</ul>
 			</div>
