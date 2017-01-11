@@ -6,6 +6,8 @@
 
 
 <jsp:useBean id="empSvc" scope="page" class="com.emp.model.EmpService" />
+<jsp:useBean id="authSvc" scope="page" class="com.auth.model.AuthService" />
+<jsp:useBean id="emp_authSvc" scope="page" class="com.emp_auth.model.Emp_authService" />
 
 <!DOCTYPE html>
 <html lang="">
@@ -144,10 +146,15 @@
 			margin-top: 29px;
 			font-size: 15px;
 		}
-		#empAuths td,#empAuths th{
+		#empAuths th{
 			border:1px solid;
 			text-align:center;
 			padding:10px 20px;
+		}
+		#empAuths td{
+			border:1px solid;
+			text-align:center;
+			padding:5px;
 		}
 		#empAuths{
 			margin:0 auto;
@@ -159,50 +166,36 @@
 		#authscontent{
 			width: 200% !important;
 		}
-		input[type=checkbox]:checked ~ label{
-		    background: url(http://ramyasspace.files.wordpress.com/2011/06/tick.jpg);
-		    background-size: 100%;
-		}
-		.checkimg{
-			background: #ddd;
-		    height: 20px;
-		    width: 20px;
-		    display: block;
-		    background-image: -ms-linear-gradient(bottom right, #FFFFFF 0%, #C7C7C7 100%);
-
-			/* Mozilla Firefox */ 
-			background-image: -moz-linear-gradient(bottom right, #FFFFFF 0%, #C7C7C7 100%);
-
-			/* Opera */ 
-			background-image: -o-linear-gradient(bottom right, #FFFFFF 0%, #C7C7C7 100%);
-
-			/* Webkit (Safari/Chrome 10) */ 
-			background-image: -webkit-gradient(linear, right bottom, left top, color-stop(0, #FFFFFF), color-stop(1, #C7C7C7));
-
-			/* Webkit (Chrome 11+) */ 
-			background-image: -webkit-linear-gradient(bottom right, #FFFFFF 0%, #C7C7C7 100%);
-
-			/* W3C Markup, IE10 Release Preview */ 
-			 background-image: linear-gradient(to top left, #FFFFFF 0%, #C7C7C7 100%);
-		}
-		.checkimg:hover{
-			background-image: -ms-linear-gradient(bottom right, #FFFFFF 0%, #8FECFF 100%);
-
-			/* Mozilla Firefox */ 
-			background-image: -moz-linear-gradient(bottom right, #FFFFFF 0%, #8FECFF 100%);
-
-			/* Opera */ 
-			background-image: -o-linear-gradient(bottom right, #FFFFFF 0%, #8FECFF 100%);
-
-			/* Webkit (Safari/Chrome 10) */ 
-			background-image: -webkit-gradient(linear, right bottom, left top, color-stop(0, #FFFFFF), color-stop(1, #8FECFF));
-
-			/* Webkit (Chrome 11+) */ 
-			background-image: -webkit-linear-gradient(bottom right, #FFFFFF 0%, #8FECFF 100%);
-
-			/* W3C Markup, IE10 Release Preview */ 
-			 background-image: linear-gradient(to top left, #FFFFFF 0%, #8FECFF 100%);
-		}
+		input[type=checkbox] {
+	      	display:none;
+	    }
+	     
+	    input[type=checkbox] + label
+	    {
+	  	    border: 1px solid;
+	  	    
+		    background-size: 50%;
+	        height: 50px;
+	        width: 50px;
+	        display:inline-block;
+	        padding: 0 0 0 0px;
+	        border-radius: 25px;
+	        margin:0px;
+	    }
+	    input[type=checkbox] + label:hover{
+	    	background:#f2f1ee;
+	    }
+	    input[type=checkbox]:checked + label
+	    {
+	      	background: url(/AA105G3/images/check.png) no-repeat;
+	      	background-size: cover;
+		    height: 50px;
+		    width: 50px;
+		    display:inline-block;
+		    padding: 0 0 0 0px;
+		    margin:0px;
+	    }
+	    
 		</style>
 	</head>
 
@@ -267,14 +260,28 @@
 								      				<label>到職日 :</label>&nbsp<span>${empVO.emp_hiredate}</span><br>
 								      				<label>地址 :</label>&nbsp<span>${empVO.emp_address}</span><br>
 								      				<label>員工狀態 :</label>&nbsp<span>${empVO.emp_status==0? "已離職":"在職"}</span><br>
-								      				<label>擁有權限 :</label>&nbsp<span>員工資料管理、會員管理</span>
+								      				<label>擁有權限 :</label>&nbsp<span>
+								      				
+								      				<c:set var="Emp_auths" value="${emp_authSvc.getAuthsStringByEmp_no(empVO.emp_no)}"/>
+								      				<c:forEach var="aAuth" items="${Emp_auths}" varStatus="s">
+								      				<c:if test="${s.index==0}">
+								      					${authSvc.getOneAuth(aAuth).auth_name}
+								      				</c:if>
+								      				<c:if test="${s.index>0}">
+								      					、${authSvc.getOneAuth(aAuth).auth_name}
+								      				</c:if>
+								      				</c:forEach>
+								      				<c:if test="${Emp_auths.size()<1}">
+								      					尚未設定權限
+								      				</c:if>
+								      				</span>
 								      			</div>
 								      			<div class="col-xs-12 col-sm-2 text-right">
 								      				<div class="emp_auth-update-wrapper">
 								      					<button class="btn btn-primary btn-sm emp-info-update" onclick="updateEmpInfo(${empVO.emp_no})">修改基本資料</button>
 								      				</div>
 								      				<div>
-								      					<button class="btn btn-sm btn-primary emp_auth-update" onclick="updateAuth(${empVO.emp_no})" data-toggle="modal" data-target="#emp-auth-input">修改權限</button>	
+								      					<button class="btn btn-sm btn-primary emp_auth-update" onclick="updateAuth(${empVO.emp_no})">修改權限</button>	
 								      				</div>
 								      			</div>
 								      			</div>
@@ -381,7 +388,8 @@
 		    
 		      <!-- Modal content-->
 		      <div class="modal-content" id="authscontent">
-		      <form class="form-horizontal" action="" method="get" >
+		      <form class="form-horizontal" action="<%=request.getContextPath()%>/emp_auth/emp_auth.do" method="post" >
+
 		        <div class="modal-header">
 		          <button type="button" class="close" data-dismiss="modal">&times;</button>
 		          <h4 class="modal-title">修改權限</h4>
@@ -390,51 +398,33 @@
 		        <div id="empAuthsInputWrapper">
 		        	
 		        
-		          <form >
 		          <table id="empAuths">
 		          	<tr>
-		          		<th>會員管理</th>
-		          		<th>員工管理</th>
-		          		<th>食譜管理</th>
-		          		<th>廣告管理</th>
-		          		<th>市集管理</th>
-		          		<th>商品訂單管理</th>
-		          		<th>私廚平台管理</th>
-		          	</tr>
+						<c:forEach var = "authVO" items="${authSvc.all}">
+						<th>
+							${authVO.auth_name}
+						</th>
+						</c:forEach>
+					</tr>
 		          	<tr>
-		          		<td>
-		          			<label class="checkimg" for="check1"></label>
-		          			<input type="checkbox" id="check1" name="emp_auths" value="">
-		          		</td>
-		          		<td>
-		          			<input type="checkbox" name="emp_auths" value="">
-		          		</td>
-		          		<td>
-		          			<input type="checkbox" name="emp_auths" value="">
-		          		</td>
-		          		<td>
-		          			<input type="checkbox" name="emp_auths" value="">
-		          		</td>
-		          		<td>
-		          			<input type="checkbox" name="emp_auths" value="">
-		          		</td>
-		          		<td>
-		          			<input type="checkbox" name="emp_auths" value="">
-		          		</td>
-		          		<td>
-		          			<input type="checkbox" name="emp_auths" value="">
-		          		</td>
+		          		<c:forEach var = "authVO" items="${authSvc.all}" varStatus="s">
+			          		<td>
+			          			<input type="checkbox" id="${authVO.auth_no}" name="emp_auths" value="${authVO.auth_no}">
+			          			<label class="btn" for="${authVO.auth_no}"></label>
+			          		</td>
+		          		</c:forEach>
 		          	</tr>
 		          </table>
 
-		          </form>
 		          </div>
 		        </div>
 		        <div class="modal-footer">
 		       	  <input type="submit" class="btn btn-default" name="submitButton" value="提交">
-		          <input type="hidden" name="action" value="update">
+		          <input type="hidden" name="action" value="updateAuths_ByEmp_no">
+		          <input type="hidden" name="emp_no" value="" id="emp_noForUpadte">
 		          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
 		        </div>
+
 		        </form>
 		      </div>
 		      
@@ -475,6 +465,29 @@
 				    
 				});
 				})
+			function updateAuth(e){
+				var emp_no = e;
+				
+				$('#emp_noForUpadte').val(emp_no);
+				 $('input:checked').prop( "checked",false);
+				
+				$.ajax({
+						 type:"GET",
+						 url:"/AA105G3/emp_auth/emp_authJsonRes.do",
+						 data:{"action":"getEmpAuths","emp_no":emp_no},
+						 dataType:"json",
+						 success:function (data){
+						 	var i = 0;
+							 $.each(data,function(){
+							 	$('#'+data[i].auth).prop('checked', true);
+							 	i++
+							 })
+							 
+							 $("#emp-auth-input").modal('show');
+					     },
+			             error:function(){alert(emp_no)}
+			         })
+			}
 			
 
 			function updateEmpInfo(e){
@@ -483,7 +496,7 @@
 				$("#info_emp_no").val(emp_no);
 				$.ajax({
 						 type:"GET",
-						 url:"/AA105G3/Emp/EmpJsonRes.do",
+						 url:"/AA105G3/emp/empJsonRes.do",
 						 data:creatQueryString(emp_no),
 						 dataType:"json",
 						 success:function (data){

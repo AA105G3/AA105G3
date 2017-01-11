@@ -35,6 +35,7 @@
 	<body>
 		<div class="col-xs-12 col-sm-2" id="menu_zone">
 			<div class="panel-group" id="accordion2" role="tablist" aria-multiselectable="true">
+			<c:if test="${(sessionScope.emp_auths).contains('001')}">
 				  	<!-- 區塊1 -->
 				  	<div class="panel panel-default">
 				    	<div class="panel-heading" role="tab" id="panel1">	
@@ -52,6 +53,8 @@
 					      	</div>
 					    </div>
 					</div>
+				</c:if>
+				<c:if test="${(sessionScope.emp_auths).contains('002')}">
 					<!-- 區塊2 -->
 					<div class="panel panel-default">
 					    <div class="panel-heading" role="tab" id="panel2">
@@ -68,7 +71,9 @@
 					      	</div>
 					    </div>
 					</div>
+					</c:if>
 					
+					<c:if test="${(sessionScope.emp_auths).contains('003')}">
 					<div class="panel panel-default">
 					    <div class="panel-heading" role="tab" id="panel4">
 					    <a href="#ddd" data-parent="#accordion2" data-toggle="collapse" role="button" class="collapsed" aria-expanded="false" aria-controls="ddd">
@@ -85,6 +90,9 @@
 					      	</div>
 					    </div>
 					</div>
+					</c:if>
+					
+					<c:if test="${(sessionScope.emp_auths).contains('004')}">
 					<!-- 區塊5 -->
 					<div class="panel panel-default">
 					    <div class="panel-heading" role="tab" id="panel5">
@@ -101,6 +109,9 @@
 					      	</div>
 					   </div>
 					</div>
+					</c:if>
+					
+					<c:if test="${(sessionScope.emp_auths).contains('005')}">
 					<!-- 區塊6 -->
 					<div class="panel panel-default">
 					    <div class="panel-heading" role="tab" id="panel6">
@@ -117,6 +128,9 @@
 					      	</div>
 					    </div>
 					</div>
+					</c:if>
+					
+					<c:if test="${(sessionScope.emp_auths).contains('006')}">
 					<!-- 區塊7 -->
 					<div class="panel panel-default">
 					    <div class="panel-heading" role="tab" id="panel7">
@@ -133,6 +147,9 @@
 					      	</div>
 					    </div>
 					</div>
+					</c:if>
+					
+					<c:if test="${(sessionScope.emp_auths).contains('007')}">
                     <!-- 區塊8 -->
 					<div class="panel panel-default">
 					    <div class="panel-heading" role="tab" id="panel8">
@@ -149,6 +166,7 @@
 					      	</div>
 					    </div>
 					</div>
+					</c:if>
 				</div>
 		</div>
 		
