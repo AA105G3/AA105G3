@@ -252,6 +252,23 @@
 				opacity: 1;
 				
 			}
+			.cbp-ig-grid li#Logo .homepagelogout {
+				
+				display: inline-block;
+				font-size: 28px;
+				letter-spacing: 1px;
+				color: #fff;
+				background: #e3b13e;
+				padding:5px 10px;
+				border: 3px dashed #fff;
+				-webkit-transition: -webkit-background 0.5s,-webkit-border 0.5s,-webkit-color 0.5s,-webkit-padding 0.5s;
+				-moz-transition: -moz-background 0.5s,-moz-border 0.5s,-moz-color 0.5s,-moz-padding 0.5s;
+				-webkit-transition: background 0.5s,border 0.5s,color 0.5s,padding 0.5s;
+				transition: background 0.5s,color 0.5s,padding 0.5s;
+				
+				opacity: 1;
+				
+			}
 
 			.cbp-ig-grid li.odd:hover .cbp-ig-category,
 			.touch .cbp-ig-grid li.odd .cbp-ig-category,
@@ -271,10 +288,20 @@
 				color:#edcc81;
 				text-decoration: none;
 			}
+			.cbp-ig-grid li.even > a:link {
+				background: #edcc81;
+				color:#e3b13e;
+				text-decoration: none;
+			}
 
 			.cbp-ig-grid li.odd > a:hover {
 				background: #edcc81;
 				color:#edcc81;
+				text-decoration: none;
+			}
+			.cbp-ig-grid li.odd > a:link {
+				background: #edcc81;
+				color:#fff;
 				text-decoration: none;
 			}
 			.cbp-ig-grid li.odd > a:hover .cbp-ig-icon {
@@ -347,6 +374,10 @@
 				text-decoration: none;
 				color:#e3b13e;
 			}
+			.cbp-ig-grid li#Logo > a:link{
+				text-decoration: none;
+				color:#e3b13e;
+			}
 			.cbp-ig-grid li#Logo > a:hover .cbp-ig-category{
 				border: 2px dashed #fff;
 				background: #e3b13e;
@@ -359,6 +390,21 @@
 				transition: background 0.5s,border 0.5s,color 0.5s,padding 0.5s;
 				
 			}
+			
+			.cbp-ig-grid li#Logo > a:hover .homepagelogout{
+				border: 2px dashed #e3b13e;
+				background: #fff;
+				color:#e3b13e;
+				padding:5px 20px;
+				text-decoration: none;
+				-webkit-transition: -webkit-background 0.5s,-webkit-border 0.5s,-webkit-color 0.5s,-webkit-padding 0.5s;
+				-moz-transition: -moz-background 0.5s,-moz-border 0.5s,-moz-color 0.5s,-moz-padding 0.5s;
+				-webkit-transition: background 0.5s,border 0.5s,color 0.5s,padding 0.5s;
+				transition: background 0.5s,border 0.5s,color 0.5s,padding 0.5s;
+				
+			}
+			
+			
 			#Logo img{
 				margin-top: 50px;
 				margin-bottom: 30px;
@@ -432,6 +478,7 @@
 						</a>
 					</li>
 					<li id="Logo">
+					<c:if test="${sessionScope.mem_no ==null}">
 						<a href="#">
 						<img src="<%=request.getContextPath()%>/images/Logo.png">
 							
@@ -439,6 +486,17 @@
 						
 							<span class="cbp-ig-category">Login</span>
 						</a>
+					</c:if>
+					<c:if test="${sessionScope.mem_no !=null}">
+						<a href="#">
+						<img src="<%=request.getContextPath()%>/images/Logo.png">
+							
+							<h3 class="cbp-ig-title">－FoodTime－</h3>
+						
+							<span class="cbp-ig-category homepagelogout">Logout</span>
+						</a>
+					</c:if>
+						
 					</li>
 					<li class="odd">
 						<a href="#">
