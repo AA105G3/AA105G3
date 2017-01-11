@@ -144,9 +144,65 @@
 			margin-top: 29px;
 			font-size: 15px;
 		}
+		#empAuths td,#empAuths th{
+			border:1px solid;
+			text-align:center;
+			padding:10px 20px;
+		}
+		#empAuths{
+			margin:0 auto;
+		}
+		#authsDialog{
+			margin-left: 20% !important;
+			margin-right: 20% !important;
+		}
+		#authscontent{
+			width: 200% !important;
+		}
+		input[type=checkbox]:checked ~ label{
+		    background: url(http://ramyasspace.files.wordpress.com/2011/06/tick.jpg);
+		    background-size: 100%;
+		}
+		.checkimg{
+			background: #ddd;
+		    height: 20px;
+		    width: 20px;
+		    display: block;
+		    background-image: -ms-linear-gradient(bottom right, #FFFFFF 0%, #C7C7C7 100%);
 
+			/* Mozilla Firefox */ 
+			background-image: -moz-linear-gradient(bottom right, #FFFFFF 0%, #C7C7C7 100%);
 
+			/* Opera */ 
+			background-image: -o-linear-gradient(bottom right, #FFFFFF 0%, #C7C7C7 100%);
 
+			/* Webkit (Safari/Chrome 10) */ 
+			background-image: -webkit-gradient(linear, right bottom, left top, color-stop(0, #FFFFFF), color-stop(1, #C7C7C7));
+
+			/* Webkit (Chrome 11+) */ 
+			background-image: -webkit-linear-gradient(bottom right, #FFFFFF 0%, #C7C7C7 100%);
+
+			/* W3C Markup, IE10 Release Preview */ 
+			 background-image: linear-gradient(to top left, #FFFFFF 0%, #C7C7C7 100%);
+		}
+		.checkimg:hover{
+			background-image: -ms-linear-gradient(bottom right, #FFFFFF 0%, #8FECFF 100%);
+
+			/* Mozilla Firefox */ 
+			background-image: -moz-linear-gradient(bottom right, #FFFFFF 0%, #8FECFF 100%);
+
+			/* Opera */ 
+			background-image: -o-linear-gradient(bottom right, #FFFFFF 0%, #8FECFF 100%);
+
+			/* Webkit (Safari/Chrome 10) */ 
+			background-image: -webkit-gradient(linear, right bottom, left top, color-stop(0, #FFFFFF), color-stop(1, #8FECFF));
+
+			/* Webkit (Chrome 11+) */ 
+			background-image: -webkit-linear-gradient(bottom right, #FFFFFF 0%, #8FECFF 100%);
+
+			/* W3C Markup, IE10 Release Preview */ 
+			 background-image: linear-gradient(to top left, #FFFFFF 0%, #8FECFF 100%);
+		}
 		</style>
 	</head>
 
@@ -201,7 +257,7 @@
 
 					    			</h4>
 									</div>
-								    <div id="E${empVO.emp_no}" class="panel-collapse collapse" role="tabpanel" aria-labelledby="panel1">
+								    <div id="E${empVO.emp_no}" class="panel-collapse empPanel collapse" role="tabpanel" aria-labelledby="panel1">
 								      	<div>
 								      		<div class="list-group-item">
 								      			<div class="row">
@@ -218,7 +274,7 @@
 								      					<button class="btn btn-primary btn-sm emp-info-update" onclick="updateEmpInfo(${empVO.emp_no})">修改基本資料</button>
 								      				</div>
 								      				<div>
-								      					<button class="btn btn-sm btn-primary emp_auth-update" data-toggle="modal" data-target="#emp-auth-input">修改權限</button>	
+								      					<button class="btn btn-sm btn-primary emp_auth-update" onclick="updateAuth(${empVO.emp_no})" data-toggle="modal" data-target="#emp-auth-input">修改權限</button>	
 								      				</div>
 								      			</div>
 								      			</div>
@@ -321,19 +377,58 @@
 		  </div>
 
 		  <div class="modal fade" id="emp-auth-input" role="dialog">
-		    <div class="modal-dialog">
+		    <div class="modal-dialog" id="authsDialog">
 		    
 		      <!-- Modal content-->
-		      <div class="modal-content">
+		      <div class="modal-content" id="authscontent">
 		      <form class="form-horizontal" action="" method="get" >
 		        <div class="modal-header">
 		          <button type="button" class="close" data-dismiss="modal">&times;</button>
 		          <h4 class="modal-title">修改權限</h4>
 		        </div>
-		        <div class="modal-body">
+		        <div class="modal-body" >
+		        <div id="empAuthsInputWrapper">
+		        	
+		        
 		          <form >
-		          	
+		          <table id="empAuths">
+		          	<tr>
+		          		<th>會員管理</th>
+		          		<th>員工管理</th>
+		          		<th>食譜管理</th>
+		          		<th>廣告管理</th>
+		          		<th>市集管理</th>
+		          		<th>商品訂單管理</th>
+		          		<th>私廚平台管理</th>
+		          	</tr>
+		          	<tr>
+		          		<td>
+		          			<label class="checkimg" for="check1"></label>
+		          			<input type="checkbox" id="check1" name="emp_auths" value="">
+		          		</td>
+		          		<td>
+		          			<input type="checkbox" name="emp_auths" value="">
+		          		</td>
+		          		<td>
+		          			<input type="checkbox" name="emp_auths" value="">
+		          		</td>
+		          		<td>
+		          			<input type="checkbox" name="emp_auths" value="">
+		          		</td>
+		          		<td>
+		          			<input type="checkbox" name="emp_auths" value="">
+		          		</td>
+		          		<td>
+		          			<input type="checkbox" name="emp_auths" value="">
+		          		</td>
+		          		<td>
+		          			<input type="checkbox" name="emp_auths" value="">
+		          		</td>
+		          	</tr>
+		          </table>
+
 		          </form>
+		          </div>
 		        </div>
 		        <div class="modal-footer">
 		       	  <input type="submit" class="btn btn-default" name="submitButton" value="提交">
@@ -346,9 +441,7 @@
 		    </div>
 		  </div>
 
-		<footer id="the_footer">
-			<p class="lightcolor">All Content Copyright &copy; 2016 TomCat Inc</p>
-		</footer>
+	
 		
 		<script src="https://code.jquery.com/jquery.js"></script>
 		<script src="https://netdna.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
@@ -358,6 +451,22 @@
 		<script type="text/javascript">
 
 			$(document).ready(function (){
+					
+
+					var emp_no="${empVO.emp_no}";
+					var emps= $('.empPanel');
+					var length = $('.empPanel').length;
+					if(emp_no!=""){
+
+						for(var i =0;i<length;i++){
+							var empClass= emps[i].classList;
+							empClass.remove("in");
+						}
+
+						$('#E'+emp_no).addClass('in')
+					}
+					
+				
 					$('#emp_hiredate').datepicker({
 				    todayBtn: "linked",
 				    clearBtn: true,
