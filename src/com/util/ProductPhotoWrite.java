@@ -36,7 +36,7 @@ public class ProductPhotoWrite {
         		  pstmt = con.prepareStatement("update Product set prod_picture=? where prod_no=?");
 
         		  pstmt.setBinaryStream(1, fin, (int)flen); //void pstmt.setBinaryStream(int parameterIndex, InputStream x, int length) throws SQLException
-        		  pstmt.setString(2, "" + i);
+        		  pstmt.setString(2, "100" + i);
         		  int count = pstmt.executeUpdate();
         		  System.out.println(count);
         		  fin.close();

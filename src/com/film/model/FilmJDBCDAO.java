@@ -14,7 +14,7 @@ public class FilmJDBCDAO implements FilmDAO_interface {
 	private static final String INSERT_STMT = 
 			"INSERT INTO film (recipe_no,"
 			+ " film_file) "
-			+ "VALUES ?, ?)";
+			+ "VALUES (?, ?)";
 		private static final String GET_ALL_STMT = 
 			"SELECT recipe_no,"
 			+ " film_file FROM film order by recipe_no";
@@ -22,7 +22,7 @@ public class FilmJDBCDAO implements FilmDAO_interface {
 			"SELECT recipe_no,"
 			+ " film_file FROM film where recipe_no = ?";
 		private static final String UPDATE = 
-			"UPDATE film set film_file=?,"
+			"UPDATE film set film_file=?"
 			+ "where recipe_no = ?";
 		
 	@Override

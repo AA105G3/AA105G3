@@ -97,7 +97,7 @@
 					    </div>
 					    <div id="eee" class="panel-collapse collapse" role="tabpanel" aria-labelledby="panel5">
 					      	<div class="list-group">
-					        	<a href="#" class="list-group-item">廣告資料管理</a>
+					        	<a href="/AA105G3/back-end/adv/AdvManagement.jsp" class="list-group-item">廣告資料管理</a>
 					      	</div>
 					   </div>
 					</div>
@@ -113,7 +113,7 @@
 					    </div>
 					    <div id="fff" class="panel-collapse collapse" role="tabpanel" aria-labelledby="panel6">
 					      	<div class="list-group">
-					        	<a href="#" class="list-group-item">商品上下架</a>
+					        	<a href="/AA105G3/back-end/product/MarketManagement.jsp" class="list-group-item">商品上下架</a>
 					      	</div>
 					    </div>
 					</div>
@@ -129,7 +129,7 @@
 					    </div>
 					    <div id="ggg" class="panel-collapse collapse" role="tabpanel" aria-labelledby="panel7">
 					      	<div class="list-group">
-					        	<a href="#" class="list-group-item">商品訂單查詢</a>				      
+					        	<a href="<%=request.getContextPath()%>/product_order/product_order.do?action=getPartForDisplay" class="list-group-item">商品訂單查詢</a>				      
 					      	</div>
 					    </div>
 					</div>

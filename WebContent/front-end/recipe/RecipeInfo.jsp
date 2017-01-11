@@ -6,6 +6,9 @@
 
 
 
+<% session.setAttribute("mem_no", "M00000005"); %>
+
+
 <jsp:useBean id="recipe_cont_set" scope="request" type="java.util.Set" />
 <jsp:useBean id="recipeSvc" scope="page" class="com.recipe.model.RecipeService" />
 <jsp:useBean id="recipe_contSvc" scope="page" class="com.recipe_cont.model.Recipe_contService" />
@@ -15,8 +18,6 @@
 <jsp:useBean id="quantity" scope="request" class="java.util.ArrayList"/>
 <jsp:useBean id="productSvc" scope="page" class="com.product.model.ProductService" />
 <jsp:useBean id="productVO" scope="request" class="com.product.model.ProductVO"/>
-<jsp:useBean id="collectionSvc" scope="page" class="com.collection.model.CollectionService" />
-
 
 
 <!DOCTYPE html>
@@ -27,7 +28,6 @@
 		<meta name="viewport" content="width=device-width, initial-scale=1">
 		<title>${recipeVO.recipe_name}</title>
 		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
-		<link rel="stylesheet" href="https://cdn.jsdelivr.net/sweetalert2/6.2.9/sweetalert2.min.css">
 		<!--[if lt IE 9]>
 			<script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
 			<script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
@@ -128,8 +128,6 @@
 				padding:20px 0px 0px 0px;
 				margin: 0px;
 			}
-			
-			
 			.reciep-collect{
 				padding: 8px 20px;
 				background: #77716e;
@@ -139,28 +137,6 @@
 				margin-top: 10px;
 
 			}
-			.reciep-collect:hover{
-				color: #fff;
-				background: #9b9693;
-			}
-			
-			.reciep-collect-cancel{
-				padding: 8px 20px;
-				background: #fff;
-				border-radius: 20px;
-				color:#000;
-				font-size: 15px;
-				margin-top: 10px;
-				border:1px solid #d3d0c9;
-			}
-			.reciep-collect-cancel:hover{
-				color: #000;
-				opcity:0.8;
-				background: #fff;
-			}
-			
-			
-			
 			.glyphicon-heart-empty{
 				font-size: 16px;
 			}
@@ -174,7 +150,10 @@
 				width:300px;
 				text-align: right;
 			}
-			
+			.reciep-collect:hover{
+				color: #fff;
+				background: #9b9693;
+			}
 			.display-recipe-intro{
 				width: 480px;
 				margin: 15px 0px;
@@ -245,11 +224,11 @@
 			}
 			.recipe-author{
 				border:1px solid #e2e0db;
-				margin-top:20px;
+				margin:20px 0px;
 				padding:10px 10px;
 				background:#fff;
 			}
-			#author-image{
+			.author-image{
 				width: 70px;	
 				height: 70px;	
 			}
@@ -265,8 +244,7 @@
 			.display-recipe-newest{
 				border:1px solid #e2e0db;
 				padding:5px;
-				background:#fff;
-				margin-top:20px; 
+				background:#fff; 
 			}
 			.more-newest-title-wrapper{
 				border-bottom: 1px solid red;
@@ -291,25 +269,73 @@
 			.display-recipe-newest-box{
 				padding:0px 10px;
 			}
-			.recipe-header-right{
-				text-align: left !important;
-				padding-right: 0px;
+			#myModal{
+				padding-top:125px;
+			}
+			#myModal .modal-content{
+				width : 112%;
+			}
+			.display-video-title{
+				font-size: 18px;
+				padding: 0px 0px 15px 0px;
+			}
+			.btn3d {
+			    transition:all .08s linear;
+			    position:relative;
+			    outline:medium none;
+			    -moz-outline-style:none;
+			    border:0px;
+			    margin-right:10px;
+			    margin-top:15px;
+			}
+			.btn3d:focus {
+			    outline:medium none;
+			    -moz-outline-style:none;
+			}
+			.btn3d:active {
+			    top:9px;
+			}
+			.btn-primary {
+			    box-shadow:0 0 0 1px #428bca inset, 0 0 0 2px rgba(255,255,255,0.15) inset, 0 8px 0 0 #357ebd, 0 8px 0 1px rgba(0,0,0,0.4), 0 8px 8px 1px rgba(0,0,0,0.5);
+			    background-color:#428bca;
 			}
 		</style>
 	</head>
 	<body>
 		
-			<c:import url="/front-end/recipe/RecipeSearchBar.jsp" ></c:import>
-			<div class="container">
+		<div class="container">
+			<div class="row">
+				<div class="col-xs-12 col-sm-8 ">
+					<div class="recipe-search">
+						<form class="form-inline text-center" action="<%=request.getContextPath()%>/recipe/recipe.do" method="POST">
+						    <select class="form-control recipe-search-select" name="searchCondition">
+						        <option value="recipe_name">找食譜名</option>
+						        <option value="food_mater">找食材</option>
+						    </select>
+						   <div class="input-group recipe-search-form">
+						    <input type="text" class="form-control recipe-search-text" placeholder="Search Recipe" name="searchInput">
+						        <span class="input-group-btn">
+						            <button class="btn btn-default recipe-search-btn" type="submit" name="action" value="search"><i class="glyphicon glyphicon-search"></i></button>
+						        </span>
+						    </div>
+						</form>
+					</div>
+				</div>
+				<div class="col-xs-12 col-sm-4 recipe-header-right">
+					<a href="<%=request.getContextPath()%>/front-end/recipe/addRecipe.jsp">
+						<button class="btn btn-default write-recipe">
+						<span class="glyphicon glyphicon-pencil" aria-hidden="true"></span>
+						寫食譜</button></a>
+				</div>
+			</div>
 			<div class="col-xs-12 col-sm-12">
 				<div class="row">
-			<c:if test="${recipeVO.recipe_no !=null}">				
 					<div class="col-xs-12 col-sm-8 display-recipe-wrapper">
 						<div class="recipe-top-title-wrapper col-xs-12 col-sm-12">
-						<div class="col-xs-12 col-sm-8 display-recipe-title">
+						<div class="col-xs-12 col-sm-6 display-recipe-title">
 							<div>${recipeVO.recipe_name}</div>
 						</div>
-						<div class="col-xs-12 col-sm-4 display-recipe-update">
+						<div class="col-xs-12 col-sm-6 display-recipe-update">
 							<c:if test="${recipeVO.mem_no == mem_no}">
 							<div class=" btn btn-default">
 								<a href="<%=request.getContextPath()%>/recipe/recipe.do?action=getOne_For_Update&recipe_no=${recipeVO.recipe_no}">
@@ -340,24 +366,10 @@
 									</div>
 										</td>
 										<td class="recipe-collect-right">
-										<c:if test="${recipeVO.mem_no != sessionScope.mem_no}">
-											
-											<c:set var="authorFlag" value="false" />
-											 <c:forEach var="aCollection" items="${collectionSvc.getMyRecipeCollection(sessionScope.mem_no)}" >
-										     	<c:if test="${aCollection.all_no == recipeVO.recipe_no}">
-										    		<c:set var="authorFlag" value="true" />
-										    	</c:if>
-										     </c:forEach>
-										<c:if test="${!authorFlag}">
-											<button class="reciep-collect btn" id="addCollection" value="${recipeVO.recipe_no}">
-											<i class="glyphicon glyphicon-heart-empty" ></i><span>收藏</span>
-											</button>
-										</c:if>
-										<c:if test="${authorFlag}">
-											<button class="reciep-collect-cancel btn" id="cancelCollection" value="${recipeVO.recipe_no}">
-											<i class="glyphicon glyphicon-heart-empty"></i><span>取消收藏</span>
-											</button>
-										</c:if>	
+										<c:if test="${recipeVO.mem_no != mem_no}">
+											<div class="reciep-collect btn">
+											<i class="glyphicon glyphicon-heart-empty"></i><span>收藏</span>
+											</div>
 										</c:if>
 										</td>
 									</tr>
@@ -381,19 +393,20 @@
 						</div>
 						
 						
+						
+						
+						
+						<!-- Button trigger modal -->
 						<div class="col-xs-12 col-sm-12 recipe-type-wraaper">
-							<div class="display-type-title">
-									食譜影片
-							</div>
-							<div class="type-cont" preload = "auto">
-								<video controls>
-				                    <source src="/AA105G3/FilmDBGifReader.do?name=${recipeVO.recipe_no}">
-				                </video>
-				                <!-- <video controls>
-				                    <source src="C:/Users/cuser/Desktop/DBimages/Film/01.mp4">
-				                </video> -->
+							<div class="display-video-title">
+								<button type="button" class="btn btn-primary btn-block btn-lg btn3d" data-toggle="modal" data-target="#myModal">
+									觀看食譜影片
+								</button>
 							</div>
 						</div>
+						
+						
+						
 						
 						
 						<div class="col-xs-12 col-sm-12 display-recipeCont-wrapper">
@@ -413,18 +426,7 @@
 							</c:forEach>	
 							</table>
 						</div>
-						
-						
-						
-						
-						
-						
-						
-						
-						
-						
-						
-						
+
 						<div class="col-xs-12 col-sm-12 recipe-type-wraaper">
 							<div class="display-type-title">
 									更多食譜相關份類
@@ -438,31 +440,24 @@
 						
 
 					</div>
-			</c:if>
-			<c:if test="${recipeVO.recipe_no ==null}">
-				<div class="col-xs-12 col-sm-8 display-recipe-wrapper text-center" style="color:red;">
-					<h2>該食譜已被刪除!</h2>
-				</div>
-			</c:if>
+
+
 
 					<div class="col-xs-12 col-sm-3 other-info">
 						<div class="col-xs-12 col-sm-12">
-					<c:if test="${recipeVO.recipe_no !=null}">
 							<div class="recipe-author">
 							<table>
 								<tr>
 									<td class="author-image-wrapper">
-										 <a href="<%=request.getContextPath()%>/member/member.do?action=getMemberInfo&mem_no=${recipeVO.mem_no}"><img id="author-image" src="<%=request.getContextPath()%>/MemberDBGifReader.do?name=${recipeVO.mem_no}"></a>
+										<a href="#"><img id="author-image" src="/<%=request.getContextPath()%>/MemberDBGifReader.do?name=${recipeVO.mem_no}"></a>
 									</td>
 									<td class="author-info">
-										<a href="<%=request.getContextPath()%>/member/member.do?action=getMemberInfo&mem_no=${recipeVO.mem_no}">
-										<h4>${memberSvc.getOneMember(recipeVO.mem_no).mem_name}</h4></a>
-										<a href="<%=request.getContextPath()%>/member/member.do?action=getMemberInfo&mem_no=${recipeVO.mem_no}"><p>${recipeSvc.findByMem_no(recipeVO.mem_no).size()} 食譜</p></a>
+										<a href="#"><h4>${memberSvc.getOneMember(recipeVO.mem_no).mem_name}</h4></a>
+										<a href="#"><p>${recipeSvc.findByMem_no(recipeVO.mem_no).size()} 食譜</p></a>
 									</td>
 								</tr>
 							</table>
 							</div>
-					</c:if>
 						</div>
 						<div class="col-xs-12 col-sm-12">
 							<div class="display-recipe-newest">
@@ -487,7 +482,7 @@
 										<td class="display-recipe-newest-box">
 											<a href="<%=request.getContextPath()%>/recipe/recipe.do?action=getOne_For_Display&recipe_no=${recipeVO.recipe_no}">
 											<h4>${recipeVO.recipe_name }</h4></a>
-											<p>by <a href="<%=request.getContextPath()%>/member/member.do?action=getMemberInfo&mem_no=${recipeVO.mem_no}">${memberSvc.getOneMember(recipeVO.mem_no).mem_name}</a></p>
+											<p>by <a href="#">${memberSvc.getOneMember(recipeVO.mem_no).mem_name}</a></p>
 										</td>
 									</tr>
 									</c:forEach>
@@ -544,77 +539,39 @@
 		</div>
 		
 		
+		
+		
+		
+		<!-- Modal -->
+		<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+			<div class="modal-dialog">
+				<div class="modal-content">
+
+					<div class="modal-header">
+						<button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+						<h3 class="modal-title" id="myModalLabel">食譜影片</h3>
+					</div>
+
+					<div class="modal-body">
+						<video controls>
+		                    <source src="/AA105G3/FilmDBGifReader.do?name=${recipeVO.recipe_no}">
+		                </video>
+					</div>
+
+					<div class="modal-footer">
+						<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+					</div>
+
+				</div>
+			</div>
+		</div>
+		
+		
+		
+		
+		
 		<script src="https://code.jquery.com/jquery.js"></script>
 		<script src="https://netdna.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
-		<script src="https://cdnjs.cloudflare.com/ajax/libs/limonte-sweetalert2/6.2.9/sweetalert2.min.js"></script>
-		<script type="text/javascript">
-
-			//init
-			$().ready(function(){
-
-				//收藏區塊
-				
-				var addCollection = function(){
-					var all_no = $(this).val();
-					 $.ajax({
-						 type:"POST",
-						 url:"/AA105G3/collection/collectionJsonRes.do",
-						 data:{"action":"addCollection","all_no":all_no},
-						 dataType:"json",
-						 success:function (data){
-
-							 swal({
-							   title: data.msg,
-							    type:'success'
-							  })
-							 $('#addCollection span').text('取消收藏')
-							 $('#addCollection').attr("id","cancelCollection")
-							 $('#cancelCollection').removeClass('reciep-collect');
-							 $('#cancelCollection').addClass('reciep-collect-cancel');
-							 $('#cancelCollection').unbind( "click",addCollection);
-							 $('#cancelCollection').click(cancelCollection);
-							 $('glyphicon-heart-empty').css("color", "black");
-					     },
-			             error:function(){alert('not found')}
-			         }) 
-				}
-				//註冊方法
-				$("#addCollection").on("click",addCollection);
-				
-				var cancelCollection = function(){
-					var all_no = $(this).val();
-					 $.ajax({
-						 type:"POST",
-						 url:"/AA105G3/collection/collectionJsonRes.do",
-						 data:{"action":"delete","all_no":all_no},
-						 dataType:"json",
-						 success:function (data){
-
-							 swal({
-							   title:'已取消收藏',
-							    type:'success'
-							  })
-							 $('#cancelCollection span').text('收藏')
-							 $('#cancelCollection').attr("id","addCollection")
-							 $('#addCollection').removeClass('reciep-collect-cancel');
-							 $('#addCollection').addClass('reciep-collect');
-							 $('#addCollection').unbind( "click",cancelCollection);
-							 $('#addCollection').click(addCollection);
-							 $('glyphicon-heart-empty').css("color", "#fff");
-					     },
-			             error:function(){alert('not found')}
-			         }) 
-				}
-				//註冊方法
-				$("#cancelCollection").on("click",cancelCollection);
-				
-				/* $('body').on('click',"#addCollection",addCollection);
-				$('body').on('click',"#cancelCollection",cancelCollection); */
-			})
-			
-			
-			
-		</script>
 	</body>
 </html>
 

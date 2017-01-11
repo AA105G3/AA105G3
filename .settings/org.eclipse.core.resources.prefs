@@ -2,6 +2,7 @@ eclipse.preferences.version=1
 encoding//WebContent/Login/Flogin.jsp=UTF-8
 encoding//WebContent/back-end/emp/EmpList.jsp=UTF-8
 encoding//WebContent/back-end/emp/EmpRegister.jsp=UTF-8
+encoding//WebContent/back-end/index.jsp=UTF-8
 encoding//WebContent/back-end/recipe_type_info/RecipeClassified.jsp=UTF-8
 encoding//WebContent/front-end/recipe/RecipeHome.jsp=UTF-8
 encoding//WebContent/front-end/recipe/RecipeNewest.jsp=UTF-8

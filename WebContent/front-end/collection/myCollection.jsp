@@ -13,7 +13,6 @@
 	pageContext.setAttribute("list2",list2);
 	pageContext.setAttribute("list3",list3);
 	pageContext.setAttribute("collectionSvc",collectionSvc);
-	session.setAttribute("mem_no","M00000001");
 	
 %>
 
@@ -40,7 +39,7 @@
 
 		<style type="text/css" media="screen">
 			.header-style{
-				padding-top: 80px;
+				padding-top: 40px;
 				margin-bottom:50px;
 			}
 			.search-style{
@@ -295,66 +294,11 @@
 	
 	
 	<body>
-			
-		
-
-		 <div class="navbar navbar-default navbar-fixed-top navbar-inverse mu-main-navbar" >
-	      <div class="container">
-	        <div class="navbar-header">
-	          <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar-ex-collapse">
-	            <span class="sr-only">Toggle navigation</span>
-	            <span class="icon-bar"></span>
-	            <span class="icon-bar"></span>
-	            <span class="icon-bar"></span>
-	          </button>
-	          <a href="#home" class="foodtime"><img alt="FoodTime" src="img/Logo.png">分享食光</a>
-	        </div>
-	        <div class="collapse navbar-collapse" id="navbar-ex-collapse">
-	          <ul class="nav navbar-nav navbar-right mu-main-nav">
-	            <li >
-	              <a href="#home">首頁</a>
-	            </li>
-	            <li>
-	              <a href="#mu-recipe">食譜</a>
-	            </li>
-	            <li>
-	              <a href="#mu-video">影音</a>
-	            </li>
-	            <li>
-	              <a href="#mu-chef">私廚</a>
-	            </li>
-	            <li>
-	              <a href="#mu-stream">實況</a>
-	            </li>
-	            <li>
-	              <a href="#mu-market">市集</a>
-	            </li>
-	            <li>
-	              <a href="#mu-contact">聯絡我們</a>
-	            </li>
-	            <li>
-					<a href="#" class="dropdown-toggle" data-toggle="dropdown">UserID<b class="caret"></b></a>
-					<ul class="dropdown-menu">
-						<li><a href="#">編輯個人資訊</a></li>
-						<li><a href="#">個人頁面</a></li>
-						<li><a href="#">我的最愛</a></li>
-						<li><a href="#">登出</a></li>
-					</ul>
-				</li>
-				<li>
-					<a href="#">註冊</a>
-				</li>
-	          </ul>
-	        </div>
-	      </div>
-	    </div>
-
-
-	    
-					<header class="header-style">
-						<c:import url="/front-end/recipe/RecipeSearchBar.jsp" ></c:import>
-					</header>
-					<div class="container">
+	    <c:import url="/front-end/frontNavbar.jsp" ></c:import>
+		<header class="header-style">
+			<c:import url="/front-end/recipe/RecipeSearchBar.jsp" ></c:import>
+		</header>
+		<div class="container">
 	    	<div class="row">
 						<div class="col-xs-12 col-sm-8">
 			   				
@@ -452,12 +396,17 @@
 																		<h4>The Newest</h4>
 																	</td>
 																	<td class="collection-recipe-img">
+																 <c:if test="${recipeSvc.findByMem_no(aCollection.all_no).size()>0}">
 																	<c:set var="newestRecipe" value="${recipeSvc.findByMem_no(aCollection.all_no).get(0)}" />
 																	<a href="<%=request.getContextPath()%>/recipe/recipe.do?action=getOne_For_Display&recipe_no=${newestRecipe.recipe_no}">
 																		<img src="<%=request.getContextPath()%>/recipe/showRecipe_pic.do?recipe_no=${newestRecipe.recipe_no}">
 																	</a>
+																</c:if>
+																 
+																
 																	</td>
 																	<td class="collection-author-recipe-info">
+																	<c:if test="${recipeSvc.findByMem_no(aCollection.all_no).size()>0}">
 																		<a href="<%=request.getContextPath()%>/recipe/recipe.do?action=getOne_For_Display&recipe_no=${newestRecipe.recipe_no}">
 																		<h4>${newestRecipe.recipe_name}</h4>
 																		</a>
@@ -469,6 +418,10 @@
 																			<input type="hidden" name="coll_no" value="${aCollection.coll_no}">
 																			<input type="hidden" name="tabID" value="tab2">
 																		</form>
+																	</c:if>
+																	<c:if test="${recipeSvc.findByMem_no(aCollection.all_no).size()<1}">
+																	<h2>該會員尚無食譜!</h2>
+																	</c:if>
 																	</td>
 																</tr>
 															</c:forEach>
