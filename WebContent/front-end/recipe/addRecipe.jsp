@@ -309,7 +309,7 @@
 										<input type="hidden" name="step" value="${recipe_contVO.step}">
 									</div>
 									<div class="col-xs-12 col-sm-6 step-trash-wrapper">
-										<a class="btn"><i class="glyphicon glyphicon-plus step-plus"></i></a>
+										<a class="btn"><i id="plus_${recipe_contVO.step}" class="glyphicon glyphicon-plus step-plus"></i></a>
 										<a class="btn"><i class="glyphicon glyphicon-trash step-trash"></i></a>
 									</div>
 									<div class="step-cont-wrapper">
@@ -395,8 +395,6 @@
 			for(var i = 0;i<stepArray.length;i++){
 				stepArray[i].innerHTML=i+1;
 			}
-			
-			
 		}
 	//步驟區垃圾桶
 	$('body').click(function(){

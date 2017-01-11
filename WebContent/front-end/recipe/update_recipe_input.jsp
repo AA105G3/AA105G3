@@ -250,7 +250,7 @@
 							</div>
 						
 						<c:forEach var="recipe_contVO" items="${recipe_cont_set}">
-							<div class="row step-wrapper">
+							<div id="div_${recipe_contVO.step}" class="row step-wrapper">
 								<div class="col-xs-12 col-sm-4 step-left">
 									<img src="<%=request.getContextPath()%>/images/recipe_cont/stepNoPic.PNG" id="image${recipe_contVO.step}">
 									<input type="file" name="step_pic" class="upload" id="upload${recipe_contVO.step}" onchange="showImage(${recipe_contVO.step})">
@@ -261,7 +261,7 @@
 										<input type="hidden" name="step" value="${recipe_contVO.step}">
 									</div>
 									<div class="col-xs-12 col-sm-6 step-trash-wrapper">
-										<a class="btn"><i class="glyphicon glyphicon-plus step-plus"></i></a>
+										<a class="btn"><i id="plus_${recipe_contVO.step}" class="glyphicon glyphicon-plus step-plus"></i></a>
 										<a class="btn"><i class="glyphicon glyphicon-trash step-trash"></i></a>
 									</div>
 									<div class="step-cont-wrapper">
@@ -272,7 +272,7 @@
 						</c:forEach>
 						
 						<c:if test="${recipe_cont_set.isEmpty()}">
-							<div id="div_0" class="row step-wrapper">
+							<div id="div_1" class="row step-wrapper">
 								<div class="col-xs-12 col-sm-4 step-left">
 									<img src="<%=request.getContextPath()%>/images/recipe_cont/stepNoPic.PNG" id="image1">
 									<input type="file" name="step_pic" class="upload" id="upload1" onchange="showImage(1)">
@@ -347,7 +347,7 @@
 		
 		function appendRecipeCont(){
 			var step = $(".step-plus").length+1;
-			var html = '<div class="row step-wrapper">'+
+			var html = '<div id="div_'+step+'" class="row step-wrapper">'+
 						'<div class="col-xs-12 col-sm-4 step-left">'+
 						 '<img src="<%=request.getContextPath()%>/images/recipe_cont/stepNoPic.PNG" id="image'+step+'">'+
 						 '<input type="file" name="step_pic" id="upload'+step+'" onchange="showImage('+step+')">'+
@@ -355,24 +355,45 @@
 						'<div class="col-xs-12 col-sm-8 step-right">'+
 						'<div class="col-xs-12 col-sm-6">'+'<h2>'+step+'</h2>'+' <input type="hidden" name="step" value="'+step+'"></div>'+
 						'<div class="col-xs-12 col-sm-6 step-trash-wrapper">'+
-						 '<a class="btn"><i class="glyphicon glyphicon-plus step-plus"></i></a>'+
+						 '<a class="btn"><i id="plus_'+step+'" class="glyphicon glyphicon-plus step-plus"></i></a>'+
 						 '<a class="btn"><i class="glyphicon glyphicon-trash step-trash"></i></a>'+
 						'</div>'+
 						'<div class="step-cont-wrapper">'+
 						'<textarea name="step_cont" rows="4" cols="55" placeholder="請輸入食譜步驟內容" style="resize: none"></textarea>'+
 						'</div>'+'</div>'+'</div>';
 
-			$(this).parent().parent().parent().parent().parent().append(html);
+			var indexNo=$(this).attr("id").replace("plus_","");
+			$(html).insertAfter("#div_"+indexNo);
+			var stepArray = $(".step-wrapper h2")
+			
+			for(var i = 0;i<stepArray.length;i++){
+				stepArray[i].innerHTML=i+1;
+			}
 		}
 	//步驟區垃圾桶
 
 	$('body').on('click', '.step-trash',dropStep);
-
+	
+	$('body').click(function(){
+		step = $(".step-plus").length+1;
+		//image = $('.step-wrapper img');
+		stepDiv = $('.step-wrapper');
+		plus = $('.step-plus');
+		var stepValue = $('.step-wrapper input[name="step"]')
+		for(var i = 0;i<step-1;i++){
+			stepValue[i].value = i+1;
+			stepDiv[i].id = 'div_'+(i+1);
+			plus[i].id = 'plus_'+(i+1);
+		}
+		
+	})
+	
 		function dropStep(){
 
 			$(this).parent().parent().parent().parent().empty().remove();
-			var stepArray = $("h2")
-			for(var i = 0;i<=stepArray.length;i++){
+			var stepArray = $(".step-wrapper h2")
+			
+			for(var i = 0;i<stepArray.length;i++){
 				stepArray[i].innerHTML=i+1;
 			}
 		}
