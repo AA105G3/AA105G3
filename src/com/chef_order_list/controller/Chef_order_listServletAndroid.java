@@ -51,6 +51,11 @@ public class Chef_order_listServletAndroid extends HttpServlet {
 
 		if ("getOne_For_Display".equals(action) || "getOne_For_Chef".equals(action)
 				|| "getOne_For_Back".equals(action)) {
+			String chef_ord_no = jsonObject.get("chef_ord_no").getAsString();
+			Chef_order_listVO chef_order_listVO = chef_order_listSvc.getOneChef_order_list(chef_ord_no);
+			
+			outStr.append(gson.toJson(chef_order_listVO));
+			SendResponse.writeText(res, outStr.toString());
 
 		}
 
@@ -60,10 +65,51 @@ public class Chef_order_listServletAndroid extends HttpServlet {
 		}
 
 		if ("update".equals(action)) {
+			
+			String chef_ord_no = jsonObject.get("chef_ord_no").getAsString();
+			Double chef_ord_cost = jsonObject.get("chef_ord_cost").getAsDouble();
+			String chef_act_date = jsonObject.get("chef_act_date").getAsString();
+			String chef_ord_place = jsonObject.get("chef_ord_place").getAsString();
+			String chef_ord_cnt = jsonObject.get("chef_ord_cnt").getAsString();
+			String chef_ord_con = jsonObject.get("chef_ord_con").getAsString();
+			
+			//訂單當前時間
+//			SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+//			String time = df.format(new Date());
+//			Timestamp chef_ord_date = Timestamp.valueOf(time);
+			
+			
+//			System.out.println("chef_act_date:" + chef_act_date);
+//			SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss"); //("yyyy-MM-dd HH:mm:ss")
+//			String tt = chef_act_date + " 10:00:00";
+//			System.out.println("tt:" + tt);
+//			String time = df.format(chef_act_date);
+//			Timestamp chef_act_date_timestamp = Timestamp.valueOf(tt);
+			Timestamp chef_act_date_timestamp = Timestamp.valueOf(chef_act_date);
+			
+			
+//			String chef_ord_no, Double chef_ord_cost, 
+//			Timestamp chef_act_date,String chef_ord_place, String chef_ord_cnt, String chef_ord_con
+			
+			Chef_order_listVO chef_order_listVO = chef_order_listSvc.updateChef_order_list(chef_ord_no, chef_ord_cost, 
+					chef_act_date_timestamp, chef_ord_place, chef_ord_cnt, chef_ord_con);
+			
+//			if (chef_order_listVO == null) {
+//				chef_order_listVO = chef_order_listSvc.addCollection(mem_no, all_no, class_no);
+//			} else {
+//				collectionVO = null;
+//			}
+
+			// System.out.println("collectionVO= " + collectionVO.getAll_no());
+
+			outStr.append(gson.toJson(chef_order_listVO));
+			SendResponse.writeText(res, outStr.toString());
+
+
 
 		}
 
-		if ("insert_con_0".equals(action)) {
+		if ("insert".equals(action)) {
 //			String mem_no, String chef_no, Double chef_ord_cost, ;
 //			Timestamp chef_act_date,String chef_ord_place, String chef_ord_cnt;
 			
@@ -73,11 +119,12 @@ public class Chef_order_listServletAndroid extends HttpServlet {
 			String chef_act_date = jsonObject.get("chef_act_date").getAsString();
 			String chef_ord_place = jsonObject.get("chef_ord_place").getAsString();
 			String chef_ord_cnt = jsonObject.get("chef_ord_cnt").getAsString();
-			String chef_ord_con = "0";
+//			String chef_ord_con = "0";
 			
-			SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-			String time = df.format(new Date());
-			Timestamp chef_ord_date = Timestamp.valueOf(time);
+			//訂單當前時間
+//			SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+//			String time = df.format(new Date());
+//			Timestamp chef_ord_date = Timestamp.valueOf(time);
 			
 			
 			System.out.println("chef_act_date:" + chef_act_date);
@@ -89,8 +136,8 @@ public class Chef_order_listServletAndroid extends HttpServlet {
 			Timestamp chef_act_date_timestamp = Timestamp.valueOf(chef_act_date);
 			
 			
-			Chef_order_listVO chef_order_listVO = chef_order_listSvc.addChef_order_list_con_0(mem_no, chef_no, chef_ord_cost, 
-					chef_act_date_timestamp, chef_ord_place, chef_ord_cnt, chef_ord_con, chef_ord_date);
+			Chef_order_listVO chef_order_listVO = chef_order_listSvc.addChef_order_list(mem_no, chef_no, chef_ord_cost, 
+					chef_act_date_timestamp, chef_ord_place, chef_ord_cnt);
 			
 //			if (chef_order_listVO == null) {
 //				chef_order_listVO = chef_order_listSvc.addCollection(mem_no, all_no, class_no);
