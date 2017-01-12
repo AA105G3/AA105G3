@@ -26,13 +26,13 @@ public class ChefServlet extends HttpServlet {
 		String action = req.getParameter("action");
 		
 		
-		if ("getOne_For_Display".equals(action)||"getOne_For_Back".equals(action)) { // 來自select_page.jsp的請求
+		if ("getOne_For_Display".equals(action)) { // 來自select_page.jsp的請求
 
 			List<String> errorMsgs = new LinkedList<String>();
 			// Store this set in the request scope, in case we need to
 			// send the ErrorPage view.
 			req.setAttribute("errorMsgs", errorMsgs);
-			
+
 			try {
 				/***************************1.接收請求參數 - 輸入格式的錯誤處理**********************/
 				String str = req.getParameter("chef_no");
@@ -64,6 +64,7 @@ public class ChefServlet extends HttpServlet {
 				/***************************2.開始查詢資料*****************************************/
 				ChefService chefSvc = new ChefService();				
 				ChefVO chefVO = chefSvc.getOneChef(chef_no);
+				
 				if (chefVO == null) {
 					errorMsgs.add("查無資料");
 				}
@@ -76,14 +77,9 @@ public class ChefServlet extends HttpServlet {
 				}
 				
 				/***************************3.查詢完成,準備轉交(Send the Success view)*************/
-				req.setAttribute("chefVO", chefVO); // 資料庫取出的chefVO物件,存入req			
-//				String url = "/front-end/chef/chefInfo.jsp";
-				String url = null;
-				if("getOne_For_Display".equals(action))
-					url = "/front-end/chef/chefInfo.jsp";
-				else if("getOne_For_Back".equals(action))
-					url = "/back-end/chef/ChefInfoPage.jsp";
-				RequestDispatcher successView = req.getRequestDispatcher(url);// 成功轉交 update_chef_input.jsp
+				req.setAttribute("chefVO", chefVO); // 資料庫取出的chefVO物件,存入req
+				String url = "/front-end/chef/chefInfo.jsp";
+				RequestDispatcher successView = req.getRequestDispatcher(url); // 成功轉交 listOneChef.jsp
 				successView.forward(req, res);
 
 				/***************************其他可能的錯誤處理*************************************/

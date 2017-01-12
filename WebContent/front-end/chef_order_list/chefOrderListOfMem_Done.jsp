@@ -3,12 +3,9 @@
 <%@ page import="java.util.*"%>
 <%@ page import="com.chef_order_list.model.*"%>
 <%@ page import="com.chef.model.*"%>
-<%@ page import="com.member.model.*"%>
 <%
-	Chef_order_listService chef_order_listSvc = new Chef_order_listService();
-	String mem_no =(String) session.getAttribute("mem_no");
-	List<Chef_order_listVO> list = chef_order_listSvc.findByMem_no(mem_no);
-	pageContext.setAttribute("list",list);
+    Chef_order_listService chef_order_listSvc = new Chef_order_listService();
+	List<Chef_order_listVO> list = chef_order_listSvc.getAll();
 
 //	  List<Chef_order_listVO> listALL = chef_order_listSvc.getAll();    
 //    List<Chef_order_listVO> list=new ArrayList<Chef_order_listVO>();    
@@ -19,7 +16,7 @@
 //     }
 //	先濾掉不要的資料,使list不致虛張,使下方page不秀出值卻佔位
 
-//	pageContext.setAttribute("list",list);
+	pageContext.setAttribute("list",list);
 %>
 
 <%
@@ -81,77 +78,109 @@
         padding-bottom: 18px;
     }
     #theFooter{
-
+		/* 對應skin */
 		position : absolute;
 		bottom : 0px;
 		width : 100%;
-		
-		background: #222222;
-		color:#fff ;
-		font-size: 26px;
-		font-family: Reklame;
-		text-align: center;
-	}
-	.th-style th{
-		text-align: center;
-	}
-	body{
-		background: #efede8;
-		padding-top: 90px;
-		position : relative;
-		height : 100%;
-	}
-	html{
-		height:100%;
 	}
     </style>
 </head>
 
 <body>
-    <header>
-    	<c:import url="/front-end/frontNavbar.jsp"></c:import>
-    </header>
+    <!--START SCROLL TOP BUTTON -->
+    <a class="scrollToTop" href="#">
+        <i class="fa fa-angle-up"></i>
+        <span>Top</span>
+    </a>
+    <!-- END SCROLL TOP BUTTON -->
+    <div class="navbar navbar-default navbar-fixed-top navbar-inverse mu-main-navbar">
+        <div class="container">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar-ex-collapse">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a href="#home" class="foodtime"><img alt="FoodTime" src="/AA105G3/images/Logo.png">分享食光</a>
+            </div>
+            <div class="collapse navbar-collapse" id="navbar-ex-collapse">
+                <ul class="nav navbar-nav navbar-right mu-main-nav">
+                    <li>
+                        <a href="#home">首頁</a>
+                    </li>
+                    <li>
+                        <a href="#mu-recipe">食譜</a>
+                    </li>
+                    <li>
+                        <a href="#mu-video">影音</a>
+                    </li>
+                    <li>
+                        <a href="#mu-chef">私廚</a>
+                    </li>
+                    <li>
+                        <a href="#mu-stream">實況</a>
+                    </li>
+                    <li>
+                        <a href="#mu-market">市集</a>
+                    </li>
+                    <li>
+                        <a href="#mu-contact">聯絡我們</a>
+                    </li>
+                    <li>
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">UserID<b class="caret"></b></a>
+                        <ul class="dropdown-menu">
+                            <li><a href="#">編輯個人資訊</a></li>
+                            <li><a href="#">個人頁面</a></li>
+                            <li><a href="#">我的最愛</a></li>
+                            <li><a href="#">登出</a></li>
+                        </ul>
+                    </li>
+                    <li>
+                        <a href="#">註冊</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
 <!--     <section id="top-img"> -->
 <!--         <div class="col-xs-12 col-sm-12"> -->
 <!--             <div class="top-img"></div> -->
 <!--         </div> -->
 <!--     </section> -->
-<!--     <ol class="breadcrumb"> -->
-<!--         <li> -->
-<!--             <a href="/AA105G3/front-end/chef_order_list/becomeChef.jsp">成為私廚</a> -->
-<!--         </li> -->
-<!--     </ol> -->
-<br>
-<br>
-<br>
+    <ol class="breadcrumb">
+        <li>
+            <a href="/AA105G3/front-end/chef_order_list/becomeChef.jsp">成為私廚</a>
+        </li>
+    </ol>
     <div class="container">
         <div class="row">
             <div class="container">
                 <div class="row">
                     <div class="col-xs-12 col-sm-12 text-center">
-                        <h2>待執行的私廚訂單</h2>
+                        <h2>私廚訂單</h2>
                     </div>
                     
                     <div class="col-xs-12 col-sm-12 text-center select-style">
                 		<div class="col-xs-12 col-sm-4 text-center">
-                			<a href="/AA105G3/front-end/chef_order_list/chefOrderListOfMem.jsp" class="btn btn-primary">待定價訂單</a>
+                			<a href="/AA105G3/front-end/chef_order_list/chefOrderListOfMem.jsp" class="btn btn-primary">全部訂單</a>
                 		</div>
                 		
                 		<div class="col-xs-12 col-sm-4 text-center">
-                			<a href="/AA105G3/front-end/chef_order_list/chefOrderListOfMem_Undone.jsp" class="btn btn-primary">待確認訂單</a>
+                			<a href="/AA105G3/front-end/chef_order_list/chefOrderListOfMem_Undone.jsp" class="btn btn-primary">未同意訂單</a>
                 		</div>
                 		
                 		<div class="col-xs-12 col-sm-4 text-center">
-                			<a href="/AA105G3/front-end/chef_order_list/chefOrderListOfMem_Done.jsp" class="btn btn-primary">待執行訂單</a>
+                			<a href="/AA105G3/front-end/chef_order_list/chefOrderListOfMem_Done.jsp" class="btn btn-primary">已同意訂單</a>
                 		</div>
                 	</div>
                     
                 </div>
             </div>
             <table class="table table-hover table-striped table-bordered table-condensed">
-                <caption id="table_title">待執行的私廚訂單列表</caption>
+                <caption id="table_title">私廚訂單列表</caption>
                 <thead>
-                    <tr class="th-style">
+                    <tr>
                         <th>服務私廚</th>
                         <th>下訂時間</th>
                         <th>執行時間</th>
@@ -161,15 +190,17 @@
                         <th>操作</th>
                     </tr>
 				</thead>
-				<%@ include file="page1.file" %>
+
                     <c:forEach var="chef_order_listVO" items="${list}">
 						<c:if test="${chef_order_listVO.chef_ord_con == '2'}">
                         <tbody>
                             <tr align='center' valign='middle'>
                                 
                                 <c:forEach var="chefVO" items="${chef_list}">
-									<c:if test="${chef_order_listVO.chef_no==chefVO.chef_no}">                    					
-                        				<td>${chefVO.chef_name}</td>                                        					           		
+									<c:if test="${chef_order_listVO.chef_no==chefVO.chef_no}">
+                    					<div class="col-xs-12 col-sm-6">
+                        					<td>${chefVO.chef_name}</td>                    
+                    					</div>                		
                 					</c:if>
 								</c:forEach>
                                 <td>${chef_order_listVO.chef_ord_date}</td>
@@ -178,13 +209,13 @@
                                 <td>${chef_order_listVO.chef_ord_cost}</td>
                                 <td>
                                 	<c:if test="${chef_order_listVO.chef_ord_con == '0'}" >
-										待定價
+										未同意
 									</c:if>
 									<c:if test="${chef_order_listVO.chef_ord_con == '1'}" >
-										待確認
+										已修改
 									</c:if>
 									<c:if test="${chef_order_listVO.chef_ord_con == '2'}" >
-										待執行
+										已同意
 									</c:if>
                                 </td>
                                 
@@ -195,13 +226,12 @@
                         </tbody>
                     </c:if>
                     </c:forEach>
-            </table>    
-            <%@ include file="page2.file" %>        
+            </table>            
         </div>
     </div>
     <footer id="theFooter">
-		Copyright &copy; 2016 Java Team 3 
-	</footer>
+        Copyright &copy; 2016 Java Team 3
+    </footer>
     <script src="https://code.jquery.com/jquery.js"></script>
     <script src="https://netdna.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
 </body>
