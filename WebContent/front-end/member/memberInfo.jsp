@@ -13,6 +13,7 @@
 <jsp:useBean id="memberSvc" scope="page" class="com.member.model.MemberService" />
 <jsp:useBean id="recipeSvc" scope="page" class="com.recipe.model.RecipeService" />
 <jsp:useBean id="collectionSvc" scope="page" class="com.collection.model.CollectionService" />
+<jsp:useBean id="ChefSvc" scope="page" class="com.chef.model.ChefService" />
 <jsp:useBean id="memberVO" scope="request" class="com.member.model.MemberVO" />
 
 
@@ -176,6 +177,17 @@
 				width:150px;
 				height:150px;
 			}
+			#theFooter{
+				position : absolute;
+				bottom : 0px;
+				width : 100%;
+				
+				background: #222222;
+				color:#fff ;
+				font-size: 26px;
+				font-family: Reklame;
+				text-align: center;
+			}
 		</style>
 
 	</head>
@@ -220,8 +232,12 @@
 								                <li><a href="<%=request.getContextPath()%>/front-end/frd_list/memberFriend.jsp">好友</a></li>
 								                <li><a href="<%=request.getContextPath()%>/front-end/product_order/ListProductOrder.jsp">商品訂單
 								                	<i class="glyphicon glyphicon-new-window"></i></a></li>
-								                <li><a href="#menu3">私廚訂單
-								                	<i class="glyphicon glyphicon-new-window"></i></a></li>
+									                <li><a href="#menu3">我的私廚訂單
+									                	<i class="glyphicon glyphicon-new-window"></i></a></li>
+									                <c:if test="${ChefSvc.getOneChefByMem_no(sessionScope.mem_no)!=null}">
+									                <li><a href="#menu3">他人預定訂單
+									                	<i class="glyphicon glyphicon-new-window"></i></a></li>
+									                </c:if>
 								                </c:if>
 								            </ul>
 								        </div>
@@ -322,6 +338,7 @@
 					
 						 
 						 
+						     <c:if test="${!self}">
 						     <c:if test="${memberVO.mem_no != sessionScope.mem_no}">
 						     
 						     <c:set var="authorFlag" value="false" />
@@ -332,6 +349,7 @@
 						    		<c:set var="coll_no" value="${aCollection.coll_no}" />
 						    	</c:if>
 						     </c:forEach>
+						     
 							    <c:if test="${!authorFlag}">
 								    <div class="col-xs-12 col-sm-6">
 								    	<button id ="addCollection" class="btn btn-primary" value="${memberVO.mem_no}">加入追隨</button>
@@ -362,6 +380,7 @@
 							     <input type="hidden" id="addNo" value="${memberVO.mem_no}">
 							     <input type="hidden" id="cancelNo" value="${coll_no}">
 							</c:if>
+					    </c:if>
 					    	
 					    </div>
 					</div>
@@ -369,7 +388,9 @@
 	    	</div>
 	  	</div>
 
-	<c:import url="/front-end/frontFooter.jsp" ></c:import>
+	<footer id="theFooter">
+		Copyright &copy; 2016 Java Team 3 
+	</footer>
 
 
 		<script src="https://code.jquery.com/jquery.js"></script>

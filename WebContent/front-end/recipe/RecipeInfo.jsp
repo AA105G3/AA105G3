@@ -554,7 +554,7 @@
 
 					<div class="modal-body">
 						<video controls>
-		                    <source src="/AA105G3/FilmDBGifReader.do?name=${recipeVO.recipe_no}">
+		                    <source src="/AA105G3/film/ShowFilm.do?recipe_no=${recipeVO.recipe_no}">
 		                </video>
 					</div>
 
