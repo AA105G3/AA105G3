@@ -12,6 +12,7 @@
 	
 %>
 <jsp:useBean id="memberSvc" scope="page" class="com.member.model.MemberService" />
+<jsp:useBean id="collectionSvc" scope="page" class="com.collection.model.CollectionService" />
 
 <!DOCTYPE html>
 <html lang="">
@@ -146,7 +147,7 @@
 						<p class="recipe-food-mater">食材：${recipeVO.food_mater}</p>
 						<p>
 							<i class="glyphicon glyphicon-eye-open">${recipeVO.recipe_total_views}</i>
-							<i class="glyphicon glyphicon-heart">${recipeVO.recipe_like}</i>
+							<i class="glyphicon glyphicon-heart">${recipeVO.recipe_like + collectionSvc.getCollectionSize(recipeVO.recipe_no)}</i>
 						</p>
 					</div>
 				</div>
@@ -166,7 +167,7 @@
 						<p class="recipe-food-mater">食材：${list.get(s.index+1).food_mater}</p>
 						<p>
 							<i class="glyphicon glyphicon-eye-open">${list.get(s.index+1).recipe_total_views}</i>
-							<i class="glyphicon glyphicon-heart">${list.get(s.index+1).recipe_like}</i>
+							<i class="glyphicon glyphicon-heart">${list.get(s.index+1).recipe_like + collectionSvc.getCollectionSize(list.get(s.index+1).recipe_no)}</i>
 						</p>
 					</div>
 				</div>

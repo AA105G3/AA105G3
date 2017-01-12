@@ -200,7 +200,10 @@
 	                		<c:forEach var="recipeVO" items="${list}" varStatus="s"  begin="<%=pageIndex%>" end="<%=pageIndex+rowsPerPage-1%>">
 	                			<tr>
 	                				<td class="recipe_no" name="recipe_no">${recipeVO.recipe_no}</td>
-	                				<td class="recipe_name">${recipeVO.recipe_name}</td>
+	                				<td class="recipe_name">
+	                				<a href="<%=request.getContextPath()%>/recipe/recipe.do?action=getOne_For_Display&recipe_no=${recipeVO.recipe_no}">
+	                				${recipeVO.recipe_name}</a>
+	                				</td>
 	                				<td class="category" id="${recipeVO.recipe_no}">
 										<c:forEach var="aType" items="${recipe_type_infoSvc.getRecipe_type_infoByRecipe_no(recipeVO.recipe_no)}" varStatus="s">
 	                						<span class="recipe_type">
@@ -282,9 +285,7 @@
 		  </div>
 
 
-		<footer id="the_footer">
-			<p class="lightcolor">All Content Copyright &copy; 2016 TomCat Inc</p>
-		</footer>
+
 		
 	
 

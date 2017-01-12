@@ -37,6 +37,9 @@
 			body{
 				background: #efede8;
 				padding-top:90px;
+				position : relative;
+				height : 100%;
+				padding-bottom:50px;
 			}
 			.recipe-search{
 		
@@ -326,6 +329,19 @@
 			    box-shadow:0 0 0 1px #428bca inset, 0 0 0 2px rgba(255,255,255,0.15) inset, 0 8px 0 0 #357ebd, 0 8px 0 1px rgba(0,0,0,0.4), 0 8px 8px 1px rgba(0,0,0,0.5);
 			    background-color:#428bca;
 			}
+			#theFooter{
+				/* 對應skin */
+				position : absolute;
+				bottom : 0px;
+				width : 100%;
+				
+				background: #222222;
+				color:#fff ;
+				font-size: 26px;
+				font-family: Reklame;
+				text-align: center;
+			}
+			
 		</style>
 	</head>
 	<body>
@@ -367,7 +383,7 @@
 										<td class="recipe-collect-left">
 										<div class="display-recipe-views">
 										<i class="glyphicon glyphicon-eye-open">${recipeVO.recipe_total_views}</i>
-										<i class="glyphicon glyphicon-heart">${recipeVO.recipe_like}</i>
+										<i class="glyphicon glyphicon-heart" id="count">${recipeVO.recipe_like + collectionSvc.getCollectionSize(recipeVO.recipe_no)}</i>
 									</div>
 										</td>
 										<td class="recipe-collect-right">
@@ -452,7 +468,7 @@
 						
 						
 						
-						<div class="col-xs-12 col-sm-12 recipe-type-wraaper">
+						<!-- <div class="col-xs-12 col-sm-12 recipe-type-wraaper">
 							<div class="display-type-title">
 									更多食譜相關份類
 							</div>
@@ -461,7 +477,7 @@
 								<i class="glyphicon glyphicon-chevron-right"></i><a href="#">點心烘焙</a>
 								<i class="glyphicon glyphicon-chevron-right"></i><a href="#">手工餅乾</a>
 							</div>
-						</div>
+						</div> -->
 						
 
 					</div>
@@ -590,9 +606,11 @@
 					</div>
 				</div>
 			</div>
+	<footer id="theFooter">
+		Copyright &copy; 2016 Java Team 3 
+	</footer>	
 		
-		
-		
+	<c:import url="/front-end/chat/inviteChat.jsp" ></c:import>
 		<script src="https://code.jquery.com/jquery.js"></script>
 		<script src="https://netdna.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
 		<script src="https://cdnjs.cloudflare.com/ajax/libs/limonte-sweetalert2/6.2.9/sweetalert2.min.js"></script>
@@ -623,6 +641,9 @@
 							 $('#cancelCollection').unbind( "click",addCollection);
 							 $('#cancelCollection').click(cancelCollection);
 							 $('glyphicon-heart-empty').css("color", "black");
+							 var text = $('#count').text() 
+							 var count = parseInt(text)+1;
+							 $('#count').text(count);
 					     },
 			             error:function(){alert('not found')}
 			         }) 
@@ -650,6 +671,9 @@
 							 $('#addCollection').unbind( "click",cancelCollection);
 							 $('#addCollection').click(addCollection);
 							 $('glyphicon-heart-empty').css("color", "#fff");
+							 var text = $('#count').text() 
+							 var count = parseInt(text)-1;
+							 $('#count').text(count);
 					     },
 			             error:function(){alert('not found')}
 			         }) 
