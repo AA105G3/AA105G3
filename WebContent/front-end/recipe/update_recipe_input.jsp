@@ -2,7 +2,6 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ page import="com.recipe.model.*"%>
 <%@ page import="com.recipe_cont.model.*"%>
-<% session.setAttribute("mem_no", "M00000005"); %>
 
 <jsp:useBean id="recipeVO" scope="request" class="com.recipe.model.RecipeVO"/>
 <jsp:useBean id="ingredients" scope="request" class="java.util.ArrayList"/>
@@ -24,12 +23,20 @@
 		<script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
 	<![endif]-->
 	<style type="text/css">
+	body{
+			background: #efede8;
+			padding-top: 90px;
+			position : relative;
+		height : 100%;
+		}
 		.recipe-title h3{
 			margin-bottom: 5px;
 		}
 		.sec-recipe-name{
 			margin-top: 5px;
 			margin-bottom: 10px;
+			font-size:20px;
+			height:40px;
 		}
 		#image0{
 			width: 300px;
@@ -42,6 +49,7 @@
 
 		.update-recipe-wrapper{
 			margin-top: 20px;
+			padding-bottom:50px;
 		}
 		.quantity{
 			width: 60px;
@@ -139,9 +147,39 @@
 		.write-recipe{
 			margin-right:190px;
 		}
-		.cancelRecipe-btn{
-		margin-top:10px;
+		.createRecipe-btn{
+			margin-top:40px;
 		}
+		.cancelRecipe-btn{
+			margin-top:10px;
+		}
+		.col-sm-offset-2.col-sm-7{
+			border:1px solid gray;
+			background:#fff;
+		}
+		.video-area{
+			border-top:1px solid #cfccbe;
+			border-bottom:1px solid #cfccbe;
+			margin:20px 2% 0px 2%;
+			width:96%;
+			padding:15px 5px;
+			
+		}
+		.video-area h3{
+			margin:0px 0px 10px 0px;
+		}
+		#theFooter{
+		/* 對應skin */
+		position : absolute;
+		bottom : 0px;
+		width : 100%;
+		
+		background: #222222;
+		color:#fff ;
+		font-size: 26px;
+		font-family: Reklame;
+		text-align: center;
+	}
 	</style>
 </head>
 <body>
@@ -155,6 +193,8 @@
 	</ul>
 	</font>
 </c:if>
+
+		<c:import url="/front-end/frontNavbar.jsp" ></c:import>
 		<c:import url="/front-end/recipe/RecipeSearchBar.jsp" ></c:import>
 	<div class="container">
 		<div class="row update-recipe-wrapper">
@@ -195,13 +235,22 @@
 								增加食材
 							</div>
 						</div>
+						
+						
+						<div class="col-xs-12 col-sm-12 video-area">
+						<h3>上傳影片<span>(若無上傳影片，會延用之前上傳的影片)</span></h3>
+							<input type="file" name="film_file">
+						</div>
+						
+						
+						
 						<div class="col-xs-12 col-sm-12 step-area">
 							<div class="step-title">
 								<h3>步驟<span>(請重新上傳圖片)</span></h3>
 							</div>
 						
 						<c:forEach var="recipe_contVO" items="${recipe_cont_set}">
-							<div class="row step-wrapper">
+							<div id="div_${recipe_contVO.step}" class="row step-wrapper">
 								<div class="col-xs-12 col-sm-4 step-left">
 									<img src="<%=request.getContextPath()%>/images/recipe_cont/stepNoPic.PNG" id="image${recipe_contVO.step}">
 									<input type="file" name="step_pic" class="upload" id="upload${recipe_contVO.step}" onchange="showImage(${recipe_contVO.step})">
@@ -212,7 +261,7 @@
 										<input type="hidden" name="step" value="${recipe_contVO.step}">
 									</div>
 									<div class="col-xs-12 col-sm-6 step-trash-wrapper">
-										<a class="btn"><i class="glyphicon glyphicon-plus step-plus"></i></a>
+										<a class="btn"><i id="plus_${recipe_contVO.step}" class="glyphicon glyphicon-plus step-plus"></i></a>
 										<a class="btn"><i class="glyphicon glyphicon-trash step-trash"></i></a>
 									</div>
 									<div class="step-cont-wrapper">
@@ -221,6 +270,29 @@
 								</div>
 							</div>
 						</c:forEach>
+						
+						<c:if test="${recipe_cont_set.isEmpty()}">
+							<div id="div_1" class="row step-wrapper">
+								<div class="col-xs-12 col-sm-4 step-left">
+									<img src="<%=request.getContextPath()%>/images/recipe_cont/stepNoPic.PNG" id="image1">
+									<input type="file" name="step_pic" class="upload" id="upload1" onchange="showImage(1)">
+								</div>
+								<div class="col-xs-12 col-sm-8 step-right">
+									<div class="col-xs-12 col-sm-6">
+										<h2>1</h2>
+										<input type="hidden" name="step" value="1">
+									</div>
+									<div class="col-xs-12 col-sm-6 step-trash-wrapper">
+										<a class="btn"><i id="plus_0" class="glyphicon glyphicon-plus step-plus"></i></a>
+										<a class="btn"><i class="glyphicon glyphicon-trash step-trash"></i></a>
+									</div>
+									<div class="step-cont-wrapper">
+										<textarea name="step_cont" rows="4" cols="55" placeholder="請輸入食譜步驟內容" style="resize: none"></textarea>	
+									</div>
+								</div>
+							</div>
+						</c:if>
+						
 						
 						</div>
 					</div>
@@ -231,7 +303,7 @@
 				<div>
 					<input type="hidden" name="recipe_no" value=${param.recipe_no}>
 					<button class="btn btn-primary createRecipe-btn" type="submit" name="action" value="update">完成修改</button>
-					<button class="btn btn-primary createRecipe-btn" type="submit" name="action" value="delete">刪除食譜</button>
+					<button class="btn btn-danger cancelRecipe-btn" type="submit" name="action" value="delete">刪除食譜</button>
 				</div>
 				
 			</div>				
@@ -241,7 +313,9 @@
 		</div>
 	</div>
 	
-	
+	<footer id="theFooter">
+		Copyright &copy; 2016 Java Team 3 
+	</footer>
 								
 
 	<script src="https://code.jquery.com/jquery.js"></script>
@@ -273,7 +347,7 @@
 		
 		function appendRecipeCont(){
 			var step = $(".step-plus").length+1;
-			var html = '<div class="row step-wrapper">'+
+			var html = '<div id="div_'+step+'" class="row step-wrapper">'+
 						'<div class="col-xs-12 col-sm-4 step-left">'+
 						 '<img src="<%=request.getContextPath()%>/images/recipe_cont/stepNoPic.PNG" id="image'+step+'">'+
 						 '<input type="file" name="step_pic" id="upload'+step+'" onchange="showImage('+step+')">'+
@@ -281,24 +355,45 @@
 						'<div class="col-xs-12 col-sm-8 step-right">'+
 						'<div class="col-xs-12 col-sm-6">'+'<h2>'+step+'</h2>'+' <input type="hidden" name="step" value="'+step+'"></div>'+
 						'<div class="col-xs-12 col-sm-6 step-trash-wrapper">'+
-						 '<a class="btn"><i class="glyphicon glyphicon-plus step-plus"></i></a>'+
+						 '<a class="btn"><i id="plus_'+step+'" class="glyphicon glyphicon-plus step-plus"></i></a>'+
 						 '<a class="btn"><i class="glyphicon glyphicon-trash step-trash"></i></a>'+
 						'</div>'+
 						'<div class="step-cont-wrapper">'+
 						'<textarea name="step_cont" rows="4" cols="55" placeholder="請輸入食譜步驟內容" style="resize: none"></textarea>'+
 						'</div>'+'</div>'+'</div>';
 
-			$(this).parent().parent().parent().parent().parent().append(html);
+			var indexNo=$(this).attr("id").replace("plus_","");
+			$(html).insertAfter("#div_"+indexNo);
+			var stepArray = $(".step-wrapper h2")
+			
+			for(var i = 0;i<stepArray.length;i++){
+				stepArray[i].innerHTML=i+1;
+			}
 		}
 	//步驟區垃圾桶
 
 	$('body').on('click', '.step-trash',dropStep);
-
+	
+	$('body').click(function(){
+		step = $(".step-plus").length+1;
+		//image = $('.step-wrapper img');
+		stepDiv = $('.step-wrapper');
+		plus = $('.step-plus');
+		var stepValue = $('.step-wrapper input[name="step"]')
+		for(var i = 0;i<step-1;i++){
+			stepValue[i].value = i+1;
+			stepDiv[i].id = 'div_'+(i+1);
+			plus[i].id = 'plus_'+(i+1);
+		}
+		
+	})
+	
 		function dropStep(){
 
 			$(this).parent().parent().parent().parent().empty().remove();
-			var stepArray = $("h2")
-			for(var i = 0;i<=stepArray.length;i++){
+			var stepArray = $(".step-wrapper h2")
+			
+			for(var i = 0;i<stepArray.length;i++){
 				stepArray[i].innerHTML=i+1;
 			}
 		}

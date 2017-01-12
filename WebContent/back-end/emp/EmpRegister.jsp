@@ -22,7 +22,7 @@
 		</style>
 	</head>
 	<body>
-		
+		<c:import url="/back-end/TopNavBar.jsp" ></c:import>
 		<div class="container">
 			<div class="row">
 				<div class="emp-form-wrapper text-center">

@@ -12,6 +12,7 @@
 <jsp:useBean id="recipeVO" scope="request" class="com.recipe.model.RecipeVO"/>
 <jsp:useBean id="ingredients" scope="request" class="java.util.ArrayList"/>
 <jsp:useBean id="memberSvc" scope="page" class="com.member.model.MemberService" />
+<jsp:useBean id="filmSvc" scope="page" class="com.film.model.FilmService" />
 <jsp:useBean id="quantity" scope="request" class="java.util.ArrayList"/>
 <jsp:useBean id="productSvc" scope="page" class="com.product.model.ProductService" />
 <jsp:useBean id="productVO" scope="request" class="com.product.model.ProductVO"/>
@@ -35,7 +36,7 @@
 		<style type="text/css">
 			body{
 				background: #efede8;
-				padding-top:50px;
+				padding-top:90px;
 			}
 			.recipe-search{
 		
@@ -295,10 +296,40 @@
 				text-align: left !important;
 				padding-right: 0px;
 			}
+			#myModal{
+				padding-top:125px;
+			}
+			#myModal .modal-content{
+				width : 112%;
+			}
+			.display-video-title{
+				font-size: 18px;
+				padding: 0px 0px 15px 0px;
+			}
+			.btn3d {
+			    transition:all .08s linear;
+			    position:relative;
+			    outline:medium none;
+			    -moz-outline-style:none;
+			    border:0px;
+			    margin-right:10px;
+			    margin-top:15px;
+			}
+			.btn3d:focus {
+			    outline:medium none;
+			    -moz-outline-style:none;
+			}
+			.btn3d:active {
+			    top:9px;
+			}
+			.btn-primary {
+			    box-shadow:0 0 0 1px #428bca inset, 0 0 0 2px rgba(255,255,255,0.15) inset, 0 8px 0 0 #357ebd, 0 8px 0 1px rgba(0,0,0,0.4), 0 8px 8px 1px rgba(0,0,0,0.5);
+			    background-color:#428bca;
+			}
 		</style>
 	</head>
 	<body>
-		
+		<c:import url="/front-end/frontNavbar.jsp" ></c:import>
 			<c:import url="/front-end/recipe/RecipeSearchBar.jsp" ></c:import>
 			<div class="container">
 			<div class="col-xs-12 col-sm-12">
@@ -381,20 +412,16 @@
 						</div>
 						
 						
+						<!-- Button trigger modal -->
+						<c:if test="${filmSvc.getOneFilm(recipeVO.recipe_no).film_file !=null}">
 						<div class="col-xs-12 col-sm-12 recipe-type-wraaper">
-							<div class="display-type-title">
-									食譜影片
-							</div>
-							<div class="type-cont" preload = "auto">
-								<video controls>
-				                    <source src="/AA105G3/FilmDBGifReader.do?name=${recipeVO.recipe_no}">
-				                </video>
-				                <!-- <video controls>
-				                    <source src="C:/Users/cuser/Desktop/DBimages/Film/01.mp4">
-				                </video> -->
+							<div class="display-video-title">
+								<button type="button" class="btn btn-primary btn-block btn-lg btn3d" data-toggle="modal" data-target="#myModal">
+									觀看食譜影片
+								</button>
 							</div>
 						</div>
-						
+						</c:if>
 						
 						<div class="col-xs-12 col-sm-12 display-recipeCont-wrapper">
 							<table id="cont-table">
@@ -540,8 +567,30 @@
 				
 				
 			</div>
-
-		</div>
+		<!-- Modal -->
+			<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+				<div class="modal-dialog">
+					<div class="modal-content">
+	
+						<div class="modal-header">
+							<button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+							<h3 class="modal-title" id="myModalLabel">食譜影片</h3>
+						</div>
+	
+						<div class="modal-body">
+							<video controls>
+			                    <source src="/AA105G3/FilmDBGifReader.do?name=${recipeVO.recipe_no}">
+			                </video>
+						</div>
+	
+						<div class="modal-footer">
+							<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+						</div>
+	
+					</div>
+				</div>
+			</div>
+		
 		
 		
 		<script src="https://code.jquery.com/jquery.js"></script>

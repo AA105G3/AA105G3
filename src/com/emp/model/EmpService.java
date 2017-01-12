@@ -62,8 +62,11 @@ public class EmpService
 		return dao.findByAccount(emp_account);
 	}
 	
-	
 	public List<EmpVO> getAll() {
 		return dao.getAll();
+	}
+	
+	public EmpVO getPswByEmail(String emp_email) {
+		return dao.findByAccount(emp_email);
 	}
 }
