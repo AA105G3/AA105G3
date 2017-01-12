@@ -235,10 +235,10 @@
 								                <li><a href="<%=request.getContextPath()%>/front-end/product_order/ListProductOrder.jsp">商品訂單
 
 								                	<i class="glyphicon glyphicon-new-window"></i></a></li>
-									                <li><a href="#menu3">我的私廚訂單
+									                <li><a href="/AA105G3/front-end/chef_order_list/chefOrderListOfMem.jsp">我的私廚訂單
 									                	<i class="glyphicon glyphicon-new-window"></i></a></li>
 									                <c:if test="${ChefSvc.getOneChefByMem_no(sessionScope.mem_no)!=null}">
-									                <li><a href="#menu3">我的會員訂單
+									                <li><a href="/AA105G3/front-end/chef_order_list/ChefOrderListOfChef2.jsp">我的會員訂單
 									                	<i class="glyphicon glyphicon-new-window"></i></a></li>
 									                </c:if>
 								                </c:if>
