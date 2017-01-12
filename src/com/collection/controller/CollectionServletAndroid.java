@@ -74,15 +74,16 @@ public class CollectionServletAndroid extends HttpServlet {
 			String class_no = String.valueOf(all_no.charAt(0));
 			// System.out.println("insert to collection mem_no=" + mem_no + "
 			// all_no= " + all_no + " class_no= " + class_no );
-//			try {
-				CollectionVO collectionVO = collectionSvc.findByMem_noAndAll_no(mem_no, all_no);
-//			} catch (Exception e) {
-//				collectionSvc.addCollection(mem_no, all_no, class_no);
-//			}
-//			System.out.println("all no " + collectionVO.getAll_no() + "coll_no" + collectionVO.getColl_no()
-//					+ collectionVO.getMem_no());
+			// try {
+			CollectionVO collectionVO = collectionSvc.findByMem_noAndAll_no(mem_no, all_no);
+			// } catch (Exception e) {
+			// collectionSvc.addCollection(mem_no, all_no, class_no);
+			// }
+			// System.out.println("all no " + collectionVO.getAll_no() +
+			// "coll_no" + collectionVO.getColl_no()
+			// + collectionVO.getMem_no());
 			if (collectionVO == null) {
-				collectionVO = collectionSvc.addCollection(mem_no, all_no, class_no);				
+				collectionVO = collectionSvc.addCollection(mem_no, all_no, class_no);
 			} else {
 				collectionVO = null;
 			}
@@ -97,10 +98,39 @@ public class CollectionServletAndroid extends HttpServlet {
 			String mem_no = jsonObject.get("mem_no").getAsString();
 			String coll_no = jsonObject.get("coll_no").getAsString();
 			collectionSvc.deleteCollection(coll_no);
-			
+
 			List<CollectionVO> collectionVOList = collectionSvc.getAllByMem_noCollection(mem_no);
 
 			outStr.append(gson.toJson(collectionVOList));
+			SendResponse.writeText(res, outStr.toString());
+			return;
+		}
+
+		if ("deleteByMem_noAndAll_no".equals(action)) {
+			String mem_no = jsonObject.get("mem_no").getAsString();
+			String all_no = jsonObject.get("all_no").getAsString();
+			collectionSvc.deleteCollection(collectionSvc.findByMem_noAndAll_no(mem_no, all_no).getColl_no());
+
+			// collectionSvc.deleteCollection(coll_no);
+
+			List<CollectionVO> collectionVOList = collectionSvc.getAllByMem_noCollection(mem_no);
+
+			outStr.append(gson.toJson(collectionVOList));
+			SendResponse.writeText(res, outStr.toString());
+			return;
+		}
+
+		if ("findByMem_noAndAll_no".equals(action)) {
+			String mem_no = jsonObject.get("mem_no").getAsString();
+			String all_no = jsonObject.get("all_no").getAsString();
+			boolean result = false;
+			if (collectionSvc.findByMem_noAndAll_no(mem_no, all_no) == null) {
+				result = false;
+			} else {
+				result = true;
+			}
+
+			outStr.append(gson.toJson(result));
 			SendResponse.writeText(res, outStr.toString());
 			return;
 		}
