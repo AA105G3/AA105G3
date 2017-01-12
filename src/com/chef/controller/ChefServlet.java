@@ -664,7 +664,7 @@ public class ChefServlet extends HttpServlet {
 
 				// Send the use back to the form, if there were errors
 				if (!errorMsgs.isEmpty()) {
-					System.out.println(errorMsgs.size()+"AAAAAAAAAAA");
+//					System.out.println(errorMsgs.size()+"AAAAAAAAAAA");
 					req.setAttribute("chefVO", chefVO); // 含有輸入格式錯誤的chefVO物件,也存入req
 					RequestDispatcher failureView = req
 							.getRequestDispatcher("/front-end/chef/becomeChef.jsp");

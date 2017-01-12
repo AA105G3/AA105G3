@@ -15,13 +15,7 @@
     pageContext.setAttribute("chefVO",chefVO);
 %>
 
-<%-- <% --%>
-//     ChefService chefSvc = new ChefService();
-// // 	String chef_no = request.getParameter("chef_no");
-// 	String chef_no = "C00000001";
-// 	ChefVO chefVO = chefSvc.getOneChef(chef_no);
-//     pageContext.setAttribute("chefVO",chefVO);
-<%-- %> --%>
+
 <!DOCTYPE html>
 <html lang="">
 
@@ -106,7 +100,7 @@
 	}
 	body{
 		background: #efede8;
-		padding-top: 90px;
+		padding-top: 50px;
 		position : relative;
 		height : 100%;
 	}
@@ -232,6 +226,7 @@
 
         </div>
     </div>
+    <c:import url="/front-end/chat/inviteChat.jsp" ></c:import>
     <footer id="theFooter">
 		Copyright &copy; 2016 Java Team 3 
 	</footer>

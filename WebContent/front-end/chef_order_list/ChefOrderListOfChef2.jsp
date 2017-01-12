@@ -102,7 +102,7 @@ Chef_order_listVO chef_order_listVO = (Chef_order_listVO) request.getAttribute("
 	}
 	body{
 		background: #efede8;
-		padding-top: 90px;
+		padding-top: 50px;
 		position : relative;
 		height : 100%;
 	}
@@ -202,6 +202,7 @@ Chef_order_listVO chef_order_listVO = (Chef_order_listVO) request.getAttribute("
 			<%@ include file="page2.file" %>
         </div>
     </div>
+    <c:import url="/front-end/chat/inviteChat.jsp" ></c:import>
     <footer id="theFooter">
 		Copyright &copy; 2016 Java Team 3 
 	</footer>

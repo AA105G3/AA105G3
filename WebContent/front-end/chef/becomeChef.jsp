@@ -61,7 +61,7 @@
     }
     body{
 		background: #efede8;
-		padding-top: 90px;
+		padding-top: 50px;
 		position : relative;
 		height : 100%;
 	}
@@ -182,7 +182,7 @@
                         <input type="File" name="chef_movie2" size="45" value="" />
                     </div>
                     <br>
-                    mem_no
+
 <!--                     <input type="hidden" name="mem_no" value="M00000006"> -->
                     <input type="hidden" name="mem_no" value="M00000006">      
                     <input type="hidden" name="action" value="insert">                                                                                                                 
@@ -191,6 +191,7 @@
             </FORM>
         </div>
     </div>
+    <c:import url="/front-end/chat/inviteChat.jsp" ></c:import>
     <footer id="theFooter">
 		Copyright &copy; 2016 Java Team 3 
 	</footer>

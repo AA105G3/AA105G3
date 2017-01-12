@@ -82,7 +82,7 @@
 	}
 	body{
 		background: #efede8;
-		padding-top: 90px;
+		padding-top: 50px;
 		position : relative;
 		height : 100%;
 	}
@@ -115,18 +115,13 @@
         </div>
     </section>
     
-    <ol class="breadcrumb">
-        
-        	<li>
-            	<a href="/AA105G3/front-end/chef/becomeChef.jsp"><h2>成為私廚</h2></a>
-        	</li>
-        
-<%--         <c:if test=""> --%>
-<!--         	<li> -->
-<!--         		<a href="/AA105G3/front-end/chef_order_list/ChefOrderListOfChef2.jsp"><h2>私廚訂單</h2></a> -->
-<!--         	</li> -->
-<%--         </c:if> --%>
+    
+    <ol class="breadcrumb text-center">        
+        <li>
+            <a href="/AA105G3/front-end/chef/becomeChef.jsp"><h2><b>成為私廚</b></h2></a>
+        </li>        
     </ol>
+    
     
     <c:if test="${not empty errorMsgs}">
 		<font color='red'>請修正以下錯誤:
@@ -215,7 +210,7 @@
 
 	</div>
 </div>
-    
+    <c:import url="/front-end/chat/inviteChat.jsp" ></c:import>
 
     <footer id="theFooter">
 		Copyright &copy; 2016 Java Team 3 
