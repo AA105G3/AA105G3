@@ -90,7 +90,7 @@ menuItems.click(function(e){
 					<a href="#mu-video">影音</a>
 	            </li>
 	            <li>
-					<a href="#mu-chef">私廚</a>
+					<a href="/AA105G3/front-end/chef/chefList2.jsp">私廚</a>
 	            </li>
 	            <li>
 					<a href="#mu-stream">實況</a>

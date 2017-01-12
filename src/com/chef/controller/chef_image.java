@@ -58,11 +58,11 @@ public class chef_image extends HttpServlet {
 		} catch (Exception e)
 		{
 			// TODO Auto-generated catch block
-//			InputStream in = getServletContext().getResourceAsStream("images/nopic.gif");
-//			byte[] buffer = new byte[in.available()];
-//			in.read(buffer);
-//			out.write(buffer);
-//			in.close();
+			InputStream in = getServletContext().getResourceAsStream("images/nopic.gif");
+			byte[] buffer = new byte[in.available()];
+			in.read(buffer);
+			out.write(buffer);
+			in.close();
 		}
 		
 		
