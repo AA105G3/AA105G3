@@ -57,18 +57,6 @@
 }
 </style>
 
-<script>
-menuItems.click(function(e){
-    var href = $(this).attr("href"),
-        offsetTop = href === "#" ? 0 : $(href).offset().top-topMenuHeight+32;
-    jQuery('html, body').stop().animate({ 
-        scrollTop: offsetTop
-    }, 2500);           
-     jQuery('.navbar-collapse').removeClass('in');  
-    e.preventDefault();
- });
-</script>
-
 </head>
 <body>
 

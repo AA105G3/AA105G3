@@ -43,11 +43,11 @@ public class MemberServlet extends HttpServlet {
 				subject2 = req.getParameter("subject").trim();
 				
 				subject = "聯絡客服通知：" + subject2;
-				mailcontext = "來自	" + name + "	(" + mail + ")" + "	的聯絡\n內容如下：\n" + req.getParameter("message");
+				mailcontext = "來自	" + name + "(" + mail + ")" + "	的聯絡\n內容如下：\n\n" + req.getParameter("message");
 				
 				mailSvc.sendMail(usermail, subject, mailcontext);
 				
-				String url = "/Login/Flogin.jsp";
+				String url = "/front-end/ContactUsSuccess.jsp";
 				RequestDispatcher successView = req.getRequestDispatcher(url); // 修改成功後,轉交listOneMember.jsp
 				successView.forward(req, res);
 
@@ -57,7 +57,7 @@ public class MemberServlet extends HttpServlet {
 				/*RequestDispatcher failureView = req
 						.getRequestDispatcher("/front-end/member/update_member_input.jsp");*/
 				RequestDispatcher failureView = req
-						.getRequestDispatcher("/Login/index.jsp");
+						.getRequestDispatcher("/front-end/ContactUs.jsp");
 				failureView.forward(req, res);
 			}
 			
@@ -408,7 +408,7 @@ public class MemberServlet extends HttpServlet {
 				
 				/***************************3.修改完成,準備轉交(Send the Success view)*************/
 				req.setAttribute("memberVO", memberVO); // 資料庫update成功後,正確的的memberVO物件,存入req
-				String url = "/front-end/member/listOneMember.jsp";
+				String url = "/front-end/member/memberInfo.jsp";
 				RequestDispatcher successView = req.getRequestDispatcher(url); // 修改成功後,轉交listOneMember.jsp
 				successView.forward(req, res);
 

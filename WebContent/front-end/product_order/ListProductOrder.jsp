@@ -13,11 +13,10 @@
 %>
 
 <%
-	Product_order_listService product_order_listSvc = new Product_order_listService();
-	List list2 = product_order_listSvc.getAll();
-	pageContext.setAttribute("list2", list2);	
+	
 %>
 
+<jsp:useBean id="Product_order_listSvc" scope="page" class="com.product_order_list.model.Product_order_listService" />
 
 <html>
 <head>
@@ -124,59 +123,64 @@
 	
 	<%@ include file="pages/page1_ByCompositeQuery.file" %>
 	<c:forEach var="product_orderVO" items="${list}" begin="<%=pageIndex%>" end="<%=pageIndex+rowsPerPage-1%>">
-		<c:forEach var="product_order_listVO" items="${list2}">
-			<c:if test="${product_order_listVO.prod_ord_no == product_orderVO.prod_ord_no}">
-				<tr align='center' valign='middle' ${(product_orderVO.prod_ord_no==param.prod_ord_no) ? 'bgcolor=#f5deb3':''}>
-					<td>${product_orderVO.prod_ord_no}</td>
-					<%-- <td>${product_orderVO.mem_no}</td> --%>
-					
-					<%-- <td>${product_orderVO.prod_ord_time}</td> --%>
-					<jsp:useBean id="product_orderVO" scope="page" class="com.product_order.model.Product_orderVO" />
-					<td><%=new SimpleDateFormat("yyyy/MM/dd HH:mm:ss").format(product_orderVO.getProd_ord_time())%></td>
-					
-					<td>${product_orderVO.cred_card_no.subSequence(0,4)}********${product_orderVO.cred_card_no.subSequence(12,16)}</td>
-					<td>${product_orderVO.valid_date}</td>
-					<%-- <td>${product_orderVO.valid_no}</td> --%>
-					<td>
-						<c:if test="${product_orderVO.cred_card_type == '0'}" >
-							VISA
-						</c:if>
-						<c:if test="${product_orderVO.cred_card_type == '1'}" >
-							MASTER
-						</c:if>
-						<c:if test="${product_orderVO.cred_card_type == '2'}" >
-							JCB
-						</c:if>
-					</td>
-					<td>${product_orderVO.total_money}</td>
-					<td>${product_orderVO.ship_name}</td>
-					<td>${product_orderVO.post_code}</td>
-					<td>${product_orderVO.mem_adrs}</td>
-					<td>${product_orderVO.cell_phone}</td>
-					<td>${product_orderVO.tel_phone}</td>
-					<td>
-					  <FORM METHOD="post" ACTION="<%=request.getContextPath()%>/product_order/product_order.do">
-					    <input type="submit" class="btn btn-primary btn-style" value="查詢"> 
-					    <input type="hidden" name="prod_ord_no" value="${product_orderVO.prod_ord_no}">
-					    <input type="hidden" name="mem_no" value="${product_orderVO.mem_no}">
-					    <input type="hidden" name="whichPage"	value="<%=whichPage%>">
-					    <input type="hidden" name="action" value="getPart_For_Display_By_One_PK"></FORM>
-					</td>
-					<td>
-						<c:if test="${product_order_listVO.deli_status != '0'}">
-							無法修改
-						</c:if>
-						<c:if test="${product_order_listVO.deli_status == '0'}">
-						  <FORM METHOD="post" ACTION="<%=request.getContextPath()%>/product_order/product_order.do">
-						     <input type="submit" class="btn btn-primary btn-style" value="修改">
-						     <input type="hidden" name="prod_ord_no" value="${product_orderVO.prod_ord_no}">
-						     <input type="hidden" name="whichPage"	value="<%=whichPage%>">
-						     <input type="hidden" name="action"	value="getOne_For_Update"></FORM>
-						</c:if>
-					</td>
-				</tr>
+		
+		<c:set var="productFlag" value="false" />
+		
+		<c:forEach var="list_info" items="${Product_order_listSvc.getProduct_order_list_By_One_PK(product_orderVO.prod_ord_no)}">
+			<c:if test="${list_info.deli_status != '0'}" >
+				<c:set var="productFlag" value="true" />
 			</c:if>
 		</c:forEach>
+	
+		<tr align='center' valign='middle' ${(product_orderVO.prod_ord_no==param.prod_ord_no) ? 'bgcolor=#f5deb3':''}>
+			<td>${product_orderVO.prod_ord_no}</td>
+			<%-- <td>${product_orderVO.mem_no}</td> --%>
+			
+			<%-- <td>${product_orderVO.prod_ord_time}</td> --%>
+			<jsp:useBean id="product_orderVO" scope="page" class="com.product_order.model.Product_orderVO" />
+			<td><%=new SimpleDateFormat("yyyy/MM/dd HH:mm:ss").format(product_orderVO.getProd_ord_time())%></td>
+			
+			<td>${product_orderVO.cred_card_no.subSequence(0,4)}********${product_orderVO.cred_card_no.subSequence(12,16)}</td>
+			<td>${product_orderVO.valid_date}</td>
+			<%-- <td>${product_orderVO.valid_no}</td> --%>
+			<td>
+				<c:if test="${product_orderVO.cred_card_type == '0'}" >
+					VISA
+				</c:if>
+				<c:if test="${product_orderVO.cred_card_type == '1'}" >
+					MASTER
+				</c:if>
+				<c:if test="${product_orderVO.cred_card_type == '2'}" >
+					JCB
+				</c:if>
+			</td>
+			<td>${product_orderVO.total_money}</td>
+			<td>${product_orderVO.ship_name}</td>
+			<td>${product_orderVO.post_code}</td>
+			<td>${product_orderVO.mem_adrs}</td>
+			<td>${product_orderVO.cell_phone}</td>
+			<td>${product_orderVO.tel_phone}</td>
+			<td>
+			  <FORM METHOD="post" ACTION="<%=request.getContextPath()%>/product_order/product_order.do">
+			    <input type="submit" class="btn btn-primary btn-style" value="查詢"> 
+			    <input type="hidden" name="prod_ord_no" value="${product_orderVO.prod_ord_no}">
+			    <input type="hidden" name="mem_no" value="${product_orderVO.mem_no}">
+			    <input type="hidden" name="whichPage"	value="<%=whichPage%>">
+			    <input type="hidden" name="action" value="getPart_For_Display_By_One_PK"></FORM>
+			</td>
+			<td>
+			<c:if test="${productFlag}">
+				無法修改
+			</c:if>
+			<c:if test="${!productFlag}">
+			  <FORM METHOD="post" ACTION="<%=request.getContextPath()%>/product_order/product_order.do">
+			     <input type="submit" class="btn btn-primary btn-style" value="修改">
+			     <input type="hidden" name="prod_ord_no" value="${product_orderVO.prod_ord_no}">
+			     <input type="hidden" name="whichPage"	value="<%=whichPage%>">
+			     <input type="hidden" name="action"	value="getOne_For_Update"></FORM>
+			</c:if>
+			</td>
+	</tr>
 	</c:forEach>
 	<%@ include file="pages/page2_ByCompositeQuery.file" %>
 </table>
@@ -198,6 +202,8 @@
 
 
 
+
+<c:import url="/front-end/chat/inviteChat.jsp" ></c:import>
 
 <footer id="theFooter">
 	Copyright &copy; 2016 Java Team 3 

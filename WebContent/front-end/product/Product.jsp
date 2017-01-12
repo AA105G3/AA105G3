@@ -70,7 +70,7 @@
 	}
 	.tab-style{
 		padding-top: 75px;
-		padding-bottom: 75px;
+		padding-bottom: 195px;
 	}
 	.shopping-cart{
 		position: absolute;
@@ -229,6 +229,8 @@
 </div>
 
 	
+
+<c:import url="/front-end/chat/inviteChat.jsp" ></c:import>
 
 <footer>
 	Copyright &copy; 2016 Java Team 3 

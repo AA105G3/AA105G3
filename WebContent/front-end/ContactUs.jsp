@@ -1,4 +1,5 @@
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 
 <html>
 <head>
@@ -9,9 +10,38 @@
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
 <link rel ="stylesheet" href="/AA105G3/css/contactCSS.css">
+
+<style>
+body{
+	background: #efede8;
+	padding-top: 90px;
+	position : relative;
+	height : 100%;
+}
+
+#theFooter{
+	/* 對應skin */
+	position : absolute;
+	bottom : 0px;
+	width : 100%;
+	
+	background: #222222;
+	color:#fff ;
+	font-size: 26px;
+	font-family: Reklame;
+	text-align: center;
+}
+</style>
+
 </head>
 
 <body>
+
+
+
+
+
+<c:import url="/front-end/frontNavbar.jsp"></c:import>
 
 
 
@@ -52,10 +82,10 @@
 							<div class="col-xs-12 col-sm-12">
 								<div class="form-group message">
 		                        	<label for="message">訊息</label>                        
-		                        	<textarea class="form-control" id="message" name="message" cols="30" rows="10" placeholder="Type Your Message"></textarea>
+		                        	<textarea class="form-control" id="message" name="message" cols="30" rows="10" placeholder="Your Message"></textarea>
 		                   		 </div>
 							</div>
-							<div class="col-xs-12 col-sm-12">
+							<div class="col-xs-12 col-sm-12 text-center">
 								<button type="submit" class="mu-send-btn">送出訊息</button>
 							</div>
 							<input type="hidden" name="action" value="contact">
@@ -81,6 +111,14 @@
 	</div>
 </div>
 
+
+
+
+
+
+<footer id="theFooter">
+	Copyright &copy; 2016 Java Team 3 
+</footer>
 
 
 

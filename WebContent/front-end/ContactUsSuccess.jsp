@@ -4,7 +4,7 @@
 <html>
 <head>
 <meta http-equiv="content-type" content="text/html; charset=UTF-8">
-<title>忘記密碼</title>
+<title>信箱認證</title>
 
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -48,9 +48,9 @@
 	<div class="mu-login">
 		<div class="container">
 			<br><br><br>
-			<h1>已寄出忘記密碼通知到您的信箱</h1>
-			<h2>請至您的信箱確認通知</h2>
-			<h2>感謝您的配合！</h2>
+			<h1>訊息已成功送出！</h1><br><br>
+			<h2>我們將會以最快的速度回覆您</h2>
+			<h2>請耐心等候~</h2>
 		</div>
 		
 		<ul class="bg-bubbles">

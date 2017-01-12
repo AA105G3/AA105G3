@@ -21,27 +21,27 @@
 	<body>
 		
 		
-		
+		 <script src="https://code.jquery.com/jquery.js"></script>
 		<script src="https://cdnjs.cloudflare.com/ajax/libs/limonte-sweetalert2/6.2.9/sweetalert2.min.js"></script>
 		<script type="text/javascript">
 
-		var ws;
-	    var mem_no = "${sessionScope.mem_no}";//自己
+		var invitews;
+	    var invitemem_no = "${sessionScope.mem_no}";//自己
 	    var frd_no = "";//朋友
 	    var path = window.location.pathname;
 	    var webCtx = path.substring(0, path.indexOf('/', 1));
-
+		
 	    
 
 
-	    function connect() {
+	    function inviteConnect() {
 	    	
-		    var endPointURL = "ws://" + window.location.host + webCtx + "/InviteEndpoint/"+mem_no;
-	        ws = new WebSocket(endPointURL);
+		    var endPointURL = "ws://" + window.location.host + webCtx + "/InviteEndpoint/"+invitemem_no;
+		    invitews = new WebSocket(endPointURL);
 
 
-	        ws.onmessage = function(event) {
-
+		    invitews.onmessage = function(event) {
+				alert("111");
 	            console.log(event.data);
 	            var message = JSON.parse(event.data);
 
@@ -106,7 +106,7 @@
 	            "content":content
 	        });
 
-	        ws.send(json);
+	        invitews.send(json);
 	   }
 
 	   function refuse(to){
@@ -117,7 +117,7 @@
 	            "content":content
 	        });
 
-	        ws.send(json);
+	        invitews.send(json);
 	   }
 
 	    //邀請
@@ -129,13 +129,13 @@
 	            "content":content
 	        });
 
-	        ws.send(json);
+	        invitews.send(json);
 	    }
 
 
 		$().ready(function(){
 			//when document ready then call connect;
-		     connect();
+		     inviteConnect();
 		     $('.list-frd-chat').on('click',invite);
 		})
 		
