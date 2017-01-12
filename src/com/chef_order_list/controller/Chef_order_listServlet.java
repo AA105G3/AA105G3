@@ -26,7 +26,7 @@ public class Chef_order_listServlet extends HttpServlet {
 		String action = req.getParameter("action");
 		
 
-if ("updateByChef".equals(action)) { // 來自update_chef_order_list_input.jsp的請求
+		if ("updateByChef".equals(action)) { // 來自update_chef_order_list_input.jsp的請求
 			List<String> errorMsgs = new LinkedList<String>();
 			// Store this set in the request scope, in case we need to
 			// send the ErrorPage view.
@@ -157,6 +157,10 @@ if ("updateByChef".equals(action)) { // 來自update_chef_order_list_input.jsp�
 				/***************************3.查詢完成,準備轉交(Send the Success view)*************/
 				req.setAttribute("chefVO", chefVO); // 資料庫取出的chefVO物件,存入req
 				String url = "/front-end/chef_order_list/setChefOrder.jsp";
+//				if("getChefNo_For_addChefOrd".equals(action))
+//					url = "/front-end/chef_order_list/setChefOrder.jsp";
+//				else if("getChefNo_For_ViewOrd".equals(action))
+//					url = "/front-end/chef_order_list/ChefOrderListOfChef2.jsp";
 				RequestDispatcher successView = req.getRequestDispatcher(url); // 成功轉交 listOneChef_order_list.jsp
 				successView.forward(req, res);
 
@@ -164,7 +168,78 @@ if ("updateByChef".equals(action)) { // 來自update_chef_order_list_input.jsp�
 			} catch (Exception e) {
 				errorMsgs.add("無法取得資料:" + e.getMessage());
 				RequestDispatcher failureView = req
-						.getRequestDispatcher("/front-end/chef_order_list/setChefOrder.jsp");
+						.getRequestDispatcher("/front-end/chef_order_list/select_page.jsp");
+				failureView.forward(req, res);
+			}
+		}
+		
+		if ("getChefNo_For_ViewOrd".equals(action)) { // 來自select_page.jsp的請求
+
+			List<String> errorMsgs = new LinkedList<String>();
+			// Store this set in the request scope, in case we need to
+			// send the ErrorPage view.
+			req.setAttribute("errorMsgs", errorMsgs);
+
+			try {
+				/***************************1.接收請求參數 - 輸入格式的錯誤處理**********************/
+				String str = req.getParameter("chef_no");
+System.out.println(str);
+System.out.println("---------------");
+				if (str == null || (str.trim()).length() == 0) {
+					errorMsgs.add("請輸入私廚編號");
+				}
+				// Send the use back to the form, if there were errors
+				if (!errorMsgs.isEmpty()) {
+					RequestDispatcher failureView = req
+							.getRequestDispatcher("/front-end/chef/chefInfo.jsp");
+					failureView.forward(req, res);
+					return;//程式中斷
+				}
+				
+				String chef_no = null;
+				try {
+					chef_no = new String(str);
+				} catch (Exception e) {
+					errorMsgs.add("私廚編號格式不正確");
+				}
+				// Send the use back to the form, if there were errors
+				if (!errorMsgs.isEmpty()) {
+					RequestDispatcher failureView = req
+							.getRequestDispatcher("/front-end/chef_order_list/select_page.jsp");
+					failureView.forward(req, res);
+					return;//程式中斷
+				}
+				
+				/***************************2.開始查詢資料*****************************************/
+				ChefService chefSvc = new ChefService();
+				ChefVO chefVO = chefSvc.getOneChef(chef_no);
+				if (chefVO == null) {
+					errorMsgs.add("查無資料");
+				}
+				// Send the use back to the form, if there were errors
+				if (!errorMsgs.isEmpty()) {
+					RequestDispatcher failureView = req
+							.getRequestDispatcher("/front-end/chef_order_list/select_page.jsp");
+					failureView.forward(req, res);
+					return;//程式中斷
+				}			
+				
+				/***************************3.查詢完成,準備轉交(Send the Success view)*************/
+				req.setAttribute("chefVO", chefVO); // 資料庫取出的chefVO物件,存入req
+				String url = "/front-end/chef_order_list/ChefOrderListOfChef2.jsp";
+
+//				if("getChefNo_For_addChefOrd".equals(action))
+//					url = "/front-end/chef_order_list/setChefOrder.jsp";
+//				else if("getChefNo_For_ViewOrd".equals(action))
+//					url = "/front-end/chef_order_list/ChefOrderListOfChef2.jsp";
+				RequestDispatcher successView = req.getRequestDispatcher(url); // 成功轉交 listOneChef_order_list.jsp
+				successView.forward(req, res);
+
+				/***************************其他可能的錯誤處理*************************************/
+			} catch (Exception e) {
+				errorMsgs.add("無法取得資料:" + e.getMessage());
+				RequestDispatcher failureView = req
+						.getRequestDispatcher("/front-end/chef_order_list/select_page.jsp");
 				failureView.forward(req, res);
 			}
 		}
@@ -376,7 +451,7 @@ if ("updateByChef".equals(action)) { // 來自update_chef_order_list_input.jsp�
 			    mailService.sendMail(to, subject, messageText);
 				
 				req.setAttribute("chef_order_listVO", chef_order_listVO); // 資料庫update成功後,正確的的chef_order_listVO物件,存入req
-				String url = "/front-end/chef_order_list/chefOrderListOfMem.jsp";
+				String url = "/front-end/chef_order_list/endChefOrderView.jsp";
 				RequestDispatcher successView = req.getRequestDispatcher(url); // 修改成功後,轉交listOneChef_order_list.jsp
 				successView.forward(req, res);				
 
@@ -548,8 +623,9 @@ if ("updateByChef".equals(action)) { // 來自update_chef_order_list_input.jsp�
 
 			try {
 				/***********************1.接收請求參數 - 輸入格式的錯誤處理*************************/
-//				String mem_no = req.getParameter("mem_no").trim();
-String mem_no = "M00000001";
+				String mem_no = req.getParameter("mem_no").trim();
+
+				//String mem_no = "M00000001";
 				String chef_no = req.getParameter("chef_no").trim();
 			
 				Double chef_ord_cost = null;
