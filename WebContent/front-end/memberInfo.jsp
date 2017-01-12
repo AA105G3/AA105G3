@@ -201,7 +201,7 @@
 				</c:if>
 		
 		
-		
+		jyjf
 		<div class="container">
 	    	<div class="row">
 						<div class="col-xs-12 col-sm-8">
@@ -221,12 +221,12 @@
 								                <li><a href="<%=request.getContextPath()%>/front-end/frd_list/memberFriend.jsp">好友</a></li>
 								                <li><a href="<%=request.getContextPath()%>/front-end/product_order/ListProductOrder.jsp">商品訂單
 								                	<i class="glyphicon glyphicon-new-window"></i></a></li>
-									                <li><a href="/AA105G3/front-end/chef_order_list/chefOrderListOfMem.jsp">我的私廚訂單
-									                	<i class="glyphicon glyphicon-new-window"></i></a></li>
-									                <c:if test="${ChefSvc.getOneChefByMem_no(sessionScope.mem_no)!=null}">
-									                <li><a href="/AA105G3/front-end/chef_order_list/ChefOrderListOfChef2.jsp">他人預定訂單
-									                	<i class="glyphicon glyphicon-new-window"></i></a></li>
-									                </c:if>
+								                <li><a href="/AA105G3/front-end/chef_order_list/chefOrderListOfMem.jsp">我的私廚訂單
+								                	<i class="glyphicon glyphicon-new-window"></i></a></li>
+								                <c:if test="${ChefSvc.getOneChefByMem_no(sessionScope.mem_no)!=null}">
+								                <li><a href="/AA105G3/front-end/chef_order_list/ChefOrderListOfChef2.jsp">他人預定訂單
+								                	<i class="glyphicon glyphicon-new-window"></i></a></li>
+								                </c:if>
 								                </c:if>
 								            </ul>
 								        </div>

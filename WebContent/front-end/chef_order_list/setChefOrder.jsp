@@ -77,7 +77,7 @@ MemberVO memberVO = (MemberVO) request.getAttribute("memberVO");
 	}
 	body{
 		background: #efede8;
-		padding-top: 90px;
+		padding-top: 50px;
 		position : relative;
 		height : 100%;
 	}
@@ -204,13 +204,17 @@ MemberVO memberVO = (MemberVO) request.getAttribute("memberVO");
             <br>            
         </div>
     </div>
+    <div class="text-center">
     <input type="hidden" name="action" value="insert">
     <input type="hidden" name="mem_no" value="${mem_no}">
     <input type="hidden" name="chef_no" value="${chefVO.chef_no}">
     <input type="hidden" name="chef_ord_cost" value=0.0>
-	<input type="submit" value="送出新增"></FORM>
+	<input type="submit" value="送出新增" class="btn btn-success">
+	</div>
+	</FORM>
 	<br>
 	<br>
+	<c:import url="/front-end/chat/inviteChat.jsp" ></c:import>
     <footer id="theFooter">
 		Copyright &copy; 2016 Java Team 3 
 	</footer>

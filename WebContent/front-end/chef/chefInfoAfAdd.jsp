@@ -2,7 +2,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ page import="java.util.*"%>
 <%@ page import="com.chef.model.*"%>
-<%ChefVO chefVO=(ChefVO)request.getAttribute("chefVO"); %>>
+<%ChefVO chefVO=(ChefVO)request.getAttribute("chefVO"); %>
 <!DOCTYPE html>
 <html lang="">
 
@@ -58,8 +58,8 @@
     }
 	#theFooter{
 
-		position : absolute;
-		bottom : 0px;
+/* 		position : relative; */
+/* 		bottom : 0px; */
 		width : 100%;
 		
 		background: #222222;
@@ -70,10 +70,24 @@
 	}
 	body{
 		background: #efede8;
-		padding-top: 90px;
+		padding-top: 50px;
 		position : relative;
 		height : 100%;
 	}
+	html{
+		height : 100%;
+	}
+	#img_zone img{
+    width:100%;
+    height:100%;
+	}
+	#img_zone div{
+    padding: 1px;
+	}
+	.chef_zone img{
+    		height : 225px;
+    		width:300px;
+    }
     </style>
 </head>
 
@@ -89,12 +103,12 @@
 
         </div>
     </section>
-    <ol class="breadcrumb">
-        <li>
-            <a href="#">成為私廚</a>
-        </li>
-    </ol>
-    <div class="container">
+<!--     <ol class="breadcrumb"> -->
+<!--         <li> -->
+<!--             <a href="#">成為私廚</a> -->
+<!--         </li> -->
+<!--     </ol> -->
+    <div class="container chef_zone">
         <div class="row">
             <div class="container">
                 <div class="row">
@@ -104,11 +118,11 @@
                 </div>
             </div>
             <br>
-            <div class="col-xs-12 col-sm-10 col-sm-offset-1" id="chefInfo_zone">
+            <div class="col-xs-12 col-sm-12 text-center" id="">
                 <div class="row" style="border-bottom: 2px solid #d3d4d5">
                     <div class="col-xs-12 col-sm-4 col-sm-offset-4" >
                         <div class="thumbnail">
-                            <img src="<%=request.getContextPath()%>/chef/chefImage.do?chef_no=${chefVO.chef_no}&chef_image=123" class="img-responsive" style="width:px;height:px">
+                            <img src="<%=request.getContextPath()%>/chef/chefImage.do?chef_no=${chefVO.chef_no}&chef_image=123">
                             <div class="caption">
                                 <h3 align="center">${chefVO.chef_name}</h3>
                                 <p></p>
@@ -202,11 +216,11 @@
                     </div>
                 </div>
             </div>
-            
+            <br>
             <div class="col-xs-12 col-sm-10 col-sm-offset-1 text-center">
             	<a href="/AA105G3/front-end/chef/chefList2.jsp" class="btn btn-warning">回到私廚首頁</a>
             </div>
-            
+            <br>
             
 <!--             <div class="col-xs-12 col-sm-12"> -->
 <!--                 <ul class="pager"> -->
@@ -223,6 +237,7 @@
 <!-- 			</div> -->
         </div>
     </div>
+    <c:import url="/front-end/chat/inviteChat.jsp" ></c:import>
     <footer id="theFooter">
 		Copyright &copy; 2016 Java Team 3 
 	</footer>

@@ -41,7 +41,6 @@
 
 
 		    invitews.onmessage = function(event) {
-				alert("111");
 	            console.log(event.data);
 	            var message = JSON.parse(event.data);
 
@@ -91,7 +90,7 @@
 	            	swal({
 					 title: '邀請被拒絕',
 					 text: "很抱歉，對方拒絕您的聊天邀請!",
-					 type:'success'
+					 type:'warning'
 					})
 	            }
 	            

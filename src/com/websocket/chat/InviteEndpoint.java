@@ -31,7 +31,6 @@ public class InviteEndpoint {
    
 	@OnOpen
     public void onOpen(Session session, @PathParam("mem_no") String userId) throws IOException, EncodeException {
-        
         MemberService memberSvc = new MemberService();
         ChefService chefSvc = new ChefService();
         users.put(userId, session);
@@ -59,6 +58,7 @@ public class InviteEndpoint {
 			msg.setMemberName(getMemberName(session));
 			msg.setTo(jsonObjectIn.getString("to"));
 			msg.setContent(jsonObjectIn.getString("content"));
+			
 			
 			sendMessageToOneUser(msg);
 		} catch (JSONException e)

@@ -47,7 +47,6 @@ public class ChatEndpoint {
 			Room room = new Room(roomId1);
 			room.setMeber1(session.getId());
 			rooms.put(roomId1, room);
-			System.out.println("!!!!!!!!!!!!!!!!!!!roomIsExist1 == false & roomIsExist2 == false");
 			/* 取得user在網站註冊的 NickName */
 		} else {
 			/* 若room已存在,找到該room並存入sessionId */
@@ -57,7 +56,7 @@ public class ChatEndpoint {
 			} else if (roomIsExist2) {
 				(rooms.get(roomId2)).setMeber2(session.getId());
 			}
-		}System.out.println("room else XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXsession.getId()"+session.getId());
+		}
 	}
 
 	@OnMessage
@@ -82,13 +81,17 @@ public class ChatEndpoint {
 	@OnClose
 	public void onClose(Session Session, CloseReason reason) {
 		users.remove(Session);
-		for(String roomId:rooms.keySet()){
-			if((rooms.get(roomId).getMeber1()).equals(Session.getId())){
-				rooms.remove(roomId);
-			};
-			if((rooms.get(roomId).getMeber2()).equals(Session.getId())){
-				rooms.remove(roomId);
-			};
+		try{
+			for(String roomId:rooms.keySet()){
+				if((rooms.get(roomId).getMeber1()).equals(Session.getId())){
+					rooms.remove(roomId);
+				};
+				if((rooms.get(roomId).getMeber2()).equals(Session.getId())){
+					rooms.remove(roomId);
+				};
+			}
+		}catch(Exception e){
+			
 		}
 		System.out.println(Session.getId() + ": Disconnected: " + Integer.toString(reason.getCloseCode().getCode()));
 	}

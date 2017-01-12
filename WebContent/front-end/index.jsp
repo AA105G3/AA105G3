@@ -544,7 +544,7 @@
 				</ul>
 			</div>
 		
-		
+		<c:import url="/front-end/chat/inviteChat.jsp" ></c:import>
 		<script src="https://code.jquery.com/jquery.js"></script>
 		<script src="https://netdna.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
 		<script type="text/javascript">
