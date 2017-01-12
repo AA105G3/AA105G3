@@ -238,12 +238,12 @@
 									                <li><a href="#menu3">我的私廚訂單
 									                	<i class="glyphicon glyphicon-new-window"></i></a></li>
 									                <c:if test="${ChefSvc.getOneChefByMem_no(sessionScope.mem_no)!=null}">
-									                <li><a href="#menu3">他人預定訂單
+									                <li><a href="#menu3">我的會員訂單
 									                	<i class="glyphicon glyphicon-new-window"></i></a></li>
 									                </c:if>
 								                </c:if>
 								                	
-								                </c:if>
+								                
 								            </ul>
 								        </div>
 								    </nav>

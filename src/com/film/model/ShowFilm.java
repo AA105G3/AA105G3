@@ -25,7 +25,7 @@ public class ShowFilm extends HttpServlet {
 		{
 			String recipe_no = req.getParameter("recipe_no");
 			FilmService filmSvc = new FilmService();
-			FilmVO filmVO = filmSvc.getOneMember(recipe_no);
+			FilmVO filmVO = filmSvc.getOneFilm(recipe_no);
 			
 			byte[] buffer = filmVO.getFilm_file();
 			out.write(buffer);

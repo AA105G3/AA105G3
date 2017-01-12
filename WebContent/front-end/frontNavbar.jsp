@@ -123,7 +123,6 @@ menuItems.click(function(e){
 						<ul class="dropdown-menu">
 							<li><a href="<%=request.getContextPath()%>/member/member.do?action=getOne_For_Update&mem_no=${mem_no}">編輯個人資訊</a></li>
 							<li><a href="/AA105G3/front-end/member/memberInfo.jsp">個人頁面</a></li>
-							<li><a href="#">我的最愛</a></li>
 							<li><a href="<%=request.getContextPath()%>/member/member.do?action=signOut">登出</a></li>
 						</ul>
 					</li>
