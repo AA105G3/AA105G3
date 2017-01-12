@@ -89,8 +89,11 @@
 	}
 	body{
 		background: #efede8;
-		padding-top: 90px;
+		padding-top: 50px;
 		position : relative;
+		height : 100%;
+	}
+	html{
 		height : 100%;
 	}
     </style>
@@ -106,11 +109,11 @@
 <!--             <img src="/AA105G3/images/title.jpg" height="500px" width="100%"> -->
 <!--         </div> -->
 <!--     </section> -->
-    <ol class="breadcrumb">
-        <li>
-            <a href="/AA105G3/front-end/chef_order_list/becomeChef.jsp">成為私廚</a>
-        </li>
-    </ol>
+<!--     <ol class="breadcrumb"> -->
+<!--         <li> -->
+<!--             <a href="/AA105G3/front-end/chef_order_list/becomeChef.jsp">成為私廚</a> -->
+<!--         </li> -->
+<!--     </ol> -->
     <div class="container">
         <div class="row">
             <div class="container">
@@ -226,6 +229,7 @@
             </div>
         </div>
     </div>
+    <c:import url="/front-end/chat/inviteChat.jsp" ></c:import>
     <footer id="theFooter">
 		Copyright &copy; 2016 Java Team 3 
 	</footer>

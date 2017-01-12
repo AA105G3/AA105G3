@@ -183,8 +183,7 @@ public class Chef_order_listServlet extends HttpServlet {
 			try {
 				/***************************1.接收請求參數 - 輸入格式的錯誤處理**********************/
 				String str = req.getParameter("chef_no");
-System.out.println(str);
-System.out.println("---------------");
+
 				if (str == null || (str.trim()).length() == 0) {
 					errorMsgs.add("請輸入私廚編號");
 				}
@@ -640,7 +639,9 @@ System.out.println("---------------");
 			    String act_date = req.getParameter("act_date").trim();
 			    String act_time = req.getParameter("act_time").trim();
 			    String dateTime = act_date+" "+act_time;
-				Timestamp chef_act_date = null;
+				
+			    
+			    Timestamp chef_act_date = null;
 				try {
 					java.util.Date du = sdf.parse(dateTime);
 					long len = du.getTime();
@@ -650,6 +651,7 @@ System.out.println("---------------");
 					chef_act_date=new Timestamp(System.currentTimeMillis());
 					errorMsgs.add("請輸入日期!");
 				}
+				
 
 				String chef_ord_place = req.getParameter("chef_ord_place").trim();
 				String chef_ord_cnt = req.getParameter("chef_ord_cnt").trim();
