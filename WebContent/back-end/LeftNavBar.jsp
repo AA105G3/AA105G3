@@ -49,7 +49,7 @@
 					    <div id="aaa" class="panel-collapse collapse" role="tabpanel" aria-labelledby="panel1">
 					      	<div class="list-group">
 					      		<a href="/AA105G3/back-end/chef/ChefCheckListPage.jsp" class="list-group-item">私廚資格審核</a>
-					      		<a href="/AA105G3/back-end/chef/ChefCheckPage.jsp" class="list-group-item">私廚資料管理</a>
+					      		<a href="/AA105G3/back-end/chef/ChefListPage.jsp" class="list-group-item">私廚資料管理</a>
 					      	</div>
 					    </div>
 					</div>

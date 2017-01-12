@@ -96,7 +96,7 @@
 	}
 	body{
 		background: #efede8;
-		padding-top: 90px;
+		padding-top: 50px;
 		position : relative;
 		height : 100%;
 	}
@@ -193,6 +193,7 @@
 
         </div>
     </div>
+    <c:import url="/front-end/chat/inviteChat.jsp" ></c:import>
     <footer id="theFooter">
 		Copyright &copy; 2016 Java Team 3 
 	</footer>

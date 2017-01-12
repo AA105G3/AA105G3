@@ -67,16 +67,19 @@
 	.shopping-cart{
 		position: absolute;
 		position: fixed;
-		top: 40%;
-		rightt: 25px;
-		width: 250px;
+		top: 60%;
+		right: 200px;
+		width: 550px;
 		list-style: none;
 		margin: 0;
 		padding: 0;
-		font-size: 16px;
+		font-size: 30px;
+/* 		background:steelblue;  */
 	}
 	.shopping-cart li{
 		padding-bottom: 15px;
+		width:450px;
+		height:100px;
 	}
 	#theFooter{
 
@@ -92,10 +95,30 @@
 	}
 	body{
 		background: #efede8;
-		padding-top: 90px;
-		position : relative;
+		padding-top: 50px;
+		
 		height : 100%;
-		padding-bottom:100px;
+		
+	}
+	.chef_zone img{
+    		height : 225px;
+    		width:300px;
+    }
+    #img_zone img{
+    width:100%;
+    height:100%;
+	}
+	#img_zone div{
+    padding: 1px;
+	}
+	#chef_act_date{
+		height:60px;	
+	}
+	#chef_act_time{
+		height:60px;
+	}
+	#img_zone{
+		margin-bottom:50px;
 	}
     </style>
 </head>
@@ -112,15 +135,16 @@
 
         </div>
     </section>
-    <ol class="breadcrumb">
+    <ol class="breadcrumb text-center">
         <li>
-            <a href="/AA105G3/front-end/chef/becomeChef.jsp">成為私廚</a>
+            <a href="/AA105G3/front-end/chef/becomeChef.jsp"><h2><b>成為私廚</b></h2></a>
         </li>
     </ol>
-    <div class="container">
+    <div class="container chef_zone">
         <div class="row">
             <div class="container">
                 <div class="row">
+
                     <div class="col-xs-12 col-sm-10 text-center">
                         <h2>私廚個人資訊</h2>
                         
@@ -145,14 +169,15 @@
                         </c:if>
                         </c:if>
                         
+
                     </div>
                 </div>
             </div>
             <br>
             
-     		<div class="col-xs-12 col-sm-10">
+     		<div class="col-xs-12 col-sm-12">
             
-            <div class="col-xs-12 col-sm-10 col-sm-offset-1" id="chefInfo_zone">
+            <div class="col-xs-12 col-sm-12 text-center" id="">
                 <div class="row" style="border-bottom: 2px solid #d3d4d5">
                     <div class="col-xs-12 col-sm-4 col-sm-offset-4" >
                         <div class="thumbnail">
@@ -253,29 +278,34 @@
             
             </div>
             
-              <div class="col-xs-12 col-sm-2" style="padding:1px">
+              <div class="" style="padding:1px">
                 <div id="sidebar-wrapper" >
-					<ul class="shopping-cart" style="width:180px">	
+					<ul class="shopping-cart list-group" style="width:180px">	
 						<FORM METHOD="post" ACTION="<%=request.getContextPath()%>/chef_order_list/chef_order_list.do">
-						<div class="form-group form-inline">							
-                        	<b>預約日期 : </b>
-                        	<input type="text" name="act_date" id="chef_act_date" class="form-control" placeholder="請點擊後選取日期" readonly>
-                        	
-                    	</div>
-   						<div class="form-group form-inline">
-							<b>預約時段 : </b>
-                        	<select class="form-control" name="act_time" id="chef_act_time">
-                            	<option value="">請選擇時段</option>
-                            	<option value="10:00">10:00~14:00</option>
-                            	<option value="16:00">16:00~20:00</option>                       
-                        	</select>
-                    	</div>
-                    	<div class="form-group form-inline">				
-			     			<input type="submit" value="下訂私廚">
-			     			<input type="hidden" name="chef_no" value="${chefVO.chef_no}">
-			     			<input type="hidden" name="mem_no" value="M00000001">
-			     			<input type="hidden" name="action"	value="getChefNo_For_addChefOrd">
-						</div>
+						<li class="list-group-item">	
+							<div class="form-group form-inline">							
+                        		<b>預約日期 : </b>
+                        		<input type="text" name="act_date" id="chef_act_date" class="form-control" placeholder="請點擊後選取日期" readonly>                        	
+                    		</div>
+                    	</li>	
+                    	<li class="list-group-item">
+   							<div class="form-group form-inline">
+								<b>預約時段 : </b>
+                        		<select class="form-control" name="act_time" id="chef_act_time">
+                            		<option value="">請選擇時段</option>
+                            		<option value="10:00">10:00~14:00</option>
+                            		<option value="16:00">16:00~20:00</option>                       
+                        		</select>
+                    		</div>
+                    	</li>
+                    	<li class="list-group-item">	
+                    		<div class="form-group form-inline">				
+			     				<input type="submit" value="下訂私廚">
+			     				<input type="hidden" name="chef_no" value="${chefVO.chef_no}">
+			     				<input type="hidden" name="mem_no" value="M00000001">
+			     				<input type="hidden" name="action"	value="getChefNo_For_addChefOrd">
+							</div>
+						</li>	
 						</FORM>	
 					</ul>
 				</div>
@@ -292,6 +322,7 @@
 
         </div>
     </div>
+    <c:import url="/front-end/chat/inviteChat.jsp" ></c:import>
     <footer id="theFooter">
 		Copyright &copy; 2016 Java Team 3 
 	</footer>
