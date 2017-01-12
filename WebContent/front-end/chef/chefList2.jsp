@@ -5,9 +5,9 @@
 
 <%
     ChefService chefSvc = new ChefService();
-    List<ChefVO> list = chefSvc.getAll();
+    List<ChefVO> list = chefSvc.getChefs();
+    
     pageContext.setAttribute("list",list);
-    session.setAttribute("mem_no","M00000001");
 %>
 
 <!DOCTYPE html>

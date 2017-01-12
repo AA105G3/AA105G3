@@ -9,11 +9,11 @@
 	
 %>
 
+<jsp:useBean id="chefSvc" scope="page" class="com.chef.model.ChefService" />
 <jsp:useBean id="frd_listSvc" scope="page" class="com.frd_list.model.Frd_listService" />
 <jsp:useBean id="memberSvc" scope="page" class="com.member.model.MemberService" />
 <jsp:useBean id="recipeSvc" scope="page" class="com.recipe.model.RecipeService" />
 <jsp:useBean id="collectionSvc" scope="page" class="com.collection.model.CollectionService" />
-<jsp:useBean id="ChefSvc" scope="page" class="com.chef.model.ChefService" />
 <jsp:useBean id="memberVO" scope="request" class="com.member.model.MemberVO" />
 
 
@@ -237,7 +237,7 @@
 								                	<i class="glyphicon glyphicon-new-window"></i></a></li>
 									                <li><a href="/AA105G3/front-end/chef_order_list/chefOrderListOfMem.jsp">我的私廚訂單
 									                	<i class="glyphicon glyphicon-new-window"></i></a></li>
-									                <c:if test="${ChefSvc.getOneChefByMem_no(sessionScope.mem_no)!=null}">
+									                <c:if test="${chefSvc.getOneChefByMem_no(sessionScope.mem_no)!=null}">
 									                <li><a href="/AA105G3/front-end/chef_order_list/ChefOrderListOfChef2.jsp">我的會員訂單
 									                	<i class="glyphicon glyphicon-new-window"></i></a></li>
 									                </c:if>

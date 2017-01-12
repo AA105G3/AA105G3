@@ -10,6 +10,8 @@ import javax.servlet.*;
 import javax.servlet.http.*;
 import com.chef.model.*;
 import com.chef_order_list.model.*;
+import com.member.model.MemberService;
+import com.member.model.MemberVO;
 import com.util.MailService;
 
 public class Chef_order_listServlet extends HttpServlet {
@@ -391,7 +393,7 @@ public class Chef_order_listServlet extends HttpServlet {
 			// Store this set in the request scope, in case we need to
 			// send the ErrorPage view.
 			req.setAttribute("errorMsgs", errorMsgs);		
-//			try {
+			try {
 				/***************************1.接收請求參數 - 輸入格式的錯誤處理**********************/
 				String chef_ord_no = new String(req.getParameter("chef_ord_no").trim());
 				
@@ -455,12 +457,12 @@ public class Chef_order_listServlet extends HttpServlet {
 				successView.forward(req, res);				
 
 				/***************************其他可能的錯誤處理*************************************/
-//			} catch (Exception e) {
-//				errorMsgs.add("修改資料失敗:"+e.getMessage());
-//				RequestDispatcher failureView = req
-//						.getRequestDispatcher("/front-end/chef_order_list/update_chef_order_list_input.jsp");
-//				failureView.forward(req, res);
-//			}
+			} catch (Exception e) {
+				errorMsgs.add("修改資料失敗:"+e.getMessage());
+				RequestDispatcher failureView = req
+						.getRequestDispatcher("/front-end/chef_order_list/update_chef_order_list_input.jsp");
+				failureView.forward(req, res);
+			}
 		}
 		
 		if ("reject_ord".equals(action)) { // 來自update_chef_order_list_input.jsp的請求
@@ -517,13 +519,6 @@ public class Chef_order_listServlet extends HttpServlet {
 				/***************************2.開始修改資料*****************************************/
 				Chef_order_listService chef_order_listSvc = new Chef_order_listService();
 				chef_order_listVO = chef_order_listSvc.updateChef_order_list(chef_ord_no, chef_ord_cost, chef_act_date, chef_ord_place, chef_ord_cnt, chef_ord_con);
-				
-				/***************************3.修改完成,準備轉交(Send the Success view)*************/
-				req.setAttribute("chef_order_listVO", chef_order_listVO); // 資料庫update成功後,正確的的chef_order_listVO物件,存入req
-				String url = "/front-end/chef_order_list/listOneChef_order_list.jsp";
-				RequestDispatcher successView = req.getRequestDispatcher(url); // 修改成功後,轉交listOneChef_order_list.jsp
-				successView.forward(req, res);
-				
 				//寄送mail
 				String to = req.getParameter("mem_email");
 				String subject = req.getParameter("mem_name")+"已回絕訂單";
@@ -531,6 +526,13 @@ public class Chef_order_listServlet extends HttpServlet {
 				
 				MailService mailService = new MailService();
 			    mailService.sendMail(to, subject, messageText);
+				/***************************3.修改完成,準備轉交(Send the Success view)*************/
+				req.setAttribute("chef_order_listVO", chef_order_listVO); // 資料庫update成功後,正確的的chef_order_listVO物件,存入req
+				String url = "/front-end/chef_order_list/listOneChef_order_list.jsp";
+				RequestDispatcher successView = req.getRequestDispatcher(url); // 修改成功後,轉交listOneChef_order_list.jsp
+				successView.forward(req, res);
+				
+				
 
 				/***************************其他可能的錯誤處理*************************************/
 			} catch (Exception e) {
@@ -590,20 +592,26 @@ public class Chef_order_listServlet extends HttpServlet {
 				Chef_order_listService chef_order_listSvc = new Chef_order_listService();
 				chef_order_listVO = chef_order_listSvc.updateChef_order_list(chef_ord_no, chef_ord_cost, chef_act_date, chef_ord_place, chef_ord_cnt, chef_ord_con);
 				
+				chef_order_listVO = chef_order_listSvc.getOneChef_order_list(chef_ord_no);
+				
+				String mem_no = chef_order_listVO.getMem_no();
+				MemberService memberSvc = new MemberService();
+				MemberVO memberVO = memberSvc.getOneMember(mem_no);
+				
+				String to = memberVO.getMem_email();
+				String subject = "私廚訂單通知";
+				String messageText = memberVO.getMem_name()+" 您好， 您所下的私廚訂單已由私廚完成填寫，請至您的私廚訂單確認。";
+				
+				MailService mailService = new MailService();
+			    mailService.sendMail(to, subject, messageText);
+				
 				/***************************3.修改完成,準備轉交(Send the Success view)*************/
 				req.setAttribute("chef_order_listVO", chef_order_listVO); // 資料庫update成功後,正確的的chef_order_listVO物件,存入req
 				String url = "/front-end/chef_order_list/listOneChef_order_list.jsp";
 				RequestDispatcher successView = req.getRequestDispatcher(url); // 修改成功後,轉交listOneChef_order_list.jsp
 				successView.forward(req, res);
 				
-				//寄mail
-				String to = req.getParameter("mem_email");
-				String subject = req.getParameter("chef_name")+"已回復訂單";
-				String messageText = req.getParameter("reject_reason");
-				
-				MailService mailService = new MailService();
-			    mailService.sendMail(to, subject, messageText);
-
+			
 				/***************************其他可能的錯誤處理*************************************/
 			} catch (Exception e) {
 				errorMsgs.add("修改資料失敗:"+e.getMessage());
@@ -620,21 +628,17 @@ public class Chef_order_listServlet extends HttpServlet {
 			// send the ErrorPage view.
 			req.setAttribute("errorMsgs", errorMsgs);
 
-			try {
+//			try {
 				/***********************1.接收請求參數 - 輸入格式的錯誤處理*************************/
-				String mem_no = req.getParameter("mem_no").trim();
+				HttpSession session = req.getSession();
+				String mem_no = (String)session.getAttribute("mem_no");
 
 				//String mem_no = "M00000001";
 				String chef_no = req.getParameter("chef_no").trim();
 			
-				Double chef_ord_cost = null;
-				try {
-					chef_ord_cost = new Double(req.getParameter("chef_ord_cost").trim());
-				} catch (NumberFormatException e) {
-					chef_ord_cost = 0.0;
-					errorMsgs.add("訂單金額請填數字.");
-				}
+				Double chef_ord_cost = 0.0;
 				
+			
 				SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd HH:mm");
 			    String act_date = req.getParameter("act_date").trim();
 			    String act_time = req.getParameter("act_time").trim();
@@ -681,18 +685,33 @@ public class Chef_order_listServlet extends HttpServlet {
 				Chef_order_listService chef_order_listSvc = new Chef_order_listService();
 				chef_order_listVO = chef_order_listSvc.addChef_order_list(mem_no, chef_no, chef_ord_cost, chef_act_date, chef_ord_place, chef_ord_cnt);
 				
+				
+				
+				MemberService memberSvc = new MemberService();
+				MemberVO memberVO = memberSvc.getOneMember(mem_no);
+				
+				String to = memberVO.getMem_email();
+				String subject = "私廚訂單通知";
+				String messageText = "您好， 有會員向您下訂私廚訂單，請查詢您的私廚訂單。";
+				
+				MailService mailService = new MailService();
+			    mailService.sendMail(to, subject, messageText);
+				
+				
+				
+				
 				/***************************3.新增完成,準備轉交(Send the Success view)***********/
 				String url = "/front-end/chef_order_list/chefOrderListOfMem.jsp";
 				RequestDispatcher successView = req.getRequestDispatcher(url); // 新增成功後轉交listAllChef_order_list.jsp
 				successView.forward(req, res);				
 				
 				/***************************其他可能的錯誤處理**********************************/
-			} catch (Exception e) {
-				errorMsgs.add(e.getMessage());
-				RequestDispatcher failureView = req
-						.getRequestDispatcher("/front-end/chef_order_list/setChefOrder.jsp");
-				failureView.forward(req, res);
-			}
+//			} catch (Exception e) {
+//				errorMsgs.add(e.getMessage());
+//				RequestDispatcher failureView = req
+//						.getRequestDispatcher("/front-end/chef_order_list/setChefOrder.jsp");
+//				failureView.forward(req, res);
+//			}
 		}
 		
 		

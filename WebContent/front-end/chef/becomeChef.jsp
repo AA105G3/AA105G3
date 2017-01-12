@@ -184,7 +184,7 @@
                     <br>
 
 <!--                     <input type="hidden" name="mem_no" value="M00000006"> -->
-                    <input type="hidden" name="mem_no" value="M00000006">      
+                    <input type="hidden" name="mem_no" value="${mem_no}">      
                     <input type="hidden" name="action" value="insert">                                                                                                                 
                     <input type="submit" value="送出申請">
                 </div>

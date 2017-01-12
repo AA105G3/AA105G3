@@ -178,10 +178,6 @@ public class ChefServlet extends HttpServlet {
 					errorMsgs.add("查無資料");
 				}
 				
-				chefVO.setChef_chk_cond(chef_chk_cond);
-				
-				chefSvc.updateChef(chef_no, chefVO.getChef_bnk(), chefVO.getChef_bnk_ac(), chefVO.getChef_skill(), chefVO.getChef_lic(), chefVO.getChef_image(), chefVO.getChef_movie1(), chefVO.getChef_movie2(), chefVO.getChef_id(), chefVO.getChef_name(), chefVO.getChef_area(), chefVO.getChef_intr(), chefVO.getChef_menu(), chefVO.getChef_reci_image1(), chefVO.getChef_reci_image2(), chefVO.getChef_reci_image3(), chefVO.getChef_reci_image4(), chefVO.getChef_reci_image5(),chef_chk_cond);
-				
 				// Send the use back to the form, if there were errors
 				if (!errorMsgs.isEmpty()) {
 					RequestDispatcher failureView = req
@@ -189,6 +185,19 @@ public class ChefServlet extends HttpServlet {
 					failureView.forward(req, res);
 					return;//程式中斷
 				}
+				chefVO.setChef_chk_cond(chef_chk_cond);
+				
+				chefSvc.updateChef(chef_no, chefVO.getChef_bnk(), chefVO.getChef_bnk_ac(), chefVO.getChef_skill(), chefVO.getChef_lic(), chefVO.getChef_image(), chefVO.getChef_movie1(), chefVO.getChef_movie2(), chefVO.getChef_id(), chefVO.getChef_name(), chefVO.getChef_area(), chefVO.getChef_intr(), chefVO.getChef_menu(), chefVO.getChef_reci_image1(), chefVO.getChef_reci_image2(), chefVO.getChef_reci_image3(), chefVO.getChef_reci_image4(), chefVO.getChef_reci_image5(),chef_chk_cond);
+				MemberService memberSvc = new MemberService();
+				MemberVO memberVO = memberSvc.getOneMember(chefVO.getMem_no());
+				
+				
+				String to = memberVO.getMem_email();
+				String subject = "私廚審核通知";
+				String messageText = chefVO.getChef_name()+"您好， 恭喜您私廚申請審核已通過。";
+				
+				MailService mailService = new MailService();
+			    mailService.sendMail(to, subject, messageText);
 				
 				/***************************3.查詢完成,準備轉交(Send the Success view)*************/
 				req.setAttribute("chefVO", chefVO); // 資料庫取出的chefVO物件,存入req
@@ -705,6 +714,7 @@ public class ChefServlet extends HttpServlet {
 				
 				/***************************2.開始刪除資料***************************************/
 				ChefService chefSvc = new ChefService();
+				ChefVO chefVO = chefSvc.getOneChef(chef_no); 
 				chefSvc.deleteChef(chef_no);
 				
 				/***************************3.刪除完成,準備轉交(Send the Success view)***********/								
@@ -714,9 +724,13 @@ public class ChefServlet extends HttpServlet {
 				
 				/*寄送e-mail*/
 				
-				String to = req.getParameter("mem_email");
-				String subject = req.getParameter("mem_name")+"私廚申請審核未過通知";
-				String messageText = req.getParameter("rej_reason");
+				MemberService memberSvc = new MemberService();
+				MemberVO memberVO = memberSvc.getOneMember(chefVO.getMem_no());
+				
+				
+				String to = memberVO.getMem_email();
+				String subject = "私廚審核通知";
+				String messageText = chefVO.getChef_name()+"您好， 很抱歉，您私廚申請審核未通過。";
 				
 				MailService mailService = new MailService();
 			    mailService.sendMail(to, subject, messageText);

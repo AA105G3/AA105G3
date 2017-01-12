@@ -7,15 +7,15 @@
 <%
     ProductService productSvc = new ProductService();
     List<ProductVO> list = productSvc.getAll();
-    pageContext.setAttribute("list",list);
+    String prod_no = "";
+    if(list.size() != 0){
+    	prod_no = list.get(0).getProd_no();
+    	pageContext.setAttribute("prod_no",prod_no);
+    }else{
+    	pageContext.setAttribute("prod_no",prod_no);
+    }
     
-    /* 計算筆數 */
-    /* int listsize = list.size()-1; */
-    int listsize = 0;
-    /* 取得最後一筆的產品編號 */
-    String prod_no = list.get(listsize).getProd_no();
-    /* 存入page，以利下面程式取得 */
-    pageContext.setAttribute("prod_no",prod_no);
+    pageContext.setAttribute("list",list);
 %>
 
 <html>

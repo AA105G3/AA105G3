@@ -420,9 +420,7 @@ public class ChefDAO implements ChefDAO_interface {
 			pstmt = con.prepareStatement(GET_ONE_BY_MEM_NO);
 
 			pstmt.setString(1, mem_no);
-
 			rs = pstmt.executeQuery();
-
 			while (rs.next()) {
 				// chefVO 也稱為 Domain objects
 				chefVO = new ChefVO();
@@ -446,6 +444,7 @@ public class ChefDAO implements ChefDAO_interface {
 				chefVO.setChef_reci_image3(rs.getBytes("chef_reci_image3"));
 				chefVO.setChef_reci_image4(rs.getBytes("chef_reci_image4"));
 				chefVO.setChef_reci_image5(rs.getBytes("chef_reci_image5"));
+				
 			}
 
 			// Handle any driver errors

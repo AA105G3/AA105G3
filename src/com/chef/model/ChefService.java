@@ -1,5 +1,6 @@
 package com.chef.model;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class ChefService {
@@ -89,7 +90,20 @@ public class ChefService {
 	public List<ChefVO> getAll() {
 		return dao.getAll();
 	}
+	public List<ChefVO> getChefs() {
+		List<ChefVO> list = dao.getAll();
+		
+		List<ChefVO> list2 = new ArrayList();
+		
+		for(ChefVO aChef:list){
+			if(aChef.getChef_chk_cond().equals("1")){
+				list2.add(aChef);
+			}
+		}
+		return list2;
+	}
 	public ChefVO getOneChefByMem_no(String mem_no) {
+		ChefVO chefVO = dao.findByMem_no(mem_no);
 		return dao.findByMem_no(mem_no);
 	}
 }
