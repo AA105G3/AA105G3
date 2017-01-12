@@ -453,7 +453,7 @@
 
 						$.ajax({
 						 type:"GET",
-						 url:"/AA105G3//recipe_type_info/recipe_type_infoJsonRes.do",
+						 url:"/AA105G3/recipe_type_info/recipe_type_infoJsonRes.do",
 						 data:{"action":"delete","recipe_no":recipe_no,"recipe_type_no":recipe_type_no},
 						 dataType:"json",
 						 success:function (data){
