@@ -29,7 +29,7 @@
 			
 			body{
 				background: #efede8;
-				padding-top: 50px;
+				padding-top: 90px;
 			}
 			.recipe-search-wrapper{
 				margin-bottom:20px;
@@ -119,8 +119,8 @@
 		</style>
 	</head>
 	<body>
-		
-			<c:import url="/front-end/recipe/RecipeSearchBar.jsp" ></c:import>
+	<c:import url="/front-end/frontNavbar.jsp" ></c:import>
+	<c:import url="/front-end/recipe/RecipeSearchBar.jsp" ></c:import>
 		<div class="container">
 			<div class="row">
 				<div class="col-xs-12 col-sm-12 page-top-title-wrapper">

@@ -17,6 +17,7 @@
 <jsp:useBean id="memberVO" scope="request" class="com.member.model.MemberVO" />
 
 
+
 <!DOCTYPE html>
 <html lang="">
 	<head>
@@ -230,7 +231,9 @@
 								                <c:if test="${self}">
 								                <li><a href="<%=request.getContextPath()%>/front-end/collection/myCollection.jsp">收藏</a></li>
 								                <li><a href="<%=request.getContextPath()%>/front-end/frd_list/memberFriend.jsp">好友</a></li>
+
 								                <li><a href="<%=request.getContextPath()%>/front-end/product_order/ListProductOrder.jsp">商品訂單
+
 								                	<i class="glyphicon glyphicon-new-window"></i></a></li>
 									                <li><a href="#menu3">我的私廚訂單
 									                	<i class="glyphicon glyphicon-new-window"></i></a></li>
@@ -238,6 +241,8 @@
 									                <li><a href="#menu3">他人預定訂單
 									                	<i class="glyphicon glyphicon-new-window"></i></a></li>
 									                </c:if>
+								                </c:if>
+								                	
 								                </c:if>
 								            </ul>
 								        </div>
@@ -336,9 +341,8 @@
 						 </c:if>
 					
 					
-						 
-						 
-						     <c:if test="${!self}">
+
+						 <c:if test="${!self}">
 						     <c:if test="${memberVO.mem_no != sessionScope.mem_no}">
 						     
 						     <c:set var="authorFlag" value="false" />
@@ -381,7 +385,6 @@
 							     <input type="hidden" id="cancelNo" value="${coll_no}">
 							</c:if>
 					    </c:if>
-					    	
 					    </div>
 					</div>
 				

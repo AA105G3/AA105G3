@@ -410,6 +410,7 @@
 				margin-bottom: 10px;
 				width: 250px;
 				height: 220px;
+
 			}
 
 			@media screen and (max-width: 62.75em) {
@@ -525,6 +526,7 @@
 					</li>
 					<li class="even">
 					<c:if test="${sessionScope.mem_no ==null}">
+
 						 <a href="/AA105G3/front-end/member/MemberSignUp.jsp">
 							<span class="cbp-ig-icon glyphicon glyphicon-registration-mark"></span>
 							<h3 class="cbp-ig-title">Register</h3>

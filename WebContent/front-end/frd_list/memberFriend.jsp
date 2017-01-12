@@ -5,7 +5,6 @@
 <%@ page import="com.frd_list.model.*"%>
 
 <% 		
-	//session.setAttribute("mem_no","M00000001");
 	String mem_no =(String) session.getAttribute("mem_no");
 	Frd_listService frd_listSvc = new Frd_listService();
 	List list = frd_listSvc.getMyFriends(mem_no);
@@ -246,12 +245,14 @@
 	
 	
 	<body>
-		<c:import url="/front-end/frontNavbar.jsp" ></c:import>	
+
+	      	<c:import url="/front-end/frontNavbar.jsp" ></c:import>	
 
 					<header class="header-style">
 						<c:import url="/front-end/recipe/RecipeSearchBar.jsp" ></c:import>
 					</header>
 					<div class="container">
+
 	    	<div class="row">
 						<div class="col-xs-12 col-sm-8">
 			   				

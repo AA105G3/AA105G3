@@ -174,9 +174,8 @@
 	
 	</head>
 	<body>
-	
-	<c:import url="/front-end/frontNavbar.jsp"></c:import>
-	
+    
+	<c:import url="/front-end/frontNavbar.jsp" ></c:import>
 	<section id="recipe-home">
 		<header>
 			<c:import url="/front-end/recipe/RecipeSearchBar.jsp" ></c:import>

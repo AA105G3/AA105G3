@@ -1,7 +1,8 @@
 package com.film.model;
 
 import java.util.*;
-
+import java.io.ByteArrayInputStream;
+import java.io.InputStream;
 import java.sql.*;
 
 public class FilmJDBCDAO implements FilmDAO_interface {
@@ -12,9 +13,7 @@ public class FilmJDBCDAO implements FilmDAO_interface {
 	String passwd = "foodtime";
 	
 	private static final String INSERT_STMT = 
-			"INSERT INTO film (recipe_no,"
-			+ " film_file) "
-			+ "VALUES (?, ?)";
+			"INSERT INTO film (recipe_no, film_file) VALUES (?, ?)";
 		private static final String GET_ALL_STMT = 
 			"SELECT recipe_no,"
 			+ " film_file FROM film order by recipe_no";
@@ -234,6 +233,60 @@ public class FilmJDBCDAO implements FilmDAO_interface {
 		return list;
 	}
 	
+	@Override
+	public void insert2(FilmVO filmVO, Connection con)
+	{
+		// TODO Auto-generated method stub
+		PreparedStatement pstmt = null;
+		try {
+			pstmt = con.prepareStatement(INSERT_STMT);
+			
+			pstmt.setString(1, filmVO.getRecipe_no());
+			System.out.println(filmVO.getRecipe_no());
+			byte[] film_file = filmVO.getFilm_file();
+			
+			System.out.println(film_file);
+			if(film_file!=null){
+				long filmlen = film_file.length;
+				InputStream bais = new ByteArrayInputStream(film_file);
+				pstmt.setBinaryStream(2, bais, filmlen);
+				System.out.println("XXX");
+			}else{
+				pstmt.setBinaryStream(2, null);
+			}
+			
+			
+			
+
+			pstmt.executeUpdate();
+
+			// Handle any SQL errors
+		} catch (SQLException se) {
+			if (con != null) {
+				try {
+					// 3●設定於當有exception發生時之catch區塊內
+					System.err.print("Transaction is being ");
+					System.err.println("rolled back-由-film");
+					con.rollback();
+				} catch (SQLException excep) {
+					throw new RuntimeException("rollback error occured. "
+							+ excep.getMessage());
+				}
+			}
+			throw new RuntimeException("A database error occured. "
+					+ se.getMessage());
+			// Clean up JDBC resources
+		} finally {
+			if (pstmt != null) {
+				try {
+					pstmt.close();
+				} catch (SQLException se) {
+					se.printStackTrace(System.err);
+				}
+			}
+		}
+	}
+	
 	public static void main(String[] args) {
 
 		FilmJDBCDAO dao = new FilmJDBCDAO();
@@ -247,5 +300,5 @@ public class FilmJDBCDAO implements FilmDAO_interface {
 
 		}
 	}
-	
+
 }
