@@ -35,6 +35,10 @@ public class Chef_order_listJNDIDAO implements Chef_order_listDAO_interface {
 	private static final String GET_ALL_BY_MEM_NO = "select chef_ord_no,mem_no,chef_no,chef_ord_cost,chef_act_date,chef_ord_place,chef_ord_cnt,chef_ord_con,chef_appr,chef_appr_cnt,chef_ord_date from chef_order_list where mem_no = ? order by chef_ord_date desc";
 	private static final String GET_ALL_BY_CHEF_NO = "select chef_ord_no,mem_no,chef_no,chef_ord_cost,chef_act_date,chef_ord_place,chef_ord_cnt,chef_ord_con,chef_appr,chef_appr_cnt,chef_ord_date from chef_order_list where chef_no = ?";
 
+//	by cyh
+	private static final String GET_ALL_BY_MEM_NO = "select chef_ord_no,mem_no,chef_no,chef_ord_cost,chef_act_date,chef_ord_place,chef_ord_cnt,chef_ord_con,chef_appr,chef_appr_cnt,chef_ord_date from chef_order_list where mem_no = ?";
+	private static final String GET_ALL_BY_CHEF_NO = "select chef_ord_no,mem_no,chef_no,chef_ord_cost,chef_act_date,chef_ord_place,chef_ord_cnt,chef_ord_con,chef_appr,chef_appr_cnt,chef_ord_date from chef_order_list where chef_no = ?";
+	
 	@Override
 	public void insert(Chef_order_listVO chef_order_listVO) {
 
