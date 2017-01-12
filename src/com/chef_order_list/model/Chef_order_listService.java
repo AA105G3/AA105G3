@@ -55,7 +55,7 @@ public class Chef_order_listService {
 	public List<Chef_order_listVO> getAll() {
 		return dao.getAll();
 	}
-	
+
 //	by cyh
 	public List<Chef_order_listVO> findByMem_no(String mem_no) {
 		return dao.findByMem_no(mem_no);

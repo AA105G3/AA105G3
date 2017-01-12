@@ -67,7 +67,7 @@
 		</c:if>
         
         <table class="table table-hover table-striped table-bordered table-condensed">
-            <caption id="table_title">私廚資格審核清單</caption>
+            <caption id="table_title">私廚清單</caption>
             <thead>
                 <tr>
                     <th>私廚編號</th>
@@ -85,13 +85,8 @@
                             <td>${chefVO.mem_no}</td>
                             <td>${chefVO.chef_chk_cond}</td>
                             <td>${chefVO.chef_name}</td>
-                            <td>                                
-            					<FORM METHOD="post" ACTION="<%=request.getContextPath()%>/chef/chef.do">
-			     					<input type="submit" value="進入審核">
-			     					<input type="hidden" name="chef_no" value="${chefVO.chef_no}">
-<%-- 			     				<input type="hidden" name="chef_chk_cond" value="${chefVO.chef_chk_cond}"> --%>
-			     					<input type="hidden" name="action"	value="getOne_For_Check"></FORM>
-<%--                            <div class="btn btn-danger btn-xs" href="<%=request.getContextPath()%>/back-end/chef/ChefCheckPage.jsp">進入審核</div> --%>        
+                            <td>
+                                <div class="btn btn-danger btn-xs"><a href="<%=request.getContextPath()%>/chef/chef.do?action=getOne_For_Back&chef_no=${chefVO.chef_no}">瀏覽私廚詳情</a></div>
                             </td>
                         </tr>
                     </tbody>

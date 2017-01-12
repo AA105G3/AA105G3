@@ -11,7 +11,6 @@ public interface Chef_order_listDAO_interface {
           public List<Chef_order_listVO> getAll();
           //萬用複合查詢(傳入參數型態Map)(回傳 List)
 //        public List<Chef_order_listVO> getAll(Map<String, String[]> map); 
-          
           //by cyh
           public List<Chef_order_listVO> findByMem_no(String mem_no);
           public List<Chef_order_listVO> findByChef_no(String chef_no);

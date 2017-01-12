@@ -16,13 +16,6 @@ footer{
 	font-size: 26px;
 	font-family: Reklame;
 	text-align: center;
-	
-	position : absolute;
-    bottom : 0px;
-	width : 100%;
-}
-body{
-	height : 100%;
 }
 </style>
 

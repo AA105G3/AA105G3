@@ -33,9 +33,8 @@ public class Chef_order_listDAO implements Chef_order_listDAO_interface {
 		"UPDATE chef_order_list set chef_ord_cost=?, chef_act_date=?, chef_ord_place=?, chef_ord_cnt=?, chef_ord_con=? where chef_ord_no = ?";
 
 //	by cyh
-	private static final String GET_ALL_BY_MEM_NO = "select chef_ord_no,mem_no,chef_no,chef_ord_cost,chef_act_date,chef_ord_place,chef_ord_cnt,chef_ord_con,chef_appr,chef_appr_cnt,chef_ord_date from chef_order_list where mem_no = ?";
+	private static final String GET_ALL_BY_MEM_NO = "select chef_ord_no,mem_no,chef_no,chef_ord_cost,chef_act_date,chef_ord_place,chef_ord_cnt,chef_ord_con,chef_appr,chef_appr_cnt,chef_ord_date from chef_order_list where mem_no = ? order by chef_ord_date desc";
 	private static final String GET_ALL_BY_CHEF_NO = "select chef_ord_no,mem_no,chef_no,chef_ord_cost,chef_act_date,chef_ord_place,chef_ord_cnt,chef_ord_con,chef_appr,chef_appr_cnt,chef_ord_date from chef_order_list where chef_no = ?";
-	
 	@Override
 	public void insert(Chef_order_listVO chef_order_listVO) {
 
@@ -290,114 +289,114 @@ public class Chef_order_listDAO implements Chef_order_listDAO_interface {
 		}
 		return list;
 	}
-	
-//	by cyh
-	@Override
-	public List<Chef_order_listVO> findByMem_no(String mem_no) {
-		List<Chef_order_listVO> list = new ArrayList<Chef_order_listVO>();
-		Chef_order_listVO chef_order_listVO = null;
 
-		Connection con = null;
-		PreparedStatement pstmt = null;
-		ResultSet rs = null;
+//by cyh
+@Override
+public List<Chef_order_listVO> findByMem_no(String mem_no) {
+	List<Chef_order_listVO> list = new ArrayList<Chef_order_listVO>();
+	Chef_order_listVO chef_order_listVO = null;
 
-		try {
-			con = ds.getConnection();
-			pstmt = con.prepareStatement(GET_ALL_BY_MEM_NO);
-			pstmt.setString(1, mem_no);
-			rs = pstmt.executeQuery();
-			while (rs.next()) {
-				chef_order_listVO = new Chef_order_listVO();
-				chef_order_listVO.setChef_ord_no(rs.getString("chef_ord_no"));
-				chef_order_listVO.setMem_no(rs.getString("mem_no"));
-				chef_order_listVO.setChef_no(rs.getString("chef_no"));
-				chef_order_listVO.setChef_ord_cost(rs.getDouble("chef_ord_cost"));
-				chef_order_listVO.setChef_act_date(rs.getTimestamp("chef_act_date"));
-				chef_order_listVO.setChef_ord_place(rs.getString("chef_ord_place"));
-				chef_order_listVO.setChef_ord_cnt(rs.getString("chef_ord_cnt"));
-				chef_order_listVO.setChef_ord_con(rs.getString("chef_ord_con"));
-				chef_order_listVO.setChef_appr(rs.getString("chef_appr"));
-				chef_order_listVO.setChef_appr_cnt(rs.getString("chef_appr_cnt"));
-				chef_order_listVO.setChef_ord_date(rs.getTimestamp("chef_ord_date"));
-				list.add(chef_order_listVO);
-			}
+	Connection con = null;
+	PreparedStatement pstmt = null;
+	ResultSet rs = null;
 
-		}  catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} finally {
-			if (pstmt != null) {
-				try {
-					pstmt.close();
-				} catch (SQLException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-			}
-			if (con != null) {
-				try {
-					con.close();
-				} catch (SQLException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
+	try {
+		con = ds.getConnection();
+		pstmt = con.prepareStatement(GET_ALL_BY_MEM_NO);
+		pstmt.setString(1, mem_no);
+		rs = pstmt.executeQuery();
+		while (rs.next()) {
+			chef_order_listVO = new Chef_order_listVO();
+			chef_order_listVO.setChef_ord_no(rs.getString("chef_ord_no"));
+			chef_order_listVO.setMem_no(rs.getString("mem_no"));
+			chef_order_listVO.setChef_no(rs.getString("chef_no"));
+			chef_order_listVO.setChef_ord_cost(rs.getDouble("chef_ord_cost"));
+			chef_order_listVO.setChef_act_date(rs.getTimestamp("chef_act_date"));
+			chef_order_listVO.setChef_ord_place(rs.getString("chef_ord_place"));
+			chef_order_listVO.setChef_ord_cnt(rs.getString("chef_ord_cnt"));
+			chef_order_listVO.setChef_ord_con(rs.getString("chef_ord_con"));
+			chef_order_listVO.setChef_appr(rs.getString("chef_appr"));
+			chef_order_listVO.setChef_appr_cnt(rs.getString("chef_appr_cnt"));
+			chef_order_listVO.setChef_ord_date(rs.getTimestamp("chef_ord_date"));
+			list.add(chef_order_listVO);
+		}
+
+	}  catch (SQLException e) {
+		// TODO Auto-generated catch block
+		e.printStackTrace();
+	} finally {
+		if (pstmt != null) {
+			try {
+				pstmt.close();
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
 			}
 		}
-		return list;
-	}
-	
-	@Override
-	public List<Chef_order_listVO> findByChef_no(String chef_no) {
-		List<Chef_order_listVO> list = new ArrayList<Chef_order_listVO>();
-		Chef_order_listVO chef_order_listVO = null;
-
-		Connection con = null;
-		PreparedStatement pstmt = null;
-		ResultSet rs = null;
-
-		try {
-			con = ds.getConnection();
-			pstmt = con.prepareStatement(GET_ALL_BY_CHEF_NO);
-			pstmt.setString(1, chef_no);
-			rs = pstmt.executeQuery();
-			while (rs.next()) {
-				chef_order_listVO = new Chef_order_listVO();
-				chef_order_listVO.setChef_ord_no(rs.getString("chef_ord_no"));
-				chef_order_listVO.setMem_no(rs.getString("mem_no"));
-				chef_order_listVO.setChef_no(rs.getString("chef_no"));
-				chef_order_listVO.setChef_ord_cost(rs.getDouble("chef_ord_cost"));
-				chef_order_listVO.setChef_act_date(rs.getTimestamp("chef_act_date"));
-				chef_order_listVO.setChef_ord_place(rs.getString("chef_ord_place"));
-				chef_order_listVO.setChef_ord_cnt(rs.getString("chef_ord_cnt"));
-				chef_order_listVO.setChef_ord_con(rs.getString("chef_ord_con"));
-				chef_order_listVO.setChef_appr(rs.getString("chef_appr"));
-				chef_order_listVO.setChef_appr_cnt(rs.getString("chef_appr_cnt"));
-				chef_order_listVO.setChef_ord_date(rs.getTimestamp("chef_ord_date"));
-				list.add(chef_order_listVO);
-			}
-
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} finally {
-			if (pstmt != null) {
-				try {
-					pstmt.close();
-				} catch (SQLException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-			}
-			if (con != null) {
-				try {
-					con.close();
-				} catch (SQLException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
+		if (con != null) {
+			try {
+				con.close();
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
 			}
 		}
-		return list;
 	}
+	return list;
+}
+
+@Override
+public List<Chef_order_listVO> findByChef_no(String chef_no) {
+	List<Chef_order_listVO> list = new ArrayList<Chef_order_listVO>();
+	Chef_order_listVO chef_order_listVO = null;
+
+	Connection con = null;
+	PreparedStatement pstmt = null;
+	ResultSet rs = null;
+
+	try {
+		con = ds.getConnection();
+		pstmt = con.prepareStatement(GET_ALL_BY_CHEF_NO);
+		pstmt.setString(1, chef_no);
+		rs = pstmt.executeQuery();
+		while (rs.next()) {
+			chef_order_listVO = new Chef_order_listVO();
+			chef_order_listVO.setChef_ord_no(rs.getString("chef_ord_no"));
+			chef_order_listVO.setMem_no(rs.getString("mem_no"));
+			chef_order_listVO.setChef_no(rs.getString("chef_no"));
+			chef_order_listVO.setChef_ord_cost(rs.getDouble("chef_ord_cost"));
+			chef_order_listVO.setChef_act_date(rs.getTimestamp("chef_act_date"));
+			chef_order_listVO.setChef_ord_place(rs.getString("chef_ord_place"));
+			chef_order_listVO.setChef_ord_cnt(rs.getString("chef_ord_cnt"));
+			chef_order_listVO.setChef_ord_con(rs.getString("chef_ord_con"));
+			chef_order_listVO.setChef_appr(rs.getString("chef_appr"));
+			chef_order_listVO.setChef_appr_cnt(rs.getString("chef_appr_cnt"));
+			chef_order_listVO.setChef_ord_date(rs.getTimestamp("chef_ord_date"));
+			list.add(chef_order_listVO);
+		}
+
+	} catch (SQLException e) {
+		// TODO Auto-generated catch block
+		e.printStackTrace();
+	} finally {
+		if (pstmt != null) {
+			try {
+				pstmt.close();
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+		if (con != null) {
+			try {
+				con.close();
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+	}
+	return list;
+}
 
 }

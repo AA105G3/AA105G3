@@ -4,6 +4,7 @@
 <%@ page import="com.chef.model.*"%>
 <!DOCTYPE html>
 <html lang="">
+<%ChefVO chefVO=(ChefVO)request.getAttribute("chefVO"); %>
 
 <head>
     <meta charset="utf-8">
@@ -40,7 +41,7 @@
         <div class="container">
             <div class="row">
                 <div class="col-xs-12 col-sm-12 text-center">
-                    <h2>私廚資格審核</h2>
+                    <h2>私廚詳情</h2>
                 </div>
             </div>
         </div>
@@ -108,49 +109,10 @@
                     <source src="<%=request.getContextPath()%>/chef/chefImage.do?chef_no=${chefVO.chef_no}&chef_movie2=123" type="video/mp4">
                 </video>
             </div>
-            <div>
-                <FORM METHOD="post" ACTION="<%=request.getContextPath()%>/chef/chef.do">
-			     	<input type="submit" value="通過審核">
-			     	<input type="hidden" name="chef_no" value="${chefVO.chef_no}">
-			     	<input type="hidden" name="chef_chk_cond"	value="1">
-			     	<input type="hidden" name="action"	value="update_chk_cond">
-			    </FORM>
             </div>
-<!--             <div> -->
-<%--                 <FORM METHOD="post" ACTION="<%=request.getContextPath()%>/chef/chef.do"> --%>
-<!-- 			    	<input type="submit" value="不通過刪除"> -->
-<%-- 			    	<input type="hidden" name="chef_no" value="${chefVO.chef_no}"> --%>
-<!-- 			    	<input type="hidden" name="action"value="delete"> -->
-<!-- 			    </FORM> -->
-<!--             </div> -->
-
-			<div>
-            	<button type="button" class="btn btn-default" data-dismiss="modal" id="del_btn">不通過刪除</button>
+            	
             </div>
-            <div class="modal-content" id="delete_msg">
-		     	<FORM METHOD="post" ACTION="<%=request.getContextPath()%>/chef/chef.do">
-		        <div class="modal-header">
-		          <button type="button" class="close" data-dismiss="modal">&times;</button>
-		          <h3 class="modal-title">原因填寫</h3>
-		        </div>
-		        <div class="modal-body">
-
-		          	<div class="form-group form-inline">
-							<label  for="l_type_name" class="col-sm-4 control-label">未通過原因 : </label>
-						<div class="col-sm-8 text-left">
-							<textarea name="rej_reason" id="rej_reason" class="form-control" placeholder="請輸入原因"></textarea>
-						</div>
-					</div>
-		        </div>
-		        <div class="modal-footer">
-		          <input type="submit" class="btn btn-default" name="submitButton" value="送出">
-		          <input type="hidden" name="chef_no" value="${chefVO.chef_no}">
-		          <input type="hidden" name="action" value="delete">
-		          <button type="button" class="btn btn-default" data-dismiss="modal">關閉</button>
-		        </div>
-		        </FORM>
-		      </div>
-		      
+      
 		      
         </div>
     </div>

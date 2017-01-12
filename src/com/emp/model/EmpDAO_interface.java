@@ -9,4 +9,5 @@ public interface EmpDAO_interface {
     public EmpVO findByPrimaryKey(String emp_no);
     public List<EmpVO> getAll();
     public EmpVO findByAccount(String emp_account);
+    public EmpVO findPswByEmail(String emp_email);
 }
