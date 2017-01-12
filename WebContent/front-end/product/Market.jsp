@@ -90,11 +90,11 @@
 </style>
 
 <script>
-   var MyPoint = "/product/InformNewProduct";
+   var ProductMyPoint = "/product/InformNewProduct";
    var host = window.location.host;
    var path = window.location.pathname;
    var webCtx = path.substring(0, path.indexOf('/', 1));
-   var endPointURL = "ws://" + window.location.host + webCtx + MyPoint;
+   var endPointURL = "ws://" + window.location.host + webCtx + ProductMyPoint;
    
    var webSocket;
    
@@ -159,7 +159,7 @@
 	</div>
 </section>
 
-<div class="col-xs-12 col-sm-12 select-menu">
+<!-- <div class="col-xs-12 col-sm-12 select-menu">
 	<nobr class="select-item">
 		<a href="#" class="href-style">最新商品</a>
 	</nobr>
@@ -175,7 +175,7 @@
 	<nobr class="select-item">
 		<a href="#" class="href-style">餐具</a>
 	</nobr>	
-</div>
+</div> -->
 
 
 
@@ -289,5 +289,8 @@
 	}
 
 </script>
+
+<%-- <c:import url="/front-end/chat/inviteChat.jsp" ></c:import> --%>
+
 </body>
 </html>

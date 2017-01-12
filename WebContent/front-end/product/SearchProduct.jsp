@@ -80,7 +80,7 @@
 	}
 	div.message{
 		padding-top: 30px;
-		height: 249px;
+		height: 283px;
 	}
 </style>
 
@@ -113,7 +113,7 @@
 	</div>
 </section>
 
-<div class="col-xs-12 col-sm-12 select-menu">
+<%-- <div class="col-xs-12 col-sm-12 select-menu">
 	<nobr class="select-item">
 		<a href="<%=request.getContextPath()%>/front-end/product/Market.jsp" class="href-style">最新商品</a>
 	</nobr>
@@ -129,7 +129,7 @@
 	<nobr class="select-item">
 		<a href="#" class="href-style">餐具</a>
 	</nobr>	
-</div>
+</div> --%>
 
 
 
@@ -221,6 +221,8 @@
 
 	</div>
 </div>
+
+<c:import url="/front-end/chat/inviteChat.jsp" ></c:import>
 
 <footer>
 	Copyright &copy; 2016 Java Team 3 

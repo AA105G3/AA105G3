@@ -9,19 +9,23 @@
 	pageContext.setAttribute("list",list);
 	AdvVO advVO1 = null;
 	AdvVO advVO2 = null;
-	
-	
-	for(int i = 0; i < 2; i++){
-		int count = (int)(Math.random()*list.size());
-		if(i == 0){
-			advVO1 = list.get(count);	
-			list.remove(count);
+	int l = 1;
+	if(list.size() != 0){
+		
+		if(list.size() > 1){
+			l = 2;
 		}
-		if(i == 1){
-		advVO2 = list.get(count);			
+		for(int i = 0; i < l; i++){
+			int count = (int)(Math.random()*list.size());
+			if(i == 0){
+				advVO1 = list.get(count);	
+				list.remove(count);
+			}
+			if(i == 1){
+			advVO2 = list.get(count);			
+			}
 		}
 	}
-	
 	pageContext.setAttribute("advVO1", advVO1);
 	pageContext.setAttribute("advVO2", advVO2);
 %>
@@ -82,6 +86,8 @@
 
 <div id="sidebar-wrapper">
 	<ul class="adv">
+	
+	<c:if test="${advVO1 != null}">
 		<li>
 			<a href="http://${advVO1.adv_url}" style="text-decoration:none;">
 				<div style="background-image:url('/AA105G3/AdvDBGifReader.do?name=${advVO1.adv_no}'); height:175px; width:175px; background-size: 175px 175px; text-align:center;">
@@ -89,6 +95,9 @@
 				</div>
 			</a>
 		</li>
+	</c:if>
+		
+	<c:if test="${advVO2 != null}">
 		<li>
 			<a href="http://${advVO2.adv_url}" style="text-decoration:none;">
 				<div style="background-image:url('/AA105G3/AdvDBGifReader.do?name=${advVO2.adv_no}'); height:175px; width:175px; background-size: 175px 175px; text-align:center;">
@@ -96,6 +105,7 @@
 				</div>
 			</a>
 		</li>
+	</c:if>
 	</ul>
 </div>
 

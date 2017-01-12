@@ -511,7 +511,7 @@
 						</a>
 					</li>
 					<li class="even">
-						<a href="#">
+						<a href="/AA105G3/front-end/ContactUs.jsp">
 							<i class="fa fa-paper-plane-o cbp-ig-icon" aria-hidden="true"></i>
 							<h3 class="cbp-ig-title">Contact Us</h3>
 							<span class="cbp-ig-category">聯絡我們</span>

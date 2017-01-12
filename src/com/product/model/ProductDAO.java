@@ -54,7 +54,7 @@ public class ProductDAO implements ProductDAO_interface {
 		+ " remove_date,"
 		+ " disc_price,"
 		+ " disc_start_date,"
-		+ " disc_end_date FROM product order by prod_no";
+		+ " disc_end_date FROM product order by prod_no DESC";
 	private static final String GET_ONE_STMT = 
 		"SELECT prod_no,"
 		+ " prod_name,"

@@ -25,6 +25,44 @@ public class MemberServlet extends HttpServlet {
 		req.setCharacterEncoding("UTF-8");
 		String action = req.getParameter("action");
 		
+		if("contact".equals(action)){
+			List<String> errorMsgs = new LinkedList<String>();
+			req.setAttribute("errorMsgs", errorMsgs);
+			
+			MailService mailSvc = new MailService();
+			String usermail = "aa105g3foodtime@gmail.com";
+			String subject = null;
+			String mailcontext = null;
+			String mail = null;
+			String name = null;
+			String subject2 = null;
+			
+			try {
+				mail = req.getParameter("email").trim();
+				name = req.getParameter("name").trim();
+				subject2 = req.getParameter("subject").trim();
+				
+				subject = "聯絡客服通知：" + subject2;
+				mailcontext = "來自	" + name + "(" + mail + ")" + "	的聯絡\n內容如下：\n\n" + req.getParameter("message");
+				
+				mailSvc.sendMail(usermail, subject, mailcontext);
+				
+				String url = "/front-end/ContactUsSuccess.jsp";
+				RequestDispatcher successView = req.getRequestDispatcher(url); // 修改成功後,轉交listOneMember.jsp
+				successView.forward(req, res);
+
+				/***************************其他可能的錯誤處理*************************************/
+			} catch (Exception e) {
+				errorMsgs.add("修改資料失敗:"+e.getMessage());
+				/*RequestDispatcher failureView = req
+						.getRequestDispatcher("/front-end/member/update_member_input.jsp");*/
+				RequestDispatcher failureView = req
+						.getRequestDispatcher("/front-end/ContactUs.jsp");
+				failureView.forward(req, res);
+			}
+			
+		}
+		
 		if("forgetPW".equals(action)){
 			List<String> errorMsgs = new LinkedList<String>();
 			req.setAttribute("errorMsgs", errorMsgs);
@@ -370,7 +408,7 @@ public class MemberServlet extends HttpServlet {
 				
 				/***************************3.修改完成,準備轉交(Send the Success view)*************/
 				req.setAttribute("memberVO", memberVO); // 資料庫update成功後,正確的的memberVO物件,存入req
-				String url = "/front-end/member/listOneMember.jsp";
+				String url = "/front-end/member/memberInfo.jsp";
 				RequestDispatcher successView = req.getRequestDispatcher(url); // 修改成功後,轉交listOneMember.jsp
 				successView.forward(req, res);
 

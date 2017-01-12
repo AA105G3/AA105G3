@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" %>
 <%@ page import="com.product_order.model.*"%>
+<%@ page import="com.product_order_list.model.*"%>
 <%@ page import="java.util.*"%>
 <%@ page import="java.text.*"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
@@ -11,6 +12,11 @@
 	pageContext.setAttribute("list", list);	
 %>
 
+<%
+	
+%>
+
+<jsp:useBean id="Product_order_listSvc" scope="page" class="com.product_order_list.model.Product_order_listService" />
 
 <html>
 <head>
@@ -117,6 +123,15 @@
 	
 	<%@ include file="pages/page1_ByCompositeQuery.file" %>
 	<c:forEach var="product_orderVO" items="${list}" begin="<%=pageIndex%>" end="<%=pageIndex+rowsPerPage-1%>">
+		
+		<c:set var="productFlag" value="false" />
+		
+		<c:forEach var="list_info" items="${Product_order_listSvc.getProduct_order_list_By_One_PK(product_orderVO.prod_ord_no)}">
+			<c:if test="${list_info.deli_status != '0'}" >
+				<c:set var="productFlag" value="true" />
+			</c:if>
+		</c:forEach>
+	
 		<tr align='center' valign='middle' ${(product_orderVO.prod_ord_no==param.prod_ord_no) ? 'bgcolor=#f5deb3':''}>
 			<td>${product_orderVO.prod_ord_no}</td>
 			<%-- <td>${product_orderVO.mem_no}</td> --%>
@@ -154,11 +169,16 @@
 			    <input type="hidden" name="action" value="getPart_For_Display_By_One_PK"></FORM>
 			</td>
 			<td>
+			<c:if test="${productFlag}">
+				無法修改
+			</c:if>
+			<c:if test="${!productFlag}">
 			  <FORM METHOD="post" ACTION="<%=request.getContextPath()%>/product_order/product_order.do">
 			     <input type="submit" class="btn btn-primary btn-style" value="修改">
 			     <input type="hidden" name="prod_ord_no" value="${product_orderVO.prod_ord_no}">
 			     <input type="hidden" name="whichPage"	value="<%=whichPage%>">
 			     <input type="hidden" name="action"	value="getOne_For_Update"></FORM>
+			</c:if>
 			</td>
 	</tr>
 	</c:forEach>
@@ -182,6 +202,8 @@
 
 
 
+
+<c:import url="/front-end/chat/inviteChat.jsp" ></c:import>
 
 <footer id="theFooter">
 	Copyright &copy; 2016 Java Team 3 

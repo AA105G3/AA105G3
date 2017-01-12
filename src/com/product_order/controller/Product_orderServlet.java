@@ -670,16 +670,7 @@ public class Product_orderServlet extends HttpServlet {
 					errorMsgs.add("數量請填數字.");
 				}
 				
-				String deli_status = req.getParameter("deli_status").trim();
-				
-				java.sql.Date deli_time = null;
-				try {
-					deli_time = java.sql.Date.valueOf(req.getParameter("deli_time").trim());
-				} catch (IllegalArgumentException e) {
-					deli_time=new java.sql.Date(System.currentTimeMillis());
-					errorMsgs.add("請輸入商品出貨時間!");
-				}
-				
+				String deli_status = req.getParameter("deli_status").trim();	
 				
 				Vector<Product_order_listVO> buylist = (Vector<Product_order_listVO>) session.getAttribute("shoppingcart");
 				
@@ -691,7 +682,7 @@ public class Product_orderServlet extends HttpServlet {
 					product_order_listVO.setUnit_price(buylist.elementAt(i).getUnit_price());
 					product_order_listVO.setProd_quantity(buylist.elementAt(i).getProd_quantity());
 					product_order_listVO.setDeli_status(deli_status);
-					product_order_listVO.setDeli_time(deli_time);
+					product_order_listVO.setDeli_time(null);
 					
 					/*product_order_listVO.setProd_no(prod_no);
 					product_order_listVO.setUnit_price(unit_price);

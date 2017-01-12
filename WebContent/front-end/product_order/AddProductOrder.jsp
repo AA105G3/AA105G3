@@ -197,7 +197,7 @@ pageContext.setAttribute("buylist",buylist);
 		<input type="hidden" name="unit_price" value="${Product_order_listVO.unit_price}">
 		<input type="hidden" name="prod_quantity" value="${Product_order_listVO.prod_quantity}">
 		<input type="hidden" name="deli_status" value="0">
-		<input type="hidden" name="deli_time" value="2017-12-31">	
+		<input type="hidden" name="deli_time" value="null">	
 	</c:forEach>
 	
 	<%-- <%
@@ -228,6 +228,8 @@ pageContext.setAttribute("buylist",buylist);
 
 
 
+
+<c:import url="/front-end/chat/inviteChat.jsp" ></c:import>
 
 <footer id="theFooter">
 	Copyright &copy; 2016 Java Team 3 

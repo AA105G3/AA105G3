@@ -168,6 +168,8 @@
 
 
 
+<c:import url="/front-end/chat/inviteChat.jsp" ></c:import>
+
 <footer id="theFooter">
 	Copyright &copy; 2016 Java Team 3 
 </footer>
