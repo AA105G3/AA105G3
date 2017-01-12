@@ -14,7 +14,8 @@
 %>
 <%
     Chef_order_listService chef_order_listSvc = new Chef_order_listService();
-    List<Chef_order_listVO> list = chef_order_listSvc.getAll();
+	String mem_no = (String) session.getAttribute("mem_no");
+    List<Chef_order_listVO> list = chef_order_listSvc.findByMem_no(mem_no);
     pageContext.setAttribute("list",list);
 %>
 <%
@@ -121,7 +122,7 @@
 
 
 
-<font size="+3">請填寫訂單資料： </font>
+<font size="+3">本次訂單資料：</font>
 <%-- 錯誤表列 --%>
 <c:if test="${not empty errorMsgs}">
 	<font color='red'>請修正以下錯誤:
@@ -134,84 +135,112 @@
 </c:if>
 
 
-<table border="0">
 
+<table border="0">
+<c:forEach var="chef_ord_listVO" items="${list}" begin="0" end="0">
+	<c:forEach var="chefVO" items="${chef_list}">
+		<c:if test="${chef_ord_listVO.chef_no==chefVO.chef_no}"> 
+		
+		
+		
 	<tr>
 		<td>服務私廚：</td>
 		<td>
-			<c:forEach var="chefVO" items="${chef_list}">
-				<c:if test="${chef_order_listVO.chef_no==chefVO.chef_no}">                   
-                	${chefVO.chef_name}                                                     		
-                </c:if>
-			</c:forEach>		
+	    	${chefVO.chef_name} 
 		</td>
 	</tr>
 	<tr>
 		<td>訂單金額：</td>
-		<td>${chef_order_listVO.chef_ord_cost}</td>
-	</tr>
-	<tr>
-		<td>信用卡卡號：</td>
-		<td><input type="TEXT" name="credr_cad_no" size="45"
-			value="" /></td>
-	</tr>
-	<tr>
-		<td>信用卡有效時期：</td>
-		<td><input type="TEXT" name="valid_date" ></td>
-	</tr>
-	<tr>
-		<td>信用卡驗證碼：</td>
-		<td><input type="TEXT" name="valid_no" size="45"
-			value="" /></td>
-	</tr>
-	<tr>
-		<td>信用卡卡別：</td>
-		<td><select size="1" name="cred_card_type">
-				<option value="0" >VISA
-				<option value="1" >MASTER
-				<option value="2" >JCB
-			</select></td>
+		<td>${chef_ord_listVO.chef_ord_cost}</td>
 	</tr>
 	<tr>
 		<td>訂單執行時間：</td>
-		<td>${chef_order_listVO.chef_act_date}</td>
+		<td>${chef_ord_listVO.chef_act_date}</td>
 	</tr>
 	<tr>
 		<td>訂單執行地點：</td>
-		<td>${chef_order_listVO.chef_ord_place}</td>
+		<td>${chef_ord_listVO.chef_ord_place}</td>
 	</tr>
 	<tr>
 		<td>訂單內容說明：</td>
-		<td>${chef_order_listVO.chef_ord_cnt}</td>
+		<td>${chef_ord_listVO.chef_ord_cnt}</td>
 	</tr>
 	<tr>
 		<td>訂單成立時間：</td>
-		<td>${chef_order_listVO.chef_ord_date}</td>
+		<td>${chef_ord_listVO.chef_ord_date}</td>
 	</tr>
+	
+	
+	
+		</c:if>
+	</c:forEach>
+</c:forEach>	
 </table>
-<br>
+
+
+<!-- <table border="0"> -->
+
+<!-- 	<tr> -->
+<!-- 		<td>服務私廚：</td> -->
+<!-- 		<td> -->
+<%-- 			<c:forEach var="chefVO" items="${chef_list}"> --%>
+<%-- 				<c:if test="${chef_order_listVO.chef_no==chefVO.chef_no}">                    --%>
+<%--                 	${chefVO.chef_name}                                                     		 --%>
+<%--                 </c:if> --%>
+<%-- 			</c:forEach>		 --%>
+<!-- 		</td> -->
+<!-- 	</tr> -->
+<!-- 	<tr> -->
+<!-- 		<td>訂單金額：</td> -->
+<%-- 		<td>${chef_order_listVO.chef_ord_cost}</td> --%>
+<!-- 	</tr> -->
+<!-- 	<tr> -->
+<!-- 		<td>信用卡卡號：</td> -->
+<!-- 		<td><input type="TEXT" name="credr_cad_no" size="45" -->
+<!-- 			value="" /></td> -->
+<!-- 	</tr> -->
+<!-- 	<tr> -->
+<!-- 		<td>信用卡有效時期：</td> -->
+<!-- 		<td><input type="TEXT" name="valid_date" ></td> -->
+<!-- 	</tr> -->
+<!-- 	<tr> -->
+<!-- 		<td>信用卡驗證碼：</td> -->
+<!-- 		<td><input type="TEXT" name="valid_no" size="45" -->
+<!-- 			value="" /></td> -->
+<!-- 	</tr> -->
+<!-- 	<tr> -->
+<!-- 		<td>信用卡卡別：</td> -->
+<!-- 		<td><select size="1" name="cred_card_type"> -->
+<!-- 				<option value="0" >VISA -->
+<!-- 				<option value="1" >MASTER -->
+<!-- 				<option value="2" >JCB -->
+<!-- 			</select></td> -->
+<!-- 	</tr> -->
+<!-- 	<tr> -->
+<!-- 		<td>訂單執行時間：</td> -->
+<%-- 		<td>${chef_order_listVO.chef_act_date}</td> --%>
+<!-- 	</tr> -->
+<!-- 	<tr> -->
+<!-- 		<td>訂單執行地點：</td> -->
+<%-- 		<td>${chef_order_listVO.chef_ord_place}</td> --%>
+<!-- 	</tr> -->
+<!-- 	<tr> -->
+<!-- 		<td>訂單內容說明：</td> -->
+<%-- 		<td>${chef_order_listVO.chef_ord_cnt}</td> --%>
+<!-- 	</tr> -->
+<!-- 	<tr> -->
+<!-- 		<td>訂單成立時間：</td> -->
+<%-- 		<td>${chef_order_listVO.chef_ord_date}</td> --%>
+<!-- 	</tr> -->
+<!-- </table> -->
+<!-- <br> -->
 
 <div class="col-xs-12 col-sm-6">
-	<a href="/AA105G3/front-end/chef_order_list/chefOrderListOfMem.jsp" class="btn btn-warning">取消</a>
+	<a href="/AA105G3/front-end/chef_order_list/chefOrderListOfMem.jsp" class="btn btn-warning">回到訂單頁面</a>
 </div>
 
 <div class="col-xs-12 col-sm-2">
-
-<FORM METHOD="post" ACTION="<%=request.getContextPath()%>/chef_order_list/chef_order_list.do" name="form1">
-	<input type="hidden" name="action" value="accept_ord">
-	<input type="submit" class="btn btn-success" value="結帳" onClick="alert('感謝您的光顧！')">
-	<input type="hidden" name="chef_ord_no" value="<%=chef_order_listVO.getChef_ord_no()%>">
-	<input type="hidden" name="mem_no" value="<%=chef_order_listVO.getMem_no()%>">
-	<input type="hidden" name="chef_no" value="<%=chef_order_listVO.getChef_no()%>">
-	<input type="hidden" name="chef_ord_cost" value="<%=chef_order_listVO.getChef_ord_cost()%>">
-	<input type="hidden" name="chef_act_date" value="<%=chef_order_listVO.getChef_act_date()%>">
-	<input type="hidden" name="chef_ord_place" value="<%=chef_order_listVO.getChef_ord_place()%>">
-	<input type="hidden" name="chef_ord_cnt" value="<%=chef_order_listVO.getChef_ord_cnt()%>">
-	<input type="hidden" name="chef_ord_con" value="2">
-	<input type="hidden" name="chef_ord_date" value="<%=chef_order_listVO.getChef_ord_date()%>">
-	<input type="hidden" name="mem_name" value="<%=memberVO.getMem_name()%>">
-	<input type="hidden" name="mem_email" value="<%=memberVO.getMem_email()%>">
-</FORM>	
+	
 	
 </div>
 
