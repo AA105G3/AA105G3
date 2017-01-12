@@ -79,7 +79,7 @@
 					<span class="icon-bar"></span>
 					<span class="icon-bar"></span>
 				</button>
-				<a href="#" id="navHome">
+				<a href="/AA105G3/back-end/index.jsp" id="navHome">
 					<img src="/AA105G3/images/Logo.png" href="#" id="logo">
 					FOOD TIME分享食光
 				</a>				

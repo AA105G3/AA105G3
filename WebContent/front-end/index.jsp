@@ -407,9 +407,10 @@
 			
 			#Logo img{
 				margin-top: 50px;
-				margin-bottom: 30px;
-				width: 180px;
-				height: 180px;
+				margin-bottom: 10px;
+				width: 250px;
+				height: 220px;
+
 			}
 
 			@media screen and (max-width: 62.75em) {
@@ -471,7 +472,7 @@
 			<div class="main">
 				<ul class="cbp-ig-grid">
 					<li class="odd">
-						<a href="#">
+						<a href="/AA105G3/front-end/recipe/RecipeHome.jsp">
 							<i class="fa fa-book cbp-ig-icon" aria-hidden="true"></i>
 							<h3 class="cbp-ig-title">Recipe</h3>
 							<span class="cbp-ig-category">逛食譜</span>
@@ -479,7 +480,7 @@
 					</li>
 					<li id="Logo">
 					<c:if test="${sessionScope.mem_no ==null}">
-						<a href="#">
+						<a href="/AA105G3/Login/Flogin.jsp">
 						<img src="<%=request.getContextPath()%>/images/Logo.png">
 							
 							<h3 class="cbp-ig-title">－FoodTime－</h3>
@@ -488,7 +489,7 @@
 						</a>
 					</c:if>
 					<c:if test="${sessionScope.mem_no !=null}">
-						<a href="#">
+						<a href="<%=request.getContextPath()%>/member/member.do?action=signOut">
 						<img src="<%=request.getContextPath()%>/images/Logo.png">
 							
 							<h3 class="cbp-ig-title">－FoodTime－</h3>
@@ -499,7 +500,7 @@
 						
 					</li>
 					<li class="odd">
-						<a href="#">
+						<a href="/AA105G3/front-end/product/Market.jsp">
 							<!-- <i class="fa fa-shopping-bag cbp-ig-icon" aria-hidden="true"></i> -->
 							<i class="fa fa-shopping-basket cbp-ig-icon" aria-hidden="true"></i>
 							<!-- <i class="fa fa-cart-plus cbp-ig-icon" aria-hidden="true"></i> -->
@@ -517,7 +518,7 @@
 						</a>
 					</li>
 					<li class="odd">
-						<a href="#">
+						<a href="/AA105G3/front-end/chef/chefList2.jsp">
 							<i class="fa fa-spoon cbp-ig-icon" aria-hidden="true"></i>
 							<h3 class="cbp-ig-title">Chef</h3>
 							<span class="cbp-ig-category">找私廚</span>
@@ -525,14 +526,15 @@
 					</li>
 					<li class="even">
 					<c:if test="${sessionScope.mem_no ==null}">
-						 <a href="#">
+
+						 <a href="/AA105G3/front-end/member/MemberSignUp.jsp">
 							<span class="cbp-ig-icon glyphicon glyphicon-registration-mark"></span>
 							<h3 class="cbp-ig-title">Register</h3>
 							<span class="cbp-ig-category">立即註冊</span>
 						</a>
 					</c:if>
 					<c:if test="${sessionScope.mem_no !=null}">
-						<a href="#">
+						<a href="/AA105G3/front-end/member/memberInfo.jsp">
 							<span class="fa fa-user cbp-ig-icon" aria-hidden="true"></span>
 							<h3 class="cbp-ig-title">Profile</h3>
 							<span class="cbp-ig-category">前往個人頁面</span>

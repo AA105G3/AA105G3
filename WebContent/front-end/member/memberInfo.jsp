@@ -178,6 +178,17 @@
 				width:150px;
 				height:150px;
 			}
+			#theFooter{
+				position : absolute;
+				bottom : 0px;
+				width : 100%;
+				
+				background: #222222;
+				color:#fff ;
+				font-size: 26px;
+				font-family: Reklame;
+				text-align: center;
+			}
 		</style>
 
 	</head>
@@ -220,13 +231,16 @@
 								                <c:if test="${self}">
 								                <li><a href="<%=request.getContextPath()%>/front-end/collection/myCollection.jsp">收藏</a></li>
 								                <li><a href="<%=request.getContextPath()%>/front-end/frd_list/memberFriend.jsp">好友</a></li>
-								                <li><a data-toggle="tab" href="#menu3">商品訂單
+
+								                <li><a href="<%=request.getContextPath()%>/front-end/product_order/ListProductOrder.jsp">商品訂單
+
 								                	<i class="glyphicon glyphicon-new-window"></i></a></li>
-								                <li><a href="#menu3">我的私廚訂單
-								                	<i class="glyphicon glyphicon-new-window"></i></a></li>
-								                <c:if test="${ChefSvc.getOneChefByMem_no(sessionScope.mem_no)!=null}">
-								                <li><a href="#menu3">他人預定訂單
-								                	<i class="glyphicon glyphicon-new-window"></i></a></li>
+									                <li><a href="#menu3">我的私廚訂單
+									                	<i class="glyphicon glyphicon-new-window"></i></a></li>
+									                <c:if test="${ChefSvc.getOneChefByMem_no(sessionScope.mem_no)!=null}">
+									                <li><a href="#menu3">他人預定訂單
+									                	<i class="glyphicon glyphicon-new-window"></i></a></li>
+									                </c:if>
 								                </c:if>
 								                	
 								                </c:if>
@@ -327,7 +341,7 @@
 						 </c:if>
 					
 					
-						 
+
 						 <c:if test="${!self}">
 						     <c:if test="${memberVO.mem_no != sessionScope.mem_no}">
 						     
@@ -377,7 +391,9 @@
 	    	</div>
 	  	</div>
 
-	<c:import url="/front-end/frontFooter.jsp" ></c:import>
+	<footer id="theFooter">
+		Copyright &copy; 2016 Java Team 3 
+	</footer>
 
 
 		<script src="https://code.jquery.com/jquery.js"></script>

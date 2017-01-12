@@ -288,6 +288,17 @@
 				width:150px;
 				height:150px;
 			}
+			#theFooter{
+				position : absolute;
+				bottom : 0px;
+				width : 100%;
+				
+				background: #222222;
+				color:#fff ;
+				font-size: 26px;
+				font-family: Reklame;
+				text-align: center;
+			}
 		</style>
 
 	</head>
@@ -489,7 +500,7 @@
 
 
 
-	<footer>
+	<footer id="theFooter">
 		Copyright &copy; 2016 Java Team 3 
 	</footer>
 		<script src="https://code.jquery.com/jquery.js"></script>

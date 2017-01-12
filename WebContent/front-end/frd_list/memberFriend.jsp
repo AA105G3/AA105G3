@@ -228,18 +228,31 @@
 				color:steelblue !important;
 				font-weight:bold ;
 			}
+			#theFooter{
+				position : absolute;
+				bottom : 0px;
+				width : 100%;
+				
+				background: #222222;
+				color:#fff ;
+				font-size: 26px;
+				font-family: Reklame;
+				text-align: center;
+			}
 		</style>
 
 	</head>
 	
 	
 	<body>
-		<c:import url="/front-end/frontNavbar.jsp" ></c:import>
-				
-		<header class="header-style">
-			<c:import url="/front-end/recipe/RecipeSearchBar.jsp" ></c:import>
-		</header>
-		<div class="container">
+
+	      	<c:import url="/front-end/frontNavbar.jsp" ></c:import>	
+
+					<header class="header-style">
+						<c:import url="/front-end/recipe/RecipeSearchBar.jsp" ></c:import>
+					</header>
+					<div class="container">
+
 	    	<div class="row">
 						<div class="col-xs-12 col-sm-8">
 			   				
@@ -481,7 +494,7 @@
 <c:import url="/front-end/chat/inviteChat.jsp" ></c:import>
 
 
-	<footer>
+	<footer id="theFooter">
 		Copyright &copy; 2016 Java Team 3 
 	</footer>
 		<script src="https://code.jquery.com/jquery.js"></script>

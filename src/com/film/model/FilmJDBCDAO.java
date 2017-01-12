@@ -21,7 +21,7 @@ public class FilmJDBCDAO implements FilmDAO_interface {
 			"SELECT recipe_no,"
 			+ " film_file FROM film where recipe_no = ?";
 		private static final String UPDATE = 
-			"UPDATE film set film_file=?,"
+			"UPDATE film set film_file=?"
 			+ "where recipe_no = ?";
 		
 	@Override

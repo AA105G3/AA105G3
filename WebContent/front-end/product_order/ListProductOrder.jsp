@@ -6,7 +6,7 @@
 
 <%
 	Product_orderService product_orderSvc = new Product_orderService();
-	String mem_no = request.getParameter("mem_no"); 
+	String mem_no =(String) session.getAttribute("mem_no");
 	List list = product_orderSvc.getProduct_order_By_Mem_no(mem_no);
 	pageContext.setAttribute("list", list);	
 %>
@@ -82,63 +82,7 @@
 
 
 
-<!--START SCROLL TOP BUTTON -->
-<a class="scrollToTop" href="#">
-	<i class="fa fa-angle-up"></i>
-	<span>Top</span>
-</a>
-<!-- END SCROLL TOP BUTTON -->
-
-<div class="navbar navbar-default navbar-fixed-top navbar-inverse mu-main-navbar" >
-	<div class="container">
-		<div class="navbar-header">
-			<button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar-ex-collapse">
-				<span class="sr-only">Toggle navigation</span>
-	            <span class="icon-bar"></span>
-	            <span class="icon-bar"></span>
-	            <span class="icon-bar"></span>
-			</button>
-			<a href="#home" class="foodtime"><img alt="FoodTime" src="<%=request.getContextPath()%>/images/Logo.png">分享食光</a>
-		</div>
-		<div class="collapse navbar-collapse" id="navbar-ex-collapse">
-			<ul class="nav navbar-nav navbar-right mu-main-nav">
-				<li >
-					<a href="#home">首頁</a>
-	            </li>
-	            <li>
-					<a href="#mu-recipe">食譜</a>
-	            </li>
-	            <li>
-					<a href="#mu-video">影音</a>
-	            </li>
-	            <li>
-					<a href="#mu-chef">私廚</a>
-	            </li>
-	            <li>
-					<a href="#mu-stream">實況</a>
-	            </li>
-	            <li>
-					<a href="#mu-market">市集</a>
-	            </li>
-	            <li>
-					<a href="#mu-contact">聯絡我們</a>
-	            </li>
-	            <li>
-					<a href="#" class="dropdown-toggle" data-toggle="dropdown">UserID<b class="caret"></b></a>
-					<ul class="dropdown-menu">
-						<li><a href="#">編輯個人資訊</a></li>
-						<li><a href="#">個人頁面</a></li>
-						<li><a href="#">我的最愛</a></li>
-						<li><a href="#">登出</a></li>
-					</ul>
-				</li>
-				<li>
-					<a href="#">註冊</a>
-				</li>
-			</ul>
-		</div>
-	</div>
-</div>
+<c:import url="/front-end/frontNavbar.jsp"></c:import>
 
 
 
