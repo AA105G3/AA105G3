@@ -48,8 +48,8 @@
 						</div>
 					    <div id="aaa" class="panel-collapse collapse" role="tabpanel" aria-labelledby="panel1">
 					      	<div class="list-group">
-					      		<a href="/AA105G3/back-end/chef/ChefCheckListPage.jsp" class="list-group-item">私廚資格審核</a>
-					      		<a href="/AA105G3/back-end/chef/ChefCheckPage.jsp" class="list-group-item">私廚資料管理</a>
+					      		<a href="#" class="list-group-item">私廚資格審核</a>
+					      		<a href="#" class="list-group-item">私廚資料管理</a>
 					      	</div>
 					    </div>
 					</div>
@@ -162,7 +162,7 @@
 					    </div>
 					    <div id="hhh" class="panel-collapse collapse" role="tabpanel" aria-labelledby="panel8">
 					      	<div class="list-group">
-					        	<a href="/AA105G3/back-end/chef_order_list/chefOrderListOfBack.jsp" class="list-group-item">私廚訂單查詢</a>
+					        	<a href="#" class="list-group-item">私廚訂單查詢</a>
 					      	</div>
 					    </div>
 					</div>

@@ -68,16 +68,10 @@
     	bottom: 0;
 	}
 	#theFooter{
-
+		/* 對應skin */
 		position : absolute;
 		bottom : 0px;
 		width : 100%;
-		
-		background: #222222;
-		color:#fff ;
-		font-size: 26px;
-		font-family: Reklame;
-		text-align: center;
 	}
 	.list-style{
 		padding-top : 100px;
@@ -88,12 +82,6 @@
 	}
 	tr{
 		height: 50px;
-	}
-	body{
-		background: #efede8;
-		padding-top: 90px;
-		position : relative;
-		height : 100%;
 	}
 </style>
 
@@ -107,9 +95,69 @@
 
 <div id="skin">
 
-<header>
-	<c:import url="/front-end/frontNavbar.jsp"></c:import>
-</header>
+
+
+
+
+<!--START SCROLL TOP BUTTON -->
+<a class="scrollToTop" href="#">
+	<i class="fa fa-angle-up"></i>
+	<span>Top</span>
+</a>
+<!-- END SCROLL TOP BUTTON -->
+
+<div class="navbar navbar-default navbar-fixed-top navbar-inverse mu-main-navbar" >
+	<div class="container">
+		<div class="navbar-header">
+			<button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar-ex-collapse">
+				<span class="sr-only">Toggle navigation</span>
+	            <span class="icon-bar"></span>
+	            <span class="icon-bar"></span>
+	            <span class="icon-bar"></span>
+			</button>
+			<a href="#home" class="foodtime"><img alt="FoodTime" src="<%=request.getContextPath()%>/images/Logo.png">分享食光</a>
+		</div>
+		<div class="collapse navbar-collapse" id="navbar-ex-collapse">
+			<ul class="nav navbar-nav navbar-right mu-main-nav">
+				<li >
+					<a href="#home">首頁</a>
+	            </li>
+	            <li>
+					<a href="#mu-recipe">食譜</a>
+	            </li>
+	            <li>
+					<a href="#mu-video">影音</a>
+	            </li>
+	            <li>
+					<a href="#mu-chef">私廚</a>
+	            </li>
+	            <li>
+					<a href="#mu-stream">實況</a>
+	            </li>
+	            <li>
+					<a href="#mu-market">市集</a>
+	            </li>
+	            <li>
+					<a href="#mu-contact">聯絡我們</a>
+	            </li>
+	            <li>
+					<a href="#" class="dropdown-toggle" data-toggle="dropdown">UserID<b class="caret"></b></a>
+					<ul class="dropdown-menu">
+						<li><a href="#">編輯個人資訊</a></li>
+						<li><a href="#">個人頁面</a></li>
+						<li><a href="#">我的最愛</a></li>
+						<li><a href="#">登出</a></li>
+					</ul>
+				</li>
+				<li>
+					<a href="#">註冊</a>
+				</li>
+			</ul>
+		</div>
+	</div>
+</div>
+
+
 
 
 
@@ -137,14 +185,8 @@
 <table border="0">
 
 	<tr>
-		<td>服務私廚：</td>
-		<td>
-			<c:forEach var="chefVO" items="${chef_list}">
-				<c:if test="${chef_order_listVO.chef_no==chefVO.chef_no}">                   
-                	${chefVO.chef_name}                                                     		
-                </c:if>
-			</c:forEach>		
-		</td>
+		<td>會員帳號：</td>
+		<td>${chef_order_listVO.mem_no}</td>
 	</tr>
 	<tr>
 		<td>訂單金額：</td>
@@ -192,14 +234,14 @@
 <br>
 
 <div class="col-xs-12 col-sm-6">
-	<a href="/AA105G3/front-end/chef_order_list/chefOrderListOfMem.jsp" class="btn btn-warning">取消</a>
+	<a href="/AA105G3/front-end/chef_order_list/chefOrderListOfMem.jsp" class="btn btn-default">取消</a>
 </div>
 
 <div class="col-xs-12 col-sm-2">
 
 <FORM METHOD="post" ACTION="<%=request.getContextPath()%>/chef_order_list/chef_order_list.do" name="form1">
 	<input type="hidden" name="action" value="accept_ord">
-	<input type="submit" class="btn btn-success" value="結帳" onClick="alert('感謝您的光顧！')">
+	<input type="submit" class="btn btn-danger" value="結帳" onClick="alert('感謝您的光顧！')">
 	<input type="hidden" name="chef_ord_no" value="<%=chef_order_listVO.getChef_ord_no()%>">
 	<input type="hidden" name="mem_no" value="<%=chef_order_listVO.getMem_no()%>">
 	<input type="hidden" name="chef_no" value="<%=chef_order_listVO.getChef_no()%>">
@@ -221,7 +263,7 @@
 
 
 <footer id="theFooter">
-		Copyright &copy; 2016 Java Team 3 
+	Copyright &copy; 2016 Java Team 3 
 </footer>
 
 
