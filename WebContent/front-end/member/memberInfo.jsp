@@ -237,7 +237,7 @@
 								                	<i class="glyphicon glyphicon-new-window"></i></a></li>
 									                <li><a href="/AA105G3/front-end/chef_order_list/chefOrderListOfMem.jsp">我的私廚訂單
 									                	<i class="glyphicon glyphicon-new-window"></i></a></li>
-									                <c:if test="${chefSvc.getOneChefByMem_no(sessionScope.mem_no)!=null}">
+									                <c:if test="${chefSvc.getOneChefByMem_no(sessionScope.mem_no).chef_name!=null}">
 									                <li><a href="/AA105G3/front-end/chef_order_list/ChefOrderListOfChef2.jsp">我的會員訂單
 									                	<i class="glyphicon glyphicon-new-window"></i></a></li>
 									                </c:if>
