@@ -6,6 +6,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
+import com.film.model.FilmVO;
 import com.recipe_cont.model.Recipe_contVO;
 
 
@@ -30,7 +31,7 @@ public class RecipeService
 		return recipeVO;
 	}
 	
-	public RecipeVO addRecipeWith_Recipe_conts(String mem_no,String recipe_name,String recipe_intro,String food_mater,byte[] recipe_pic,String recipe_edit,List<Recipe_contVO> list) {
+	public RecipeVO addRecipeWith_Recipe_conts(String mem_no,String recipe_name,String recipe_intro,String food_mater,byte[] recipe_pic,String recipe_edit,List<Recipe_contVO> list,FilmVO filmVO) {
 
 
 		RecipeVO recipeVO = new RecipeVO();
@@ -42,7 +43,7 @@ public class RecipeService
 		recipeVO.setRecipe_pic(recipe_pic);
 		recipeVO.setRecipe_edit(recipe_edit);
 		
-		dao.insertWithRecipe_conts(recipeVO, list);
+		dao.insertWithRecipe_conts(recipeVO, list,filmVO);
 		
 		return recipeVO;
 	}

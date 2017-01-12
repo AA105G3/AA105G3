@@ -5,7 +5,6 @@
 <%@ page import="com.frd_list.model.*"%>
 
 <% 		
-	//session.setAttribute("mem_no","M00000001");
 	String mem_no =(String) session.getAttribute("mem_no");
 	Frd_listService frd_listSvc = new Frd_listService();
 	List list = frd_listSvc.getMyFriends(mem_no);
@@ -246,12 +245,14 @@
 	
 	
 	<body>
-		<c:import url="/front-end/frontNavbar.jsp" ></c:import>	
+
+	      	<c:import url="/front-end/frontNavbar.jsp" ></c:import>	
 
 					<header class="header-style">
 						<c:import url="/front-end/recipe/RecipeSearchBar.jsp" ></c:import>
 					</header>
 					<div class="container">
+
 	    	<div class="row">
 						<div class="col-xs-12 col-sm-8">
 			   				
@@ -262,10 +263,12 @@
 								                <li><a  href="<%=request.getContextPath()%>/member/member.do?action=getMemberInfo&mem_no=${sessionScope.mem_no}" >食譜</a></li>
 								                <li><a  href="<%=request.getContextPath()%>/front-end/collection/myCollection.jsp">收藏</a></li>
 								                <li><a  href="<%=request.getContextPath()%>/front-end/frd_list/memberFriend.jsp" id="href-style">好友</a></li>
-								                <li><a  href="#menu3">商品訂單
+								                <li><a href="<%=request.getContextPath()%>/front-end/product_order/ListProductOrder.jsp">商品訂單
 								                	<i class="glyphicon glyphicon-new-window"></i></a></li>
-								                <li><a href="#menu3">私廚訂單
-								                	<i class="glyphicon glyphicon-new-window"></i></a></li>
+								                <li><a href="#menu3">我的私廚訂單
+									                	<i class="glyphicon glyphicon-new-window"></i></a></li>
+									                <li><a href="#menu3">我的會員訂單
+									                	<i class="glyphicon glyphicon-new-window"></i></a></li>
 								            </ul>
 								        </div>
 								    </nav>

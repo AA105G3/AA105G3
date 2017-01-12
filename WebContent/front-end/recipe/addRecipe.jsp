@@ -2,7 +2,6 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ page import="com.recipe.model.*"%>
 <%@ page import="com.recipe_cont.model.*"%>
-<% session.setAttribute("mem_no", "M00000005"); %>
 
 <jsp:useBean id="recipeVO" scope="request" class="com.recipe.model.RecipeVO"/>
 <jsp:useBean id="ingredients" scope="request" class="java.util.ArrayList"/>
@@ -26,7 +25,7 @@
 	
 		body{
 			background: #efede8;
-			padding-top: 50px;
+			padding-top: 90px;
 		}
 		.recipe-title h3{
 			margin-bottom: 5px;
@@ -34,6 +33,8 @@
 		.sec-recipe-name{
 			margin-top: 5px;
 			margin-bottom: 10px;
+			font-size:20px;
+			height:40px;
 		}
 		#image0{
 			width: 300px;
@@ -136,8 +137,28 @@
 		.write-recipe{
 			margin-right:190px;
 		}
+		.createRecipe-btn{
+			margin-top:40px;
+			padding:5px 30px;
+		}
 		.cancelRecipe-btn{
-		margin-top:10px;
+			margin-top:10px;
+			padding:5px 30px;
+		}
+		.col-sm-offset-2.col-sm-7{
+			border:1px solid gray;
+			background:#fff;
+		}
+		.video-area{
+			border-top:1px solid #cfccbe;
+			border-bottom:1px solid #cfccbe;
+			margin:20px 2% 0px 2%;
+			width:96%;
+			padding:15px 5px;
+			
+		}
+		.video-area h3{
+			margin:0px 0px 10px 0px;
 		}
 	</style>
 </head>
@@ -152,7 +173,7 @@
 	</ul>
 	</font>
 </c:if>
-	
+	<c:import url="/front-end/frontNavbar.jsp" ></c:import>
 	<header>
 	<c:import url="/front-end/recipe/RecipeSearchBar.jsp" ></c:import>
 	</header>
@@ -240,6 +261,15 @@
 								增加食材
 							</div>
 						</div>
+						
+						
+						<div class="col-xs-12 col-sm-12 video-area">
+						<h3>上傳影片</h3>
+							<input type="file" name="film_file">
+						</div>
+						
+						
+						
 						<div class="col-xs-12 col-sm-12 step-area">
 							<div class="step-title">
 								<h3>步驟</h3>
@@ -279,7 +309,7 @@
 										<input type="hidden" name="step" value="${recipe_contVO.step}">
 									</div>
 									<div class="col-xs-12 col-sm-6 step-trash-wrapper">
-										<a class="btn"><i class="glyphicon glyphicon-plus step-plus"></i></a>
+										<a class="btn"><i id="plus_${recipe_contVO.step}" class="glyphicon glyphicon-plus step-plus"></i></a>
 										<a class="btn"><i class="glyphicon glyphicon-trash step-trash"></i></a>
 									</div>
 									<div class="step-cont-wrapper">
@@ -300,7 +330,7 @@
 					<button class="btn btn-primary createRecipe-btn" type="submit" name="action" value="insert">發布</button>
 				</div>
 				<div>
-					<button class="btn btn-danger cancelRecipe-btn" type="button" >取消</button>
+					<button class="btn btn-danger cancelRecipe-btn" id="cancelRecipe-btn" type="button" >取消</button>
 				</div>
 			</div>				
 
@@ -315,7 +345,11 @@
 	<script src="https://code.jquery.com/jquery.js"></script>
 	<script src="https://netdna.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
 	<script type="text/javascript">
-
+	
+	
+	$('#cancelRecipe-btn').click(function(){
+		window.history.go(-1);
+	})
 	
 	// 增加食材輸入區塊
 		$("#moreFoodMater").click(function(){
@@ -356,22 +390,40 @@
 			
 			var indexNo=$(this).attr("id").replace("plus_","");
 			$(html).insertAfter("#div_"+indexNo);
-			var stepArray = $("h2")
-			for(var i = 0;i<=stepArray.length;i++){
+			var stepArray = $(".step-wrapper h2")
+			
+			for(var i = 0;i<stepArray.length;i++){
 				stepArray[i].innerHTML=i+1;
 			}
 		}
 	//步驟區垃圾桶
-
+	$('body').click(function(){
+		step = $(".step-plus").length+1;
+		//image = $('.step-wrapper img');
+		stepDiv = $('.step-wrapper');
+		plus = $('.step-plus');
+		var stepValue = $('.step-wrapper input[name="step"]')
+		for(var i = 0;i<step-1;i++){
+			stepValue[i].value = i+1;
+			stepDiv[i].id = 'div_'+(i+1);
+			plus[i].id = 'plus_'+(i+1);
+		}
+		
+	})
+	
 	$('body').on('click', '.step-trash',dropStep);
 
 		function dropStep(){
 
 			$(this).parent().parent().parent().parent().empty().remove();
-			var stepArray = $("h2")
-			for(var i = 0;i<=stepArray.length;i++){
+			var stepArray = $(".step-wrapper h2")
+			
+			for(var i = 0;i<stepArray.length;i++){
 				stepArray[i].innerHTML=i+1;
 			}
+			
+			
+			
 		}
 
 		$('body').on('click', '.step-plus',appendRecipeCont);

@@ -1,6 +1,9 @@
 package com.chef_order_list.model;
 
 import java.util.*;
+
+import com.frd_list.model.Frd_listVO;
+
 import java.sql.*;
 
 public class Chef_order_listJDBCDAO implements Chef_order_listDAO_interface {
@@ -19,6 +22,10 @@ public class Chef_order_listJDBCDAO implements Chef_order_listDAO_interface {
 		"DELETE FROM chef_order_list where chef_ord_no = ?";
 	private static final String UPDATE = 
 		"UPDATE chef_order_list set chef_ord_cost=?, chef_act_date=?, chef_ord_place=?, chef_ord_cnt=?, chef_ord_con=? where chef_ord_no = ?";
+
+//	by cyh
+	private static final String GET_ALL_BY_MEM_NO = "select chef_ord_no,mem_no,chef_no,chef_ord_cost,chef_act_date,chef_ord_place,chef_ord_cnt,chef_ord_con,chef_appr,chef_appr_cnt,chef_ord_date from chef_order_list where mem_no = ? order by chef_ord_date desc";
+	private static final String GET_ALL_BY_CHEF_NO = "select chef_ord_no,mem_no,chef_no,chef_ord_cost,chef_act_date,chef_ord_place,chef_ord_cnt,chef_ord_con,chef_appr,chef_appr_cnt,chef_ord_date from chef_order_list where chef_no = ?";
 
 	@Override
 	public void insert(Chef_order_listVO chef_order_listVO) {
@@ -299,6 +306,123 @@ public class Chef_order_listJDBCDAO implements Chef_order_listDAO_interface {
 		}
 		return list;
 	}
+	
+//	by cyh
+	@Override
+	public List<Chef_order_listVO> findByMem_no(String mem_no) {
+		List<Chef_order_listVO> list = new ArrayList<Chef_order_listVO>();
+		Chef_order_listVO chef_order_listVO = null;
+
+		Connection con = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+
+		try {
+			Class.forName(driver);
+			con = DriverManager.getConnection(url, userid, passwd);
+			pstmt = con.prepareStatement(GET_ALL_BY_MEM_NO);
+			pstmt.setString(1, mem_no);
+			rs = pstmt.executeQuery();
+			while (rs.next()) {
+				chef_order_listVO = new Chef_order_listVO();
+				chef_order_listVO.setChef_ord_no(rs.getString("chef_ord_no"));
+				chef_order_listVO.setMem_no(rs.getString("mem_no"));
+				chef_order_listVO.setChef_no(rs.getString("chef_no"));
+				chef_order_listVO.setChef_ord_cost(rs.getDouble("chef_ord_cost"));
+				chef_order_listVO.setChef_act_date(rs.getTimestamp("chef_act_date"));
+				chef_order_listVO.setChef_ord_place(rs.getString("chef_ord_place"));
+				chef_order_listVO.setChef_ord_cnt(rs.getString("chef_ord_cnt"));
+				chef_order_listVO.setChef_ord_con(rs.getString("chef_ord_con"));
+				chef_order_listVO.setChef_appr(rs.getString("chef_appr"));
+				chef_order_listVO.setChef_appr_cnt(rs.getString("chef_appr_cnt"));
+				chef_order_listVO.setChef_ord_date(rs.getTimestamp("chef_ord_date"));
+				list.add(chef_order_listVO);
+			}
+
+		} catch (ClassNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} finally {
+			if (pstmt != null) {
+				try {
+					pstmt.close();
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+			if (con != null) {
+				try {
+					con.close();
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+		}
+		return list;
+	}
+	
+	@Override
+	public List<Chef_order_listVO> findByChef_no(String chef_no) {
+		List<Chef_order_listVO> list = new ArrayList<Chef_order_listVO>();
+		Chef_order_listVO chef_order_listVO = null;
+
+		Connection con = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+
+		try {
+			Class.forName(driver);
+			con = DriverManager.getConnection(url, userid, passwd);
+			pstmt = con.prepareStatement(GET_ALL_BY_CHEF_NO);
+			pstmt.setString(1, chef_no);
+			rs = pstmt.executeQuery();
+			while (rs.next()) {
+				chef_order_listVO = new Chef_order_listVO();
+				chef_order_listVO.setChef_ord_no(rs.getString("chef_ord_no"));
+				chef_order_listVO.setMem_no(rs.getString("mem_no"));
+				chef_order_listVO.setChef_no(rs.getString("chef_no"));
+				chef_order_listVO.setChef_ord_cost(rs.getDouble("chef_ord_cost"));
+				chef_order_listVO.setChef_act_date(rs.getTimestamp("chef_act_date"));
+				chef_order_listVO.setChef_ord_place(rs.getString("chef_ord_place"));
+				chef_order_listVO.setChef_ord_cnt(rs.getString("chef_ord_cnt"));
+				chef_order_listVO.setChef_ord_con(rs.getString("chef_ord_con"));
+				chef_order_listVO.setChef_appr(rs.getString("chef_appr"));
+				chef_order_listVO.setChef_appr_cnt(rs.getString("chef_appr_cnt"));
+				chef_order_listVO.setChef_ord_date(rs.getTimestamp("chef_ord_date"));
+				list.add(chef_order_listVO);
+			}
+
+		} catch (ClassNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} finally {
+			if (pstmt != null) {
+				try {
+					pstmt.close();
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+			if (con != null) {
+				try {
+					con.close();
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+		}
+		return list;
+	}
 
 	public static void main(String[] args) {
 
@@ -347,6 +471,39 @@ public class Chef_order_listJDBCDAO implements Chef_order_listDAO_interface {
 
 		// 查詢
 //		List<Chef_order_listVO> list = dao.getAll();
+//		for (Chef_order_listVO aChef_order_list : list) {
+//			System.out.print(aChef_order_list.getChef_ord_no() + ",");
+//			System.out.print(aChef_order_list.getMem_no() + ",");
+//			System.out.print(aChef_order_list.getChef_no() + ",");
+//			System.out.print(aChef_order_list.getChef_ord_cost() + ",");
+//			System.out.print(new java.text.SimpleDateFormat().format(aChef_order_list.getChef_act_date()) + ",");
+//			System.out.print(aChef_order_list.getChef_ord_place() + ",");
+//			System.out.print(aChef_order_list.getChef_ord_cnt() + ",");
+//			System.out.print(aChef_order_list.getChef_ord_con() + ",");
+//			System.out.print(aChef_order_list.getChef_appr() + ",");
+//			System.out.print(aChef_order_list.getChef_appr_cnt()+",");
+//			System.out.print(new java.text.SimpleDateFormat("yyyy/MM/dd hh:mm:ss").format(aChef_order_list.getChef_ord_date()) + ",");
+//			System.out.println();
+//		}
+		
+//		by cyh
+//		List<Chef_order_listVO> list = dao.findByMem_no("M00000002");
+//		for (Chef_order_listVO aChef_order_list : list) {
+//			System.out.print(aChef_order_list.getChef_ord_no() + ",");
+//			System.out.print(aChef_order_list.getMem_no() + ",");
+//			System.out.print(aChef_order_list.getChef_no() + ",");
+//			System.out.print(aChef_order_list.getChef_ord_cost() + ",");
+//			System.out.print(new java.text.SimpleDateFormat().format(aChef_order_list.getChef_act_date()) + ",");
+//			System.out.print(aChef_order_list.getChef_ord_place() + ",");
+//			System.out.print(aChef_order_list.getChef_ord_cnt() + ",");
+//			System.out.print(aChef_order_list.getChef_ord_con() + ",");
+//			System.out.print(aChef_order_list.getChef_appr() + ",");
+//			System.out.print(aChef_order_list.getChef_appr_cnt()+",");
+//			System.out.print(new java.text.SimpleDateFormat("yyyy/MM/dd hh:mm:ss").format(aChef_order_list.getChef_ord_date()) + ",");
+//			System.out.println();
+//		}
+		
+//		List<Chef_order_listVO> list = dao.findByChef_no("C00000002");
 //		for (Chef_order_listVO aChef_order_list : list) {
 //			System.out.print(aChef_order_list.getChef_ord_no() + ",");
 //			System.out.print(aChef_order_list.getMem_no() + ",");

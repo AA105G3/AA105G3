@@ -19,131 +19,131 @@
 			<script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
 		<![endif]-->
 		<style type="text/css">
-#top_header{
- 	background: #f5f5dc; 
-}
-#hyper_link{
-	background: #f5f5dc;
-}
-#table_title{
-	font-size: 25px;
-	padding:5px 0px;
-}
-#menu_zone{
-	background: #f5deb3;
-}
-#accordion2{
-	margin-top: 15px;
-}
-#accordion2 div{
-	background: #fee4cd;
-}
-#logo{
-	width: 50px;
-	height: 50px;
-}
-#head_icon{
-	width: 25px;
-	height: 25px;
-	margin-top: 13px;
-}
-
-thead{
-	;
-}
-
-#the_footer{
-	clear:both;
-	text-align:center;
-	background: #2b1100;
-	clear: both;
-	position:fixed ;
-	bottom: 0px;
-	width: 100%;
-}
-.lightcolor{
-	color: #fff;
-}
-.pagination{
-	margin-left: 300px;
-}
-#search{
-	width: 350px;
-	text-align: center;
-}
-
-thead{
-	background: #e2fede;
-}
-/*tabs panel*/
-.type-title{
-	margin-bottom: 20px;
-}
-.head-wrapper{
-	padding: 0px;
-}
-
-.aType-Wrapper{
-	padding: 0px;
-}
-
-.addType{
-	margin:30px 3px 5px 0px;
-	font-size: 15px; 
-	padding: 5px 25px;
-}
-
-.type_no_head{
-	width: 150px;
-	font-size: 17px;
-}
-.type_name_head{
-	width: 160px;
-	text-align: center;
-	font-size: 17px;
-}
-.attachment_head{
-	width: 62%;
-	font-size: 17px;
-}
-.type_no,.type_name,.attachment,.edit_head{
-	font-size: 17px;
-}
-.type_name,.edit_head,.edit{
-	text-align: center;
-}
-.glyphicon-pencil.btn ,.glyphicon-trash.btn{
-	padding: 0px 5px;
-	font-size: 17px;
-	border:1px solid;
-	border-radius: 20px;
-	font-weight: bold;
-}
-.glyphicon-pencil.btn:hover,.glyphicon-trash.btn:hover{
-	color: red;
-}
-
-
-#type-info-input{
-	margin-top: 70px;
-}
-#type-info-input .modal-header{
-	text-align: center;
-}
-#type-info-input label,#type-info-input input[type="text"]{
-	font-size: 17px;
-}
-
-#deleteAttachment{
-	height: 34px;
-	font-size: 16px;
-}
-#deleteAttachment option{
-	font-size: 16px;
-}
-#addLType{
-	margin-top: 50px;
-}
+		#top_header{
+		 	background: #f5f5dc; 
+		}
+		#hyper_link{
+			background: #f5f5dc;
+		}
+		#table_title{
+			font-size: 25px;
+			padding:5px 0px;
+		}
+		#menu_zone{
+			background: #f5deb3;
+		}
+		#accordion2{
+			margin-top: 15px;
+		}
+		#accordion2 div{
+			background: #fee4cd;
+		}
+		#logo{
+			width: 50px;
+			height: 50px;
+		}
+		#head_icon{
+			width: 25px;
+			height: 25px;
+			margin-top: 13px;
+		}
+		
+		thead{
+			;
+		}
+		
+		#the_footer{
+			clear:both;
+			text-align:center;
+			background: #2b1100;
+			clear: both;
+			position:fixed ;
+			bottom: 0px;
+			width: 100%;
+		}
+		.lightcolor{
+			color: #fff;
+		}
+		.pagination{
+			margin-left: 300px;
+		}
+		#search{
+			width: 350px;
+			text-align: center;
+		}
+		
+		thead{
+			background: #e2fede;
+		}
+		/*tabs panel*/
+		.type-title{
+			margin-bottom: 20px;
+		}
+		.head-wrapper{
+			padding: 0px;
+		}
+		
+		.aType-Wrapper{
+			padding: 0px;
+		}
+		
+		.addType{
+			margin:30px 3px 5px 0px;
+			font-size: 15px; 
+			padding: 5px 25px;
+		}
+		
+		.type_no_head{
+			width: 150px;
+			font-size: 17px;
+		}
+		.type_name_head{
+			width: 160px;
+			text-align: center;
+			font-size: 17px;
+		}
+		.attachment_head{
+			width: 62%;
+			font-size: 17px;
+		}
+		.type_no,.type_name,.attachment,.edit_head{
+			font-size: 17px;
+		}
+		.type_name,.edit_head,.edit{
+			text-align: center;
+		}
+		.glyphicon-pencil.btn ,.glyphicon-trash.btn{
+			padding: 0px 5px;
+			font-size: 17px;
+			border:1px solid;
+			border-radius: 20px;
+			font-weight: bold;
+		}
+		.glyphicon-pencil.btn:hover,.glyphicon-trash.btn:hover{
+			color: red;
+		}
+		
+		
+		#type-info-input{
+			margin-top: 70px;
+		}
+		#type-info-input .modal-header{
+			text-align: center;
+		}
+		#type-info-input label,#type-info-input input[type="text"]{
+			font-size: 17px;
+		}
+		
+		#deleteAttachment{
+			height: 34px;
+			font-size: 16px;
+		}
+		#deleteAttachment option{
+			font-size: 16px;
+		}
+		#addLType{
+			margin-top: 50px;
+		}
 
 
 		</style>

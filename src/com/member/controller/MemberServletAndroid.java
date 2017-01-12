@@ -81,6 +81,7 @@ public class MemberServletAndroid extends HttpServlet {
 
 			outStr.append(gson.toJson(memberVO));
 			SendResponse.writeText(res, outStr.toString());
+			System.out.println("Member action:" + outStr.toString());
 			return;
 		}
 

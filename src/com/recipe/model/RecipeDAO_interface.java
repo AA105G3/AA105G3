@@ -2,6 +2,7 @@ package com.recipe.model;
 
 import java.util.List;
 
+import com.film.model.FilmVO;
 import com.recipe_cont.model.Recipe_contVO;
 
 
@@ -23,7 +24,7 @@ public interface RecipeDAO_interface
     
     
   //同時新增食譜與食譜步驟內容 (實務上並不常用, 但,可用在訂單主檔與明細檔一次新增成功)
-    public void insertWithRecipe_conts(RecipeVO recipeVO , List<Recipe_contVO> list);
+    public void insertWithRecipe_conts(RecipeVO recipeVO , List<Recipe_contVO> list,FilmVO filmVO);
     
  // for android by cyh
     public byte[] getImage(String recipe_no);

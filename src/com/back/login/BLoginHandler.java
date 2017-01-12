@@ -75,7 +75,6 @@ public class BLoginHandler extends HttpServlet {
 		String emp_password = req.getParameter("emp_password").trim();
 		
 		
-		
 		// 【檢查該帳號 , 密碼是否有效】
 		if (!allowUser(emp_account, emp_password,session)) {          //【帳號 , 密碼無效時】
 			List<String> errorMsg = new LinkedList<String>();
@@ -86,14 +85,16 @@ public class BLoginHandler extends HttpServlet {
 			String url = "/Login/Blogin.jsp";
 			RequestDispatcher successView = req.getRequestDispatcher(url);
 			successView.forward(req, res);
+			
 		}
 		else {                                       //【帳號 , 密碼有效時, 才做以下工作】
 
 			try {                                                        
 				String location = (String) session.getAttribute("location");
 				if (location != null) {
+					System.out.println(location);
 					session.removeAttribute("location");   //*工作2: 看看有無來源網頁 (-->如有來源網頁:則重導至來源網頁)
-					res.sendRedirect(location);            
+					res.sendRedirect(location);   
 					return;
 				}
 			}catch (Exception ignored) {}
