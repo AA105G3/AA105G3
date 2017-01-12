@@ -289,9 +289,7 @@
 		  </div>
 
 
-		<footer id="the_footer">
-			<p class="lightcolor">All Content Copyright &copy; 2016 TomCat Inc</p>
-		</footer>
+
 		
 	
 

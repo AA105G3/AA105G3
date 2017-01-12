@@ -5,6 +5,10 @@
 <%@ page import="com.member.model.*"%>
 <%ChefVO chefVO=(ChefVO)request.getAttribute("chefVO"); %>
 <%MemberVO memberVO=(MemberVO)request.getAttribute("memberVO"); %>
+
+
+<jsp:useBean id="collectionSvc" scope="page" class="com.collection.model.CollectionService" />
+
 <!DOCTYPE html>
 <html lang="">
 
@@ -16,6 +20,7 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
     <link rel="stylesheet" href="/AA105G3/css/frontpageCSS.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.6.4/css/bootstrap-datepicker.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/sweetalert2/6.2.9/sweetalert2.min.css">
     <!--[if lt IE 9]>
             <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
             <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
@@ -139,8 +144,32 @@
         <div class="row">
             <div class="container">
                 <div class="row">
-                    <div class="col-xs-12 col-sm-12 text-center">
-                        <h2>私廚個人資訊</h2><button>追隨此私廚</button>
+
+                    <div class="col-xs-12 col-sm-10 text-center">
+                        <h2>私廚個人資訊</h2>
+                        
+                        <c:if test="${chefVO.mem_no != sessionScope.mem_no}">
+                        
+                        <c:set var="chefFlag" value="false" />
+                        <c:forEach var="aCollection" items="${collectionSvc.getMyChefCollection(sessionScope.mem_no)}" >
+						     <c:if test="${aCollection.all_no == chefVO.chef_no}">
+						    		<c:set var="chefFlag" value="true" />
+						    </c:if>
+						</c:forEach>
+                        
+                        
+                        
+                         <c:if test="${memberVO.mem_no != sessionScope.mem_no}">
+                         <c:if test="${!chefFlag}">
+                        	<button id ="addCollection" class="btn btn-primary" value="${chefVO.chef_no}">追隨此私廚</button>
+                        </c:if>
+                         <c:if test="${chefFlag}">
+                        	<button id="cancelCollection" class="btn btn-default" value="${chefVO.chef_no}">取消追隨</button>
+                        </c:if>
+                        </c:if>
+                        </c:if>
+                        
+
                     </div>
                 </div>
             </div>
@@ -300,18 +329,92 @@
     <script src="https://code.jquery.com/jquery.js"></script>
     <script src="https://netdna.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.6.4/js/bootstrap-datepicker.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/limonte-sweetalert2/6.2.9/sweetalert2.min.js"></script>
     <script type="text/javascript">
-    $('#chef_act_date').datepicker({
-        format: "yyyy/mm/dd",
-        startDate: '+3d',
-        endDate: '+1m +3d',
-        maxViewMode: 0,
-        todayBtn: "linked",
-        clearBtn: true,
-//         daysOfWeekDisabled: "0,6",
-        orientation: "bottom right"
+    
+    $().ready(function(){
+    	//註冊datepicker
+    	$('#chef_act_date').datepicker({
+            format: "yyyy/mm/dd",
+            startDate: '+3d',
+            endDate: '+1m +3d',
+            maxViewMode: 0,
+            todayBtn: "linked",
+            clearBtn: true,
+//             daysOfWeekDisabled: "0,6",
+            orientation: "bottom right"
 
-    });
+        });
+    	
+    	
+    	
+    	//收藏區塊
+    	var addCollection = function(){
+			var all_no = $(this).val();
+			 $.ajax({
+				 type:"POST",
+				 url:"/AA105G3/collection/collectionJsonRes.do",
+				 data:{"action":"addCollection","all_no":all_no},
+				 dataType:"json",
+				 success:function (data){
+
+					 swal({
+					   title: data.msg,
+					    type:'success'
+					  })
+					 $('#addCollection').text('取消追隨')
+					 $('#addCollection').attr("id","cancelCollection")
+					 $('#cancelCollection').removeClass('btn-primary');
+					 $('#cancelCollection').addClass('btn-default');
+					 $('#cancelCollection').unbind( "click",addCollection);
+					 $('#cancelCollection').click(cancelCollection);
+					 var text = $('#count').text() 
+					 var count = parseInt(text)+1;
+					 $('#count').text(count);
+			     },
+	             error:function(){alert('not found')}
+	         }) 
+		}
+		//註冊方法
+		$("#addCollection").on("click",addCollection);
+		
+		var cancelCollection = function(){
+			var all_no = $(this).val();
+			 $.ajax({
+				 type:"POST",
+				 url:"/AA105G3/collection/collectionJsonRes.do",
+				 data:{"action":"delete","all_no":all_no},
+				 dataType:"json",
+				 success:function (data){
+
+					 swal({
+					   title:'已取消追隨',
+					    type:'success'
+					  })
+					 $('#cancelCollection').text('加入追隨')
+					 $('#cancelCollection').attr("id","addCollection")
+					 $('#addCollection').removeClass('btn-default');
+					 $('#addCollection').addClass('btn-primary');
+					 $('#addCollection').unbind( "click",cancelCollection);
+					 $('#addCollection').click(addCollection);
+					 var text = $('#count').text() 
+					 var count = parseInt(text)-1;
+					 $('#count').text(count);
+			     },
+	             error:function(){alert('not found')}
+	         }) 
+		}
+		//註冊方法
+		$("#cancelCollection").on("click",cancelCollection);
+    	
+    	
+    })
+    
+    
+    
+    
+    
+    
     </script>
 </body>
 

@@ -339,7 +339,7 @@
 		</div>
 	</div>
 	
-	
+	<c:import url="/front-end/chat/inviteChat.jsp" ></c:import>
 								
 
 	<script src="https://code.jquery.com/jquery.js"></script>

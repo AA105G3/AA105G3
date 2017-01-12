@@ -99,7 +99,7 @@ public class BLoginHandler extends HttpServlet {
 				}
 			}catch (Exception ignored) {}
 
-			res.sendRedirect(req.getContextPath()+"/front-end/Flogin_success.jsp");  //*工作3: (-->如無來源網頁:則重導至login_success.jsp)
+			res.sendRedirect(req.getContextPath()+"/back-end/index.jsp");  //*工作3: (-->如無來源網頁:則重導至login_success.jsp)
 		}
 	}
 

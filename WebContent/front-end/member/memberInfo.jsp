@@ -268,7 +268,7 @@
 															<p class="recipe-food-mater">食材：${recipeVO.food_mater}</p>
 															<p>
 																<i class="glyphicon glyphicon-eye-open">${recipeVO.recipe_total_views}</i>
-																<i class="glyphicon glyphicon-heart">${recipeVO.recipe_like}</i>
+																<i class="glyphicon glyphicon-heart">${recipeVO.recipe_like + collectionSvc.getCollectionSize(recipeVO.recipe_no)}</i>
 															</p>												
 													</div>
 												</div>
@@ -287,12 +287,12 @@
 															<a href="<%=request.getContextPath()%>/recipe/recipe.do?action=getOne_For_Display&recipe_no=${recipeVO.recipe_no}">
 															<h3>${recipeVO.recipe_name }</h3>
 															</a>
-															<p>by <a href="<%=request.getContextPath()%>/member/member.do?action=getMemberInfo&mem_no=${recipeVO.mem_no}">${memberVO.mem_name}</a></p>
+															<p>by <a href="<%=request.getContextPath()%>/member/member.do?action=getMemberInfo&mem_no=${recipeVO.mem_no}">${memberSvc.getOneMember(sessionScope.mem_no).mem_name}</a></p>
 															<p class="recipe-intro">${recipeVO.recipe_intro}</p>
 															<p class="recipe-food-mater">食材：${recipeVO.food_mater}</p>
 															<p>
 																<i class="glyphicon glyphicon-eye-open">${recipeVO.recipe_total_views}</i>
-																<i class="glyphicon glyphicon-heart">${recipeVO.recipe_like}</i>
+																<i class="glyphicon glyphicon-heart">${recipeVO.recipe_like + collectionSvc.getCollectionSize(recipeVO.recipe_no)}</i>
 															</p>												
 													</div>
 												</div>
@@ -394,7 +394,7 @@
 	<footer id="theFooter">
 		Copyright &copy; 2016 Java Team 3 
 	</footer>
-
+<c:import url="/front-end/chat/inviteChat.jsp" ></c:import>
 
 		<script src="https://code.jquery.com/jquery.js"></script>
 		<script src="https://netdna.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>

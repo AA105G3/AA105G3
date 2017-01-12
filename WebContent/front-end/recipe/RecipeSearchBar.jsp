@@ -54,9 +54,9 @@
 								        <option value="food_mater">找食材</option>
 								    </select>
 								   <div class="input-group recipe-search-form">
-								    <input type="text" class="form-control recipe-text" placeholder="Search Recipe" name="searchInput">
+								    <input type="text" class="form-control recipe-text" id="recipe-search-input" placeholder="Search Recipe" name="searchInput" onkeypress="checkSearch()" onkeyup="checkSearch()">
 								        <span class="input-group-btn">
-								            <button class="btn btn-default recipe-btn" type="submit" name="action" value="search"><i class="glyphicon glyphicon-search"></i></button>
+								            <button class="btn btn-default recipe-btn" type="submit" name="action" value="search" disabled="disabled" id="recipe-search-btn"><i class="glyphicon glyphicon-search"></i></button>
 								        </span>
 								    </div>
 								</form>
@@ -76,4 +76,20 @@
 		
 		
 	</body>
+	<script src="https://code.jquery.com/jquery.js"></script>
+	<script type="text/javascript">
+	$('body').click(checkSearch);
+
+	function checkSearch(){
+		var s = document.getElementById("recipe-search-input").value;
+		
+		var btn = document.getElementById("recipe-search-btn");
+		if(s.trim()!=""){
+			btn.disabled = false;
+		}else{
+			btn.disabled = true;
+		}
+	}
+
+</script>
 </html>
