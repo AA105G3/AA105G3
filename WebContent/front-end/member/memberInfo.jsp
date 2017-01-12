@@ -13,7 +13,9 @@
 <jsp:useBean id="memberSvc" scope="page" class="com.member.model.MemberService" />
 <jsp:useBean id="recipeSvc" scope="page" class="com.recipe.model.RecipeService" />
 <jsp:useBean id="collectionSvc" scope="page" class="com.collection.model.CollectionService" />
+<jsp:useBean id="ChefSvc" scope="page" class="com.chef.model.ChefService" />
 <jsp:useBean id="memberVO" scope="request" class="com.member.model.MemberVO" />
+
 
 
 <!DOCTYPE html>
@@ -33,7 +35,7 @@
 
 		<style type="text/css" media="screen">
 			.header-style{
-				padding-top: 80px;
+				padding-top: 40px;
 				margin-bottom:50px;
 			}
 			.search-style{
@@ -176,17 +178,42 @@
 				width:150px;
 				height:150px;
 			}
+			#theFooter{
+				position : absolute;
+				bottom : 0px;
+				width : 100%;
+				
+				background: #222222;
+				color:#fff ;
+				font-size: 26px;
+				font-family: Reklame;
+				text-align: center;
+			}
 		</style>
 
 	</head>
 	
 	
 	<body>
-
-			<c:import url="/front-end/frontNavbar.jsp" ></c:import>
-					<header class="header-style">
-						<c:import url="/front-end/recipe/RecipeSearchBar.jsp" ></c:import>
-					</header>
+		<c:import url="/front-end/frontNavbar.jsp" ></c:import>
+		<header class="header-style">
+			<c:import url="/front-end/recipe/RecipeSearchBar.jsp" ></c:import>
+		</header>
+		<%//判斷是不是自己 %>
+		 		<c:set var="self" value="false" />
+				 <c:if test="${memberVO.mem_ac == null}">
+				 	<c:set var="self" value="true" />
+				</c:if>
+				 <c:if test="${memberVO.mem_ac == sessionScope.mem_ac}">
+				 	<c:set var="self" value="true" />
+				</c:if>
+				
+				<c:if test="${sessionScope.mem_ac==null}">
+				 	<c:set var="self" value="false" />
+				</c:if>
+		
+		
+		
 		<div class="container">
 	    	<div class="row">
 						<div class="col-xs-12 col-sm-8">
@@ -195,20 +222,28 @@
 									<nav class="nav navbar-default">
 								        <div class="container-fluid">
 								            <ul class="nav navbar-nav">
-								            	<c:if test="${memberVO.mem_no == sessionScope.mem_no}">
+								            	<c:if test="${self}">
 								                	<li><a  href="<%=request.getContextPath()%>/member/member.do?action=getMemberInfo&mem_no=${sessionScope.mem_no}" id="href-style" >食譜</a></li>
 								                </c:if>
-								                <c:if test="${memberVO.mem_no != sessionScope.mem_no}">
+								                <c:if test="${!self}">
 								                	<li><a href="<%=request.getContextPath()%>/member/member.do?action=getMemberInfo&mem_no=${memberVO.mem_no}" id="href-style" >食譜</a></li>
 								                </c:if>
-								                <c:if test="${memberVO.mem_no == sessionScope.mem_no}">
+								                <c:if test="${self}">
 								                <li><a href="<%=request.getContextPath()%>/front-end/collection/myCollection.jsp">收藏</a></li>
 								                <li><a href="<%=request.getContextPath()%>/front-end/frd_list/memberFriend.jsp">好友</a></li>
-								                <li><a data-toggle="tab" href="#menu3">商品訂單
+
+								                <li><a href="<%=request.getContextPath()%>/front-end/product_order/ListProductOrder.jsp">商品訂單
+
 								                	<i class="glyphicon glyphicon-new-window"></i></a></li>
-								                <li><a href="#menu3">私廚訂單
-								                	<i class="glyphicon glyphicon-new-window"></i></a></li>
+									                <li><a href="/AA105G3/front-end/chef_order_list/chefOrderListOfMem.jsp">我的私廚訂單
+									                	<i class="glyphicon glyphicon-new-window"></i></a></li>
+									                <c:if test="${ChefSvc.getOneChefByMem_no(sessionScope.mem_no)!=null}">
+									                <li><a href="/AA105G3/front-end/chef_order_list/ChefOrderListOfChef2.jsp">我的會員訂單
+									                	<i class="glyphicon glyphicon-new-window"></i></a></li>
+									                </c:if>
 								                </c:if>
+								                	
+								                
 								            </ul>
 								        </div>
 								    </nav>
@@ -216,34 +251,62 @@
 								    <div class="col-xs-12 col-sm-12 content-style">
 										<div role="tabpanel">
 									    <!-- 標籤面板：標籤區 -->
-									    <c:forEach var="recipeVO" items="${recipeSvc.findByMem_no(memberVO.mem_no)}" >
-									    	<div class="row recipe-wrapper">
-												<div class="col-xs-12 col-sm-4 recipe-img-wrapper">
-												<a href="<%=request.getContextPath()%>/recipe/recipe.do?action=getOne_For_Display&recipe_no=${recipeVO.recipe_no}">
-													<img src="<%=request.getContextPath()%>/recipe/showRecipe_pic.do?recipe_no=${recipeVO.recipe_no}">
-												</a>
+									    <c:if test="${!self}">
+										    <c:forEach var="recipeVO" items="${recipeSvc.findByMem_no(memberVO.mem_no)}" >
+										    	<div class="row recipe-wrapper">
+													<div class="col-xs-12 col-sm-4 recipe-img-wrapper">
+													<a href="<%=request.getContextPath()%>/recipe/recipe.do?action=getOne_For_Display&recipe_no=${recipeVO.recipe_no}">
+														<img src="<%=request.getContextPath()%>/recipe/showRecipe_pic.do?recipe_no=${recipeVO.recipe_no}">
+													</a>
+													</div>
+													<div class="col-xs-12 col-sm-8 recipe-content">
+															<a href="<%=request.getContextPath()%>/recipe/recipe.do?action=getOne_For_Display&recipe_no=${recipeVO.recipe_no}">
+															<h3>${recipeVO.recipe_name }</h3>
+															</a>
+															<p>by <a href="<%=request.getContextPath()%>/member/member.do?action=getMemberInfo&mem_no=${recipeVO.mem_no}">${memberVO.mem_name}</a></p>
+															<p class="recipe-intro">${recipeVO.recipe_intro}</p>
+															<p class="recipe-food-mater">食材：${recipeVO.food_mater}</p>
+															<p>
+																<i class="glyphicon glyphicon-eye-open">${recipeVO.recipe_total_views}</i>
+																<i class="glyphicon glyphicon-heart">${recipeVO.recipe_like}</i>
+															</p>												
+													</div>
 												</div>
-												<div class="col-xs-12 col-sm-8 recipe-content">
-														<a href="<%=request.getContextPath()%>/recipe/recipe.do?action=getOne_For_Display&recipe_no=${recipeVO.recipe_no}">
-														<h3>${recipeVO.recipe_name }</h3>
-														</a>
-														<p>by <a href="<%=request.getContextPath()%>/member/member.do?action=getMemberInfo&mem_no=${recipeVO.mem_no}">${memberVO.mem_name}</a></p>
-														<p class="recipe-intro">${recipeVO.recipe_intro}</p>
-														<p class="recipe-food-mater">食材：${recipeVO.food_mater}</p>
-														<p>
-															<i class="glyphicon glyphicon-eye-open">${recipeVO.recipe_total_views}</i>
-															<i class="glyphicon glyphicon-heart">${recipeVO.recipe_like}</i>
-														</p>												
+											</c:forEach>
+										</c:if>
+										
+										<c:if test="${self}">
+										    <c:forEach var="recipeVO" items="${recipeSvc.findByMem_no(sessionScope.mem_no)}" >
+										    	<div class="row recipe-wrapper">
+													<div class="col-xs-12 col-sm-4 recipe-img-wrapper">
+													<a href="<%=request.getContextPath()%>/recipe/recipe.do?action=getOne_For_Display&recipe_no=${recipeVO.recipe_no}">
+														<img src="<%=request.getContextPath()%>/recipe/showRecipe_pic.do?recipe_no=${recipeVO.recipe_no}">
+													</a>
+													</div>
+													<div class="col-xs-12 col-sm-8 recipe-content">
+															<a href="<%=request.getContextPath()%>/recipe/recipe.do?action=getOne_For_Display&recipe_no=${recipeVO.recipe_no}">
+															<h3>${recipeVO.recipe_name }</h3>
+															</a>
+															<p>by <a href="<%=request.getContextPath()%>/member/member.do?action=getMemberInfo&mem_no=${recipeVO.mem_no}">${memberVO.mem_name}</a></p>
+															<p class="recipe-intro">${recipeVO.recipe_intro}</p>
+															<p class="recipe-food-mater">食材：${recipeVO.food_mater}</p>
+															<p>
+																<i class="glyphicon glyphicon-eye-open">${recipeVO.recipe_total_views}</i>
+																<i class="glyphicon glyphicon-heart">${recipeVO.recipe_like}</i>
+															</p>												
+													</div>
 												</div>
-											</div>
-										</c:forEach>
-											
+											</c:forEach>
+										</c:if>
 										</div>
 									</div>		    
 								</div>	
 
 			    		</div>
+			    		
 			    		<div class="col-xs-12 col-sm-3 col-sm-push-1 text-center member-style">
+			    		<%//其他會員 %>
+			    		<c:if test="${!self}">
 					    	<img id="memImg" src="<%=request.getContextPath()%>/MemberDBGifReader.do?name=${memberVO.mem_no}">
 	    					<h3>${memberSvc.getOneMember(memberVO.mem_no).mem_name}</h3>
 					
@@ -251,11 +314,35 @@
 						    	<div>食譜數：${recipeSvc.findByMem_no(memberVO.mem_no).size()}</div>
 						    </div>
 						    <div class="col-xs-12 col-sm-6 count-style">
-						    	<div>追隨數：${collectionSvc.getCollectionSize(sessionScope.mem_no)>0?collectionSvc.getCollectionSize(sessionScope.mem_no):0}</div>
+						    	<div >追隨數：<span id="count">${collectionSvc.getCollectionSize(memberVO.mem_no) > 0?collectionSvc.getCollectionSize(memberVO.mem_no):0}</span></div>
 						    </div>
 						    <div class="col-xs-12 col-sm-12 text-left">
 						    	<div class="mem-email">${memberVO.mem_email}</div>
 						    </div>
+						 </c:if>
+						 
+						 <%//自己 %>
+						 
+						<c:if test="${self}">
+					    	<img id="memImg" src="<%=request.getContextPath()%>/MemberDBGifReader.do?name=${sessionScope.mem_no}">
+					    	<%//得到自己的資料 避免一直開資料庫連線 %>
+					    	<c:set var="ME" value="${memberSvc.getOneMember(sessionScope.mem_no)}" />
+	    					<h3>${ME.mem_name}</h3>
+					
+							<div class="col-xs-12 col-sm-6 count-style">
+						    	<div>食譜數：${recipeSvc.findByMem_no(ME.mem_no).size()}</div>
+						    </div>
+						    <div class="col-xs-12 col-sm-6 count-style">
+						    	<div >追隨數：<span id="count">${collectionSvc.getCollectionSize(ME.mem_no) > 0?collectionSvc.getCollectionSize(sessionScope.mem_no):0}</span></div>
+						    </div>
+						    <div class="col-xs-12 col-sm-12 text-left">
+						    	<div class="mem-email">${ME.mem_email}</div>
+						    </div>
+						 </c:if>
+					
+					
+
+						 <c:if test="${!self}">
 						     <c:if test="${memberVO.mem_no != sessionScope.mem_no}">
 						     
 						     <c:set var="authorFlag" value="false" />
@@ -266,6 +353,7 @@
 						    		<c:set var="coll_no" value="${aCollection.coll_no}" />
 						    	</c:if>
 						     </c:forEach>
+						     
 							    <c:if test="${!authorFlag}">
 								    <div class="col-xs-12 col-sm-6">
 								    	<button id ="addCollection" class="btn btn-primary" value="${memberVO.mem_no}">加入追隨</button>
@@ -296,14 +384,16 @@
 							     <input type="hidden" id="addNo" value="${memberVO.mem_no}">
 							     <input type="hidden" id="cancelNo" value="${coll_no}">
 							</c:if>
-					    	
+					    </c:if>
 					    </div>
 					</div>
 				
 	    	</div>
 	  	</div>
 
-	<c:import url="/front-end/frontFooter.jsp" ></c:import>
+	<footer id="theFooter">
+		Copyright &copy; 2016 Java Team 3 
+	</footer>
 
 
 		<script src="https://code.jquery.com/jquery.js"></script>
@@ -369,6 +459,9 @@
 							 $('#cancelCollection').addClass('btn-default');
 							 $('#cancelCollection').unbind( "click",addCollection);
 							 $('#cancelCollection').click(cancelCollection);
+							 var text = $('#count').text() 
+							 var count = parseInt(text)+1;
+							 $('#count').text(count);
 					     },
 			             error:function(){alert('not found')}
 			         }) 
@@ -395,6 +488,9 @@
 							 $('#addCollection').addClass('btn-primary');
 							 $('#addCollection').unbind( "click",cancelCollection);
 							 $('#addCollection').click(addCollection);
+							 var text = $('#count').text() 
+							 var count = parseInt(text)-1;
+							 $('#count').text(count);
 					     },
 			             error:function(){alert('not found')}
 			         }) 

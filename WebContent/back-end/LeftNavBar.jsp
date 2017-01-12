@@ -35,6 +35,7 @@
 	<body>
 		<div class="col-xs-12 col-sm-2" id="menu_zone">
 			<div class="panel-group" id="accordion2" role="tablist" aria-multiselectable="true">
+			<c:if test="${(sessionScope.emp_auths).contains('001')}">
 				  	<!-- 區塊1 -->
 				  	<div class="panel panel-default">
 				    	<div class="panel-heading" role="tab" id="panel1">	
@@ -52,6 +53,8 @@
 					      	</div>
 					    </div>
 					</div>
+				</c:if>
+				<c:if test="${(sessionScope.emp_auths).contains('002')}">
 					<!-- 區塊2 -->
 					<div class="panel panel-default">
 					    <div class="panel-heading" role="tab" id="panel2">
@@ -64,11 +67,13 @@
 					    </div>
 					    <div id="bbb" class="panel-collapse collapse" role="tabpanel" aria-labelledby="panel2">
 					      	<div class="list-group">
-					      		<a href="#" class="list-group-item">員工資料管理</a>  
+					      		<a href="<%=request.getContextPath()%>/back-end/emp/EmpList.jsp" class="list-group-item">員工資料管理</a>  
 					      	</div>
 					    </div>
 					</div>
+					</c:if>
 					
+					<c:if test="${(sessionScope.emp_auths).contains('003')}">
 					<div class="panel panel-default">
 					    <div class="panel-heading" role="tab" id="panel4">
 					    <a href="#ddd" data-parent="#accordion2" data-toggle="collapse" role="button" class="collapsed" aria-expanded="false" aria-controls="ddd">
@@ -80,11 +85,14 @@
 					    </div>
 					    <div id="ddd" class="panel-collapse collapse" role="tabpanel" aria-labelledby="panel4">
 					      	<div class="list-group">
-					        	<a href="#" class="list-group-item">食譜類別管理</a>
-					      		<a href="#" class="list-group-item">未分類食譜管理</a>
+					        	<a href="<%=request.getContextPath()%>/back-end/recipe_l_type/L_TypeList.jsp" class="list-group-item">食譜類別管理</a>
+					      		<a href="<%=request.getContextPath()%>/back-end/recipe_type_info/RecipeNotClassified.jsp" class="list-group-item">未分類食譜管理</a>
 					      	</div>
 					    </div>
 					</div>
+					</c:if>
+					
+					<c:if test="${(sessionScope.emp_auths).contains('004')}">
 					<!-- 區塊5 -->
 					<div class="panel panel-default">
 					    <div class="panel-heading" role="tab" id="panel5">
@@ -97,10 +105,13 @@
 					    </div>
 					    <div id="eee" class="panel-collapse collapse" role="tabpanel" aria-labelledby="panel5">
 					      	<div class="list-group">
-					        	<a href="#" class="list-group-item">廣告資料管理</a>
+					        	<a href="/AA105G3/back-end/adv/AdvManagement.jsp" class="list-group-item">廣告資料管理</a>
 					      	</div>
 					   </div>
 					</div>
+					</c:if>
+					
+					<c:if test="${(sessionScope.emp_auths).contains('005')}">
 					<!-- 區塊6 -->
 					<div class="panel panel-default">
 					    <div class="panel-heading" role="tab" id="panel6">
@@ -113,10 +124,13 @@
 					    </div>
 					    <div id="fff" class="panel-collapse collapse" role="tabpanel" aria-labelledby="panel6">
 					      	<div class="list-group">
-					        	<a href="#" class="list-group-item">商品上下架</a>
+					        	<a href="/AA105G3/back-end/product/MarketManagement.jsp" class="list-group-item">商品上下架</a>
 					      	</div>
 					    </div>
 					</div>
+					</c:if>
+					
+					<c:if test="${(sessionScope.emp_auths).contains('006')}">
 					<!-- 區塊7 -->
 					<div class="panel panel-default">
 					    <div class="panel-heading" role="tab" id="panel7">
@@ -129,10 +143,13 @@
 					    </div>
 					    <div id="ggg" class="panel-collapse collapse" role="tabpanel" aria-labelledby="panel7">
 					      	<div class="list-group">
-					        	<a href="#" class="list-group-item">商品訂單查詢</a>				      
+					        	<a href="<%=request.getContextPath()%>/product_order/product_order.do?action=getPartForDisplay" class="list-group-item">商品訂單查詢</a>				      
 					      	</div>
 					    </div>
 					</div>
+					</c:if>
+					
+					<c:if test="${(sessionScope.emp_auths).contains('007')}">
                     <!-- 區塊8 -->
 					<div class="panel panel-default">
 					    <div class="panel-heading" role="tab" id="panel8">
@@ -149,6 +166,7 @@
 					      	</div>
 					    </div>
 					</div>
+					</c:if>
 				</div>
 		</div>
 		

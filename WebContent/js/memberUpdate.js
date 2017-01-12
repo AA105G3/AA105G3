@@ -152,7 +152,7 @@
 						var image = document.getElementById('img');
 						image.src = readFile.result;
 						/* image.width = 300; */
-						image.height = 150;
+						image.height = 200;
 					}, false);
 				}
 			}

@@ -32,7 +32,7 @@ public class FilmService {
 		return filmVO;
 	}
 
-	public FilmVO getOneMember(String recipe_no) {
+	public FilmVO getOneFilm(String recipe_no) {
 		return dao.findByPrimaryKey(recipe_no);
 	}
 

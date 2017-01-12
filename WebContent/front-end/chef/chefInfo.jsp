@@ -3,8 +3,8 @@
 <%@ page import="java.util.*"%>
 <%@ page import="com.chef.model.*"%>
 <%@ page import="com.member.model.*"%>
-<%ChefVO chefVO=(ChefVO)request.getAttribute("chefVO"); %>>
-<%MemberVO memberVO=(MemberVO)request.getAttribute("memberVO"); %>>
+<%ChefVO chefVO=(ChefVO)request.getAttribute("chefVO"); %>
+<%MemberVO memberVO=(MemberVO)request.getAttribute("memberVO"); %>
 <!DOCTYPE html>
 <html lang="">
 

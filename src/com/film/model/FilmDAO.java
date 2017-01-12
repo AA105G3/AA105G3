@@ -7,6 +7,8 @@ import javax.naming.InitialContext;
 import javax.naming.NamingException;
 import javax.sql.DataSource;
 
+import java.io.ByteArrayInputStream;
+import java.io.InputStream;
 import java.sql.*;
 
 public class FilmDAO implements FilmDAO_interface {
@@ -22,9 +24,7 @@ public class FilmDAO implements FilmDAO_interface {
 	}
 	
 	private static final String INSERT_STMT = 
-			"INSERT INTO film (recipe_no,"
-			+ " film_file) "
-			+ "VALUES ?, ?)";
+			"INSERT INTO film (recipe_no, film_file) VALUES (?, ?)";
 		private static final String GET_ALL_STMT = 
 			"SELECT recipe_no,"
 			+ " film_file FROM film order by recipe_no";
@@ -32,7 +32,7 @@ public class FilmDAO implements FilmDAO_interface {
 			"SELECT recipe_no,"
 			+ " film_file FROM film where recipe_no = ?";
 		private static final String UPDATE = 
-			"UPDATE film set film_file=?,"
+			"UPDATE film set film_file=?"
 			+ "where recipe_no = ?";
 		
 	@Override
@@ -222,6 +222,56 @@ public class FilmDAO implements FilmDAO_interface {
 			}
 		}
 		return list;
+	}
+	@Override
+	public void insert2(FilmVO filmVO, Connection con)
+	{
+		// TODO Auto-generated method stub
+		PreparedStatement pstmt = null;
+		try {
+			pstmt = con.prepareStatement(INSERT_STMT);
+			
+			pstmt.setString(1, filmVO.getRecipe_no());
+			byte[] film_file = filmVO.getFilm_file();
+			
+			if(film_file!=null){
+				long filmlen = film_file.length;
+				InputStream bais = new ByteArrayInputStream(film_file);
+				pstmt.setBinaryStream(2, bais, filmlen);
+			}else{
+				pstmt.setBinaryStream(2, null);
+			}
+			
+			
+			
+
+			pstmt.executeUpdate();
+
+			// Handle any SQL errors
+		} catch (SQLException se) {
+			if (con != null) {
+				try {
+					// 3●設定於當有exception發生時之catch區塊內
+					System.err.print("Transaction is being ");
+					System.err.println("rolled back-由-film");
+					con.rollback();
+				} catch (SQLException excep) {
+					throw new RuntimeException("rollback error occured. "
+							+ excep.getMessage());
+				}
+			}
+			throw new RuntimeException("A database error occured. "
+					+ se.getMessage());
+			// Clean up JDBC resources
+		} finally {
+			if (pstmt != null) {
+				try {
+					pstmt.close();
+				} catch (SQLException se) {
+					se.printStackTrace(System.err);
+				}
+			}
+		}
 	}
 	
 }

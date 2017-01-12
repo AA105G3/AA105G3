@@ -158,7 +158,7 @@ public class MemberServlet extends HttpServlet {
 				session.removeAttribute("mem_name");
 				
 				RequestDispatcher failureView = req
-						.getRequestDispatcher("/front-end/frontNavbar.jsp");
+						.getRequestDispatcher("/front-end/index.jsp");
 				failureView.forward(req, res);
 				
 				

@@ -28,10 +28,13 @@
 	<style type="text/css">
 	body{
 		background: #efede8;
-		padding-top: 50px;
+		padding-top: 90px;
+		position : relative;
+		height : 100%;
 	}
 	#recipe-home{
 		margin-bottom:20px;
+		padding-bottom : 50px;
 	}
 
 	
@@ -154,10 +157,25 @@
 		text-decoration:none;
 	}
 	
+	#theFooter{
+		/* 對應skin */
+		position : absolute;
+		bottom : 0px;
+		width : 100%;
+		
+		background: #222222;
+		color:#fff ;
+		font-size: 26px;
+		font-family: Reklame;
+		text-align: center;
+	}
+	
 	</style>
 	
 	</head>
 	<body>
+    
+	<c:import url="/front-end/frontNavbar.jsp" ></c:import>
 	<section id="recipe-home">
 		<header>
 			<c:import url="/front-end/recipe/RecipeSearchBar.jsp" ></c:import>
@@ -277,6 +295,11 @@
 		</div>
 	</c:forEach>
 	</section>
+	
+	<footer id="theFooter">
+		Copyright &copy; 2016 Java Team 3 
+	</footer>
+	
 		<script src="https://code.jquery.com/jquery.js"></script>
 		<script src="https://netdna.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
 	</body>

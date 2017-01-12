@@ -5,7 +5,6 @@
 <%@ page import="com.frd_list.model.*"%>
 
 <% 		
-	//session.setAttribute("mem_no","M00000001");
 	String mem_no =(String) session.getAttribute("mem_no");
 	Frd_listService frd_listSvc = new Frd_listService();
 	List list = frd_listSvc.getMyFriends(mem_no);
@@ -38,7 +37,7 @@
 
 		<style type="text/css">
 			.header-style{
-				padding-top: 80px;
+				padding-top: 40px;
 				margin-bottom:50px;
 			}
 			.search-style{
@@ -229,77 +228,31 @@
 				color:steelblue !important;
 				font-weight:bold ;
 			}
+			#theFooter{
+				position : absolute;
+				bottom : 0px;
+				width : 100%;
+				
+				background: #222222;
+				color:#fff ;
+				font-size: 26px;
+				font-family: Reklame;
+				text-align: center;
+			}
 		</style>
 
 	</head>
 	
 	
 	<body>
-			
-		
 
-		 <div class="navbar navbar-default navbar-fixed-top navbar-inverse mu-main-navbar" >
-	      <div class="container">
-	        <div class="navbar-header">
-	          <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar-ex-collapse">
-	            <span class="sr-only">Toggle navigation</span>
-	            <span class="icon-bar"></span>
-	            <span class="icon-bar"></span>
-	            <span class="icon-bar"></span>
-	          </button>
-	          <a href="#home" class="foodtime"><img alt="FoodTime" src="img/Logo.png">分享食光</a>
-	        </div>
-	        <div class="collapse navbar-collapse" id="navbar-ex-collapse">
-	          <ul class="nav navbar-nav navbar-right mu-main-nav">
-	            <li >
-	              <a href="#home">首頁</a>
-	            </li>
-	            <li>
-	              <a href="#mu-recipe">食譜</a>
-	            </li>
-	            <li>
-	              <a href="#mu-video">影音</a>
-	            </li>
-	            <li>
-	              <a href="#mu-chef">私廚</a>
-	            </li>
-	            <li>
-	              <a href="#mu-stream">實況</a>
-	            </li>
-	            <li>
-	              <a href="#mu-market">市集</a>
-	            </li>
-	            <li>
-	              <a href="#mu-contact">聯絡我們</a>
-	            </li>
-	            <li>
-					<a href="#" class="dropdown-toggle" data-toggle="dropdown">UserID<b class="caret"></b></a>
-					<ul class="dropdown-menu">
-						<li><a href="#">編輯個人資訊</a></li>
-						<li><a href="#">個人頁面</a></li>
-						<li><a href="#">我的最愛</a></li>
-						<li><a href="#">登出</a></li>
-					</ul>
-				</li>
-				<li>
-					<a href="#">註冊</a>
-				</li>
-	          </ul>
-	        </div>
-	      </div>
-	    </div>
+	      	<c:import url="/front-end/frontNavbar.jsp" ></c:import>	
 
-
-	    
-
-
-
-
-				
 					<header class="header-style">
 						<c:import url="/front-end/recipe/RecipeSearchBar.jsp" ></c:import>
 					</header>
 					<div class="container">
+
 	    	<div class="row">
 						<div class="col-xs-12 col-sm-8">
 			   				
@@ -310,10 +263,12 @@
 								                <li><a  href="<%=request.getContextPath()%>/member/member.do?action=getMemberInfo&mem_no=${sessionScope.mem_no}" >食譜</a></li>
 								                <li><a  href="<%=request.getContextPath()%>/front-end/collection/myCollection.jsp">收藏</a></li>
 								                <li><a  href="<%=request.getContextPath()%>/front-end/frd_list/memberFriend.jsp" id="href-style">好友</a></li>
-								                <li><a  href="#menu3">商品訂單
+								                <li><a href="<%=request.getContextPath()%>/front-end/product_order/ListProductOrder.jsp">商品訂單
 								                	<i class="glyphicon glyphicon-new-window"></i></a></li>
-								                <li><a href="#menu3">私廚訂單
-								                	<i class="glyphicon glyphicon-new-window"></i></a></li>
+								                <li><a href="#menu3">我的私廚訂單
+									                	<i class="glyphicon glyphicon-new-window"></i></a></li>
+									                <li><a href="#menu3">我的會員訂單
+									                	<i class="glyphicon glyphicon-new-window"></i></a></li>
 								            </ul>
 								        </div>
 								    </nav>
@@ -541,7 +496,7 @@
 <c:import url="/front-end/chat/inviteChat.jsp" ></c:import>
 
 
-	<footer>
+	<footer id="theFooter">
 		Copyright &copy; 2016 Java Team 3 
 	</footer>
 		<script src="https://code.jquery.com/jquery.js"></script>

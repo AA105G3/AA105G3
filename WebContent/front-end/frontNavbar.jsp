@@ -10,6 +10,11 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <!-- <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css"> -->
 
+<%-- <%
+	String requestURL = request.getRequestURI();
+	session.setAttribute("location", requestURL);
+%> --%>
+
 <style>
 .navbar-right li>a{
 	color: #fff !important;
@@ -76,27 +81,27 @@ menuItems.click(function(e){
 	            <span class="icon-bar"></span>
 	            <span class="icon-bar"></span>
 			</button>
-			<a href="#home" class="foodtime"><img alt="FoodTime" src="<%=request.getContextPath()%>/images/Logo.png">分享食光</a>
+			<a href="/AA105G3/front-end/index.jsp" class="foodtime"><img alt="FoodTime" src="<%=request.getContextPath()%>/images/Logo.png">分享食光</a>
 		</div>
 		<div class="collapse navbar-collapse" id="navbar-ex-collapse">
 			<ul class="nav navbar-nav navbar-right mu-main-nav">
 				<li >
-					<a href="#home">首頁</a>
+					<a href="/AA105G3/front-end/index.jsp">首頁</a>
 	            </li>
 	            <li>
-					<a href="#mu-recipe">食譜</a>
+					<a href="/AA105G3/front-end/recipe/RecipeHome.jsp">食譜</a>
 	            </li>
-	            <li>
+	            <!-- <li>
 					<a href="#mu-video">影音</a>
-	            </li>
+	            </li> -->
 	            <li>
 					<a href="/AA105G3/front-end/chef/chefList2.jsp">私廚</a>
 	            </li>
-	            <li>
+	            <!-- <li>
 					<a href="#mu-stream">實況</a>
-	            </li>
+	            </li> -->
 	            <li>
-					<a href="#mu-market">市集</a>
+					<a href="/AA105G3/front-end/product/Market.jsp">市集</a>
 	            </li>
 	            <li>
 					<a href="#mu-contact">聯絡我們</a>
@@ -117,8 +122,7 @@ menuItems.click(function(e){
 						<a href="#" class="dropdown-toggle" data-toggle="dropdown">${mem_name}<b class="caret"></b></a>
 						<ul class="dropdown-menu">
 							<li><a href="<%=request.getContextPath()%>/member/member.do?action=getOne_For_Update&mem_no=${mem_no}">編輯個人資訊</a></li>
-							<li><a href="#">個人頁面</a></li>
-							<li><a href="#">我的最愛</a></li>
+							<li><a href="/AA105G3/front-end/member/memberInfo.jsp">個人頁面</a></li>
 							<li><a href="<%=request.getContextPath()%>/member/member.do?action=signOut">登出</a></li>
 						</ul>
 					</li>

@@ -1,6 +1,9 @@
 package com.chef_order_list.model;
 
 import java.util.*;
+
+import com.frd_list.model.Frd_listVO;
+
 import java.sql.*;
 
 public class Chef_order_listJDBCDAO implements Chef_order_listDAO_interface {
@@ -468,6 +471,39 @@ public class Chef_order_listJDBCDAO implements Chef_order_listDAO_interface {
 
 		// 查詢
 //		List<Chef_order_listVO> list = dao.getAll();
+//		for (Chef_order_listVO aChef_order_list : list) {
+//			System.out.print(aChef_order_list.getChef_ord_no() + ",");
+//			System.out.print(aChef_order_list.getMem_no() + ",");
+//			System.out.print(aChef_order_list.getChef_no() + ",");
+//			System.out.print(aChef_order_list.getChef_ord_cost() + ",");
+//			System.out.print(new java.text.SimpleDateFormat().format(aChef_order_list.getChef_act_date()) + ",");
+//			System.out.print(aChef_order_list.getChef_ord_place() + ",");
+//			System.out.print(aChef_order_list.getChef_ord_cnt() + ",");
+//			System.out.print(aChef_order_list.getChef_ord_con() + ",");
+//			System.out.print(aChef_order_list.getChef_appr() + ",");
+//			System.out.print(aChef_order_list.getChef_appr_cnt()+",");
+//			System.out.print(new java.text.SimpleDateFormat("yyyy/MM/dd hh:mm:ss").format(aChef_order_list.getChef_ord_date()) + ",");
+//			System.out.println();
+//		}
+		
+//		by cyh
+//		List<Chef_order_listVO> list = dao.findByMem_no("M00000002");
+//		for (Chef_order_listVO aChef_order_list : list) {
+//			System.out.print(aChef_order_list.getChef_ord_no() + ",");
+//			System.out.print(aChef_order_list.getMem_no() + ",");
+//			System.out.print(aChef_order_list.getChef_no() + ",");
+//			System.out.print(aChef_order_list.getChef_ord_cost() + ",");
+//			System.out.print(new java.text.SimpleDateFormat().format(aChef_order_list.getChef_act_date()) + ",");
+//			System.out.print(aChef_order_list.getChef_ord_place() + ",");
+//			System.out.print(aChef_order_list.getChef_ord_cnt() + ",");
+//			System.out.print(aChef_order_list.getChef_ord_con() + ",");
+//			System.out.print(aChef_order_list.getChef_appr() + ",");
+//			System.out.print(aChef_order_list.getChef_appr_cnt()+",");
+//			System.out.print(new java.text.SimpleDateFormat("yyyy/MM/dd hh:mm:ss").format(aChef_order_list.getChef_ord_date()) + ",");
+//			System.out.println();
+//		}
+		
+//		List<Chef_order_listVO> list = dao.findByChef_no("C00000002");
 //		for (Chef_order_listVO aChef_order_list : list) {
 //			System.out.print(aChef_order_list.getChef_ord_no() + ",");
 //			System.out.print(aChef_order_list.getMem_no() + ",");

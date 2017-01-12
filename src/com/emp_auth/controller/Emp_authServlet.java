@@ -12,6 +12,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import com.emp.model.EmpService;
 import com.emp.model.EmpVO;
@@ -99,7 +100,7 @@ public class Emp_authServlet extends HttpServlet {
 		
 			try {
 				/***************************1.接收請求參數 - 輸入格式的錯誤處理**********************/
-				
+				HttpSession session = req.getSession();
 				String[] emp_auths = req.getParameterValues("emp_auths");
 				String emp_no = req.getParameter("emp_no");
 				
@@ -120,7 +121,7 @@ public class Emp_authServlet extends HttpServlet {
 				if (!errorMsgs.isEmpty()) {
 					req.setAttribute("emp_auths", set);
 					RequestDispatcher failureView = req
-							.getRequestDispatcher("/back-end/emp_auth/update_emp_auth.jsp");
+							.getRequestDispatcher("/back-end/emp/EmpList.jsp");
 					failureView.forward(req, res);
 					return;//程式中斷
 				}
@@ -131,18 +132,26 @@ public class Emp_authServlet extends HttpServlet {
 				/***************************2.開始修改資料*****************************************/
 				
 				
+				EmpService empSvc = new EmpService();
+				EmpVO empVO = empSvc.getOneEmp(emp_no);
+				String onlineEmp = (String)session.getAttribute("emp_no");
 				
 				emp_authSvc.deleteEmp_auth(emp_no);
 				
 				
 				for(int i = 0;i<emp_auths.length;i++){
-					
 					emp_authVO = emp_authSvc.addEmp_Auth(emp_no,emp_auths[i]);
+				}
+				if(empVO.getEmp_no().equals(onlineEmp)){
+					List<String> list = emp_authSvc.getAuthsStringByEmp_no(onlineEmp);
+					session.setAttribute("emp_auths", list);
+					
 				}
 				
 				/***************************3.修改完成,準備轉交(Send the Success view)*************/
 				req.setAttribute("emp_auths", set); // 資料庫update成功後,正確的的empVO物件,存入req
-				String url = "/back-end/emp_auth/listAllEmp_auth.jsp";
+				req.setAttribute("empVO", empVO);
+				String url = "/back-end/emp/EmpList.jsp";
 				RequestDispatcher successView = req.getRequestDispatcher(url); // 修改成功後,轉交listOneEmp.jsp
 				successView.forward(req, res);
 

@@ -27,7 +27,8 @@ public class EmpJDBCDAO implements EmpDAO_interface
 	private static final String GET_ONE_ACCOUNT = 
 			"select emp_no,emp_name,emp_account,emp_password,emp_id,emp_email,emp_address,emp_phone,"
 			+"to_char(emp_hiredate,'yyyy-mm-dd') emp_hiredate,emp_job,emp_status from emp where emp_account = ?";
-
+	private static final String GET_PSW_BY_EMAIL =
+			"select emp_no emp_password from emp where emp_email = ?";
 	@Override
 	public void insert(EmpVO empVO)
 	{
@@ -386,6 +387,67 @@ public class EmpJDBCDAO implements EmpDAO_interface
 		return list;
 	}
 	
+	@Override
+	public EmpVO findPswByEmail(String emp_email)
+	{
+		// TODO Auto-generated method stub
+		EmpVO empVO =null;
+		Connection con = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs =null;
+		ResultSetMetaData rsmd = null; 
+		try
+		{
+			Class.forName(driver);
+			con = DriverManager.getConnection(url,userid,psw);
+			pstmt = con.prepareStatement(GET_PSW_BY_EMAIL);
+			
+			pstmt.setString(1,emp_email);
+			rs = pstmt.executeQuery();
+				
+			while(rs.next())
+			{
+				empVO = new EmpVO();
+				empVO.setEmp_no(rs.getString("emp_no"));
+				empVO.setEmp_password(rs.getString("emp_password"));
+				
+			}
+		} catch (ClassNotFoundException e)
+		{
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (SQLException e)
+		{
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}finally
+		{
+			if(pstmt !=null)
+			{
+				try
+				{
+					pstmt.close();
+				} catch (SQLException e)
+				{
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+			if(con !=null){
+				try
+				{
+					con.close();
+				} catch (SQLException e)
+				{
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+		}
+		return empVO;
+	}
+	
+	
 	public static void main(String[] args)
 	{
 		EmpJDBCDAO dao = new EmpJDBCDAO();
@@ -439,6 +501,11 @@ public class EmpJDBCDAO implements EmpDAO_interface
 //		System.out.print(empVO3.getEmp_job()+" | ");
 //		System.out.println(empVO3.getEmp_status()+" | ");
 		
+		//search psw
+//		EmpVO empVO7 = dao.findByAccount("test01");
+//		System.out.print("| "+empVO7.getEmp_no()+" | ");
+//		System.out.print(empVO7.getEmp_password()+" | ");
+		
 		//search 
 //		EmpVO empVO7 = dao.findByAccount("test01");
 //		System.out.print("| "+empVO7.getEmp_no()+" | ");
@@ -471,6 +538,8 @@ public class EmpJDBCDAO implements EmpDAO_interface
 //		}
 //		
 	}
+
+	
 
 	
 }

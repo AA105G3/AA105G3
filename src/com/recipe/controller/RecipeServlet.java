@@ -22,11 +22,13 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import javax.servlet.http.Part;
 
+import com.film.model.FilmService;
+import com.film.model.FilmVO;
 import com.recipe.model.*;
 import com.recipe_cont.model.*;
 
 
-@MultipartConfig(fileSizeThreshold = 1024 * 1024, maxFileSize = 5 * 1024 * 1024, maxRequestSize = 5 * 5 * 1024 * 1024)
+@MultipartConfig(fileSizeThreshold = 1024 * 1024, maxFileSize = 300 * 1024 * 1024, maxRequestSize = 5 * 5 * 1024 * 1024)
 
 public class RecipeServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
@@ -49,7 +51,7 @@ public class RecipeServlet extends HttpServlet {
 			// send the ErrorPage view.
 			req.setAttribute("errorMsgs", errorMsgs);
 
-//			try {
+			try {
 				/***************************1.接收請求參數 - 輸入格式的錯誤處理**********************/
 				String recipe_no = req.getParameter("recipe_no");
 				if (recipe_no == null || (recipe_no.trim()).length() == 0) {
@@ -122,12 +124,12 @@ public class RecipeServlet extends HttpServlet {
 				successView.forward(req, res);
 
 				/***************************其他可能的錯誤處理*************************************/
-//			} catch (Exception e) {
-//				errorMsgs.add("無法取得資料:" + e.getMessage());
-//				RequestDispatcher failureView = req
-//						.getRequestDispatcher("/front-end/recipe/select_page.jsp");
-//				failureView.forward(req, res);
-//			}
+			} catch (Exception e) {
+				errorMsgs.add("無法取得資料:" + e.getMessage());
+				RequestDispatcher failureView = req
+						.getRequestDispatcher("/front-end/recipe/select_page.jsp");
+				failureView.forward(req, res);
+			}
 		}
 		
 		
@@ -376,6 +378,20 @@ public class RecipeServlet extends HttpServlet {
 				String[] step = req.getParameterValues("step");
 				String[] step_cont = req.getParameterValues("step_cont");
 				
+				
+				
+				Part video = req.getPart("film_file");
+				byte[] film_file = null;
+				if (getFileNameFromPart(video) != null && video.getContentType() != null) {	
+					InputStream in = video.getInputStream();
+					film_file = new byte[in.available()];
+					in.read(film_file);
+					in.close();
+				} 	
+				
+				
+				
+				
 				List<byte[]> step_pics = new ArrayList<byte[]>();
 				
 				Collection<Part> parts =  req.getParts();
@@ -388,12 +404,14 @@ public class RecipeServlet extends HttpServlet {
 				for (Part recipe_contPic : parts) {
 					if(picIdx>4){
 						if (getFileNameFromPart(recipe_contPic) != null && recipe_contPic.getContentType() != null){
-							InputStream in = recipe_contPic.getInputStream();
-							byte[] step_pic = new byte[in.available()];
-							in.read(step_pic);
-							in.close();
-							step_pics.add(step_pic);
-							
+							String type = (recipe_contPic.getContentType()).substring(0,1);
+							if(type.equals("i")){
+								InputStream in = recipe_contPic.getInputStream();
+								byte[] step_pic = new byte[in.available()];
+								in.read(step_pic);
+								in.close();
+								step_pics.add(step_pic);
+							}
 						}else if(getFileNameFromPart(recipe_contPic) == null){
 							InputStream in = part.getInputStream();
 							byte[] step_pic = null;
@@ -402,6 +420,10 @@ public class RecipeServlet extends HttpServlet {
 					}
 					picIdx++;
 				} 
+				
+				if(getFileNameFromPart(video) == null){
+					step_pics.remove(0);
+				}
 				
 				
 				List<String> step_conts = new ArrayList<String>();
@@ -449,7 +471,12 @@ public class RecipeServlet extends HttpServlet {
 //				if(edit.equals("送出修改")){
 				recipeVO = recipeSvc.updateRecipe(recipe_no, recipe_name, recipe_intro, food_mater,recipe_pic,"已發布");
 //				}
-					
+				
+				FilmService filmSvc = new FilmService();
+				if(film_file!=null){
+					FilmVO filmVO = filmSvc.updateFilm(recipe_no, film_file);
+				}
+				
 				Recipe_contService recipe_contSvc = new Recipe_contService();
 				
 //				Set<Recipe_contVO> db_recipe_cont_set =recipe_contSvc.getRecipe_cont(recipe_no);	
@@ -611,7 +638,7 @@ public class RecipeServlet extends HttpServlet {
 			// send the ErrorPage view.
 			req.setAttribute("errorMsgs", errorMsgs);
 
-			try {
+//			try {
 				/***********************1.接收請求參數 - 輸入格式的錯誤處理*************************/
 				HttpSession session =req.getSession(); //取得session 
 				String mem_no = (String)session.getAttribute("mem_no");
@@ -628,6 +655,9 @@ public class RecipeServlet extends HttpServlet {
 				} else {
 					errorMsgs.add("請上傳食譜圖片");
 				}	
+				
+				
+				
 				
 				//取得食材及分量,並做簡單的輸入錯誤處理
 				String[] ingredientsStr =req.getParameterValues("ingredients");
@@ -679,6 +709,19 @@ public class RecipeServlet extends HttpServlet {
 				
 				String food_mater = new String(str);
 				
+				//取得上傳的影片
+				Part video = req.getPart("film_file");
+				byte[] film_file = null;
+				if (getFileNameFromPart(video) != null && video.getContentType() != null) {	
+					InputStream in = video.getInputStream();
+					film_file = new byte[in.available()];
+					in.read(film_file);
+					in.close();
+				} 	
+				FilmVO filmVO = new FilmVO();
+				filmVO.setFilm_file(film_file);
+				
+				
 				//取得食譜內容
 				String[] step = req.getParameterValues("step");
 				String[] step_cont = req.getParameterValues("step_cont");
@@ -699,12 +742,16 @@ public class RecipeServlet extends HttpServlet {
 				for (Part recipe_contPic : parts) {
 						if(picIdx>4){
 							if (getFileNameFromPart(recipe_contPic) != null && recipe_contPic.getContentType() != null){
-								InputStream in = recipe_contPic.getInputStream();
-								byte[] step_pic = new byte[in.available()];
-								in.read(step_pic);
-								in.close();
-								step_pics.add(step_pic);
+								String type = (recipe_contPic.getContentType()).substring(0,1);
 								
+								if(type.equals("i")){
+									InputStream in = recipe_contPic.getInputStream();
+									byte[] step_pic = new byte[in.available()];
+									in.read(step_pic);
+									in.close();
+									step_pics.add(step_pic);
+								}
+									
 							}else if(getFileNameFromPart(recipe_contPic) == null){
 								InputStream in = part.getInputStream();
 								byte[] step_pic = null;
@@ -726,6 +773,7 @@ public class RecipeServlet extends HttpServlet {
 				
 				for(int i =0;i<step_cont.length;i++){
 					step_conts.add(step_cont[i]);
+//					System.out.println(step_cont[i]+".");
 				}
 				
 				List<Recipe_contVO> contList = new ArrayList<Recipe_contVO>();
@@ -735,6 +783,11 @@ public class RecipeServlet extends HttpServlet {
 					recipe_contVO.setStep(new Integer(step[i]));
 					recipe_contVO.setStep_pic(step_pics.get(i));
 					recipe_contVO.setStep_cont(step_conts.get(i));
+					System.out.println(i);
+					System.out.println(step_conts.get(i));
+					System.out.println(step_pics.get(i)==null);
+//					System.out.println(step_pics.get(i));
+//					System.out.println(step_conts.get(i));
 					contList.add(recipe_contVO);
 				}
 				
@@ -763,7 +816,7 @@ public class RecipeServlet extends HttpServlet {
 				
 				/***************************2.開始新增資料***************************************/
 				RecipeService recipeSvc = new RecipeService();
-				recipeVO = recipeSvc.addRecipeWith_Recipe_conts(mem_no, recipe_name, recipe_intro, food_mater, recipe_pic,"已發布", contList);
+				recipeVO = recipeSvc.addRecipeWith_Recipe_conts(mem_no, recipe_name, recipe_intro, food_mater, recipe_pic,"已發布", contList,filmVO);
 				
 				/***************************3.新增完成,準備轉交(Send the Success view)***********/
 				
@@ -781,13 +834,13 @@ public class RecipeServlet extends HttpServlet {
 				successView.forward(req, res);				
 				
 				/***************************其他可能的錯誤處理**********************************/
-			} catch (Exception e) {
-				errorMsgs.add(e.getMessage());
-				
-				RequestDispatcher failureView = req
-						.getRequestDispatcher("/front-end/recipe/addRecipe.jsp");
-				failureView.forward(req, res);
-			}
+//			} catch (Exception e) {
+//				errorMsgs.add(e.getMessage());
+//				
+//				RequestDispatcher failureView = req
+//						.getRequestDispatcher("/front-end/recipe/addRecipe.jsp");
+//				failureView.forward(req, res);
+//			}
 		}
 		
 		if ("delete".equals(action)) { 
