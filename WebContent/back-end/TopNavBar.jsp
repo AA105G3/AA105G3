@@ -128,9 +128,9 @@
 			  
 			  html:				 
 				  '<label for="swal-input1">舊密碼</label>'+
-			    '<input id="swal-input1" class="swal2-input" autofocus>' +
+			    '<input type="password" id="swal-input1" class="swal2-input" autofocus>' +
 			    
-			    '<input id="swal-input2" class="swal2-input">',
+			    '<input type="password" id="swal-input2" class="swal2-input">',
 			    
 			    }).then(function (result) {
 			    	var oldPsw = $('#swal-input1').val();
