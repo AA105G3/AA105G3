@@ -344,7 +344,15 @@ public class RecipeServletAndroid extends HttpServlet {
 		if ("search".equals(action)) {
 		}
 
+//		addRecipe(String mem_no,String recipe_name,String recipe_intro,String food_mater,byte[] recipe_pic)
 		if ("update".equals(action)) {
+			String recipeJson = jsonObject.get("recipeVO").getAsString();
+			RecipeVO recipeVO = gson.fromJson(recipeJson, RecipeVO.class);
+			recipeVO = recipeSvc.addRecipe(recipeVO.getMem_no(), recipeVO.getRecipe_name(), recipeVO.getRecipe_intro(),
+					recipeVO.getFood_mater(), recipeVO.getRecipe_pic());
+
+			outStr.append(gson.toJson(recipeVO));
+			SendResponse.writeText(res, outStr.toString());
 		}
 
 		if ("insert_old".equals(action)) {
