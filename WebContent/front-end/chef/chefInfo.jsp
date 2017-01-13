@@ -302,7 +302,7 @@
                     		<div class="form-group form-inline">				
 			     				<input type="submit" value="下訂私廚">
 			     				<input type="hidden" name="chef_no" value="${chefVO.chef_no}">
-			     				<input type="hidden" name="mem_no" value="M00000001">
+			     				<input type="hidden" name="mem_no" value="${sessionScope.mem_no}">
 			     				<input type="hidden" name="action"	value="getChefNo_For_addChefOrd">
 							</div>
 						</li>	

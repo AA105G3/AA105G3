@@ -17,7 +17,7 @@
 			<script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
 		<![endif]-->
 		<style type="text/css">
-			@font-face {
+			/* @font-face {
 				font-family: 'anyoldicon';
 				src:url('../fonts/anyoldicon/anyoldicon.eot');
 				src:url('../fonts/anyoldicon/anyoldicon.eot?#iefix') format('embedded-opentype'),
@@ -26,7 +26,7 @@
 					url('../fonts/anyoldicon/anyoldicon.svg#anyoldicon') format('svg');
 				font-weight: normal;
 				font-style: normal;
-			}
+			} */
 
 			/* General grid styles */
 			.cbp-ig-grid {
@@ -249,7 +249,7 @@
 				-webkit-transition: background 0.5s,border 0.5s,color 0.5s,padding 0.5s;
 				transition: background 0.5s,color 0.5s,padding 0.5s;
 				
-				opacity: 1;
+				/*opacity: 1;*/
 				
 			}
 			.cbp-ig-grid li#Logo .homepagelogout {
@@ -283,27 +283,27 @@
 
 			/* Hover styles */
 
-			.cbp-ig-grid li.even > a:hover {
+		 	 .cbp-ig-grid li.even > a:hover {
 				background: #edcc81;
 				color:#edcc81;
 				text-decoration: none;
-			}
-			.cbp-ig-grid li.even > a:link {
+			} 
+			/* .cbp-ig-grid li.even > a:link {
 				background: #edcc81;
 				color:#e3b13e;
 				text-decoration: none;
-			}
+			}  */
 
 			.cbp-ig-grid li.odd > a:hover {
 				background: #edcc81;
 				color:#edcc81;
 				text-decoration: none;
 			}
-			.cbp-ig-grid li.odd > a:link {
+			/* .cbp-ig-grid li.odd > a:link {
 				background: #edcc81;
 				color:#fff;
 				text-decoration: none;
-			}
+			} */
 			.cbp-ig-grid li.odd > a:hover .cbp-ig-icon {
 				-webkit-transform: translateY(10px);
 				-moz-transform: translateY(10px);

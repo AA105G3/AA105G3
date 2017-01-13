@@ -137,7 +137,7 @@
 							
 						</div>
 						<div class="login-register">
-				            <a href="">忘記密碼</a>
+				            <!-- <a href="">忘記密碼</a> -->
 				         </div>
 					</form>
 				</div>

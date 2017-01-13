@@ -189,8 +189,14 @@ public class MemberServlet extends HttpServlet {
 			req.setAttribute("errorMsgs", errorMsgs);
 			
 			try {
-				
+				MemberService memberSvc = new MemberService();
+						
 				HttpSession session = req.getSession();
+				String mem_no= (String)session.getAttribute("mem_no");
+				MemberVO memberVO1 =memberSvc.getOneMember(mem_no);
+				MemberVO memberVO = memberSvc.updateMember(mem_no, memberVO1.getMem_name(), memberVO1.getMem_ac(),
+						memberVO1.getMem_pw(), memberVO1.getMem_image(), memberVO1.getMem_sex(), memberVO1.getMem_phone()
+						, memberVO1.getMem_email(), memberVO1.getMem_adrs(), memberVO1.getMem_own(), memberVO1.getMem_history(), "0");
 				session.removeAttribute("mem_no");
 				session.removeAttribute("mem_ac");
 				session.removeAttribute("mem_name");

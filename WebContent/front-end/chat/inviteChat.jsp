@@ -26,7 +26,7 @@
 		<script type="text/javascript">
 
 		var invitews;
-	    var invitemem_no = "${sessionScope.mem_no}";//自己
+	    var inviteMem_no = "${sessionScope.mem_no}";//自己
 	    var frd_no = "";//朋友
 	    var path = window.location.pathname;
 	    var webCtx = path.substring(0, path.indexOf('/', 1));
@@ -36,11 +36,12 @@
 
 	    function inviteConnect() {
 	    	
-		    var endPointURL = "ws://" + window.location.host + webCtx + "/InviteEndpoint/"+invitemem_no;
+		    var endPointURL = "ws://" + window.location.host + webCtx + "/InviteEndpoint/"+inviteMem_no;
 		    invitews = new WebSocket(endPointURL);
 
 
 		    invitews.onmessage = function(event) {
+		    	alert("123")
 	            console.log(event.data);
 	            var message = JSON.parse(event.data);
 
@@ -83,7 +84,6 @@
 					  confirmButtonText: '開啟聊天室'
 					}).then(function () {
 					  //打開新分頁
-					  alert(message.from);
 					  	var myWindow = window.open("/AA105G3/front-end/chat/chatRoom.jsp?friend_no="+message.from, "", "toolbar=no,menubar=no,width=400,height=400");
 					})
 	            }else if(message.content=='false'){

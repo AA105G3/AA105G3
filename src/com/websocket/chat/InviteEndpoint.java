@@ -34,7 +34,6 @@ public class InviteEndpoint {
         MemberService memberSvc = new MemberService();
         ChefService chefSvc = new ChefService();
         users.put(userId, session);
-        
         	if(userName.containsKey(userId)==false){
             	String mem_name = (memberSvc.getOneMember(userId)).getMem_name();
             	userName.put(userId, mem_name);
@@ -51,14 +50,13 @@ public class InviteEndpoint {
 		
 		try
 		{
+			System.out.println(session.getId());
 			JSONObject jsonObjectIn = new JSONObject(message);
 			Message msg = new Message();
-			
 			msg.setFrom(getFromNo(session));
 			msg.setMemberName(getMemberName(session));
 			msg.setTo(jsonObjectIn.getString("to"));
 			msg.setContent(jsonObjectIn.getString("content"));
-			
 			
 			sendMessageToOneUser(msg);
 		} catch (JSONException e)
@@ -115,6 +113,7 @@ public class InviteEndpoint {
 					JSONObject msg = new JSONObject(); 
 					try
 					{
+						System.out.println(to);
 						msg.put("from", message.getFrom());
 						msg.put("content", message.getContent());
 						msg.put("memberName", message.getMemberName());

@@ -91,7 +91,7 @@
 					<a href="/AA105G3/front-end/product/Market.jsp">市集</a>
 	            </li>
 	            <li>
-					<a href="#mu-contact">聯絡我們</a>
+					<a href="/AA105G3/front-end/ContactUs.jsp">聯絡我們</a>
 	            </li>
 	            <c:if test="${mem_name==null}">
 		            <li>

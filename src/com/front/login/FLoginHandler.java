@@ -55,6 +55,11 @@ public class FLoginHandler extends HttpServlet {
 		session.setAttribute("mem_no", mem_no);
 		session.setAttribute("mem_ac", mem_ac);
 		session.setAttribute("mem_name", mem_name);
+		MemberService memberSvc = new MemberService();
+		MemberVO memberVO1 =memberSvc.getOneMember(mem_no);
+		MemberVO memberVO = memberSvc.updateMember(mem_no, memberVO1.getMem_name(), memberVO1.getMem_ac(),
+				memberVO1.getMem_pw(), memberVO1.getMem_image(), memberVO1.getMem_sex(), memberVO1.getMem_phone()
+				, memberVO1.getMem_email(), memberVO1.getMem_adrs(), memberVO1.getMem_own(), memberVO1.getMem_history(), "1");
 	}
 	
 	/*private static final long serialVersionUID = 1L;*/

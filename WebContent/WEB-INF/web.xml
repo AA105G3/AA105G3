@@ -141,6 +141,21 @@
     <dispatcher>ERROR</dispatcher>
     <dispatcher>ASYNC</dispatcher>
   </filter-mapping>
+  
+  <filter>
+    <filter-name>BLoginFilter</filter-name>
+    <filter-class>filters.BLoginFilter</filter-class>
+  </filter>
+  <filter-mapping>
+    <filter-name>BLoginFilter</filter-name>
+    <url-pattern>/back-end/*</url-pattern>
+    <dispatcher>REQUEST</dispatcher>
+    <dispatcher>FORWARD</dispatcher>
+    <dispatcher>INCLUDE</dispatcher>
+    <dispatcher>ERROR</dispatcher>
+    <dispatcher>ASYNC</dispatcher>
+  </filter-mapping>
+  
   <servlet>
     <servlet-name>Frd_listServlet</servlet-name>
     <servlet-class>com.frd_list.controller.Frd_listServlet</servlet-class>

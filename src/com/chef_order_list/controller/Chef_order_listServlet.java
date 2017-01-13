@@ -528,7 +528,7 @@ public class Chef_order_listServlet extends HttpServlet {
 			    mailService.sendMail(to, subject, messageText);
 				/***************************3.修改完成,準備轉交(Send the Success view)*************/
 				req.setAttribute("chef_order_listVO", chef_order_listVO); // 資料庫update成功後,正確的的chef_order_listVO物件,存入req
-				String url = "/front-end/chef_order_list/listOneChef_order_list.jsp";
+				String url = "/front-end/chef_order_list/chefOrderListOfMem_Done.jsp";
 				RequestDispatcher successView = req.getRequestDispatcher(url); // 修改成功後,轉交listOneChef_order_list.jsp
 				successView.forward(req, res);
 				
