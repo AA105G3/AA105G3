@@ -97,39 +97,6 @@ public class Recipe_contServletAndroid extends HttpServlet {
 			}
 			os.write(step_pic);
 			return;
-			
-			
-//			String recipe_noJson = jsonObject.get("recipe_no").getAsString();
-//			String stepJson = jsonObject.get("step").getAsString();
-//			
-//			JsonReader reader = new JsonReader(new StringReader(recipe_noJson));
-//			reader.setLenient(true);
-//			String recipe_no = gson.fromJson(reader, String.class);
-//			
-//			JsonReader reader2 = new JsonReader(new StringReader(stepJson));
-//			reader2.setLenient(true);
-//			String stepString = gson.fromJson(reader2, String.class);
-//			
-//			Integer step = Integer.parseInt(stepString);
-//			
-////			Recipe_contService recipe_contSvc = new Recipe_contService();
-//			Recipe_contVO recipe_contVO = recipe_contSvc.getOneRecipe_cont(recipe_no, step);
-//			byte[] buffer = recipe_contVO.getStep_pic();
-//			
-//			outStr.append(gson.toJson(frd_listVOList));
-//			
-//			
-////			outStr.append(gson.toJson(recipeVOList));
-//			SendResponse.writeText(res, outStr.toString());
-//			
-//			return;
-			
-//			String recipe_no = req.getParameter("recipe_no");
-//			Integer step = new Integer(req.getParameter("step"));
-//			Recipe_contService recipe_contSvc = new Recipe_contService();
-//			Recipe_contVO recipe_contVO = recipe_contSvc.getOneRecipe_cont(recipe_no, step);
-//			byte[] buffer = recipe_contVO.getStep_pic();
-//			out.write(buffer);
 		}
 		
 		if ("update".equals(action)) {
