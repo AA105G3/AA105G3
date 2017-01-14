@@ -469,7 +469,6 @@ public class ChefServlet extends HttpServlet {
 			req.setAttribute("errorMsgs", errorMsgs);
 			try {
 				/***********************1.接收請求參數 - 輸入格式的錯誤處理*************************/
-				System.out.println("xxx");
 				String mem_no = req.getParameter("mem_no").trim();
 				
 				String chef_bnk = req.getParameter("chef_bnk").trim();
@@ -547,14 +546,17 @@ public class ChefServlet extends HttpServlet {
 					errorMsgs.put("chef_movieError","必須上傳兩部影片");
 				}
 				
-				String chef_id = req.getParameter("chef_id").trim();
+				String chef_id = (req.getParameter("chef_id").trim()).toUpperCase();
+				char f = chef_id.charAt(0);
+				int ch = (int)f;
 				if(chef_id.equals("") ){
 					errorMsgs.put("idError","請輸入身分證字號");
-				}else if(chef_id.substring(0, 1).matches("[a-zA-Z]")){
+				}else if(ch<65&&ch>90){
 					errorMsgs.put("idError","格式錯誤");
 				}else if(chef_id.length()<10)
 				for(int i =1;i<10;i++){
-					String num = chef_id.substring(i, i+1);
+					char s = chef_id.charAt(i);
+					String num = String.valueOf(s);
 					try{
 						int number = Integer.parseInt(num); 
 					}catch(NumberFormatException ne){
@@ -682,7 +684,6 @@ public class ChefServlet extends HttpServlet {
 				chefVO.setChef_reci_image4(chef_reci_image4);
 				chefVO.setChef_reci_image5(chef_reci_image5);
 
-					System.out.println("xxxxxxxxxxxxxxxxxxx");
 				// Send the use back to the form, if there were errors
 				if (!errorMsgs.isEmpty()) {
 //					System.out.println(errorMsgs.size()+"AAAAAAAAAAA");

@@ -262,7 +262,7 @@
 						<td>
 							<div class="form-group ">
 		                        <label for="chef_name"  class="control-label"><span>*</span>真實姓名：</label><span>${errorMsgs.get("nameError")}</span>
-		                        <input type="text" name="chef_name" id="chef_name" value="" class="form-control">
+		                        <input type="text" name="chef_name" id="chef_name" value="${chefVO.chef_name}" class="form-control">
 		                    </div>
 						</td>
 						<td rowspan="3" class="chef_image-wrapper">
@@ -281,7 +281,7 @@
 							<div class="form-group">
 		                        <label for="chef_id" class=" control-label"><span>*</span>身分證字號：</label><span>${errorMsgs.get("idError")}</span>
 		                       
-		                        <input type="text" name="chef_id" id="chef_id" value="" class="form-control" maxlength="10" minlength="10">
+		                        <input type="text" name="chef_id" id="chef_id" value="${chefVO.chef_id}" class="form-control" maxlength="10" minlength="10">
 		                        
 		                    </div>
 						</td>
@@ -292,8 +292,8 @@
 							<div class="form-group ">
 		                        <label for="chef_bnk" class="control-label"><span>*</span>匯款帳戶：</label><span>${errorMsgs.get("bankError")}</span>
 		                        <div>
-		                        <input type="text" name="chef_bnk" id="chef_bnk" value="" class="form-inline" maxlength="3" style="width: 50px;">-
-		                        <input type="text" name="chef_bnk_ac" id="chef_bnk_ac" value="" class="form-inline" maxlength="14" style="width: 220px;">
+		                        <input type="text" name="chef_bnk" id="chef_bnk" value="${chefVO.chef_bnk}" class="form-inline" maxlength="3" style="width: 50px;">-
+		                        <input type="text" name="chef_bnk_ac" id="chef_bnk_ac" value="${chefVO.chef_bnk_ac}" class="form-inline" maxlength="14" style="width: 220px;">
 		                        </div>
 		                    </div>
 						</td>
@@ -302,7 +302,7 @@
 						<td colspan="2" >
 							<div class="form-group">
 		                        <label for="chef_area" class=" control-label">願意服務的地區：<span>建議填寫</span></label>
-		                       	<textarea name="chef_area" id="chef_area" value="" class="form-control" rows="3"></textarea>
+		                       	<textarea name="chef_area" id="chef_area" value="" class="form-control" rows="3">${chefVO.chef_area}</textarea>
 		                    </div>
 						</td>
 					</tr>
@@ -310,7 +310,7 @@
 						<td colspan="2" >
 							<div class="form-group">
 		                        <label for="chef_intr" class=" control-label">自我簡介：</label>
-		                       	<textarea name="chef_intr" id="chef_intr" value="" class="form-control" rows="3"></textarea>
+		                       	<textarea name="chef_intr" id="chef_intr" value="" class="form-control" rows="3">${chefVO.chef_intr}</textarea>
 		                    </div>
 						</td>
 					</tr>
@@ -326,7 +326,7 @@
 						<td colspan="2" >
 							<div class="form-group">
 		                        <label for="chef_menu" class=" control-label">請填寫您的參考菜單：<span>(請附上價格)</span></label>
-		                       	<textarea name="chef_menu" id="chef_menu" value="" class="form-control" rows="3"></textarea>
+		                       	<textarea name="chef_menu" id="chef_menu" value="" class="form-control" rows="3">${chefVO.chef_menu}</textarea>
 		                    </div>
 						</td>
 					</tr>
