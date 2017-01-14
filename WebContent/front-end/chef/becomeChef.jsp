@@ -140,7 +140,7 @@
 	.chef_image-wrapper .clearImg{
 		position: absolute;
 		z-index: 1;
-		top:50px;
+		top:90px;
 		right:  100px;
 		display: inline;
 		color: red;
@@ -241,15 +241,7 @@
     </section>
     
     
-    <c:if test="${not empty errorMsgs}">
-	<font color='red'>請修正以下錯誤:
-	<ul>
-		<c:forEach var="message" items="${errorMsgs}">
-			<li>${message}</li>
-		</c:forEach>
-	</ul>
-	</font>
-</c:if>
+    
     
 <div class="container">
                     <div class="row">
@@ -269,13 +261,13 @@
 					<tr>
 						<td>
 							<div class="form-group ">
-		                        <label for="chef_name"  class="control-label"><span>*</span>真實姓名：</label>
+		                        <label for="chef_name"  class="control-label"><span>*</span>真實姓名：</label><span>${errorMsgs.get("nameError")}</span>
 		                        <input type="text" name="chef_name" id="chef_name" value="" class="form-control">
 		                    </div>
 						</td>
 						<td rowspan="3" class="chef_image-wrapper">
 						<div>
-						<label><span>*</span>請上傳您的真實照片</label>	
+						<label><span>*</span>請上傳您的真實照片</label><span>${errorMsgs.get("chef_imgError")}</span>	
 						</div>
 						<label for="chef_image" id="123">
 							<img src="https://api.fnkr.net/testimg/200x200/00CED1/FFF/?text=img+placeholder" class="img-circle">
@@ -287,7 +279,7 @@
 					<tr>
 						<td>
 							<div class="form-group">
-		                        <label for="chef_id" class=" control-label"><span>*</span>身分證字號：</label>
+		                        <label for="chef_id" class=" control-label"><span>*</span>身分證字號：</label><span>${errorMsgs.get("idError")}</span>
 		                       
 		                        <input type="text" name="chef_id" id="chef_id" value="" class="form-control" maxlength="10" minlength="10">
 		                        
@@ -298,7 +290,7 @@
 					<tr>
 						<td>
 							<div class="form-group ">
-		                        <label for="chef_bnk" class="control-label"><span>*</span>匯款帳戶：</label>
+		                        <label for="chef_bnk" class="control-label"><span>*</span>匯款帳戶：</label><span>${errorMsgs.get("bankError")}</span>
 		                        <div>
 		                        <input type="text" name="chef_bnk" id="chef_bnk" value="" class="form-inline" maxlength="3" style="width: 50px;">-
 		                        <input type="text" name="chef_bnk_ac" id="chef_bnk_ac" value="" class="form-inline" maxlength="14" style="width: 220px;">
@@ -309,7 +301,7 @@
 					<tr>
 						<td colspan="2" >
 							<div class="form-group">
-		                        <label for="chef_area" class=" control-label">願意服務的地區：</label>
+		                        <label for="chef_area" class=" control-label">願意服務的地區：<span>建議填寫</span></label>
 		                       	<textarea name="chef_area" id="chef_area" value="" class="form-control" rows="3"></textarea>
 		                    </div>
 						</td>
@@ -325,7 +317,7 @@
 					<tr>
 						<td colspan="2" >
 							<div class="form-group">
-		                        <label for="chef_skill" class=" control-label"><span>*</span>擅長的料理風格：</label>
+		                        <label for="chef_skill" class=" control-label"><span>*</span>擅長的料理風格：</label><span>${errorMsgs.get("skillError")}</span>
 		                       	<textarea name="chef_skill" id="chef_skill" value="" class="form-control" rows="3"></textarea>
 		                    </div>
 						</td>
@@ -340,7 +332,7 @@
 					</tr>
 					<tr>
 						<td colspan="2" class="chef_lic-wrapper">
-							<div class="text-center"><label><span>*</span>廚藝相關證照(橫向):</label></div>
+							<div class="text-center"><label><span>*</span>廚藝相關證照(橫向):</label><span>${errorMsgs.get("licError")}</span></div>
 							<label for="chef_lic">
 								<img src="https://api.fnkr.net/testimg/300x250/00CED1/FFF/?text=img+placeholder">
 							</label>
@@ -350,7 +342,7 @@
 					</tr>
 					<tr>
 						<td colspan="2">
-							<div class="text-center"><label>菜單參考圖片:<span>(至少上傳1張片)</span></label></div>
+							<div class="text-center"><label>菜單參考圖片:<span>(至少上傳左上的圖片)</span></label><span>${errorMsgs.get("rec_imgError")}</span></div>
 							<div class="row">
 								<div class="col-xs-12 col-sm-6 menu-img-top">
 								<label for="chef_reci_image1">
@@ -395,7 +387,7 @@
 						</td>
 					</tr>
 					<tr>
-						<td colspan="2" class="text-center"><label>請上傳您實際料理時的影片<span>(必須上傳2部影片)</span></label></td>
+						<td colspan="2" class="text-center"><label>請上傳您實際料理時的影片<span>(必須上傳2部影片)</span></label><span>${errorMsgs.get("chef_movieError")}</span></td>
 					</tr>
 					<tr>
 						<td class="chef-video-wraper">
@@ -403,14 +395,14 @@
 								<source id="currentVID1" src="" type="">
 							</video>
 							<i type="button" id="clearVideo1" class="glyphicon glyphicon-remove clearVideo btn"></i>
-							<input id="videoUpload1" type="file" name="">
+							<input id="videoUpload1" type="file" name="chef_movie1">
 						</td>
 						<td class="chef-video-wraper">
 							<video id="videoPlayer2" controls>
 								<source id="currentVID2" src="" type="">
 							</video>
 							<i type="button" id="clearVideo2" class="glyphicon glyphicon-remove clearVideo btn"></i>
-							<input id="videoUpload2" type="file" name="">
+							<input id="videoUpload2" type="file" name="chef_movie2">
 
 						</td>
 					</tr>

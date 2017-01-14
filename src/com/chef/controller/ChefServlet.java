@@ -463,31 +463,25 @@ public class ChefServlet extends HttpServlet {
 
         if ("insert".equals(action)) { // 來自addChef.jsp的請求  
 			
-			List<String> errorMsgs = new LinkedList<String>();
+			Map<String,String> errorMsgs = new HashMap<String,String>();
 			// Store this set in the request scope, in case we need to
 			// send the ErrorPage view.
 			req.setAttribute("errorMsgs", errorMsgs);
 			try {
 				/***********************1.接收請求參數 - 輸入格式的錯誤處理*************************/
-				
+				System.out.println("xxx");
 				String mem_no = req.getParameter("mem_no").trim();
-				if(mem_no.equals("")){
-					errorMsgs.add("請輸入會員編號.");
-				}			
 				
 				String chef_bnk = req.getParameter("chef_bnk").trim();
-				if(chef_bnk.equals("")){
-					errorMsgs.add("請輸入私廚匯款帳戶銀行代碼.");
+				String chef_bnk_ac = req.getParameter("chef_bnk_ac").trim();
+				if(chef_bnk.equals("") || chef_bnk_ac.equals("")){
+					errorMsgs.put("bankError","請輸入銀行匯款帳戶");
 				}
 				
-				String chef_bnk_ac = req.getParameter("chef_bnk_ac").trim();
-				if(chef_bnk_ac.equals("")){
-					errorMsgs.add("請輸入私廚匯款帳號.");
-				}
 				
 				String chef_skill = req.getParameter("chef_skill").trim();
 				if(chef_skill.equals("")){
-					errorMsgs.add("請輸入私廚專長.");
+					errorMsgs.put("skillError","請填寫專長");
 				}
 				
 				Part lic_part=req.getPart("chef_lic");
@@ -499,155 +493,172 @@ public class ChefServlet extends HttpServlet {
 					lic_in.close();
 				}
 				else{
-					InputStream lic_in = getServletContext().getResourceAsStream("/images/chef/No-image-found.png");
-					chef_lic = new byte[lic_in.available()];
-					lic_in.read(chef_lic);
-					lic_in.close();
+					errorMsgs.put("licError","請上傳證照");
 				}
 				
 				Part c_img_part=req.getPart("chef_image");
 				byte[] chef_image=null;
 				if(getFileNameFromPart2(c_img_part) != null && c_img_part.getContentType() != null){
-					InputStream c_img_in= c_img_part.getInputStream();
-					chef_image=new byte[c_img_in.available()];
-					c_img_in.read(chef_image);
-					c_img_in.close();
+					String type = (c_img_part.getContentType()).substring(0,1);
+					if(type.equals("i")){
+						InputStream c_img_in= c_img_part.getInputStream();
+						chef_image=new byte[c_img_in.available()];
+						c_img_in.read(chef_image);
+						c_img_in.close();
+					}else{
+						errorMsgs.put("chef_imgError","請上傳圖片格式");
+					}
 				}
 				else{
-					InputStream c_img_in = getServletContext().getResourceAsStream("/images/chef/No-image-found.png");
-					chef_image = new byte[c_img_in.available()];
-					c_img_in.read(chef_image);
-					c_img_in.close();
+					errorMsgs.put("chef_imgError","請上傳真實相片");
 				}
 				
 				Part mov1_part=req.getPart("chef_movie1");
 				byte[] chef_movie1=null;
 				if(getFileNameFromPart3(mov1_part) != null && mov1_part.getContentType() != null){
-					InputStream mov1_in= mov1_part.getInputStream();
-					chef_movie1=new byte[mov1_in.available()];
-					mov1_in.read(chef_movie1);
-					mov1_in.close();
+					String type = (mov1_part.getContentType()).substring(0,1);
+					if(type.equals("v")){
+						InputStream mov1_in= mov1_part.getInputStream();
+						chef_movie1=new byte[mov1_in.available()];
+						mov1_in.read(chef_movie1);
+						mov1_in.close();
+					}else{
+						errorMsgs.put("chef_movieError","請上傳影片");
+					}
 				}
 				else{
-					InputStream mov1_in = getServletContext().getResourceAsStream("/images/chef/No-image-found.png");
-					chef_movie1 = new byte[mov1_in.available()];
-					mov1_in.read(chef_movie1);
-					mov1_in.close();
+					errorMsgs.put("chef_movieError","必須上傳兩部影片");
 				}
 				
 				Part mov2_part=req.getPart("chef_movie2");
 				byte[] chef_movie2=null;
 				if(getFileNameFromPart4(mov2_part) != null && mov2_part.getContentType() != null){
+					String type = (mov2_part.getContentType()).substring(0,1);
+					if(type.equals("v")){
 					InputStream mov2_in= mov2_part.getInputStream();
 					chef_movie2=new byte[mov2_in.available()];
 					mov2_in.read(chef_movie2);
 					mov2_in.close();
+					}else{
+						errorMsgs.put("chef_movieError","請上傳影片");
+					}
 				}
 				else{
-					InputStream mov2_in = getServletContext().getResourceAsStream("/images/chef/No-image-found.png");
-					chef_movie2 = new byte[mov2_in.available()];
-					mov2_in.read(chef_movie2);
-					mov2_in.close();
+					errorMsgs.put("chef_movieError","必須上傳兩部影片");
 				}
 				
 				String chef_id = req.getParameter("chef_id").trim();
 				if(chef_id.equals("") ){
-					errorMsgs.add("請輸入身分證字號.");
+					errorMsgs.put("idError","請輸入身分證字號");
+				}else if(chef_id.substring(0, 1).matches("[a-zA-Z]")){
+					errorMsgs.put("idError","格式錯誤");
+				}else if(chef_id.length()<10)
+				for(int i =1;i<10;i++){
+					String num = chef_id.substring(i, i+1);
+					try{
+						int number = Integer.parseInt(num); 
+					}catch(NumberFormatException ne){
+						errorMsgs.put("idError","格式錯誤");
+					}
 				}
 				
 				String chef_name = req.getParameter("chef_name").trim();
 				if(chef_name.equals("")){
-					errorMsgs.add("請輸入姓名.");
+					errorMsgs.put("nameError","請輸入姓名");
 				}
 				
 				String chef_area = req.getParameter("chef_area").trim();
-				if(chef_area.equals("")){
-					errorMsgs.add("請輸入活動地區.");
-				}
+				
 				
 				String chef_intr = req.getParameter("chef_intr").trim();
-				if(chef_intr.equals("")){
-					errorMsgs.add("請輸入簡介.");
-				}
+				
 				
 				String chef_menu = req.getParameter("chef_menu").trim();
-				if(chef_menu.equals("")){
-					errorMsgs.add("請輸入參考菜單.");
-				}
+				
 	
 				Part img1_part=req.getPart("chef_reci_image1");
 				byte[] chef_reci_image1=null;
 				if(getFileNameFromPart5(img1_part) != null && img1_part.getContentType() != null){
+					String type = (img1_part.getContentType()).substring(0,1);
+					if(type.equals("i")){
 					InputStream img1_in= img1_part.getInputStream();
 					chef_reci_image1=new byte[img1_in.available()];
 					img1_in.read(chef_reci_image1);
 					img1_in.close();
+					}else{
+						errorMsgs.put("rec_imgError","請上傳圖片格式");
+					}
 				}
 				else{
-					InputStream img1_in = getServletContext().getResourceAsStream("/images/chef/No-image-found.png");
-					chef_reci_image1 = new byte[img1_in.available()];
-					img1_in.read(chef_reci_image1);
-					img1_in.close();
+					errorMsgs.put("rec_imgError","至少上傳一張圖片");
 				}
 				
 				Part img2_part=req.getPart("chef_reci_image2");
 				byte[] chef_reci_image2=null;
 				if(getFileNameFromPart6(img2_part) != null && img2_part.getContentType() != null){
+					String type = (img1_part.getContentType()).substring(0,1);
+					if(type.equals("i")){
 					InputStream img2_in= img2_part.getInputStream();
 					chef_reci_image2=new byte[img2_in.available()];
 					img2_in.read(chef_reci_image2);
 					img2_in.close();
+					}else{
+						errorMsgs.put("rec_imgError","請上傳圖片格式");
+					}
 				}
 				else{
-					InputStream img2_in = getServletContext().getResourceAsStream("/images/chef/No-image-found.png");
-					chef_reci_image2 = new byte[img2_in.available()];
-					img2_in.read(chef_reci_image2);
-					img2_in.close();
+					chef_reci_image2 = null;
 				}
 				
 				Part img3_part=req.getPart("chef_reci_image3");
 				byte[] chef_reci_image3=null;
 				if(getFileNameFromPart7(img3_part) != null && img3_part.getContentType() != null){
+					String type = (img3_part.getContentType()).substring(0,1);
+					if(type.equals("i")){
 					InputStream img3_in= img3_part.getInputStream();
 					chef_reci_image3=new byte[img3_in.available()];
 					img3_in.read(chef_reci_image3);
 					img3_in.close();
+					}else{
+						errorMsgs.put("rec_imgError","請上傳圖片格式");
+					}
 				}
 				else{
-					InputStream img3_in = getServletContext().getResourceAsStream("/images/chef/No-image-found.png");
-					chef_reci_image3= new byte[img3_in.available()];
-					img3_in.read(chef_reci_image3);
-					img3_in.close();
+					chef_reci_image3= null;
 				}
 				
 				Part img4_part=req.getPart("chef_reci_image4");
 				byte[] chef_reci_image4=null;
 				if(getFileNameFromPart8(img4_part) != null && img4_part.getContentType() != null){
+					String type = (img4_part.getContentType()).substring(0,1);
+					if(type.equals("i")){
 					InputStream img4_in= img4_part.getInputStream();
 					chef_reci_image4=new byte[img4_in.available()];
 					img4_in.read(chef_reci_image4);
 					img4_in.close();
+					}else{
+						errorMsgs.put("rec_imgError","請上傳圖片格式");
+					}
 				}
 				else{
-					InputStream img4_in = getServletContext().getResourceAsStream("/images/chef/No-image-found.png");
-					chef_reci_image4 = new byte[img4_in.available()];
-					img4_in.read(chef_reci_image4);
-					img4_in.close();
+					chef_reci_image4 = null;
 				}
 				
 				Part img5_part=req.getPart("chef_reci_image5");
 				byte[] chef_reci_image5=null;
 				if(getFileNameFromPart9(img5_part) != null && img5_part.getContentType() != null){
+					String type = (img5_part.getContentType()).substring(0,1);
+					if(type.equals("i")){
 					InputStream img5_in= img5_part.getInputStream();
 					chef_reci_image5=new byte[img5_in.available()];
 					img5_in.read(chef_reci_image5);
 					img5_in.close();
+					}else{
+						errorMsgs.put("rec_imgError","請上傳圖片格式");
+					}
 				}
 				else{
-					InputStream img5_in = getServletContext().getResourceAsStream("/images/chef/No-image-found.png");
-					chef_reci_image5 = new byte[img5_in.available()];
-					img5_in.read(chef_reci_image5);
-					img5_in.close();
+					chef_reci_image5 = null;
 				}
 				
 
@@ -671,6 +682,7 @@ public class ChefServlet extends HttpServlet {
 				chefVO.setChef_reci_image4(chef_reci_image4);
 				chefVO.setChef_reci_image5(chef_reci_image5);
 
+					System.out.println("xxxxxxxxxxxxxxxxxxx");
 				// Send the use back to the form, if there were errors
 				if (!errorMsgs.isEmpty()) {
 //					System.out.println(errorMsgs.size()+"AAAAAAAAAAA");
@@ -693,7 +705,7 @@ public class ChefServlet extends HttpServlet {
 				
 				/***************************其他可能的錯誤處理**********************************/
 			} catch (Exception e) {
-				errorMsgs.add(e.getMessage());
+				errorMsgs.put("error",e.getMessage());
 				RequestDispatcher failureView = req
 						.getRequestDispatcher("/front-end/chef/becomeChef.jsp");
 				failureView.forward(req, res);
