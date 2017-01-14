@@ -51,7 +51,7 @@ public class RecipeDAO implements RecipeDAO_interface
 	private static final String DELETE = 
 			"DELETE FROM recipe where recipe_no = ?";
 	private static final String UPDATE = 
-			"UPDATE recipe set recipe_name=?,recipe_intro=?,food_mater=?,recipe_pic=?,recipe_time=sysdate,recipe_edit = ? where recipe_no = ?";
+			"UPDATE recipe set recipe_name=?,recipe_intro=?,food_mater=?,recipe_pic=?,recipe_edit = ? where recipe_no = ?";
 	private static final String UPDATEVIEWS = 
 			"UPDATE recipe set recipe_total_views=?,recipe_week_views=? where recipe_no = ?";
 	private static final String UPDATELIKE =
