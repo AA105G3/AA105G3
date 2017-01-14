@@ -210,7 +210,7 @@
 						<div class="col-xs-12 col-sm-6">
 							<div class="recipe-img-wrapper">
 							<img src="<%=request.getContextPath()%>/recipe/showRecipe_pic.do?recipe_no=${recipeVO.recipe_no}" id="image0">
-								<input type="file" name="recipe_pic" id="upload0" onchange="showImage(0)">
+								<input type="file" name="recipe_pic" id="upload0" >
 							</div>
 							
 							<div class="recipe-intro">
@@ -253,7 +253,7 @@
 							<div id="div_${recipe_contVO.step}" class="row step-wrapper">
 								<div class="col-xs-12 col-sm-4 step-left">
 									<img src="<%=request.getContextPath()%>/images/recipe_cont/stepNoPic.PNG" id="image${recipe_contVO.step}">
-									<input type="file" name="step_pic" class="upload" id="upload${recipe_contVO.step}" onchange="showImage(${recipe_contVO.step})">
+									<input type="file" name="step_pic" class="upload" id="upload${recipe_contVO.step}" >
 								</div>
 								<div class="col-xs-12 col-sm-8 step-right">
 									<div class="col-xs-12 col-sm-6">
@@ -275,7 +275,7 @@
 							<div id="div_1" class="row step-wrapper">
 								<div class="col-xs-12 col-sm-4 step-left">
 									<img src="<%=request.getContextPath()%>/images/recipe_cont/stepNoPic.PNG" id="image1">
-									<input type="file" name="step_pic" class="upload" id="upload1" onchange="showImage(1)">
+									<input type="file" name="step_pic" class="upload" id="upload1" onchange="showImage()">
 								</div>
 								<div class="col-xs-12 col-sm-8 step-right">
 									<div class="col-xs-12 col-sm-6">
@@ -350,7 +350,7 @@
 			var html = '<div id="div_'+step+'" class="row step-wrapper">'+
 						'<div class="col-xs-12 col-sm-4 step-left">'+
 						 '<img src="<%=request.getContextPath()%>/images/recipe_cont/stepNoPic.PNG" id="image'+step+'">'+
-						 '<input type="file" name="step_pic" id="upload'+step+'" onchange="showImage('+step+')">'+
+						 '<input type="file" name="step_pic" onchange="showImage()">'+
 						'</div>'+
 						'<div class="col-xs-12 col-sm-8 step-right">'+
 						'<div class="col-xs-12 col-sm-6">'+'<h2>'+step+'</h2>'+' <input type="hidden" name="step" value="'+step+'"></div>'+
@@ -384,9 +384,29 @@
 			stepValue[i].value = i+1;
 			stepDiv[i].id = 'div_'+(i+1);
 			plus[i].id = 'plus_'+(i+1);
+							
 		}
 		
+		//image change
+			$(':file').change(function(){
+				readURL(this);
+		})
+
+
+			function readURL(input) {
+		    if (input.files && input.files[0]) {
+		        var reader = new FileReader();
+		
+		        reader.onload = function (e) {
+		            $(input).siblings('img').attr('src', e.target.result);
+		        }
+		
+		        reader.readAsDataURL(input.files[0]);
+		     }
+			}
+		
 	})
+	
 	
 		function dropStep(){
 
@@ -400,16 +420,7 @@
 
 		$('body').on('click', '.step-plus',appendRecipeCont);
 
-		function showImage(idx){
-			var file = document.getElementById("upload"+idx).files[0];				
-			var read = new FileReader();
-			read.onload=function(){
-					var image = document.getElementById('image'+idx);
-						image.src=read.result;
-						
-					};
-			read.readAsDataURL(file);	
-		} 
+
 
 	</script>
 </body>
