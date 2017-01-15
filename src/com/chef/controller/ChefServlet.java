@@ -77,7 +77,6 @@ public class ChefServlet extends HttpServlet {
 				
 				/***************************3.查詢完成,準備轉交(Send the Success view)*************/
 				req.setAttribute("chefVO", chefVO); // 資料庫取出的chefVO物件,存入req			
-//				String url = "/front-end/chef/chefInfo.jsp";
 				String url = null;
 				if("getOne_For_Display".equals(action))
 					url = "/front-end/chef/chefInfo.jsp";
@@ -167,16 +166,12 @@ public class ChefServlet extends HttpServlet {
 			try {
 				/***************************1.接收請求參數 - 輸入格式的錯誤處理**********************/
 				String chef_no = req.getParameter("chef_no");
-				String chef_chk_cond = req.getParameter("chef_chk_cond");
-				System.out.println(chef_chk_cond);
 				
 				
 				/***************************2.開始查詢資料*****************************************/
 				ChefService chefSvc = new ChefService();
 				ChefVO chefVO = chefSvc.getOneChef(chef_no);
-				if (chefVO == null) {
-					errorMsgs.add("查無資料");
-				}
+				
 				
 				// Send the use back to the form, if there were errors
 				if (!errorMsgs.isEmpty()) {
@@ -185,16 +180,15 @@ public class ChefServlet extends HttpServlet {
 					failureView.forward(req, res);
 					return;//程式中斷
 				}
-				chefVO.setChef_chk_cond(chef_chk_cond);
 				
-				chefSvc.updateChef(chef_no, chefVO.getChef_bnk(), chefVO.getChef_bnk_ac(), chefVO.getChef_skill(), chefVO.getChef_lic(), chefVO.getChef_image(), chefVO.getChef_movie1(), chefVO.getChef_movie2(), chefVO.getChef_id(), chefVO.getChef_name(), chefVO.getChef_area(), chefVO.getChef_intr(), chefVO.getChef_menu(), chefVO.getChef_reci_image1(), chefVO.getChef_reci_image2(), chefVO.getChef_reci_image3(), chefVO.getChef_reci_image4(), chefVO.getChef_reci_image5(),chef_chk_cond);
+				chefSvc.updateChef(chef_no, chefVO.getChef_bnk(), chefVO.getChef_bnk_ac(), chefVO.getChef_skill(), chefVO.getChef_lic(), chefVO.getChef_image(), chefVO.getChef_movie1(), chefVO.getChef_movie2(), chefVO.getChef_id(), chefVO.getChef_name(), chefVO.getChef_area(), chefVO.getChef_intr(), chefVO.getChef_menu(), chefVO.getChef_reci_image1(), chefVO.getChef_reci_image2(), chefVO.getChef_reci_image3(), chefVO.getChef_reci_image4(), chefVO.getChef_reci_image5(),"1");
 				MemberService memberSvc = new MemberService();
 				MemberVO memberVO = memberSvc.getOneMember(chefVO.getMem_no());
 				
 				
 				String to = memberVO.getMem_email();
 				String subject = "私廚審核通知";
-				String messageText = chefVO.getChef_name()+"您好， 恭喜您私廚申請審核已通過。";
+				String messageText = chefVO.getChef_name()+"您好， 恭喜您的私廚申請審核已通過。";
 				
 				MailService mailService = new MailService();
 			    mailService.sendMail(to, subject, messageText);
@@ -724,16 +718,14 @@ public class ChefServlet extends HttpServlet {
 			try {
 				/***************************1.接收請求參數***************************************/
 				String chef_no = new String(req.getParameter("chef_no"));
-				
+				String reason = req.getParameter("rej_reason");
 				/***************************2.開始刪除資料***************************************/
 				ChefService chefSvc = new ChefService();
 				ChefVO chefVO = chefSvc.getOneChef(chef_no); 
 				chefSvc.deleteChef(chef_no);
 				
 				/***************************3.刪除完成,準備轉交(Send the Success view)***********/								
-				String url = "/back-end/chef/ChefCheckListPage.jsp";
-				RequestDispatcher successView = req.getRequestDispatcher(url);// 刪除成功後,轉交回送出刪除的來源網頁
-				successView.forward(req, res);
+				
 				
 				/*寄送e-mail*/
 				
@@ -743,11 +735,17 @@ public class ChefServlet extends HttpServlet {
 				
 				String to = memberVO.getMem_email();
 				String subject = "私廚審核通知";
-				String messageText = chefVO.getChef_name()+"您好， 很抱歉，您私廚申請審核未通過。";
+				String messageText = chefVO.getChef_name()+"很抱歉，您的私廚申請審核未通過。\n"
+						+"原因為： "+reason+"，請修改完成後再提出申請。";
 				
 				MailService mailService = new MailService();
 			    mailService.sendMail(to, subject, messageText);
 				
+			    String url = "/back-end/chef/ChefCheckListPage.jsp";
+				RequestDispatcher successView = req.getRequestDispatcher(url);// 刪除成功後,轉交回送出刪除的來源網頁
+				successView.forward(req, res);
+			    
+			    
 				/***************************其他可能的錯誤處理**********************************/
 			} catch (Exception e) {
 				errorMsgs.add("刪除資料失敗:"+e.getMessage());

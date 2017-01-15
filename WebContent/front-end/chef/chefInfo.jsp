@@ -8,6 +8,8 @@
 
 
 <jsp:useBean id="collectionSvc" scope="page" class="com.collection.model.CollectionService" />
+<jsp:useBean id="memberSvc" scope="page" class="com.member.model.MemberService" />
+<jsp:useBean id="chefSvc" scope="page" class="com.chef.model.ChefService" />
 
 <!DOCTYPE html>
 <html lang="">
@@ -277,7 +279,7 @@
             </div>
             
             </div>
-            
+            <c:if test="${chefVO.mem_no != sessionScope.mem_no}">
               <div class="" style="padding:1px">
                 <div id="sidebar-wrapper" >
 					<ul class="shopping-cart list-group" style="width:180px">	
@@ -310,7 +312,7 @@
 					</ul>
 				</div>
 			</div>
-            
+          </c:if>  
             
 <!-- 			<div class="col-xs-12 col-sm-12 text-center">				 -->
 <%-- 				<FORM METHOD="post" ACTION="<%=request.getContextPath()%>/chef_order_list/chef_order_list.do"> --%>

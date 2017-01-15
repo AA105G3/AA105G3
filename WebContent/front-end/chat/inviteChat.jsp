@@ -41,7 +41,6 @@
 
 
 		    invitews.onmessage = function(event) {
-		    	alert("123")
 	            console.log(event.data);
 	            var message = JSON.parse(event.data);
 

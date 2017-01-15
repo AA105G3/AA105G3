@@ -1,6 +1,5 @@
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
-<%@ page import="java.util.*"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 
 <jsp:useBean id="chef_order_listVO" scope="request" class="com.chef_order_list.model.Chef_order_listVO" />
@@ -8,111 +7,72 @@
 <jsp:useBean id="chefSvc" scope="page" class="com.chef.model.ChefService" />
 <!DOCTYPE html>
 <html lang="">
-
-<head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>訂單明細</title>
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
-    <link rel="stylesheet" href="/AA105G3/css/frontpageCSS.css">
-    <!--[if lt IE 9]>
+	<head>
+		<meta charset="utf-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<title>訂單明細</title>
+		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+		<!--[if lt IE 9]>
 			<script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
 			<script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
 		<![endif]-->
-    <style type="text/css" media="screen">
-    html, body{
-		background : white;
-		height : 100%;
-	}
-
-    
-    .first-col img {
-        width: 350px;
-        height: 250px;
-    }
-    body{
-		background: #efede8;
-		padding-top: 90px;
-		position : relative;
-		height : 100%;
-	}
-    .next-col {
-        padding-bottom: 50px;
-    }
-    
-    .next-col img {
-        width: 350px;
-        height: 250px;
-    }
-    
-    .front-style {
-        background: #f5deb3;
-        width: 175px;
-    }
-    
-    
+		<style type="text/css">
+		body{
+			background: #efede8;
+			padding-top: 90px;
+			position : relative;
+			height : 100%;
+		}
+		html{
+			height : 100%;
+		}	
+		
+		table.chefOrderListInfo{
+			margin-left: auto;
+			margin-right: auto;
+			background: #f2f2f2;
+			border: 1px solid #d3d4d5;
+			margin-bottom: 20px; 
+		}
+		.chefOrderListInfo th{
+			font-size: 24px;
+			padding: 5px;
+			border-bottom:  1px solid #d3d4d5;
+		}
+		.chefOrderListInfo td{
+			width: 80%;
+			padding: 5px 10px;
+			font-size: 24px;
+			border-bottom:  1px solid #d3d4d5;
+		}
+		td.ord-content{
+			height: 300px;
+			vertical-align: top;
+		}
+		 
     #theFooter{
 
 		bottom : 0px;
 		width : 100%;
-		position : relative;
+		position : absolute;
 		background: #222222;
 		color:#fff ;
 		font-size: 26px;
 		font-family: Reklame;
 		text-align: center;
 	}
-	.title-style{
-		padding-top : 50px;
-		padding-bottom : 50px;
-	}
-	.button-style{
-		padding-bottom : 40px;
-	}
-
-	table.chefOrderListInfo{
-		margin-left: auto;
-		margin-right: auto;
-		background: #f2f2f2;
-		border: 1px solid #d3d4d5;
-		margin-bottom: 20px; 
-	}
-	.chefOrderListInfo th{
-		font-size: 24px;
-		padding: 5px;
-		border-bottom:  1px solid #d3d4d5;
-	}
-	.chefOrderListInfo td{
-		width: 80%;
-		padding: 5px 10px;
-		font-size: 24px;
-		border-bottom:  1px solid #d3d4d5;
-	}
-	td.ord-content{
-		height: 300px;
-		vertical-align: top;
-	}
-	form{
-		display:inline;
-	}
-    </style>
-</head>
-
-<body>
-    
-    <header>
-    	<c:import url="/front-end/frontNavbar.jsp"></c:import>
-    </header>
-    
-    <div class="container">
-        <div class="row">
-				<button class="btn btn-success goBack ">返回上一頁</button>
+		</style>
+	</head>
+	<body>
+	<c:import url="/front-end/frontNavbar.jsp"></c:import>
+		<div class="container">
+			<div class="row">
 				<div class="col-xs-12 col-sm-12 text-center order-list-title">
 					<h2>私廚訂單明細</h2>
 				</div>
 			</div>
-            <div class="col-xs-12 col-sm-12 ">
+			<div class="col-xs-12 col-sm-12 ">
 				<table class="chefOrderListInfo">
 					<tr>
 						<th>下訂會員：</td>
@@ -175,32 +135,18 @@
 					</tr>
 
 				</table>
-                               
-                <div class="col-xs-12 col-sm-12 text-center button-style">
-	                <c:if test="${chef_order_listVO.chef_ord_con != '2'}">
-		                <FORM METHOD="post" ACTION="<%=request.getContextPath()%>/chef_order_list/chef_order_list.do">
-					     <input type="submit" value="修改" class="btn btn-primary btn-lg">
-					     <input type="hidden" name="chef_ord_no" value="${chef_order_listVO.chef_ord_no}">
-					     <input type="hidden" name="action"	value="getOne_For_ChefCheck"></FORM>
-	                </c:if>
-                </div>
-                
-                
-
-            </div>
-        </div>
-    <footer id="theFooter">
+				<div class="text-center"><a href="<%=request.getContextPath()%>/front-end/chef/chefList2.jsp"><button class="btn btn-success btn-lg">返回首頁</button></a></div>
+			</div>
+		</div>
+		
+		 <footer id="theFooter">
 		Copyright &copy; 2017 Java Team 3 
-	</footer>  
-    <c:import url="/front-end/chat/inviteChat.jsp" ></c:import>
-  
-    <script src="https://code.jquery.com/jquery.js"></script>
-    <script src="https://netdna.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
-    <script>
-    $('.goBack').click(function(){
-		window.history.go(-1);
-	})
-    </script>
-</body>
-
+		</footer>  
+    	<c:import url="/front-end/chat/inviteChat.jsp" ></c:import>
+		
+		<script src="https://code.jquery.com/jquery.js"></script>
+		<script src="https://netdna.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+		
+	
+	</body>
 </html>
