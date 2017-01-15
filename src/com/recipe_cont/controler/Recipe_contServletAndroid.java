@@ -104,6 +104,25 @@ public class Recipe_contServletAndroid extends HttpServlet {
 		}
 		
 		if ("insert".equals(action)) {
+			
+			String recipe_contJson = jsonObject.get("recipe_contVO").getAsString();
+			Recipe_contVO recipe_contVO = gson.fromJson(recipe_contJson, Recipe_contVO.class);
+			System.out.println("================新增食譜步驟========================");
+			System.out.println("recipe_contVO.getRecipe_no():"+recipe_contVO.getRecipe_no());
+			System.out.println("recipe_contVO.getStep_cont():"+recipe_contVO.getStep_cont());
+			System.out.println("recipe_contVO.getStep().toString():"+recipe_contVO.getStep().toString());
+			
+			recipe_contVO = recipe_contSvc.addRecipe_cont(recipe_contVO.getRecipe_no(), recipe_contVO.getStep(),
+					recipe_contVO.getStep_pic(), recipe_contVO.getStep_cont());
+			RecipeService recipeSvc = new RecipeService();
+			RecipeVO recipeVO = new RecipeVO();
+			recipeVO = recipeSvc.getOneRecipe(recipe_contVO.getRecipe_no());
+			recipeSvc.updateRecipe(recipeVO.getRecipe_no(),recipeVO.getRecipe_name(),
+					recipeVO.getRecipe_intro(),recipeVO.getFood_mater(),
+					recipeVO.getRecipe_pic(),"已發布"); //新增食譜步驟之後，recipe_edit狀態改為已發布 
+
+			outStr.append(gson.toJson(recipe_contVO));
+			SendResponse.writeText(res, outStr.toString());			
 		}
 		
 

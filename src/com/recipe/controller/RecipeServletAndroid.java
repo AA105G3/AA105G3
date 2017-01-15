@@ -326,7 +326,11 @@ public class RecipeServletAndroid extends HttpServlet {
 			// recipeVO.getRecipe_week_views()+1);
 			// recipeVO = recipeSvc.getOneRecipe(recipe_no);
 			Set<Recipe_contVO> set = recipe_contSvc.getRecipe_cont(recipe_no);
-
+			
+			//觀看之後，人氣+1 (觀看次數)
+			RecipeVO recipeVO = new RecipeVO();
+			recipeVO = recipeSvc.getOneRecipe(recipe_no);
+			recipeSvc.updateRecipeViews(recipe_no, recipeVO.getRecipe_total_views()+1, recipeVO.getRecipe_week_views()+1);
 			Set<Recipe_contVO> set2 = new LinkedHashSet<Recipe_contVO>();
 			for (Recipe_contVO aRecipeCond : set) {
 				aRecipeCond.setStep_pic(null);
