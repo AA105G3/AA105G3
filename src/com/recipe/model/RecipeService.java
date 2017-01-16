@@ -26,6 +26,7 @@ public class RecipeService
 		recipeVO.setRecipe_intro(recipe_intro);
 		recipeVO.setFood_mater(food_mater);
 		recipeVO.setRecipe_pic(recipe_pic);
+		recipeVO.setRecipe_edit("編輯中");
 		dao.insert(recipeVO);
 
 		return recipeVO;
@@ -398,6 +399,20 @@ public class RecipeService
 			}
 		}
 		return recipeVO;
+	}
+	
+	//by cyh for android
+public List<RecipeVO> findByMem_noAndroid(String mem_no) {
+		
+		List<RecipeVO> list = dao.findByMem_no(mem_no);
+		List<RecipeVO> list2 = new ArrayList<RecipeVO>();
+		
+		for(RecipeVO aRecipe : list){
+			if(aRecipe.getRecipe_edit().equals("編輯中")||aRecipe.getRecipe_edit().equals("已發布")){
+				list2.add(aRecipe);
+			}
+		}
+		return list2;
 	}
 	
 }

@@ -87,6 +87,7 @@ public class RecipeServletAndroid extends HttpServlet {
 				if (aRecipe.getRecipe_edit().equals("已發布")) {
 					aRecipe.setRecipe_pic(null);
 					list2.add(aRecipe);
+					System.out.println("food_mater:" + aRecipe.getFood_mater());
 					// System.out.println("aRecipe.getRecipe_no()"+aRecipe.getRecipe_no()
 					// +"aRecipe.getRecipe_edit():"+aRecipe.getRecipe_edit());
 				}
@@ -101,12 +102,13 @@ public class RecipeServletAndroid extends HttpServlet {
 			JsonReader reader = new JsonReader(new StringReader(mem_noJson));
 			reader.setLenient(true);
 			String mem_no = gson.fromJson(reader, String.class);
-			List<RecipeVO> recipeVOList = recipeSvc.findByMem_no(mem_no);
+			List<RecipeVO> recipeVOList = recipeSvc.findByMem_noAndroid(mem_no);
 
 			List<RecipeVO> list2 = new ArrayList<RecipeVO>();
 			for (RecipeVO aRecipe : recipeVOList) {
 				aRecipe.setRecipe_pic(null);
 				list2.add(aRecipe);
+				System.out.println("food_mater:" + aRecipe.getFood_mater());
 			}
 
 			outStr.append(gson.toJson(list2));
@@ -324,7 +326,11 @@ public class RecipeServletAndroid extends HttpServlet {
 			// recipeVO.getRecipe_week_views()+1);
 			// recipeVO = recipeSvc.getOneRecipe(recipe_no);
 			Set<Recipe_contVO> set = recipe_contSvc.getRecipe_cont(recipe_no);
-
+			
+			//觀看之後，人氣+1 (觀看次數)
+			RecipeVO recipeVO = new RecipeVO();
+			recipeVO = recipeSvc.getOneRecipe(recipe_no);
+			recipeSvc.updateRecipeViews(recipe_no, recipeVO.getRecipe_total_views()+1, recipeVO.getRecipe_week_views()+1);
 			Set<Recipe_contVO> set2 = new LinkedHashSet<Recipe_contVO>();
 			for (Recipe_contVO aRecipeCond : set) {
 				aRecipeCond.setStep_pic(null);
@@ -344,13 +350,27 @@ public class RecipeServletAndroid extends HttpServlet {
 		if ("search".equals(action)) {
 		}
 
+
 		if ("update".equals(action)) {
 		}
 
 		if ("insert_old".equals(action)) {
 		}
-
+//		addRecipe(String mem_no,String recipe_name,String recipe_intro,String food_mater,byte[] recipe_pic)
 		if ("insert".equals(action)) {
+			String recipeJson = jsonObject.get("recipeVO").getAsString();
+			RecipeVO recipeVO = gson.fromJson(recipeJson, RecipeVO.class);
+			System.out.println("recipeVO.getMem_no()"+recipeVO.getMem_no());
+			System.out.println("recipeVO.getRecipe_name()"+recipeVO.getRecipe_name());
+			System.out.println("recipeVO.getRecipe_intro()"+recipeVO.getRecipe_intro());
+			System.out.println("recipeVO.getFood_mater()"+recipeVO.getFood_mater());
+			System.out.println("recipeVO.getRecipe_pic()"+recipeVO.getRecipe_pic().length);
+//			recipeVO = recipeSvc.addRecipe(recipeVO.getMem_no(), recipeVO.getRecipe_name(), recipeVO.getRecipe_intro(),
+//					recipeVO.getFood_mater(), recipeVO.getRecipe_pic());
+			recipeVO = recipeSvc.addRecipe(recipeVO.getMem_no(), recipeVO.getRecipe_name(), recipeVO.getRecipe_intro(),
+					recipeVO.getFood_mater(), recipeVO.getRecipe_pic());
+			outStr.append(gson.toJson(recipeVO));
+			SendResponse.writeText(res, outStr.toString());			
 		}
 
 		if ("delete".equals(action)) {

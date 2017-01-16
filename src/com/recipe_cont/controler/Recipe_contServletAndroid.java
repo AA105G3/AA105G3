@@ -97,39 +97,6 @@ public class Recipe_contServletAndroid extends HttpServlet {
 			}
 			os.write(step_pic);
 			return;
-			
-			
-//			String recipe_noJson = jsonObject.get("recipe_no").getAsString();
-//			String stepJson = jsonObject.get("step").getAsString();
-//			
-//			JsonReader reader = new JsonReader(new StringReader(recipe_noJson));
-//			reader.setLenient(true);
-//			String recipe_no = gson.fromJson(reader, String.class);
-//			
-//			JsonReader reader2 = new JsonReader(new StringReader(stepJson));
-//			reader2.setLenient(true);
-//			String stepString = gson.fromJson(reader2, String.class);
-//			
-//			Integer step = Integer.parseInt(stepString);
-//			
-////			Recipe_contService recipe_contSvc = new Recipe_contService();
-//			Recipe_contVO recipe_contVO = recipe_contSvc.getOneRecipe_cont(recipe_no, step);
-//			byte[] buffer = recipe_contVO.getStep_pic();
-//			
-//			outStr.append(gson.toJson(frd_listVOList));
-//			
-//			
-////			outStr.append(gson.toJson(recipeVOList));
-//			SendResponse.writeText(res, outStr.toString());
-//			
-//			return;
-			
-//			String recipe_no = req.getParameter("recipe_no");
-//			Integer step = new Integer(req.getParameter("step"));
-//			Recipe_contService recipe_contSvc = new Recipe_contService();
-//			Recipe_contVO recipe_contVO = recipe_contSvc.getOneRecipe_cont(recipe_no, step);
-//			byte[] buffer = recipe_contVO.getStep_pic();
-//			out.write(buffer);
 		}
 		
 		if ("update".equals(action)) {
@@ -137,6 +104,25 @@ public class Recipe_contServletAndroid extends HttpServlet {
 		}
 		
 		if ("insert".equals(action)) {
+			
+			String recipe_contJson = jsonObject.get("recipe_contVO").getAsString();
+			Recipe_contVO recipe_contVO = gson.fromJson(recipe_contJson, Recipe_contVO.class);
+			System.out.println("================新增食譜步驟========================");
+			System.out.println("recipe_contVO.getRecipe_no():"+recipe_contVO.getRecipe_no());
+			System.out.println("recipe_contVO.getStep_cont():"+recipe_contVO.getStep_cont());
+			System.out.println("recipe_contVO.getStep().toString():"+recipe_contVO.getStep().toString());
+			
+			recipe_contVO = recipe_contSvc.addRecipe_cont(recipe_contVO.getRecipe_no(), recipe_contVO.getStep(),
+					recipe_contVO.getStep_pic(), recipe_contVO.getStep_cont());
+			RecipeService recipeSvc = new RecipeService();
+			RecipeVO recipeVO = new RecipeVO();
+			recipeVO = recipeSvc.getOneRecipe(recipe_contVO.getRecipe_no());
+			recipeSvc.updateRecipe(recipeVO.getRecipe_no(),recipeVO.getRecipe_name(),
+					recipeVO.getRecipe_intro(),recipeVO.getFood_mater(),
+					recipeVO.getRecipe_pic(),"已發布"); //新增食譜步驟之後，recipe_edit狀態改為已發布 
+
+			outStr.append(gson.toJson(recipe_contVO));
+			SendResponse.writeText(res, outStr.toString());			
 		}
 		
 

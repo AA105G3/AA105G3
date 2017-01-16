@@ -97,6 +97,7 @@ public class RecipeDAO implements RecipeDAO_interface
 			pstmt.setString(2, recipeVO.getRecipe_name());
 			pstmt.setString(3, recipeVO.getRecipe_intro());
 			pstmt.setString(4, recipeVO.getFood_mater());
+			pstmt.setString(6, recipeVO.getRecipe_edit());
 
 
 			
