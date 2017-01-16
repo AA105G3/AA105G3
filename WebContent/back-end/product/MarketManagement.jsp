@@ -140,7 +140,7 @@ th{
 				</div>
 				
 				<div class="col-xs-12 col-sm-4 search-style">
-					<input type="submit" id="sendMessage" class="btn btn-primary" value="發布新產品" onclick="sendMessage();"/>
+					<input type="submit" id="sendMessage" class="btn btn-primary" value="發布新商品" onclick="sendMessage();"/>
 					<input type="hidden" id="prod_no" value="${prod_no}"/>
 				</div>
 				

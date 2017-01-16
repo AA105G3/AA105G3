@@ -82,6 +82,9 @@
 		padding-top: 30px;
 		height: 283px;
 	}
+	body{
+		background: #efede8;
+	}
 </style>
 
 </head>

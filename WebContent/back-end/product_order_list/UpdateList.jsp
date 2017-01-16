@@ -70,19 +70,19 @@
 <FORM METHOD="post" ACTION="product_order_list.do" name="form1">
 <table border="0" class="tr-style">
 	<tr>
-		<td>訂單編號：<font color=red><b>*</b></font></td>
+		<td>訂單編號：</td>
 		<td><%=product_order_listVO.getProd_ord_no()%></td>
 	</tr>
 	<tr>
-		<td>商品編號：<font color=red><b>*</b></font></td>
+		<td>商品編號：</td>
 		<td><%=product_order_listVO.getProd_no()%></td>
 	</tr>
 	<tr>
-		<td>單價：<font color=red><b>*</b></font></td>
+		<td>單價：</td>
 		<td><%=product_order_listVO.getUnit_price()%></td>
 	</tr>
 	<tr>
-		<td>數量：<font color=red><b>*</b></font></td>
+		<td>數量：</td>
 		<td><%=product_order_listVO.getProd_quantity()%></td>
 	</tr>
 	

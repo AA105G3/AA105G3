@@ -135,6 +135,8 @@
     <filter-name>FLginFilter</filter-name>
     <url-pattern>/front-end/product_order/select_page.jsp</url-pattern>
     <url-pattern>/front-end/product_order_list/Cart.jsp</url-pattern>
+    <url-pattern>/front-end/product_order/ListProductOrder.jsp</url-pattern>
+    <url-pattern>/front-end/member/memberInfo.jsp</url-pattern>
     <dispatcher>REQUEST</dispatcher>
     <dispatcher>FORWARD</dispatcher>
     <dispatcher>INCLUDE</dispatcher>
