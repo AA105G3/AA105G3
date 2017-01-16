@@ -5,8 +5,18 @@
 
 <%
     ChefService chefSvc = new ChefService();
-    List<ChefVO> list = chefSvc.getAll();
+    List<ChefVO> All = chefSvc.getAll();
+    List<ChefVO> list = new ArrayList<ChefVO>();
+    for(ChefVO aChef:All){
+    	if((aChef.getChef_chk_cond()).equals("0")){
+    		list.add(aChef);
+    	}
+    }
+    
     pageContext.setAttribute("list",list);
+    
+    
+    
 %>
 <!DOCTYPE html>
 <html lang="">
@@ -23,6 +33,19 @@
             <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
             <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
         <![endif]-->
+     <style>
+     	#table_title{
+     		font-size:30px;
+     	}
+     	th{
+     		text-align:center;
+     		font-size:16px;
+     	}
+     	tbody td{
+     		font-size:16px;
+     		vertical-align: middle !important;
+     	}
+     </style>
 </head>
 
 <body>
@@ -33,38 +56,9 @@
     	<c:import url="/back-end/LeftNavBar.jsp"></c:import>
     
     <div class="col-xs-12 col-sm-10">
-        <!-- <form id="search">
-                    <div class="input-group">
-                        <div class="input-group-btn">                               
-                            <a href="#" class="btn btn-default dropdown-toggle" data-toggle="dropdown">請選擇 <b class="caret"></b></a>
-                            <ul class="dropdown-menu">
-                                <li><a href="#">從私廚搜尋</a></li>
-                                <li><a href="#">從會員帳號</a></li>
-                            </ul>   
-                        </div>
-                        <input type="text" name="" id="insert" class="form-control">
-                        <div class="input-group-btn">
-                            <button class="btn btn-info">搜尋</button>
-                        </div>
-                    </div>
-                </form> -->
-        <!-- <form class="navbar-form navbar-left" role="search">
-            <div class="form-group">
-                <input type="text" class="form-control" placeholder="請輸入關鍵字">
-            </div>
-            <button type="submit" class="btn btn-default">搜尋</button>
-        </form> -->
-        
-        <%-- 錯誤表列 --%>
-		<c:if test="${not empty errorMsgs}">
-			<font color='red'>請修正以下錯誤:
-			<ul>
-				<c:forEach var="message" items="${errorMsgs}">
-					<li>${message}</li>
-				</c:forEach>
-			</ul>
-			</font>
-		</c:if>
+       <div class="container">
+				<div class="row">
+		
         
         <table class="table table-hover table-striped table-bordered table-condensed">
             <caption id="table_title">私廚資格審核清單</caption>
@@ -72,8 +66,8 @@
                 <tr>
                     <th>私廚編號</th>
                     <th>會員編號</th>
-                    <th>私廚審核情況</th>
                     <th>真實姓名</th>
+                    <th>私廚審核情況</th>
                     <th>操作</th>
                 </tr>
             </thead>
@@ -83,11 +77,15 @@
                         <tr align='center' valign='middle'>
                             <td>${chefVO.chef_no}</td>
                             <td>${chefVO.mem_no}</td>
-                            <td>${chefVO.chef_chk_cond}</td>
                             <td>${chefVO.chef_name}</td>
+                            <td>
+                            <c:if test="${chefVO.chef_chk_cond==0}">
+                            	待審核
+                            </c:if>
+                            </td>
                             <td>                                
             					<FORM METHOD="post" ACTION="<%=request.getContextPath()%>/chef/chef.do">
-			     					<input type="submit" value="進入審核">
+			     					<input type="submit" class="btn btn-primary" value="進入審核">
 			     					<input type="hidden" name="chef_no" value="${chefVO.chef_no}">
 <%-- 			     				<input type="hidden" name="chef_chk_cond" value="${chefVO.chef_chk_cond}"> --%>
 			     					<input type="hidden" name="action"	value="getOne_For_Check"></FORM>
@@ -98,19 +96,10 @@
                 </c:forEach>
         </table>
         <%@ include file="page2.file" %>
-<!--         <ul class="pagination"> -->
-<!--             <li><a href="#">&laquo;</a></li> -->
-<!--             <li><a href="#">1</a></li> -->
-<!--             <li><a href="#">2</a></li> -->
-<!--             <li><a href="#">3</a></li> -->
-<!--             <li><a href="#">4</a></li> -->
-<!--             <li><a href="#">5</a></li> -->
-<!--             <li><a href="#">&raquo;</a></li> -->
-<!--         </ul> -->
+       </div> 
+       </div>
     </div>
-<!--     <footer id="the_footer">
-        <p class="lightcolor">All Content Copyright &copy; 2016 TomCat Inc</p>
-    </footer> -->
+
     <script src="https://code.jquery.com/jquery.js"></script>
     <script src="https://netdna.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
 </body>

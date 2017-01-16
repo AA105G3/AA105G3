@@ -20,7 +20,6 @@
 		<style type="text/css">
 		body{
 			background: #efede8;
-
 			padding-top: 90px;
 			position : relative;
 			height : 100%;
@@ -50,12 +49,16 @@
 		td.ord-content{
 			height: 300px;
 			vertical-align: top;
-		}		 
-    #theFooter{
+		}
+		form{
+			display:inline;
+		}
+	#theFooter{
 
+		position : absolute;
 		bottom : 0px;
 		width : 100%;
-		position : absolute;
+		
 		background: #222222;
 		color:#fff ;
 		font-size: 26px;
@@ -65,9 +68,12 @@
 		</style>
 	</head>
 	<body>
-	<c:import url="/front-end/frontNavbar.jsp"></c:import>
+	
+	
+	    <c:import url="/front-end/frontNavbar.jsp"></c:import>
 		<div class="container">
 			<div class="row">
+				<button class="btn btn-success goBack ">返回上一頁</button>
 				<div class="col-xs-12 col-sm-12 text-center order-list-title">
 					<h2>私廚訂單明細</h2>
 				</div>
@@ -109,7 +115,7 @@
 						<td>
 						<fmt:parseNumber var="dollar" integerOnly="true" type="number" value="${chef_order_listVO.chef_ord_cost}" />
 						<c:set var="money" value="${dollar}" />
-							<c:if test="${money!='0'}">$
+							<c:if test="${money!='0'}">
 							${money}
 							</c:if>
 							<c:if test="${money=='0'}">
@@ -135,17 +141,41 @@
 					</tr>
 
 				</table>
-				<div class="text-center"><a href="<%=request.getContextPath()%>/front-end/chef/chefList2.jsp"><button class="btn btn-success btn-lg">返回首頁</button></a></div>
+				<div class="text-center">
+				<c:if test="${chef_order_listVO.chef_ord_con == '1'}">
+				<FORM METHOD="post" ACTION="<%=request.getContextPath()%>/chef_order_list/chef_order_list.do" class="text-center">
+					<input type="hidden" name="action" value="getOne_For_Update">
+					<input type="hidden" name="chef_ord_no" value="<%=chef_order_listVO.getChef_ord_no()%>">
+					<input type="submit" class="btn btn-primary" value="同意訂單">
+				</FORM>
+				
+				<FORM METHOD="post" ACTION="<%=request.getContextPath()%>/chef_order_list/chef_order_list.do" class="text-center">
+                	<input type="hidden" name="action" value="reject_ord">
+					<input type="hidden" name="chef_ord_no" value="<%=chef_order_listVO.getChef_ord_no()%>">
+					<input type="hidden" name="mem_no" value="<%=chef_order_listVO.getMem_no()%>">
+					<input type="hidden" name="chef_no" value="<%=chef_order_listVO.getChef_no()%>">
+					<input type="hidden" name="chef_ord_cost" value="0">
+					<input type="hidden" name="chef_act_date" value="<%=chef_order_listVO.getChef_act_date()%>">
+					<input type="hidden" name="chef_ord_place" value="<%=chef_order_listVO.getChef_ord_place()%>">
+					<input type="hidden" name="chef_ord_cnt" value="<%=chef_order_listVO.getChef_ord_cnt()%>">
+					<input type="hidden" name="chef_ord_con" value="0">
+					<input type="hidden" name="chef_ord_date" value="<%=chef_order_listVO.getChef_ord_date()%>">					
+					<input type="submit" class="btn btn-danger" value="不同意訂單">
+				</FORM>	
+				</c:if>
 			</div>
 		</div>
-		
-		 <footer id="theFooter">
+		</div>
+    <footer id="theFooter">
 		Copyright &copy; 2017 Java Team 3 
-		</footer>  
-    	<c:import url="/front-end/chat/inviteChat.jsp" ></c:import>
-		
+	</footer>
+		<c:import url="/front-end/chat/inviteChat.jsp" ></c:import>
 		<script src="https://code.jquery.com/jquery.js"></script>
 		<script src="https://netdna.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
-		
+		<script type="text/javascript">
+		$('.goBack').click(function(){
+			window.history.go(-1);
+		})
+		</script>
 	</body>
 </html>

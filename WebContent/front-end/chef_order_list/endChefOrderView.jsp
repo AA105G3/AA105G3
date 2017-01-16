@@ -1,42 +1,17 @@
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
-<%@ page import="com.chef_order_list.model.*"%>
-<%@ page import="com.chef.model.*"%>
-<%@ page import="com.member.model.*"%>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ page import="java.util.*"%>
 
-<% 
-	
-%>
-
-<%
-	Chef_order_listVO chef_order_listVO = (Chef_order_listVO) request.getAttribute("chef_order_listVO"); //Chef_order_listServlet.java (Concroller), 存入req的chef_order_listVO物件 (包括幫忙取出的chef_order_listVO, 也包括輸入資料錯誤時的chef_order_listVO物件)
-%>
-<%
-    Chef_order_listService chef_order_listSvc = new Chef_order_listService();
-	String mem_no = (String) session.getAttribute("mem_no");
-    List<Chef_order_listVO> list = chef_order_listSvc.findByMem_no(mem_no);
-    pageContext.setAttribute("list",list);
-%>
-<%
-    MemberService memberSvc = new MemberService();
-    List<MemberVO> mem_list = memberSvc.getAll();
-    pageContext.setAttribute("mem_list",mem_list);
-    
-  	MemberVO memberVO = memberSvc.getOneMember("M00000001");
- 	pageContext.setAttribute("memberVO",memberVO);
-%>
-<%
-    ChefService chefSvc = new ChefService();
-    List<ChefVO> chef_list = chefSvc.getAll();
-    pageContext.setAttribute("chef_list",chef_list);
-%>
+<jsp:useBean id="chef_order_listVO" scope="request" class="com.chef_order_list.model.Chef_order_listVO" />
+<jsp:useBean id="memberSvc" scope="page" class="com.member.model.MemberService" />
+<jsp:useBean id="chefSvc" scope="page" class="com.chef.model.ChefService" />
 
 
 
 <html>
 <head>
-<title>商品訂單資料新增 - addMember.jsp</title>
+<title>交易完成</title>
 
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -99,6 +74,18 @@
 	html{
 		height : 100%;
 	}
+	h3{
+		color:red;
+		text-align:center;
+	}
+	table{
+		margin:20px auto;
+	}
+	td,th{
+		font-size:26px;
+		text-align:left;
+		padding:5px;
+	}
 </style>
 
 </head>
@@ -119,142 +106,77 @@
 
 <div class="container">
 		<div class="row">
-			<div class="list-style">
 
 
 
 
 
-<font size="+3">本次訂單資料：</font>
-<%-- 錯誤表列 --%>
-<c:if test="${not empty errorMsgs}">
-	<font color='red'>請修正以下錯誤:
-	<ul>
-		<c:forEach var="message" items="${errorMsgs}">
-			<li>${message}</li>
-		</c:forEach>
-	</ul>
-	</font>
-</c:if>
+<h3>交易成功!</h3>	
+<div class="text-center"><font size="+3">本次訂單資料：</font></div>
 
 
 
-<table border="0">
-<c:forEach var="chef_ord_listVO" items="${list}" begin="0" end="0">
-	<c:forEach var="chefVO" items="${chef_list}">
-		<c:if test="${chef_ord_listVO.chef_no==chefVO.chef_no}"> 
-		
-		
-		
+<table>
+
 	<tr>
-		<td>服務私廚：</td>
+		<th>執行私廚：</th>
 		<td>
-	    	${chefVO.chef_name} 
+			${chefSvc.getOneChef(chef_order_listVO.chef_no).chef_name}	
 		</td>
 	</tr>
 	<tr>
-		<td>訂單金額：</td>
-		<td>${chef_ord_listVO.chef_ord_cost}</td>
+		<th>交易金額：</th>
+		<td><fmt:parseNumber var="dollar" integerOnly="true" type="number" value="${chef_order_listVO.chef_ord_cost}" />
+				<c:set var="money" value="${dollar}" />$
+				${money}
+		</td>
 	</tr>
 	<tr>
-		<td>訂單執行時間：</td>
-		<td>${chef_ord_listVO.chef_act_date}</td>
+		<th>訂單執行時間：</th>
+		<td><fmt:formatDate value="${chef_order_listVO.chef_act_date}" var="formattedDate" 
+               				 type="date" pattern="yyyy/MM/dd" />
+							${formattedDate} &nbsp 
+						<fmt:formatDate value="${chef_order_listVO.chef_act_date}" var="formattedTime" 
+               				 type="date" pattern="HH:mm" />
+               				 <c:set var="time" value="${formattedTime}" />
+               				<c:if test="${time == '10:00'}"> 
+							${time}~14:00 
+							</c:if>
+							 <c:set var="time2" value="${formattedTime}" />
+							<c:if test="${time2 == '16:00'}"> 
+							${time2}~20:00 
+							</c:if></td>
 	</tr>
 	<tr>
-		<td>訂單執行地點：</td>
-		<td>${chef_ord_listVO.chef_ord_place}</td>
+		<th>訂單執行地點：</th>
+		<td>${chef_order_listVO.chef_ord_place}</td>
 	</tr>
 	<tr>
-		<td>訂單內容說明：</td>
-		<td>${chef_ord_listVO.chef_ord_cnt}</td>
-	</tr>
-	<tr>
-		<td>訂單成立時間：</td>
-		<td>${chef_ord_listVO.chef_ord_date}</td>
+		<th>訂單內容說明：</th>
+		<td>${chef_order_listVO.chef_ord_cnt}</td>
 	</tr>
 	
 	
 	
-		</c:if>
-	</c:forEach>
-</c:forEach>	
+	
+	
 </table>
 
 
-<!-- <table border="0"> -->
-
-<!-- 	<tr> -->
-<!-- 		<td>服務私廚：</td> -->
-<!-- 		<td> -->
-<%-- 			<c:forEach var="chefVO" items="${chef_list}"> --%>
-<%-- 				<c:if test="${chef_order_listVO.chef_no==chefVO.chef_no}">                    --%>
-<%--                 	${chefVO.chef_name}                                                     		 --%>
-<%--                 </c:if> --%>
-<%-- 			</c:forEach>		 --%>
-<!-- 		</td> -->
-<!-- 	</tr> -->
-<!-- 	<tr> -->
-<!-- 		<td>訂單金額：</td> -->
-<%-- 		<td>${chef_order_listVO.chef_ord_cost}</td> --%>
-<!-- 	</tr> -->
-<!-- 	<tr> -->
-<!-- 		<td>信用卡卡號：</td> -->
-<!-- 		<td><input type="TEXT" name="credr_cad_no" size="45" -->
-<!-- 			value="" /></td> -->
-<!-- 	</tr> -->
-<!-- 	<tr> -->
-<!-- 		<td>信用卡有效時期：</td> -->
-<!-- 		<td><input type="TEXT" name="valid_date" ></td> -->
-<!-- 	</tr> -->
-<!-- 	<tr> -->
-<!-- 		<td>信用卡驗證碼：</td> -->
-<!-- 		<td><input type="TEXT" name="valid_no" size="45" -->
-<!-- 			value="" /></td> -->
-<!-- 	</tr> -->
-<!-- 	<tr> -->
-<!-- 		<td>信用卡卡別：</td> -->
-<!-- 		<td><select size="1" name="cred_card_type"> -->
-<!-- 				<option value="0" >VISA -->
-<!-- 				<option value="1" >MASTER -->
-<!-- 				<option value="2" >JCB -->
-<!-- 			</select></td> -->
-<!-- 	</tr> -->
-<!-- 	<tr> -->
-<!-- 		<td>訂單執行時間：</td> -->
-<%-- 		<td>${chef_order_listVO.chef_act_date}</td> --%>
-<!-- 	</tr> -->
-<!-- 	<tr> -->
-<!-- 		<td>訂單執行地點：</td> -->
-<%-- 		<td>${chef_order_listVO.chef_ord_place}</td> --%>
-<!-- 	</tr> -->
-<!-- 	<tr> -->
-<!-- 		<td>訂單內容說明：</td> -->
-<%-- 		<td>${chef_order_listVO.chef_ord_cnt}</td> --%>
-<!-- 	</tr> -->
-<!-- 	<tr> -->
-<!-- 		<td>訂單成立時間：</td> -->
-<%-- 		<td>${chef_order_listVO.chef_ord_date}</td> --%>
-<!-- 	</tr> -->
-<!-- </table> -->
-<!-- <br> -->
-
-<div class="col-xs-12 col-sm-6">
+<div class="col-xs-12 col-sm-12 text-center">
 	<a href="/AA105G3/front-end/chef_order_list/chefOrderListOfMem.jsp" class="btn btn-warning">回到訂單頁面</a>
 </div>
 
-<div class="col-xs-12 col-sm-2">
-	
-	
-</div>
 
-		</div>
+
+		
 	</div>
 </div>
-<c:import url="/front-end/chat/inviteChat.jsp" ></c:import>
 
 <footer id="theFooter">
-		Copyright &copy; 2016 Java Team 3 
+		Copyright &copy; 2017 Java Team 3 
 </footer>
+<c:import url="/front-end/chat/inviteChat.jsp" ></c:import>
 
 
 <script src="https://code.jquery.com/jquery.js"></script>

@@ -1,4 +1,4 @@
-
+/*
 	function showImage(idx){
 		var file = document.getElementById("upLoadFile"+idx).files[0];				
 		var read = new FileReader();
@@ -8,9 +8,20 @@
 					
 				};
 		read.readAsDataURL(file);	
+	} */
+
+	function showImage(){
+		var file = document.getElementById("upLoadFile"+idx).files[0];				
+		var read = new FileReader();
+		var image = $(this).siblings('img');
+		read.onload=function(){
+					image.src=read.result;
+					
+				};
+		read.readAsDataURL(file);	
 	} 
-
-
+	
+	
 // 	(function readURL(input) {
 
 //     if (input.files && input.files[0]) {

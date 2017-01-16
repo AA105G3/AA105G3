@@ -130,7 +130,7 @@ MemberVO memberVO = (MemberVO) request.getAttribute("memberVO");
             <div class="row" style="border-bottom: 2px solid #d3d4d5">
             	<div class="col-xs-12 col-sm-8 col-sm-offset-2">                
                     <div class="form-group form-inline">
-                        <b>服務私廚 : </b>
+                        <b>私廚 : </b>
                         <b>${chefVO.chef_name}</b>
                     </div>
                 </div>
@@ -196,7 +196,7 @@ MemberVO memberVO = (MemberVO) request.getAttribute("memberVO");
                 <div class="col-xs-12 col-sm-8 col-sm-offset-2">
                     <div class="form-group">
                         <b>約定內容：</b>
-                        <textarea name="chef_ord_cnt" id="chef_ord_cnt" class="form-control"></textarea>
+                        <textarea name="chef_ord_cnt" id="chef_ord_cnt" class="form-control" rows="5"></textarea>
                     </div>
                 </div>
             </div>
@@ -208,7 +208,6 @@ MemberVO memberVO = (MemberVO) request.getAttribute("memberVO");
     <input type="hidden" name="action" value="insert">
     <input type="hidden" name="mem_no" value="${mem_no}">
     <input type="hidden" name="chef_no" value="${chefVO.chef_no}">
-    <input type="hidden" name="chef_ord_cost" value=0.0>
 	<input type="submit" value="送出新增" class="btn btn-success">
 	</div>
 	</FORM>

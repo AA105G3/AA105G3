@@ -63,10 +63,17 @@
 				border-bottom: 3px red solid;
 			}
 			
-			body{
+			html,body{
 				background: #efede8;
-				padding-top: 50px;
+				
 				height : 100%;
+				
+			}
+			.page{
+				min-height:100%;
+				   position: relative;
+				   padding-top:50px;
+				   padding-bottom:50px;
 			}
 			.recipe-search-wrapper{
 				margin-bottom:20px;
@@ -141,11 +148,6 @@
 			}
 			#page-content{
 				min-height:700px;
-			}
-			footer{
-				position : absolute;
-			    bottom : 0px;
-				width : 100%;
 			}
 			
 			.recipe-wrapper{
@@ -299,12 +301,16 @@
 				font-family: Reklame;
 				text-align: center;
 			}
+			.mem_chef_name{
+				font-size:16px;
+			}
 		</style>
 
 	</head>
 	
 	
 	<body>
+	<div class="page">
 	    <c:import url="/front-end/frontNavbar.jsp" ></c:import>
 		<header class="header-style">
 			<c:import url="/front-end/recipe/RecipeSearchBar.jsp" ></c:import>
@@ -483,7 +489,10 @@
 			    		<div class="col-xs-12 col-sm-3 col-sm-push-1 text-center member-style">
 					    	<img id="memImg" src="<%=request.getContextPath()%>/MemberDBGifReader.do?name=${sessionScope.mem_no}">
 	    					<h3>${memberSvc.getOneMember(sessionScope.mem_no).mem_name}</h3>
-					
+							<c:set var="aChef" value="${chefSvc.getOneChefByMem_no(sessionScope.mem_no)}" />
+							<c:if test="${aChef.chef_name !=null}">
+								<div class="mem_chef_name">(${aChef.chef_name})</div>
+							</c:if>
 							<div class="col-xs-12 col-sm-6 count-style">
 						    	<div>食譜數：${recipeSvc.findByMem_no(sessionScope.mem_no).size()}</div>
 						    </div>
@@ -493,6 +502,11 @@
 						   
 						    <div class="col-xs-12 col-sm-12 text-left">
 						    	<div class="mem-email">${memberSvc.getOneMember(sessionScope.mem_no).mem_email.toLowerCase()}</div>
+						    	<div class="text-center goChef">
+									<a href="<%=request.getContextPath()%>/chef/chef.do?action=getOne_For_Display&chef_no=${aChef.chef_no}" class="btn btn-info btn-xs">
+									前往私廚頁面
+									</a>
+								</div>
 						    </div>
 					
 					    	
@@ -500,13 +514,13 @@
 					</div>
 				
 	    	</div>
-	  	</div>
 
 <c:import url="/front-end/chat/inviteChat.jsp" ></c:import>
 
 	<footer id="theFooter">
-		Copyright &copy; 2016 Java Team 3 
+		Copyright &copy; 2017 Java Team 3 
 	</footer>
+</div>
 		<script src="https://code.jquery.com/jquery.js"></script>
 		<script src="https://netdna.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
 		<script src="https://cdnjs.cloudflare.com/ajax/libs/limonte-sweetalert2/6.2.9/sweetalert2.min.js"></script>

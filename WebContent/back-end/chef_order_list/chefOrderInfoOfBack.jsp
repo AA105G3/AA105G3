@@ -1,19 +1,13 @@
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ page import="java.util.*"%>
-<%@ page import="com.chef_order_list.model.*"%>
-<%@ page import="com.member.model.*"%>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 
-<%
-    Chef_order_listService chef_order_listSvc = new Chef_order_listService();
-    List<Chef_order_listVO> list = chef_order_listSvc.getAll();
-    pageContext.setAttribute("list",list);
-%>
-<%
-    MemberService memberSvc = new MemberService();
-    List<MemberVO> mem_list = memberSvc.getAll();
-    pageContext.setAttribute("mem_list",mem_list);
-%>
+<jsp:useBean id="chef_order_listVO" scope="request" class="com.chef_order_list.model.Chef_order_listVO" />
+<jsp:useBean id="memberSvc" scope="page" class="com.member.model.MemberService" />
+<jsp:useBean id="chefSvc" scope="page" class="com.chef.model.ChefService" />
+
+
 
 <!DOCTYPE html>
 <html lang="">
@@ -30,6 +24,35 @@
             <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
             <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
         <![endif]-->
+        
+        <style type="text/css">
+	
+		
+		table.chefOrderListInfo{
+			margin-left: auto;
+			margin-right: auto;
+			background: #f2f2f2;
+			border: 1px solid #d3d4d5;
+			margin-bottom: 20px; 
+		}
+		.chefOrderListInfo th{
+			font-size: 24px;
+			padding: 5px;
+			border-bottom:  1px solid #d3d4d5;
+		}
+		.chefOrderListInfo td{
+			width: 80%;
+			padding: 5px 10px;
+			font-size: 24px;
+			border-bottom:  1px solid #d3d4d5;
+		}
+		td.ord-content{
+			height: 300px;
+			vertical-align: top;
+		}
+		 
+   
+		</style>
 </head>
 
 <body>
@@ -49,86 +72,89 @@
             </div>
         </div>
         
-        <div class="col-xs-12 col-sm-10 col-sm-offset-1">
-                <div class="row" style="border-bottom: 2px solid #d3d4d5;">
-                    <div class="col-xs-12 col-sm-4">
-                        <h3 style="margin-top:0px"><b>下訂會員</b></h3>
-                    </div>
-<%--                     <c:forEach var="chef_order_listVO" items="${list}"> --%>
-                    	<c:forEach var="memVO" items="${mem_list}">
-                    		<c:if test="${chef_order_listVO.mem_no==memVO.mem_no}">
-                    			<div class="col-xs-12 col-sm-6">
-                        			<b style="font-size:12pt">${memVO.mem_ac}</b>                    
-                    			</div>
-                    		</c:if>
-                    	</c:forEach>
-<%--                     </c:forEach> --%>
-                </div>
-                <br>
-                <div class="row" style="border-bottom: 2px solid #d3d4d5">
-                    <div class="col-xs-12 col-sm-4">
-                        <h3 style="margin-top:0px"><b>執行時間</b></h3>
-                    </div>
-                    <div class="col-xs-12 col-sm-6">
-                        <b style="font-size:12pt">${chef_order_listVO.chef_act_date}</b>                    
-                    </div>
-                </div>
-                <br>
-                <div class="row" style="border-bottom: 2px solid #d3d4d5">
-                    <div class="col-xs-12 col-sm-4">
-                        <h3 style="margin-top:0px"><b>執行地點</b></h3>
-                    </div>
-                    <div class="col-xs-12 col-sm-6">
-                        <b style="font-size:12pt">${chef_order_listVO.chef_ord_place}</b>                    
-                    </div>
-                </div>
-                <br>
-                <div class="row" style="border-bottom: 2px solid #d3d4d5">
-                    <div class="col-xs-12 col-sm-4">
-                        <h3 style="margin-top:0px"><b>金額</b></h3>
-                    </div>
-                    <div class="col-xs-12 col-sm-6">
-                        <b style="font-size:12pt">${chef_order_listVO.chef_ord_cost}</b>
-                    </div>
-                </div>
-                <div class="row" style="border-bottom: 2px solid #d3d4d5">
-                    <div class="col-xs-12 col-sm-4">
-                        <h3 style="margin-top:0px"><b>訂單內容說明</b></h3>
-                    </div>
-                    <div class="col-xs-12 col-sm-6">
-                        <b style="font-size:12pt">${chef_order_listVO.chef_ord_cnt}</b>
-                    </div>
-                </div>
-                <div class="row" style="border-bottom: 2px solid #d3d4d5">
-                    <div class="col-xs-12 col-sm-4">
-                        <h3 style="margin-top:0px"><b>評價</b></h3>
-                    </div>
-                    <div class="col-xs-12 col-sm-6">
-                    	<div class="col-xs-12 col-sm-12">
-                        	<b style="font-size:12pt">${chef_order_listVO.chef_appr}</b>
-                        </div>	
-                        <div class="col-xs-12 col-sm-12">
-                        	<b style="font-size:12pt">${chef_order_listVO.chef_appr_cnt}</b>
-                        </div>
-                    </div>
-                </div>
-                <div class="row" style="border-bottom: 2px solid #d3d4d5">
-                    <div class="col-xs-12 col-sm-4">
-                        <h3 style="margin-top:0px"><b>下訂時間</b></h3>
-                    </div>
-                    <div class="col-xs-12 col-sm-6">
-                        <b style="font-size:12pt">${chef_order_listVO.chef_ord_date}</b>
-                    </div>
-                </div>
+       
+                <div class="col-xs-12 col-sm-12 ">
+				<table class="chefOrderListInfo">
+					<tr>
+						<th>下訂會員：</td>
+						<td>${memberSvc.getOneMember(chef_order_listVO.mem_no).mem_name}</td>
+					</tr>
+					<tr>
+						<th>執行私廚：</td>
+						<td>${chefSvc.getOneChef(chef_order_listVO.chef_no).chef_name}</td>
+					</tr>
+					<tr>
+						<th>執行時間：</td>
+						<td>
+						<fmt:formatDate value="${chef_order_listVO.chef_act_date}" var="formattedDate" 
+               				 type="date" pattern="yyyy/MM/dd" />
+							${formattedDate} &nbsp 
+						<fmt:formatDate value="${chef_order_listVO.chef_act_date}" var="formattedTime" 
+               				 type="date" pattern="HH:mm" />
+               				 <c:set var="time" value="${formattedTime}" />
+               				<c:if test="${time == '10:00'}"> 
+							${time}~14:00 
+							</c:if>
+							 <c:set var="time2" value="${formattedTime}" />
+							<c:if test="${time2 == '16:00'}"> 
+							${time2}~20:00 
+							</c:if>
+						</td>
+					</tr>
+					<tr>
+						<th>執行地點：</td>
+						<td>${chef_order_listVO.chef_ord_place}</td>
+					</tr>
+					<tr>
+						<th>交易金額：</th>
+						<td>
+						<fmt:parseNumber var="dollar" integerOnly="true" type="number" value="${chef_order_listVO.chef_ord_cost}" />
+						<c:set var="money" value="${dollar}" />
+							<c:if test="${chef_order_listVO.chef_ord_con !='0'}">$
+							${money}
+							</c:if>
+							<c:if test="${chef_order_listVO.chef_ord_con == '0'}">
+							待私廚填寫
+							</c:if>
+						</td>
+					</tr>
+					<tr>
+						<th colspan="2" class="text-center ">訂單內容說明：</th>
+					</tr>
+					<tr>
+						<td colspan="2" class="ord-content">
+							${chef_order_listVO.chef_ord_cnt}
+						</td>
+					</tr>
+					<tr>
+						<th>下訂時間：</th>
+						<td>
+							<fmt:formatDate value="${chef_order_listVO.chef_ord_date}" var="formattedDate2" 
+               				 type="date" pattern="yyyy/MM/dd HH:mm" />
+							${formattedDate2} 
+						</td>
+					</tr>
 
+				</table>
+					<div class="text-center"><button class="btn btn-success goBack ">返回上一頁</button></div>
             </div>
 
     </div>
-    <!--     <footer id="the_footer">
-        <p class="lightcolor">All Content Copyright &copy; 2016 TomCat Inc</p>
-    </footer> -->
+
     <script src="https://code.jquery.com/jquery.js"></script>
     <script src="https://netdna.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+    
+    <script>
+    	$().ready(function(){
+	    	$('.goBack').click(function(){
+				window.history.go(-1);
+			})
+    		
+    	})
+	
+    </script>
+    
+    
 </body>
 
 </html>

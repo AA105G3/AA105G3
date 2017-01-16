@@ -59,11 +59,21 @@
 				border-bottom: 3px red solid;
 			}
 			
-			body{
+			html,body{
 				background: #efede8;
-				padding-top: 50px;
+				/* padding-top: 50px; */
 				height : 100%;
+				/* position : relative; */
+				
+				
 			}
+			.page{
+				min-height:100%;
+				   position: relative;
+				   padding-top:50px;
+				   padding-bottom:50px;
+			}
+			
 			.recipe-search-wrapper{
 				margin-bottom:20px;
 			}
@@ -138,11 +148,7 @@
 			#page-content{
 				min-height:700px;
 			}
-			footer{
-				position : absolute;
-			    bottom : 0px;
-				width : 100%;
-			}
+			
 			.recipe-wrapper{
 				padding:15px 0px 5px 0px;
 				margin-bottom: 10px;
@@ -189,12 +195,19 @@
 				font-family: Reklame;
 				text-align: center;
 			}
+			.mem_chef_name{
+				font-size:16px;
+			}
+			.goChef{
+				padding:5px 0px;
+			}
 		</style>
 
 	</head>
 	
 	
 	<body>
+	<div class="page">
 		<c:import url="/front-end/frontNavbar.jsp" ></c:import>
 		<header class="header-style">
 			<c:import url="/front-end/recipe/RecipeSearchBar.jsp" ></c:import>
@@ -213,7 +226,7 @@
 				</c:if>
 		
 		
-		
+	
 		<div class="container">
 	    	<div class="row">
 						<div class="col-xs-12 col-sm-8">
@@ -309,7 +322,10 @@
 			    		<c:if test="${!self}">
 					    	<img id="memImg" src="<%=request.getContextPath()%>/MemberDBGifReader.do?name=${memberVO.mem_no}">
 	    					<h3>${memberSvc.getOneMember(memberVO.mem_no).mem_name}</h3>
-					
+	    					<c:set var="aChef" value="${chefSvc.getOneChefByMem_no(memberVO.mem_no)}" />
+	    					<c:if test="${aChef.chef_name !=null}">
+	    					<div class="mem_chef_name">(${chefSvc.getOneChefByMem_no(memberVO.mem_no).chef_name})</div>
+							</c:if>
 							<div class="col-xs-12 col-sm-6 count-style">
 						    	<div>食譜數：${recipeSvc.findByMem_no(memberVO.mem_no).size()}</div>
 						    </div>
@@ -317,7 +333,14 @@
 						    	<div >追隨數：<span id="count">${collectionSvc.getCollectionSize(memberVO.mem_no) > 0?collectionSvc.getCollectionSize(memberVO.mem_no):0}</span></div>
 						    </div>
 						    <div class="col-xs-12 col-sm-12 text-left">
-						    	<div class="mem-email">${memberVO.mem_email}</div>
+						    	<div class="mem-email">${memberVO.mem_email.toLowerCase()}</div>
+						    	<c:if test="${aChef.chef_name !=null}">
+									<div class="text-center goChef">
+										<a href="<%=request.getContextPath()%>/chef/chef.do?action=getOne_For_Display&chef_no=${aChef.chef_no}" class="btn btn-info btn-xs">
+										前往私廚頁面
+										</a>
+									</div>
+								</c:if>
 						    </div>
 						 </c:if>
 						 
@@ -328,7 +351,10 @@
 					    	<%//得到自己的資料 避免一直開資料庫連線 %>
 					    	<c:set var="ME" value="${memberSvc.getOneMember(sessionScope.mem_no)}" />
 	    					<h3>${ME.mem_name}</h3>
-					
+	    					<c:set var="aChef" value="${chefSvc.getOneChefByMem_no(ME.mem_no)}" />
+	    					<c:if test="${aChef.chef_name !=null}">
+							<div class="mem_chef_name">(${aChef.chef_name})</div>
+							</c:if>
 							<div class="col-xs-12 col-sm-6 count-style">
 						    	<div>食譜數：${recipeSvc.findByMem_no(ME.mem_no).size()}</div>
 						    </div>
@@ -336,7 +362,14 @@
 						    	<div >追隨數：<span id="count">${collectionSvc.getCollectionSize(ME.mem_no) > 0?collectionSvc.getCollectionSize(sessionScope.mem_no):0}</span></div>
 						    </div>
 						    <div class="col-xs-12 col-sm-12 text-left">
-						    	<div class="mem-email">${ME.mem_email}</div>
+						    	<div class="mem-email">${ME.mem_email.toLowerCase()}</div>
+							    <c:if test="${aChef.chef_name !=null}">
+									<div class="text-center goChef">
+										<a href="<%=request.getContextPath()%>/chef/chef.do?action=getOne_For_Display&chef_no=${aChef.chef_no}" class="btn btn-info btn-xs">
+										前往私廚頁面
+										</a>
+									</div>
+								</c:if>
 						    </div>
 						 </c:if>
 					
@@ -389,11 +422,10 @@
 					</div>
 				
 	    	</div>
-	  	</div>
-
 	<footer id="theFooter">
-		Copyright &copy; 2016 Java Team 3 
+		Copyright &copy; 2017 Java Team 3 
 	</footer>
+</div>
 <c:import url="/front-end/chat/inviteChat.jsp" ></c:import>
 
 		<script src="https://code.jquery.com/jquery.js"></script>
@@ -416,7 +448,9 @@
 
 				//好友區塊
 				var addFriend = $("#addFriend").click(function(){
+					var onlineMem_no = '${sessionScope.mem_no}';
 					var friend_no = $(this).val();
+					if(onlineMem_no!=''){
 					$.ajax({
 						 type:"POST",
 						 url:"/AA105G3/frd_list/frd_listJsonRes.do",
@@ -435,13 +469,23 @@
 					     },
 			             error:function(){alert('not found')}
 			         })
+					}else{
+						swal({
+							 title: '請先登入',
+							 text: "很抱歉，好友功能必須先登入!",
+							 type:'warning'
+							})
+						
+					}
 				})
 				
 				//收藏區塊
 				//得到收藏的兩個號碼 一個刪除用 一個加入用
 				
 				var addCollection = function(){
+					var onlineMem_no = '${sessionScope.mem_no}';
 					var all_no = $(this).val();
+					if(onlineMem_no!=''){
 					 $.ajax({
 						 type:"POST",
 						 url:"/AA105G3/collection/collectionJsonRes.do",
@@ -465,6 +509,14 @@
 					     },
 			             error:function(){alert('not found')}
 			         }) 
+					}else{
+						swal({
+							 title: '請先登入',
+							 text: "很抱歉，追隨功能必須先登入!",
+							 type:'warning'
+							})
+						
+					}
 				}
 				//註冊方法
 				$("#addCollection").on("click",addCollection);
