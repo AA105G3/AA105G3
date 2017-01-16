@@ -5,6 +5,7 @@
 
 <%
 	String mem_no = (String) session.getAttribute("mem_no");
+	ChefVO chefVO=(ChefVO)request.getAttribute("chefVO");
 %>
 <!DOCTYPE html>
 <html lang="">
@@ -243,13 +244,13 @@
     
     
     
-<div class="container">
-                    <div class="row">
-                        <div class="col-xs-12 col-sm-12 text-center">
-                            <h2>填寫私廚基本資訊</h2>
-                        </div>
-                    </div>
-                </div>
+	<div class="container">
+        <div class="row">
+            <div class="col-xs-12 col-sm-12 text-center">
+                <h2>填寫私廚基本資訊</h2>
+            </div>
+        </div>
+    </div>
 <div class="container" id="mainpage">
         <div class="row">
 			<div class="col-xs-12 col-sm-8 col-sm-offset-2 chef-input-wrapper" style="border:1px solid;">
@@ -423,7 +424,7 @@
 </div>
     <c:import url="/front-end/chat/inviteChat.jsp" ></c:import>
     <footer id="theFooter">
-		Copyright &copy; 2016 Java Team 3 
+		Copyright &copy; 2017 Java Team 3 
 	</footer>
     <script src="https://code.jquery.com/jquery.js"></script>
     <script src="https://netdna.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>

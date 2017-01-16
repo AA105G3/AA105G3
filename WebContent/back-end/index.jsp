@@ -1,5 +1,59 @@
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ page import="com.product_order.model.*"%>
+<%@ page import="com.chef.model.*"%>
+<%@ page import="com.product_order_list.model.*"%>
+<%@ page import="java.util.*"%>
+
+<%
+	Product_orderService product_orderSvc = new Product_orderService();
+	List<Product_orderVO> list = product_orderSvc.getAll();
+	
+	Product_order_listService product_order_listSvc = new Product_order_listService();
+	
+	List<Product_orderVO> displayList = new ArrayList<Product_orderVO>();
+	
+	boolean flag = false;
+	
+	for(Product_orderVO aOrder:list){
+		
+		List<Product_order_listVO> list2 =  product_order_listSvc.getProduct_order_list_By_One_PK(aOrder.getProd_ord_no());
+		List<String> deliStatus = new ArrayList<String>();
+		
+		for(Product_order_listVO aOrderList:list2){
+			String status = aOrderList.getDeli_status();
+			deliStatus.add(status);
+		}
+		
+		if(deliStatus.contains("0") || deliStatus.contains("4")){
+			flag = true;
+		}
+		
+		if(flag == true){
+			displayList.add(aOrder);
+		}
+		
+		flag = false;
+		
+	}
+	ChefService chefSvc = new ChefService();
+	List<ChefVO> list3 = chefSvc.getAll();
+	List<ChefVO> unCheckChef = new ArrayList<ChefVO>();
+	for(ChefVO aChef: list3){
+		if((aChef.getChef_chk_cond()).equals("0")){
+			unCheckChef.add(aChef);
+		}
+		
+	}
+	
+	int unCompleteSize = displayList.size();
+	int unCheckChefSize = unCheckChef.size();
+%>
+
+
+
+<jsp:useBean id="recipeSvc" scope="page" class="com.recipe.model.RecipeService" />
+
 
 <html>
 <head>
@@ -45,6 +99,17 @@
 .text-style{
 	font-size: 32px;
 }
+#table_title{
+     		font-size:30px;
+     	}
+     	th{
+     		text-align:center;
+     		font-size:16px;
+     	}
+     	tbody td{
+     		font-size:16px;
+     		vertical-align: middle !important;
+     	}
 
 </style>
 
@@ -79,7 +144,7 @@
 							</td>
 							
 							<td>
-								<p class="span-style">0</p>
+								<p class="span-style">${recipeSvc.getNotClassified().size()}</p>
 							</td>
 						</tr>
 					</table>
@@ -96,7 +161,7 @@
 							</td>
 							
 							<td>
-								<p class="span-style">0</p>
+								<p class="span-style"><%= unCompleteSize %></p>
 							</td>
 						</tr>
 					</table>
@@ -113,7 +178,7 @@
 							</td>
 							
 							<td>
-								<p class="span-style">0</p>
+								<p class="span-style"><%= unCheckChefSize %></p>
 							</td>
 						</tr>
 					</table>

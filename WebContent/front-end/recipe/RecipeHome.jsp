@@ -295,6 +295,7 @@
 		</div>
 	</c:forEach>
 	</section>
+	<c:import url="/front-end/frd_list/friendBar.jsp" ></c:import>
 	<c:import url="/front-end/chat/inviteChat.jsp" ></c:import>
 	<footer id="theFooter">
 		Copyright &copy; 2016 Java Team 3 

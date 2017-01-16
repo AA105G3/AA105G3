@@ -62,10 +62,17 @@
 				border-bottom: 3px red solid;
 			}
 			
-			body{
+			html,body{
 				background: #efede8;
-				padding-top: 50px;
+				
 				height : 100%;
+				
+			}
+			.page{
+				min-height:100%;
+				   position: relative;
+				   padding-top:50px;
+				   padding-bottom:50px;
 			}
 			.recipe-search-wrapper{
 				margin-bottom:20px;
@@ -240,13 +247,19 @@
 				font-family: Reklame;
 				text-align: center;
 			}
+			.mem_chef_name{
+				font-size:16px;
+			}
+			.goChef{
+				padding:5px 0px;
+			}
 		</style>
 
 	</head>
 	
 	
 	<body>
-
+<div class="page">
 	      	<c:import url="/front-end/frontNavbar.jsp" ></c:import>	
 
 					<header class="header-style">
@@ -256,6 +269,7 @@
 
 	    	<div class="row">
 						<div class="col-xs-12 col-sm-8">
+			   				
 			   				
 				   				<div role="tabpanel">
 									<nav class="nav navbar-default">
@@ -284,10 +298,18 @@
 									            <a href="#tab1" aria-controls="tab1" role="tab" data-toggle="tab">全部好友</a>
 									        </li>
 									        <li role="presentation" class="tab2">
-									            <a href="#tab2" aria-controls="tab2" role="tab" data-toggle="tab">邀請中</a>
+									            <a href="#tab2" aria-controls="tab2" role="tab" data-toggle="tab">邀請中
+									            <c:if test="${list2.size()>0}">
+									            (${list2.size()})
+									            </c:if>
+									            </a>
 									        </li>
 									        <li role="presentation" class="tab3">
-									            <a href="#tab3" aria-controls="tab3" role="tab" data-toggle="tab">被邀請</a>
+									            <a href="#tab3" aria-controls="tab3" role="tab" data-toggle="tab">被邀請
+									            <c:if test="${list3.size()>0}">
+									            (${list3.size()})
+									            </c:if>
+									            </a>
 									        </li>
 									    </ul>
 									
@@ -478,7 +500,10 @@
 			    		<div class="col-xs-12 col-sm-3 col-sm-push-1 text-center member-style">
 					    	<img id="memImg" src="<%=request.getContextPath()%>/MemberDBGifReader.do?name=${sessionScope.mem_no}">
 	    					<h3>${memberSvc.getOneMember(sessionScope.mem_no).mem_name}</h3>
-					
+	    					<c:set var="aChef" value="${ChefSvc.getOneChefByMem_no(sessionScope.mem_no)}" />
+							<c:if test="${aChef.chef_name !=null}">
+							<div class="mem_chef_name">(${ChefSvc.getOneChefByMem_no(sessionScope.mem_no).chef_name})</div>
+							</c:if>
 							<div class="col-xs-12 col-sm-6 count-style">
 						    	<div>食譜數：${recipeSvc.findByMem_no(sessionScope.mem_no).size()}</div>
 						    </div>
@@ -488,20 +513,26 @@
 						   
 						    <div class="col-xs-12 col-sm-12 text-left">
 						    	<div class="mem-email">${memberSvc.getOneMember(sessionScope.mem_no).mem_email.toLowerCase()}</div>
+						    	<div class="text-center goChef">
+									<a href="<%=request.getContextPath()%>/chef/chef.do?action=getOne_For_Display&chef_no=${aChef.chef_no}" class="btn btn-info btn-xs">
+									前往私廚頁面
+									</a>
+							<a href="<%=request.getContextPath()%>/chef/chef.do?action=getOne_For_Update&chef_no=${aChef.chef_no}">修改</a>
+								</div>
 						    </div>
-					
 					    	
 					    </div>
 					</div>
 				
 	    	</div>
-	  	</div>
 <c:import url="/front-end/chat/inviteChat.jsp" ></c:import>
 
 
 	<footer id="theFooter">
-		Copyright &copy; 2016 Java Team 3 
+		Copyright &copy; 2017 Java Team 3 
 	</footer>
+	  	</div>
+	
 		<script src="https://code.jquery.com/jquery.js"></script>
 		<script src="https://netdna.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
 		<script src="https://cdnjs.cloudflare.com/ajax/libs/limonte-sweetalert2/6.2.9/sweetalert2.min.js"></script>

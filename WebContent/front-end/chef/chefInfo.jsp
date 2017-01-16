@@ -150,25 +150,25 @@
                     <div class="col-xs-12 col-sm-10 text-center">
                         <h2>私廚個人資訊</h2>
                         
+                        <c:set var="chefFlag" value="false" />
                         <c:if test="${chefVO.mem_no != sessionScope.mem_no}">
                         
-                        <c:set var="chefFlag" value="false" />
                         <c:forEach var="aCollection" items="${collectionSvc.getMyChefCollection(sessionScope.mem_no)}" >
 						     <c:if test="${aCollection.all_no == chefVO.chef_no}">
 						    		<c:set var="chefFlag" value="true" />
 						    </c:if>
 						</c:forEach>
                         
+                        </c:if>
                         
                         
-                         <c:if test="${memberVO.mem_no != sessionScope.mem_no}">
-                         <c:if test="${!chefFlag}">
+                         <c:if test="${chefVO.mem_no != sessionScope.mem_no}">
+                        	<c:if test="${!chefFlag}">
                         	<button id ="addCollection" class="btn btn-primary" value="${chefVO.chef_no}">追隨此私廚</button>
-                        </c:if>
-                         <c:if test="${chefFlag}">
+                      	 	</c:if> 
+                        	 <c:if test="${chefFlag}">
                         	<button id="cancelCollection" class="btn btn-default" value="${chefVO.chef_no}">取消追隨</button>
-                        </c:if>
-                        </c:if>
+                       		 </c:if>
                         </c:if>
                         
 
@@ -352,7 +352,9 @@
     	
     	//收藏區塊
     	var addCollection = function(){
+    		var onlineMem_no = '${sessionScope.mem_no}';
 			var all_no = $(this).val();
+			if(onlineMem_no!=''){
 			 $.ajax({
 				 type:"POST",
 				 url:"/AA105G3/collection/collectionJsonRes.do",
@@ -376,6 +378,14 @@
 			     },
 	             error:function(){alert('not found')}
 	         }) 
+	         }else{
+					swal({
+						 title: '請先登入',
+						 text: "很抱歉，追隨功能必須先登入!",
+						 type:'warning'
+						})
+					
+				}
 		}
 		//註冊方法
 		$("#addCollection").on("click",addCollection);

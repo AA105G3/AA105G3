@@ -2,18 +2,15 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ page import="java.util.*"%>
 <%@ page import="com.chef_order_list.model.*"%>
-<%@ page import="com.member.model.*"%>
-
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<jsp:useBean id="memberSvc" scope="page" class="com.member.model.MemberService" />
+<jsp:useBean id="chefSvc" scope="page" class="com.chef.model.ChefService" />
 <%
     Chef_order_listService chef_order_listSvc = new Chef_order_listService();
     List<Chef_order_listVO> list = chef_order_listSvc.getAll();
     pageContext.setAttribute("list",list);
 %>
-<%
-    MemberService memberSvc = new MemberService();
-    List<MemberVO> mem_list = memberSvc.getAll();
-    pageContext.setAttribute("mem_list",mem_list);
-%>
+
 <!DOCTYPE html>
 <html lang="">
 
@@ -29,6 +26,20 @@
             <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
             <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
         <![endif]-->
+        <style>
+     	#table_title{
+     		font-size:30px;
+     	}
+     	th{
+     		text-align:center;
+     		font-size:16px;
+     	}
+     	tbody td{
+     		font-size:16px;
+     		vertical-align: middle !important;
+     		text-align:center;
+     	}
+     </style>
 </head>
 
 <body>
@@ -48,6 +59,7 @@
             <thead>
                 <tr>
                     <th>下訂會員</th>
+                    <th>執行私廚</th>
                     <th>執行時間</th>
                     <th>執行地點</th>
                     <th>金額</th>
@@ -57,17 +69,41 @@
             <%@ include file="page1.file" %>
                 <c:forEach var="chef_order_listVO" items="${list}" begin="<%=pageIndex%>" end="<%=pageIndex+rowsPerPage-1%>">
                     <tbody>
-                        <tr align='center' valign='middle'>
-                           <c:forEach var="memVO" items="${mem_list}">
-                                <c:if test="${chef_order_listVO.mem_no==memVO.mem_no}">
-                                	<td>${memVO.mem_ac}</td>
-                                </c:if>
-                           </c:forEach>
-                           <td>${chef_order_listVO.chef_act_date}</td>
-                           <td>${chef_order_listVO.chef_ord_place}</td>
-                           <td>${chef_order_listVO.chef_ord_cost}</td>
+                        <tr>
+                           <td>${memberSvc.getOneMember(chef_order_listVO.mem_no).mem_ac}</td>
                            <td>
-                                <div class="btn btn-danger btn-xs"><a href="<%=request.getContextPath()%>/chef_order_list/chef_order_list.do?action=getOne_For_Back&chef_ord_no=${chef_order_listVO.chef_ord_no}">瀏覽明細</a></div>
+                           <c:set var="chefVO" value="${chefSvc.getOneChef(chef_order_listVO.chef_no)}" />
+                           ${chefVO.chef_name} (${memberSvc.getOneMember(chefVO.mem_no).mem_ac})  
+                           </td>
+                           <td>
+                           	<fmt:formatDate value="${chef_order_listVO.chef_act_date}" var="formattedDate" 
+               				 type="date" pattern="yyyy/MM/dd" />
+							${formattedDate} &nbsp 
+							<fmt:formatDate value="${chef_order_listVO.chef_act_date}" var="formattedTime" 
+               				 type="date" pattern="HH:mm" />
+               				 <c:set var="time" value="${formattedTime}" />
+               				<c:if test="${time == '10:00'}"> 
+							${time}~14:00 
+							</c:if>
+							 <c:set var="time2" value="${formattedTime}" />
+							<c:if test="${time2 == '16:00'}"> 
+							${time2}~20:00 
+							</c:if>
+                           
+                           </td>
+                           <td>${chef_order_listVO.chef_ord_place}</td>
+                           <td>
+                           	<fmt:parseNumber var="dollar" integerOnly="true" type="number" value="${chef_order_listVO.chef_ord_cost}" />
+							<c:set var="money" value="${dollar}" />
+							<c:if test="${chef_order_listVO.chef_ord_con !='0'}">$
+							${money}
+							</c:if>
+							<c:if test="${chef_order_listVO.chef_ord_con == '0'}">
+							待私廚填寫
+							</c:if>
+                           </td>
+                           <td>
+                                <a class="btn btn-info" href="<%=request.getContextPath()%>/chef_order_list/chef_order_list.do?action=getOne_For_Back&chef_ord_no=${chef_order_listVO.chef_ord_no}">瀏覽明細</a>
                            </td>
                         </tr>
                     </tbody>
@@ -75,10 +111,9 @@
         </table>
         <%@ include file="page2.file" %>
 
-    </div>
-<!--     <footer id="the_footer">
-        <p class="lightcolor">All Content Copyright &copy; 2016 TomCat Inc</p>
-    </footer> -->
+    	</div>
+	</div>
+</div>
     <script src="https://code.jquery.com/jquery.js"></script>
     <script src="https://netdna.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
 </body>

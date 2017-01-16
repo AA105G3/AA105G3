@@ -208,7 +208,7 @@ public class ChefServlet extends HttpServlet {
 			}
 		}
 		
-		if ("getOne_For_Update".equals(action) || "getOne_For_Check".equals(action)) { // 來自listAllChef.jsp的請求
+		if ("getOne_For_Check".equals(action)) { // 來自listAllChef.jsp的請求
 
 			List<String> errorMsgs = new LinkedList<String>();
 			// Store this set in the request scope, in case we need to
@@ -228,9 +228,7 @@ public class ChefServlet extends HttpServlet {
 				/***************************3.查詢完成,準備轉交(Send the Success view)************/
 				req.setAttribute("chefVO", chefVO);         // 資料庫取出的chefVO物件,存入req					
 				String url = null;
-				if("getOne_For_Update".equals(action))
-					url = "/front-end/chef/changeChefInfo.jsp";
-				else if("getOne_For_Check".equals(action))
+				
 					url = "/back-end/chef/ChefCheckPage.jsp";
 				RequestDispatcher successView = req.getRequestDispatcher(url);// 成功轉交 update_chef_input.jsp
 				successView.forward(req, res);
@@ -238,6 +236,40 @@ public class ChefServlet extends HttpServlet {
 				/***************************其他可能的錯誤處理**********************************/
 			} catch (Exception e) {
 				errorMsgs.add("無法取得要修改的資料:" + e.getMessage());
+				RequestDispatcher failureView = req
+						.getRequestDispatcher("/front-end/chef/listAllChef.jsp");
+				failureView.forward(req, res);
+			}
+		}
+		
+		if ("getOne_For_Update".equals(action)) { // 來自listAllChef.jsp的請求
+
+			Map<String,String> errorMsgs = new HashMap<String,String>();
+			// Store this set in the request scope, in case we need to
+			// send the ErrorPage view.
+			req.setAttribute("errorMsgs", errorMsgs);
+			
+//			String requestURL = req.getParameter("requestURL");
+			
+			try {
+				/***************************1.接收請求參數****************************************/
+				String chef_no = new String(req.getParameter("chef_no"));
+				
+				/***************************2.開始查詢資料****************************************/
+				ChefService chefSvc = new ChefService();
+				ChefVO chefVO = chefSvc.getOneChef(chef_no);
+								
+				/***************************3.查詢完成,準備轉交(Send the Success view)************/
+				req.setAttribute("chefVO", chefVO);         // 資料庫取出的chefVO物件,存入req					
+				String url = null;
+					url = "/front-end/chef/changeChefInfo.jsp";
+				
+				RequestDispatcher successView = req.getRequestDispatcher(url);// 成功轉交 update_chef_input.jsp
+				successView.forward(req, res);
+
+				/***************************其他可能的錯誤處理**********************************/
+			} catch (Exception e) {
+				errorMsgs.put("無法取得要修改的資料:" , e.getMessage());
 				RequestDispatcher failureView = req
 						.getRequestDispatcher("/front-end/chef/listAllChef.jsp");
 				failureView.forward(req, res);
@@ -274,6 +306,7 @@ public class ChefServlet extends HttpServlet {
 				ChefService chefSvc = new ChefService();
 				
 				Part lic_part=req.getPart("chef_lic");
+				
 				byte[] chef_lic=null;
 				if(getFileNameFromPart(lic_part) != null && lic_part.getContentType() != null){
 					InputStream lic_in= lic_part.getInputStream();
@@ -297,31 +330,6 @@ public class ChefServlet extends HttpServlet {
 					chef_image = chefSvc.getOneChef(chef_no).getChef_image();
 				}				
 				
-				Part mov1_part=req.getPart("chef_movie1");
-				byte[] chef_movie1=null;
-				if(getFileNameFromPart3(mov1_part) != null && mov1_part.getContentType() != null){
-					
-					InputStream mov1_in= mov1_part.getInputStream();
-					chef_movie1=new byte[mov1_in.available()];
-					mov1_in.read(chef_movie1);
-					mov1_in.close();
-				}
-				else{
-					chef_movie1 = chefSvc.getOneChef(chef_no).getChef_movie1();
-				}
-				
-				Part mov2_part=req.getPart("chef_movie2");
-				byte[] chef_movie2=null;
-				if(getFileNameFromPart4(mov2_part) != null && mov2_part.getContentType() != null){
-					InputStream mov2_in= mov2_part.getInputStream();
-					chef_movie2=new byte[mov2_in.available()];
-					mov2_in.read(chef_movie2);
-					mov2_in.close();
-				}
-				else{
-					chef_movie2 = chefSvc.getOneChef(chef_no).getChef_movie2();
-				}
-				
 				
 				String chef_id = req.getParameter("chef_id").trim();
 				if(chef_id == ""){
@@ -334,19 +342,13 @@ public class ChefServlet extends HttpServlet {
 				}
 				
 				String chef_area = req.getParameter("chef_area").trim();
-				if(chef_area == ""){
-					errorMsgs.add("請輸入活動地區.");
-				}
+				
 				
 				String chef_intr = req.getParameter("chef_intr").trim();
-				if(chef_intr == ""){
-					errorMsgs.add("請輸入簡介.");
-				}
+				
 				
 				String chef_menu = req.getParameter("chef_menu").trim();
-				if(chef_menu == ""){
-					errorMsgs.add("請輸入參考菜單.");
-				}
+				
 				
 				Part img1_part=req.getPart("chef_reci_image1");
 				byte[] chef_reci_image1=null;
@@ -414,8 +416,6 @@ public class ChefServlet extends HttpServlet {
 				chefVO.setChef_skill(chef_skill);
 				chefVO.setChef_lic(chef_lic);
 				chefVO.setChef_image(chef_image);
-				chefVO.setChef_movie1(chef_movie1);
-				chefVO.setChef_movie2(chef_movie2);
 				chefVO.setChef_id(chef_id);
 				chefVO.setChef_name(chef_name);
 				chefVO.setChef_area(chef_area);
@@ -431,14 +431,14 @@ public class ChefServlet extends HttpServlet {
 				if (!errorMsgs.isEmpty()) {
 					req.setAttribute("chefVO", chefVO); // 含有輸入格式錯誤的chefVO物件,也存入req
 					RequestDispatcher failureView = req
-							.getRequestDispatcher("/front-end/chef/update_chef_input.jsp");
+							.getRequestDispatcher("/front-end/chef/changeChefInfo.jsp");
 					failureView.forward(req, res);
 					return; //程式中斷
 				}
 				
 				/***************************2.開始修改資料*****************************************/
 				//ChefService chefSvc = new ChefService();
-				chefVO = chefSvc.updateChef(chef_no, chef_bnk, chef_bnk_ac, chef_skill, chef_lic, chef_image, chef_movie1, chef_movie2, chef_id, chef_name, chef_area, chef_intr, chef_menu, chef_reci_image1, chef_reci_image2, chef_reci_image3, chef_reci_image4, chef_reci_image5,chefVO.getChef_chk_cond());
+				chefVO = chefSvc.updateChef(chef_no, chef_bnk, chef_bnk_ac, chef_skill, chef_lic, chef_image, chefVO.getChef_movie1(), chefVO.getChef_movie2(), chef_id, chef_name, chef_area, chef_intr, chef_menu, chef_reci_image1, chef_reci_image2, chef_reci_image3, chef_reci_image4, chef_reci_image5,chefVO.getChef_chk_cond());
 				
 				/***************************3.修改完成,準備轉交(Send the Success view)*************/
 				req.setAttribute("chefVO", chefVO); // 資料庫update成功後,正確的的chefVO物件,存入req
@@ -450,7 +450,7 @@ public class ChefServlet extends HttpServlet {
 			} catch (Exception e) {
 				errorMsgs.add("修改資料失敗:"+e.getMessage());
 				RequestDispatcher failureView = req
-						.getRequestDispatcher("/front-end/chef/update_chef_input.jsp");
+						.getRequestDispatcher("/front-end/chef/changeChefInfo.jsp");
 				failureView.forward(req, res);
 			}
 		}

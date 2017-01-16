@@ -622,7 +622,9 @@
 				//收藏區塊
 				
 				var addCollection = function(){
+					var onlineMem_no = '${sessionScope.mem_no}';
 					var all_no = $(this).val();
+					if(onlineMem_no!=''){
 					 $.ajax({
 						 type:"POST",
 						 url:"/AA105G3/collection/collectionJsonRes.do",
@@ -647,6 +649,14 @@
 					     },
 			             error:function(){alert('not found')}
 			         }) 
+					}else{
+						swal({
+							 title: '請先登入',
+							 text: "很抱歉，追隨功能必須先登入!",
+							 type:'warning'
+							})
+						
+					}
 				}
 				//註冊方法
 				$("#addCollection").on("click",addCollection);
