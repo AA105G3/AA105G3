@@ -20,6 +20,7 @@
 		<style type="text/css">
 		body{
 			background: #efede8;
+
 			padding-top: 90px;
 			position : relative;
 			height : 100%;
@@ -49,8 +50,7 @@
 		td.ord-content{
 			height: 300px;
 			vertical-align: top;
-		}
-		 
+		}		 
     #theFooter{
 
 		bottom : 0px;
@@ -147,6 +147,5 @@
 		<script src="https://code.jquery.com/jquery.js"></script>
 		<script src="https://netdna.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
 		
-	
 	</body>
 </html>

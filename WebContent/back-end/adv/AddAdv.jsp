@@ -92,7 +92,11 @@ th, td {
 <table border='1' bordercolor='#CCCCFF' id="mainTable" cellspacing="0">
 
 	<tr>
-		<td colspan="2" id="center" align="center" valign="center"><h2>新增廣告</h2></td>
+		<td colspan="2" id="center" align="center" valign="center" style="background: #e2fede;"><h2>新增廣告</h2></td>
+	</tr>
+	
+	<tr>
+		<td id="center" align="center"><font color=red>所有項目為必填項目</font></td>
 	</tr>
 
 	<%-- <tr>
@@ -105,21 +109,21 @@ th, td {
 	<tr>
 		<td>
 			廣告名稱：
-			<input type="TEXT" name="adv_name" size="45" value="<%= (advVO==null)? "新的廣告" : advVO.getAdv_name()%>" />
+			<input type="TEXT" name="adv_name" id="adv_name" size="45" value="<%= (advVO==null)? "" : advVO.getAdv_name()%>" />
 		</td>
 	</tr>
 	
 	<tr>
 		<td>圖片名稱：
-			<input type="TEXT" name="adv_image_name" size="45" 
-			value="<%= (advVO==null)? "新圖名稱" : advVO.getAdv_image_name()%>" />
+			<input type="TEXT" name="adv_image_name" id="adv_image_name" size="45" 
+			value="<%= (advVO==null)? "" : advVO.getAdv_image_name()%>" />
 		</td>
 	</tr>
 
 	<tr>
 		<td>
 			廣告連結：
-			<input type="TEXT" name="adv_url" size="45" value="<%= (advVO==null)? "www.foodtime.com.tw" : advVO.getAdv_url()%>" />
+			<input type="TEXT" name="adv_url" id="adv_url" size="45" value="<%= (advVO==null)? "" : advVO.getAdv_url()%>" />
 		</td>
 	</tr>
 	
@@ -141,6 +145,8 @@ th, td {
 	<input type="hidden" name="action" value="insert">
 	<input type="hidden" name="emp_no" value="1001">
 	<input class="btn btn-primary" type="submit" value="確認新增">
+	
+	<input type="button" id="incredibleButton" class="btn btn-default" value="懶人包">
 </div>
 
 </FORM>
@@ -162,6 +168,20 @@ th, td {
 		
 <script src="https://code.jquery.com/jquery.js"></script>
 <script src="https://netdna.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+
+
+
+
+
+<script>
+	$(document).ready(function(){
+		$('#incredibleButton').click(function(e){
+			$('#adv_name').val('優質小農鮮乳');
+			$('#adv_image_name').val('優質小農鮮乳');
+			$('#adv_url').val('https://ilovemilk.com.tw/index.php');
+		}); 
+	});
+</script>
 
 
 

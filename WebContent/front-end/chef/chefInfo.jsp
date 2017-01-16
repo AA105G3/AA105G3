@@ -103,7 +103,7 @@
 		
 	}
 	.chef_zone img{
-    		height : 225px;
+    		height : 500px;
     		width:300px;
     }
     #img_zone img{
@@ -122,6 +122,32 @@
 	#img_zone{
 		margin-bottom:50px;
 	}
+	.title-style{
+		padding-top : 20px;
+		padding-bottom : 30px;
+	}
+	.info-img-style{
+		padding-top : 20px;
+		padding-bottom : 0px;
+	}
+	.info-message-style{
+		margin-top : 100px;
+	}
+	.info-style{
+		padding-bottom : 50px;
+	}
+	.row-style{
+		padding-top : 10px;
+		padding-bottom : 10px;
+	}
+	.img-title-style{
+		padding-top : 50px;
+		padding-bottom : 10px;
+	}
+	.icon-style{
+		color : black;
+		padding-bottom : 0px;
+	}
     </style>
 </head>
 
@@ -137,18 +163,17 @@
 
         </div>
     </section>
-    <ol class="breadcrumb text-center">
-        <li>
-            <a href="/AA105G3/front-end/chef/becomeChef.jsp"><h2><b>成為私廚</b></h2></a>
-        </li>
-    </ol>
+
     <div class="container chef_zone">
         <div class="row">
             <div class="container">
                 <div class="row">
 
-                    <div class="col-xs-12 col-sm-10 text-center">
-                        <h2>私廚個人資訊</h2>
+                    <div class="col-xs-12 col-sm-12 text-center">
+                        <h1 class="title-style">
+                        	私廚個人資訊
+                        	<a href="#" class="glyphicon glyphicon-cog icon-style" style="text-decoration:none;"></a>
+                        </h1>
                         
                         <c:set var="chefFlag" value="false" />
                         <c:if test="${chefVO.mem_no != sessionScope.mem_no}">
@@ -162,6 +187,7 @@
                         </c:if>
                         
                         
+
                          <c:if test="${chefVO.mem_no != sessionScope.mem_no}">
                         	<c:if test="${!chefFlag}">
                         	<button id ="addCollection" class="btn btn-primary" value="${chefVO.chef_no}">追隨此私廚</button>
@@ -171,6 +197,7 @@
                        		 </c:if>
                         </c:if>
                         
+                        <!-- <a href="/AA105G3/front-end/chef/becomeChef.jsp" class="btn btn-primary">成為私廚</a> -->
 
                     </div>
                 </div>
@@ -179,16 +206,14 @@
             
      		<div class="col-xs-12 col-sm-12">
             
-            <div class="col-xs-12 col-sm-12 text-center" id="">
-                <div class="row" style="border-bottom: 2px solid #d3d4d5">
-                    <div class="col-xs-12 col-sm-4 col-sm-offset-4" >
-                        <div class="thumbnail">
-                            <img src="<%=request.getContextPath()%>/chef/chefImage.do?chef_no=${chefVO.chef_no}&chef_image=123" class="img-circle" style="width:150px;height:200px">
-                            <div class="caption">
-                                <h3 align="center">${chefVO.chef_name}</h3>
-                                <p></p>
-                            </div>
-                        </div>
+            <div class="col-xs-12 col-sm-12 text-center">
+                <div class="row  info-style" style="border-bottom: 2px solid #d3d4d5">
+                    <div class="col-xs-12 col-sm-4 col-sm-push-2 info-img-style">
+                            <img src="<%=request.getContextPath()%>/chef/chefImage.do?chef_no=${chefVO.chef_no}&chef_image=123" class="img-circle" style="width:250px;height:250px">
+                    </div>
+                    <div class="col-xs-12 col-sm-6 col-sm-push-1 info-message-style">
+                        <div align="center"><font size="+5">${chefVO.chef_name}</font></div>
+                        <p></p>
                     </div>
 <!--                     <div class="col-xs-12 col-sm-5"> -->
 <!--                         <div class="thumbnail"> -->
@@ -215,45 +240,45 @@
 <!--                     </div> -->
 <!--                 </div> -->
 <!--                 <br> -->
-                <div class="row" style="border-bottom: 2px solid #d3d4d5;">
-                    <div class="col-xs-12 col-sm-4">
+                <div class="row row-style" style="border-bottom: 2px solid #d3d4d5;">
+                    <div class="col-xs-12 col-sm-6 col-sm-push-1">
                         <h3 style="margin-top:0px"><b>服務地區</b></h3>
                     </div>
-                    <div class="col-xs-12 col-sm-6">
-                        <b style="font-size:12pt">${chefVO.chef_area}</b>                    
+                    <div class="col-xs-12 col-sm-6 col-sm-pull-1">
+                        <h3 style="margin-top:0px">${chefVO.chef_area}</h3>                    
                     </div>
                 </div>
                 <br>
-                <div class="row" style="border-bottom: 2px solid #d3d4d5">
-                    <div class="col-xs-12 col-sm-4">
+                <div class="row row-style" style="border-bottom: 2px solid #d3d4d5">
+                    <div class="col-xs-12 col-sm-6 col-sm-push-1">
                         <h3 style="margin-top:0px"><b>擅長料理風格</b></h3>
                     </div>
-                    <div class="col-xs-12 col-sm-6">
-                        <b style="font-size:12pt">${chefVO.chef_skill}</b>                    
+                    <div class="col-xs-12 col-sm-6 col-sm-pull-1">
+                        <h3 style="margin-top:0px">${chefVO.chef_skill}</h3>                 
                     </div>
                 </div>
                 <br>
-                <div class="row" style="border-bottom: 2px solid #d3d4d5">
-                    <div class="col-xs-12 col-sm-4">
+                <div class="row row-style" style="border-bottom: 2px solid #d3d4d5">
+                    <div class="col-xs-12 col-sm-6 col-sm-push-1">
                         <h3 style="margin-top:0px"><b>私廚簡介</b></h3>
                     </div>
-                    <div class="col-xs-12 col-sm-6">
-                        <b style="font-size:12pt">${chefVO.chef_intr}</b>                    
+                    <div class="col-xs-12 col-sm-6 col-sm-pull-1">
+                        <h3 style="margin-top:0px">${chefVO.chef_intr}</h3>                    
                     </div>
                 </div>
                 <br>
-                <div class="row" style="border-bottom: 2px solid #d3d4d5">
-                    <div class="col-xs-12 col-sm-4">
+                <div class="row row-style" style="border-bottom: 2px solid #d3d4d5">
+                    <div class="col-xs-12 col-sm-6 col-sm-push-1">
                         <h3 style="margin-top:0px"><b>參考菜單(建議標上價格)</b></h3>
                     </div>
-                    <div class="col-xs-12 col-sm-6">
-                        <b style="font-size:12pt">${chefVO.chef_menu}</b>
+                    <div class="col-xs-12 col-sm-6 col-sm-pull-1">
+                        <h3 style="margin-top:0px">${chefVO.chef_menu}</h3>
                     </div>
                 </div>
             </div>
             <br>
-            <div class="col-xs-12 col-sm-12 text-center">
-                <h3>參考圖片</h3>
+            <div class="col-xs-12 col-sm-12 text-center img-title-style">
+                <h2>參考圖片</h2>
             </div>
             <br>
             <div class="row" id="img_zone">
@@ -403,7 +428,7 @@
 					   title:'已取消追隨',
 					    type:'success'
 					  })
-					 $('#cancelCollection').text('加入追隨')
+					 $('#cancelCollection').text('追隨私廚')
 					 $('#cancelCollection').attr("id","addCollection")
 					 $('#addCollection').removeClass('btn-default');
 					 $('#addCollection').addClass('btn-primary');

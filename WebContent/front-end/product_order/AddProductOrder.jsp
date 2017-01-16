@@ -68,6 +68,13 @@ pageContext.setAttribute("buylist",buylist);
 	tr{
 		height: 50px;
 	}
+	.list-style td{
+		width : 150px;
+	}
+	.message-style{
+		padding-top : 15px;
+		padding-bottom : 15px;
+	}
 </style>
 
 </head>
@@ -91,14 +98,17 @@ pageContext.setAttribute("buylist",buylist);
 
 
 <div class="container">
-		<div class="row">
-			<div class="list-style">
+	<div class="row">
+		<div class="list-style">
 
 
 
 
 
-<font size="+3">請填寫訂單資料： </font>
+<div><font size="+3">請填寫訂單資料： </font></div>
+
+<div class="message-style"><font color=red>*	為必填項目</font></div>
+
 <%-- 錯誤表列 --%>
 <c:if test="${not empty errorMsgs}">
 	<font color='red'>請修正以下錯誤:
@@ -118,7 +128,7 @@ pageContext.setAttribute("buylist",buylist);
 		<td>${memberVO.mem_ac}</td>
 	</tr>
 	<tr>
-		<td>信用卡卡號：</td>
+		<td>信用卡卡號<font color=red>	*</font>：</td>
 		<td>
 			<input type="TEXT" id="text1" size="1" maxlength="4" value="">
 			-
@@ -132,16 +142,16 @@ pageContext.setAttribute("buylist",buylist);
 		</td>
 	</tr>
 	<tr>
-		<td>信用卡有效時期：</td>
-		<td><input type="TEXT" name="valid_date" size="3"></td>
+		<td>信用卡有效時期<font color=red>	*</font>：</td>
+		<td><input type="TEXT" name="valid_date" id="valid_date" size="3"></td>
 	</tr>
 	<tr>
-		<td>信用卡驗證碼：</td>
-		<td><input type="TEXT" name="valid_no" size="3" maxlength="3"
+		<td>信用卡驗證碼<font color=red>	*</font>：</td>
+		<td><input type="TEXT" name="valid_no" id="valid_no" size="3" maxlength="3"
 			value="<%= (product_orderVO==null)? "" : product_orderVO.getValid_no()%>" /></td>
 	</tr>
 	<tr>
-		<td>信用卡卡別：</td>
+		<td>信用卡卡別<font color=red>	*</font>：</td>
 		<td><select size="1" name="cred_card_type">
 				<option value="0" >VISA
 				<option value="1" >MASTER
@@ -149,28 +159,28 @@ pageContext.setAttribute("buylist",buylist);
 			</select></td>
 	</tr>
 	<tr>
-		<td>收件人姓名：</td>
+		<td>收件人姓名<font color=red>	*</font>：</td>
 		<td><input type="TEXT" name="ship_name" size="45"
 			value="${memberVO.mem_name}" /></td>
 	</tr>
 	<tr>
-		<td>郵遞區號：</td>
-		<td><input type="TEXT" name="post_code" size="3" maxlength="5"
+		<td>郵遞區號<font color=red>	*</font>：</td>
+		<td><input type="TEXT" name="post_code" id="post_code" size="3" maxlength="5"
 			value="<%= (product_orderVO==null)? "" : product_orderVO.getPost_code()%>" /></td>
 	</tr>
 	<tr>
-		<td>寄送地址：</td>
+		<td>寄送地址<font color=red>	*</font>：</td>
 		<td><input type="TEXT" name="mem_adrs" size="45"
 			value="${memberVO.mem_adrs}" /></td>
 	</tr>
 	<tr>
-		<td>聯絡手機：</td>
+		<td>聯絡手機<font color=red>	*</font>：</td>
 		<td><input type="TEXT" name="cell_phone" size="45" maxlength="10"
 			value="${memberVO.mem_phone}" /></td>
 	</tr>
 	<tr>
-		<td>聯絡市話：</td>
-		<td><input type="TEXT" name="tel_phone" size="45" maxlength="10"
+		<td>聯絡市話<font color=red>	*</font>：</td>
+		<td><input type="TEXT" name="tel_phone" id="tel_phone" size="45" maxlength="10"
 			value="<%= (product_orderVO==null)? "" : product_orderVO.getTel_phone()%>" /></td>
 	</tr>
 	<tr>
@@ -215,7 +225,12 @@ pageContext.setAttribute("buylist",buylist);
 	
 </div>
 
+<div class="col-xs-12 col-sm-2">
+	<input type="button" id="incredibleButton" class="btn btn-default" value="懶人包">
+</div>
+
 </FORM>
+
 
 
 
@@ -224,7 +239,6 @@ pageContext.setAttribute("buylist",buylist);
 		</div>
 	</div>
 </div>
-
 
 
 
@@ -275,6 +289,25 @@ window.addEventListener('load', doFirst, false);
 
 <script src="https://code.jquery.com/jquery.js"></script>
 <script src="https://netdna.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+
+
+
+
+
+<script>
+	$(document).ready(function(){
+		$('#incredibleButton').click(function(e){
+			$('#text1').val('A1B2');
+			$('#text2').val('C3D4');
+			$('#text3').val('E5F6');
+			$('#text4').val('G7H8');
+			$('#valid_date').val('20/12');
+			$('#valid_no').val('123');
+			$('#post_code').val('320');
+			$('#tel_phone').val('03-4567890');
+		}); 
+	});
+</script>
 
 
 

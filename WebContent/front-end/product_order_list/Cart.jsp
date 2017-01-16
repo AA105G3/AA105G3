@@ -61,6 +61,10 @@
 	.btn-style{
 		margin-top : 15px;
 	}
+	.bottom-style{
+		padding-top : 20px;
+		padding-bottom : 80px;
+	}
 </style>
 
 </head>
@@ -78,8 +82,8 @@
 
 
 <div class="container">
-		<div class="row">
-			<div class="list-style">
+	<div class="row">
+		<div class="list-style">
 
 
 
@@ -130,31 +134,33 @@
 	</tr>
 </table>
 
-<p>
 
-<div class="col-xs-12 col-sm-2">
-	<a href="/AA105G3/front-end/product/Market.jsp" class="btn btn-primary">繼續購物</a>
+
+<div class="col-xs-12 col-sm-12 bottom-style">
+
+	<div class="col-xs-12 col-sm-2">
+		<a href="/AA105G3/front-end/product/Market.jsp" class="btn btn-primary">繼續購物</a>
+	</div>
+	
+	<%
+		HttpSession memberlist = request.getSession();
+		String mem_no = (String) memberlist.getAttribute("mem_no");
+	%>
+	
+	<div class="col-xs-12 col-sm-2 col-sm-push-6">
+		<c:if test="<%= amount!=null %>">
+			<c:if test='<%= !amount.toString().equals("0") %>'>
+				<form METHOD="post" ACTION="<%=request.getContextPath()%>/member/member.do">
+					<input type="submit" class="btn btn-danger" value="結帳">
+					<input type="hidden" name="mem_no" value="${mem_no}">
+					<input type="hidden" name="action" value="getOne_For_List">
+				</form>
+			</c:if>
+		</c:if>	
+	</div>
+
 </div>
 
-<%
-	HttpSession memberlist = request.getSession();
-	String mem_no = (String) memberlist.getAttribute("mem_no");
-%>
-
-<div class="col-xs-12 col-sm-2">
-	<c:if test="<%= amount!=null %>">
-		<c:if test='<%= !amount.toString().equals("0") %>'>
-			<form METHOD="post" ACTION="<%=request.getContextPath()%>/member/member.do">
-				<input type="submit" class="btn btn-danger" value="結帳">
-				<input type="hidden" name="mem_no" value="${mem_no}">
-				<input type="hidden" name="action" value="getOne_For_List">
-			</form>
-		</c:if>
-	</c:if>	
-</div>
-
-
-</p>
 
 
 

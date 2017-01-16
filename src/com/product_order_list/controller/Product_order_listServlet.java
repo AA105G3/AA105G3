@@ -7,7 +7,10 @@ import javax.servlet.*;
 import javax.servlet.http.*;
 
 import com.product.model.ProductVO;
+import com.product_order.model.Product_orderService;
+import com.product_order.model.Product_orderVO;
 import com.product_order_list.model.*;
+import com.util.MessageService;
 
 public class Product_order_listServlet extends HttpServlet {
 	
@@ -475,6 +478,23 @@ public class Product_order_listServlet extends HttpServlet {
 				/***************************2.開始修改資料*****************************************/
 				Product_order_listService product_order_listSvc = new Product_order_listService();
 				product_order_listVO = product_order_listSvc.updateProduct_order_list(prod_ord_no, prod_no, unit_price, prod_quantity, deli_status, deli_time);
+				
+				Product_orderService product_orderService = new Product_orderService();
+				Product_orderVO product_orderVO = new Product_orderVO();
+				product_orderVO = product_orderService.getOneProduct_order(prod_ord_no);
+				
+				MessageService messageSvc = new MessageService();
+				String[] tel ={product_orderVO.getCell_phone()};
+				String message = null;
+
+				if(deli_status.equals("1")){
+					message = "分享食光-商品出貨通知：親愛的會員您好，您所訂購的商品已出貨，請您近期內留意是否有收到商品，謝謝";
+				}
+				if(deli_status.equals("3")){
+					message = "分享食光-商品退款通知：親愛的會員您好，您所退貨的商品已完成退款，請您確認是否有確實收到正確的退款金額，謝謝";
+				}
+				
+				messageSvc.sendMessage(tel , message);
 				
 				/***************************3.修改完成,準備轉交(Send the Success view)*************/
 				req.setAttribute("product_order_listVO", product_order_listVO); // 資料庫update成功後,正確的的product_order_listVO物件,存入req

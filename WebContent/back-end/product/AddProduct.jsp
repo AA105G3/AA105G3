@@ -44,6 +44,9 @@ th, td {
 .btn-style{
 	padding-top : 50px;
 }
+.h2-style{
+	background: #e2fede;
+}
 
 </style>
 
@@ -94,29 +97,33 @@ th, td {
 
 			<table border='1' bordercolor='#CCCCFF' id="mainTable" cellspacing="0" >
 			
-				<tr>
+				<tr class='h2-style'>
 					<td colspan="2" id="center" align="center" valign="center"><h2>新增商品資料</h2></td>
 				</tr>
 				
 				<tr>
-					<td>商品編號：${productVO.prod_no}</td>
-					<td>商品名稱：<input type="TEXT" name="prod_name" value="<%= (productVO==null)? "新的商品" : productVO.getProd_name()%>" /></td>
+					<td colspan="2" id="center" align="center"><font color=red>所有項目為必填項目</font></td>
 				</tr>
 				
 				<tr>
-					<td>上架日期：<input type="date" name="shelf_date"></td>
+					<td>商品編號：</td>
+					<td>商品名稱：<input type="TEXT" name="prod_name" id="prod_name" value="<%= (productVO==null)? "" : productVO.getProd_name()%>" /></td>
+				</tr>
+				
+				<tr>
+					<td>上架日期：<input type="date" name="shelf_date" id="shelf_date"></td>
 					
-					<td>下架日期：<input type="date" name="remove_date"></td>
+					<td>下架日期：<input type="date" name="remove_date" id="remove_date"></td>
 				</tr>
 				
 				<tr>
-					<td>銷售數量：<input type="TEXT" name="sales_volume" value="<%= (productVO==null)? "10" : productVO.getSales_volume()%>" /></td>
-					<td>庫存數量：<input type="TEXT" name="stor_capacity" value="<%= (productVO==null)? "100" : productVO.getStor_capacity()%>" /></td>
+					<td>銷售數量：<input type="TEXT" name="sales_volume" id="sales_volume" value="<%= (productVO==null)? "" : productVO.getSales_volume()%>" /></td>
+					<td>庫存數量：<input type="TEXT" name="stor_capacity" id="stor_capacity" value="<%= (productVO==null)? "" : productVO.getStor_capacity()%>" /></td>
 				</tr>
 										
 				<tr>
-					<td>商品單價：<input type="TEXT" name="unit_price" value="<%= (productVO==null)? "50" : productVO.getUnit_price()%>" /></td>
-					<td>優惠價格：<input type="TEXT" name="disc_price" value="<%= (productVO==null)? "25" : productVO.getDisc_price()%>" /></td>
+					<td>商品單價：<input type="TEXT" name="unit_price" id="unit_price" value="<%= (productVO==null)? "" : productVO.getUnit_price()%>" /></td>
+					<td>優惠價格：<input type="TEXT" name="disc_price" id="disc_price" value="<%= (productVO==null)? "" : productVO.getDisc_price()%>" /></td>
 				</tr>
 										
 				<tr>
@@ -156,8 +163,8 @@ th, td {
 				</tr>
 								
 				<tr>
-					<td>優惠起始日期：<input type="date" name="disc_start_date"></td>
-					<td>優惠結束日期：<input type="date" name="disc_end_date"></td>
+					<td>優惠起始日期：<input type="date" name="disc_start_date" id="disc_start_date"></td>
+					<td>優惠結束日期：<input type="date" name="disc_end_date" id="disc_end_date"></td>
 				</tr>
 											
 				<tr>
@@ -166,7 +173,7 @@ th, td {
 						<div id="center"><img id="img" src="<%=request.getContextPath()%>/back-end/product/images/No-image-found.png"></div></td>
 					<td>商品描述：<br>
 						<textarea id="productTextarea" name="prod_description" cols="50" rows="5">
-							<%= (productVO==null)? "最新的太空包上市！" : productVO.getProd_description()%>
+							<%= (productVO==null)? "" : productVO.getProd_description()%>
 						</textarea>
 					</td>
 				</tr>
@@ -181,6 +188,8 @@ th, td {
 					
 					<input type="hidden" name="action" value="insert">
 					<input class="btn btn-primary" type="submit" value="確認新增">
+					
+					<input type="button" id="incredibleButton" class="btn btn-default" value="懶人包">
 				</div>
 
 			</FORM>
@@ -202,6 +211,27 @@ th, td {
 		
 <script src="https://code.jquery.com/jquery.js"></script>
 <script src="https://netdna.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+
+
+
+
+
+<script>
+	$(document).ready(function(){
+		$('#incredibleButton').click(function(e){
+			$('#prod_name').val('馬鈴薯燉肉');
+			$('#shelf_date').attr('value','2017-01-19');
+			$('#remove_date').attr('value','2017-03-19');
+			$('#sales_volume').val('0');
+			$('#stor_capacity').val('100');
+			$('#unit_price').val('50');
+			$('#disc_price').val('45');
+			$('#disc_start_date').attr('value','2017-02-19');
+			$('#disc_end_date').attr('value','2017-03-19');
+			document.getElementById("productTextarea").value = "小孩指定菜｛馬鈴薯燉肉｝，馬鈴薯鬆鬆軟軟、鹹鹹甜甜大人小孩都很愛，更是日本票選的女友必學料理~簡單非常容易上手~<br><br>內容物：<br>1.馬鈴薯...4小顆<br>2.紅蘿蔔...1條<br>3.牛五花...1盒<br>4.洋蔥...半顆<br>5.醬油...3大匙<br>6.味醂...1大匙<br>7.糖...適量<br>8.水...適量<br>9.米酒適量";
+		}); 
+	});
+</script>
 
 
 

@@ -38,6 +38,7 @@ MemberVO memberVO = (MemberVO) request.getAttribute("memberVO");
 	}
 	body{
 		height : 100%;
+		background: #efede8;
 	}
 	footer{
 		position : absolute;
@@ -75,11 +76,13 @@ MemberVO memberVO = (MemberVO) request.getAttribute("memberVO");
 		<div class="row">
 			<div class="list-style">
 
+<span><font color=red>*	為必填項目</font></span>
+	
 <div class="col-xs-12 col-sm-12">
 	<div class="col-xs-12 col-sm-6 div-style">
 		<div class="input-group">
 			<div class="input-group-addon">
-				會員帳號
+				會員帳號<font color=red>	*</font>
 			</div>
 			<input type="text" id="memAc" placeholder="請輸入帳號" class="form-control"
 			name="mem_ac" value="${memberVO==null ? '' : memberVO.mem_ac}">
@@ -94,7 +97,7 @@ MemberVO memberVO = (MemberVO) request.getAttribute("memberVO");
 	<div class="col-xs-12 col-sm-6 div-style">
 		<div class="input-group">
 			<div class="input-group-addon">
-				會員暱稱
+				會員暱稱<font color=red>	*</font>
 			</div>
 			<input type="text" id="memName" placeholder="請輸入暱稱" class="form-control" 
 			name="mem_name" value="${memberVO==null ? '' : memberVO.mem_name}">
@@ -109,7 +112,7 @@ MemberVO memberVO = (MemberVO) request.getAttribute("memberVO");
 	<div class="col-xs-12 col-sm-6 div-style">
 		<div class="input-group">
 			<div class="input-group-addon">
-				會員密碼
+				會員密碼<font color=red>	*</font>
 			</div>
 			<input type="password" id="memPw1" placeholder="請輸入密碼" class="form-control" maxlength="12"
 			name="mem_pw" value="${memberVO==null ? '' : memberVO.mem_pw}" >
@@ -124,7 +127,7 @@ MemberVO memberVO = (MemberVO) request.getAttribute("memberVO");
 	<div class="col-xs-12 col-sm-6 div-style">
 		<div class="input-group">
 			<div class="input-group-addon">
-				確認密碼
+				確認密碼<font color=red>	*</font>
 			</div>
 			<input type="password" id="memPw2" placeholder="請再次輸入密碼" class="form-control" maxlength="12">
 		</div>
@@ -137,9 +140,9 @@ MemberVO memberVO = (MemberVO) request.getAttribute("memberVO");
 <div class="col-xs-12 col-sm-12">
 	<div class="col-xs-12 col-sm-12 div-style">
 		<div class="input-group">
-			性別：
+			性別<font color=red>	*</font>：
 			<label class="radio-inline">
-				<input type="radio" name="mem_sex" value="1">男
+				<input type="radio" name="mem_sex" id="memSex" value="1">男
 			</label>
 			<label class="radio-inline">
 				<input type="radio" name="mem_sex" value="0">女
@@ -152,7 +155,7 @@ MemberVO memberVO = (MemberVO) request.getAttribute("memberVO");
 	<div class="col-xs-12 col-sm-6 div-style">
 		<div class="input-group">
 			<div class="input-group-addon">
-				電子郵件
+				電子郵件<font color=red>	*</font>
 			</div>
 			<input type="text" id="memEmail" placeholder="請輸入信箱" class="form-control"
 			name="mem_email" value="${memberVO==null ? '' : memberVO.mem_email}">
@@ -167,7 +170,7 @@ MemberVO memberVO = (MemberVO) request.getAttribute("memberVO");
 	<div class="col-xs-12 col-sm-6 div-style">
 		<div class="input-group">
 			<div class="input-group-addon">
-				手機
+				手機<font color=red>	*</font>
 			</div>
 			<input type="text" id="memPhone" placeholder="請輸入手機號碼" class="form-control" maxlength="10"
 			name="mem_phone" value="${memberVO==null ? '' : memberVO.mem_phone}">
@@ -182,7 +185,7 @@ MemberVO memberVO = (MemberVO) request.getAttribute("memberVO");
 	<div class="col-xs-12 col-sm-6 div-style">
 		<div class="input-group">
 			<div class="input-group-addon">
-				住址
+				住址<font color=red>	*</font>
 			</div>
 			<input type="text" id="memAdrs" placeholder="請輸入住址" class="form-control"
 			name="mem_adrs" value="${memberVO==null ? '' : memberVO.mem_adrs}">
@@ -224,7 +227,7 @@ MemberVO memberVO = (MemberVO) request.getAttribute("memberVO");
 <div class="col-xs-12 col-sm-12 text-center">
 	<div class="col-xs-12 col-sm-12 buttonStyle">
 		<div class="col-xs-12 col-sm-2 col-sm-push-3">
-			<a href="<%=request.getContextPath()%>/member/member.do?action=signOut"><input type="button" class="btn btn-default" value="取消"></a>
+			<input type="button" class="btn btn-default" value="取消" onclick="history.back()">
 		</div>
 		<div class="col-xs-12 col-sm-2 col-sm-push-3">	
 			<input type="reset" class="btn btn-default" value="重置" >
@@ -236,6 +239,10 @@ MemberVO memberVO = (MemberVO) request.getAttribute("memberVO");
 		<input type="hidden" name="mem_own" value="2">
 		<input type="hidden" name="mem_history" value="F00000001">
 		<input type="hidden" name="mem_online" value="1">
+		
+		<div class="col-xs-12 col-sm-2 col-sm-push-3">
+			<input type="button" id="incredibleButton" class="btn btn-default" value="懶人包">
+		</div>
 	</div>
 </div>
 
@@ -261,6 +268,24 @@ MemberVO memberVO = (MemberVO) request.getAttribute("memberVO");
 
 <script src="https://code.jquery.com/jquery.js"></script>
 <script src="https://netdna.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+
+
+
+
+
+<script>
+	$(document).ready(function(){
+		$('#incredibleButton').click(function(e){
+			$('#memAc').val('foodtime');
+			$('#memName').val('富德泰');
+			$('#memPw1').val('1qaz2wsx');
+			$('#memPw2').val('1qaz2wsx');
+			$('#memEmail').val('aa105g3foodtime@gmail.com');
+			$('#memPhone').val('0922963509');
+			$('#memAdrs').val('桃園市中壢區中大路300號');
+		}); 
+	});
+</script>
 
 
 

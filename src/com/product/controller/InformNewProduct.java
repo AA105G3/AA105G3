@@ -19,10 +19,10 @@ public class InformNewProduct {
 private static final Set<Session> allSessions = Collections.synchronizedSet(new HashSet<Session>());
     
     @OnOpen
-    public void onOpen(@PathParam("member_no") String member, Session ComSession) throws IOException{
+    public void onOpen(@PathParam("mem_no") String mem_no, Session ComSession) throws IOException{
     	allSessions.add(ComSession);
     	System.out.println(ComSession.getId() + ": 已連線");
-		System.out.println(member + ": 已連線");
+		System.out.println(mem_no + ": 已連線");
     }
     @OnMessage
     //客戶端回傳訊息給伺服器端

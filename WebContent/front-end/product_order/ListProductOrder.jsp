@@ -4,6 +4,7 @@
 <%@ page import="java.util.*"%>
 <%@ page import="java.text.*"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 
 <%
 	Product_orderService product_orderSvc = new Product_orderService();
@@ -30,7 +31,7 @@
 
 <style type="text/css" media="screen">
 	html, body{
-		background : white;
+		background: #efede8;
 		height : 100%;
 	}
 
@@ -73,6 +74,9 @@
 	.btn-style{
 		margin-top : 15px;
 	}
+	.title-style{
+		padding : 0px;
+	}
 </style>
 
 </head>
@@ -98,11 +102,18 @@
 
 
 
-
-<font size="+3">您所擁有的商品訂單： </font>
+<div class="col-xs-12 col-sm-12 title-style">
+	<div class="col-xs-12 col-sm-4 title-style">
+		<font size="+3">您所擁有的商品訂單： </font>
+	</div>
+	
+	<div class="col-xs-12 col-sm-2 col-sm-push-5">
+		<a href="/AA105G3/front-end/member/memberInfo.jsp" class="btn btn-primary">返回個人頁面</a>
+	</div>
+</div>
 <p>
 
-<table border='1' bordercolor='#CCCCFF' width='1500'>
+<table border='1' bordercolor='#CCCCFF' width='1500' style="background: white;">
 	<tr>
 		<th>訂單編號</th>
 		<!-- <th>會員編號</th> -->
@@ -141,7 +152,11 @@
 			<td><%=new SimpleDateFormat("yyyy/MM/dd HH:mm:ss").format(product_orderVO.getProd_ord_time())%></td>
 			
 			<td>${product_orderVO.cred_card_no.subSequence(0,4)}********${product_orderVO.cred_card_no.subSequence(12,16)}</td>
-			<td>${product_orderVO.valid_date}</td>
+			<td>
+				<fmt:formatDate value="${product_orderVO.valid_date}" var="formatDate_valid_date" 
+					type="date" pattern="yyyy-MM" />
+					${formatDate_valid_date} 
+			</td>
 			<%-- <td>${product_orderVO.valid_no}</td> --%>
 			<td>
 				<c:if test="${product_orderVO.cred_card_type == '0'}" >

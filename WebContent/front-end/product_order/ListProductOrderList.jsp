@@ -15,7 +15,7 @@
 
 <font size="+3">商品明細： </font>
 
-<table border='1' bordercolor='#CCCCFF' width='1500'>
+<table border='1' bordercolor='#CCCCFF' width='1500' style="background: white;">
 	<tr>
 		<th>訂單編號</th>
 		<th>商品名稱</th>

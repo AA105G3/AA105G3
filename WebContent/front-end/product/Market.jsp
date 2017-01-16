@@ -87,6 +87,9 @@
 		padding-top: 50px;
 		margin: center;
 	}
+	body{
+		background: #efede8;
+	}
 </style>
 
 <script>
