@@ -27,7 +27,7 @@
 <style type="text/css">
 	#mwt_mwt_slider_scroll
 	{
-		top: 20px;
+		top: 60px;
 		left:-230px;
 		width:230px;	
 		position:fixed;

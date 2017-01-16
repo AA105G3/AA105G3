@@ -172,7 +172,9 @@
                     <div class="col-xs-12 col-sm-12 text-center">
                         <h1 class="title-style">
                         	私廚個人資訊
-                        	<a href="#" class="glyphicon glyphicon-cog icon-style" style="text-decoration:none;"></a>
+                        	<c:if test="${chefVO.mem_no == sessionScope.mem_no}">
+                        	<a href="<%=request.getContextPath()%>/chef/chef.do?action=getOne_For_Update&chef_no=${chefVO.chef_no}" class="glyphicon glyphicon-cog icon-style" style="text-decoration:none;"></a>
+                        	</c:if>
                         </h1>
                         
                         <c:set var="chefFlag" value="false" />
