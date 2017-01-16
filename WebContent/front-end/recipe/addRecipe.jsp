@@ -338,7 +338,9 @@
 			</div>
 		</div>
 	</div>
-	
+	<c:if test="${sessionScope.mem_ac !=null}">
+		<c:import url="/front-end/frd_list/friendBar.jsp" ></c:import>
+	</c:if>
 	<c:import url="/front-end/chat/inviteChat.jsp" ></c:import>
 								
 

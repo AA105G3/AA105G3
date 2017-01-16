@@ -28,15 +28,11 @@
 		<![endif]-->
 		<style type="text/css">
 			
-			body{
+			html,body{
 				background: #efede8;
-				padding-top: 50px;
+				padding-top: 20px;
+				height:100%;
 			}
-			
-			
-			
-					
-			
 			.page-top-title-wrapper{
 				background: #fff;
 				margin-bottom: 5px;
@@ -91,10 +87,29 @@
 				color:#e3b13e;	
 				text-decoration: none;
 			}
+			#theFooter{
+				/* 對應skin */
+				position : absolute;
+				bottom : 0px;
+				width : 100%;
+				
+				background: #222222;
+				color:#fff ;
+				font-size: 26px;
+				font-family: Reklame;
+				text-align: center;
+			}
+			.page{
+				min-height:100%;
+				   position: relative;
+				   padding-top:50px;
+				   padding-bottom:50px;
+			}
 		</style>
 	</head>
 	<body>
-		
+	<div class="page">
+			<c:import url="/front-end/frontNavbar.jsp" ></c:import>
 		
 			<c:import url="/front-end/recipe/RecipeSearchBar.jsp" ></c:import>
 		<div class="container">
@@ -154,10 +169,17 @@
 
 		<%@ include file="page2.file" %>
 		</div>
+		
+		<c:import url="/front-end/adv/Adv.jsp"></c:import>
+	<c:if test="${sessionScope.mem_ac !=null}">
+		<c:import url="/front-end/frd_list/friendBar.jsp" ></c:import>
+	</c:if>
 		<c:import url="/front-end/chat/inviteChat.jsp" ></c:import>
 		
-		
-		
+			<footer id="theFooter">
+				Copyright &copy; 2016 Java Team 3 
+			</footer>
+		</div>
 		<script src="https://code.jquery.com/jquery.js"></script>
 		<script src="https://netdna.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
 	</body>

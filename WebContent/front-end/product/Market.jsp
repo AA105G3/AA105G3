@@ -26,7 +26,6 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
 <link rel="stylesheet" href="<%=request.getContextPath()%>/css/sweetalert.css">
-<link rel="stylesheet" href="/AA105G3/css/frontpageCSS.css">
 <script type="text/javascript" src="<%=request.getContextPath()%>/js/sweetalert.min.js"></script>
 <script type="text/javascript" src="<%=request.getContextPath()%>/js/sweetalert-dev.js"></script>
 
@@ -140,7 +139,7 @@
 
 
 
-<c:import url="/front-end/adv/Adv.jsp"></c:import>
+
 
 
 
@@ -292,7 +291,10 @@
 	}
 
 </script>
-
+	<c:if test="${sessionScope.mem_ac !=null}">
+		<c:import url="/front-end/frd_list/friendBar.jsp" ></c:import>
+	</c:if>
+	<c:import url="/front-end/adv/Adv.jsp"></c:import>
 <%-- <c:import url="/front-end/chat/inviteChat.jsp" ></c:import> --%>
 
 </body>

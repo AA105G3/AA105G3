@@ -351,12 +351,15 @@
 
         </div>
     </div>
+    <script src="https://code.jquery.com/jquery.js"></script>
+    <script src="https://netdna.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
     <c:import url="/front-end/chat/inviteChat.jsp" ></c:import>
+    	<c:if test="${sessionScope.mem_ac !=null}">
+		<c:import url="/front-end/frd_list/friendBar.jsp" ></c:import>
+	</c:if>
     <footer id="theFooter">
 		Copyright &copy; 2016 Java Team 3 
 	</footer>
-    <script src="https://code.jquery.com/jquery.js"></script>
-    <script src="https://netdna.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.6.4/js/bootstrap-datepicker.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/limonte-sweetalert2/6.2.9/sweetalert2.min.js"></script>
     <script type="text/javascript">

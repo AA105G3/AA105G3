@@ -29,41 +29,16 @@
 			
 			body{
 				background: #efede8;
-				padding-top: 50px;
+				padding-top: 40px;
+				height:100%;
 			}
 			
-			.recipe-search-wrapper{
-				margin-bottom:20px;
-			}
-			.recipe-search{
+			
+			
 		
-				text-align: right;
-			}
-		
-			.recipe-select{
-				height: 50px;
-			}
-			.recipe-text{
-				height: 50px;
-				width:375px !important;
-			}
-			
-			.recipe-btn{
-				height: 50px;
-				color:#D9230F;
-				width: 50px;
-			}
-			.recipe-header-right{
-				text-align: right;
-				padding-right: 0px;
-			}
-			.write-recipe{
-				height: 50px;
-				font-weight: bold;
-			}
-			
 			.page-top-title-wrapper{
 				background: #fff;
+				margin-top:20px;
 				margin-bottom: 5px;
 				border:1px solid #d3d0c9;
 			}
@@ -108,38 +83,31 @@
 				word-break:break-all;
 				height:40px;
 			}
+			#theFooter{
+				/* 對應skin */
+				position : absolute;
+				bottom : 0px;
+				width : 100%;
+				
+				background: #222222;
+				color:#fff ;
+				font-size: 26px;
+				font-family: Reklame;
+				text-align: center;
+			}
+			.page{
+				min-height:100%;
+				   position: relative;
+				   padding-top:50px;
+				   padding-bottom:50px;
+			}
 		</style>
 	</head>
 	<body>
+	<div class="page">
+	<c:import url="/front-end/frontNavbar.jsp" ></c:import>
+	<c:import url="/front-end/recipe/RecipeSearchBar.jsp" ></c:import>
 		<div class="container">
-			<div class="row recipe-search-wrapper">
-					<div class="col-xs-12 col-sm-8 ">
-						<div class="recipe-search">
-								<form class="form-inline" action="<%=request.getContextPath()%>/recipe/recipe.do" method="POST">
-								    <select class="form-control recipe-select" name="searchCondition">
-								        <option value="recipe_name">找食譜名</option>
-								        <option value="food_mater">找食材</option>
-								    </select>
-								   <div class="input-group recipe-search-form">
-								    <input type="text" class="form-control recipe-text" placeholder="Search Recipe" name="searchInput">
-								        <span class="input-group-btn">
-								            <button class="btn btn-default recipe-btn" type="submit" name="action" value="search"><i class="glyphicon glyphicon-search"></i></button>
-								        </span>
-								    </div>
-								</form>
-							</div>
-					</div>
-					<div class="col-xs-12 col-sm-4 recipe-header-right">
-						
-							<a href="addRecipe.jsp">
-							<button class="btn btn-default write-recipe">
-							<span class="glyphicon glyphicon-pencil" aria-hidden="true"></span>
-							寫食譜</button></a>
-						
-					</div>
-				</div>
-		
-		
 			<div class="row">
 				<div class="col-xs-12 col-sm-12 page-top-title-wrapper">
 					<h4 class="title-item-top">搜尋「 ${title} 」的食譜，共有${list.size()}筆：</h4>
@@ -193,12 +161,18 @@
 		</c:forEach>
 
 			
-
+	</div>
 		<%@ include file="pages/pageForSearch2.file" %>
-		</div>
-		
-		
+		<c:import url="/front-end/adv/Adv.jsp"></c:import>
+		<c:if test="${sessionScope.mem_ac !=null}">
+		<c:import url="/front-end/frd_list/friendBar.jsp" ></c:import>
+		</c:if>
 		<c:import url="/front-end/chat/inviteChat.jsp" ></c:import>
+		
+		<footer id="theFooter">
+			Copyright &copy; 2016 Java Team 3 
+		</footer>
+</div>
 		
 		<script src="https://code.jquery.com/jquery.js"></script>
 		<script src="https://netdna.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>

@@ -295,7 +295,10 @@
 		</div>
 	</c:forEach>
 	</section>
-	<c:import url="/front-end/frd_list/friendBar.jsp" ></c:import>
+	<c:import url="/front-end/adv/Adv.jsp"></c:import>
+	<c:if test="${sessionScope.mem_ac !=null}">
+		<c:import url="/front-end/frd_list/friendBar.jsp" ></c:import>
+	</c:if>
 	<c:import url="/front-end/chat/inviteChat.jsp" ></c:import>
 	<footer id="theFooter">
 		Copyright &copy; 2016 Java Team 3 
