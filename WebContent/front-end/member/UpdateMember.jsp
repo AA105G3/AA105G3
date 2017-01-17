@@ -204,7 +204,7 @@
 	</div>
 </div>
 
-<!-- <div class="col-xs-12 col-sm-12">
+<div class="col-xs-12 col-sm-12">
 	<div class="col-xs-12 col-sm-6 div-style">
 		<div class="input-group">
 			申請私廚資格：
@@ -219,7 +219,7 @@
 	<div class="col-xs-12 col-sm-6 span-style">
 		<span id="spanOwn"></span>
 	</div>
-</div> -->
+</div> 
 
 <div class="col-xs-12 col-sm-12">
 	<div class="col-xs-12 col-sm-6 div-style">

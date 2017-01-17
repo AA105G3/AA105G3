@@ -1,0 +1,940 @@
+﻿
+
+
+
+
+
+DROP TABLE MESSAGE;
+DROP TABLE REPORT_CASE;
+drop table film_message;
+drop table film;
+drop table live;
+DROP TABLE chef_refund;
+DROP TABLE chef_order_list;
+DROP TABLE chef_schedule;
+DROP TABLE chef;
+DROP TABLE COLLECTION;
+DROP TABLE CUSTOMER_DEMAND;
+DROP TABLE ESSAY_MESSAGE;
+DROP TABLE ESSAY;
+DROP TABLE FRD_LIST;
+DROP TABLE ANN;
+DROP TABLE ADV;
+DROP TABLE emp_auth;
+DROP TABLE auth;
+DROP TABLE EMP;
+DROP TABLE PRODUCT_ORDER_LIST;
+DROP TABLE PRODUCT_ORDER;
+DROP TABLE PRODUCT;
+DROP TABLE recipe_type_info;
+DROP TABLE CHAT;
+DROP TABLE RECIPE_S_TYPE;
+DROP TABLE RECIPE_M_TYPE;
+DROP TABLE RECIPE_L_TYPE;
+DROP TABLE RECIPE_MESSAGE;
+DROP TABLE recipe_cont;
+DROP TABLE recipe;
+DROP TABLE MEMBER;
+
+
+
+DROP SEQUENCE message_seq;
+DROP SEQUENCE REPORT_case_seq;
+drop sequence film_message_seq;
+drop sequence film_seq;
+DROP SEQUENCE chef_refund_seq;
+DROP SEQUENCE chef_order_list_seq;
+DROP SEQUENCE chef_seq;
+DROP SEQUENCE COLLECTION_seq;
+DROP SEQUENCE CUSTOMER_DEMAND_seq;
+DROP SEQUENCE ESSAY_MESSAGE_seq;
+DROP SEQUENCE ESSAY_seq;
+DROP SEQUENCE ANN_SEQ;
+DROP SEQUENCE adv_seq;
+DROP SEQUENCE auth_seq;
+DROP SEQUENCE emp_seq;
+DROP SEQUENCE prod_ord_seq;
+DROP SEQUENCE prod_seq;
+DROP SEQUENCE CHAT_SEQ;
+DROP SEQUENCE recipe_seq;
+DROP SEQUENCE RECIPE_S_TYPE_SEQ;
+DROP SEQUENCE RECIPE_M_TYPE_SEQ;
+DROP SEQUENCE RECIPE_L_TYPE_SEQ;
+DROP SEQUENCE RECIPE_MSG_SEQ;
+DROP SEQUENCE mem_seq;
+
+
+建立表格: MEMBER
+--------------------------------------------------------------------------------------------------------
+
+
+CREATE TABLE MEMBER (
+	MEM_NO					VARCHAR2(20)		NOT NULL,
+	MEM_NAME				VARCHAR2(30)		NOT NULL,
+	MEM_AC					VARCHAR2(40)		NOT NULL UNIQUE,
+	MEM_PW					VARCHAR2(40)		NOT NULL,
+	MEM_IMAGE				BLOB						,
+	MEM_SEX					VARCHAR2(1)			NOT NULL,
+	MEM_PHONE				VARCHAR2(20)		NOT NULL,
+	MEM_EMAIL				VARCHAR2(60)		NOT NULL UNIQUE,
+	MEM_ADRS				VARCHAR2(300)		NOT NULL,
+	MEM_OWN					VARCHAR2(1)			NOT NULL,
+	MEM_HISTORY			VARCHAR2(100)		,
+	MEM_ONLINE			VARCHAR2(1)			NOT NULL,
+ 
+	CONSTRAINT MEM_MEM_NO_PK PRIMARY KEY (MEM_NO));
+ 
+CREATE SEQUENCE mem_seq
+INCREMENT BY 1
+START WITH 0001
+MAXVALUE 2000
+NOCYCLE
+NOCACHE;
+
+INSERT INTO MEMBER VALUES ('M'||lpad(mem_seq.NEXTVAL,8,0), 'SuperChef', 'm1', '000', NULL, '1', '0922963509', 'emeth0911@gmail.com', 'CATS HOME', '0', 'F00000001', '1');
+INSERT INTO MEMBER VALUES ('M'||lpad(mem_seq.NEXTVAL,8,0), '令狐沖', 'm2', '000', NULL, '0', '0976543218', 'TIGER@gmail.com', 'TIGERS HOME', '0', 'F00000003', '1');
+INSERT INTO MEMBER VALUES ('M'||lpad(mem_seq.NEXTVAL,8,0), '楊過', 'm3', '000', NULL, '1', '0965432187', 'LION@gmail.com', 'LION HOME', '0', 'F00000002', '0');
+INSERT INTO MEMBER VALUES ('M'||lpad(mem_seq.NEXTVAL,8,0), '偉小寶', 'm4', '000', NULL, '1', '0954321876', 'LEOPARD@gmail.com', 'LEOPARD HOME', '0', 'F00000004', '0');
+INSERT INTO MEMBER VALUES ('M'||lpad(mem_seq.NEXTVAL,8,0), '張無忌', 'm5', '000', NULL, '0', '0943218765', 'PANTHER@gmail.com', 'PANTHER HOME', '0', 'F00000002', '1');
+
+commit;
+
+建立表格: recipe和seq
+--------------------------------------------------------------------------------------------------------
+
+CREATE TABLE RECIPE (
+ RECIPE_NO               VARCHAR2(20) NOT NULL,
+ MEM_NO                  VARCHAR2(20) NOT NULL,
+ RECIPE_NAME		 VARCHAR2(60) NOT NULL,
+ RECIPE_INTRO		 CLOB ,
+ FOOD_MATER		 VARCHAR2(800) NOT NULL,
+ RECIPE_PIC		 BLOB,
+ RECIPE_LIKE		 NUMBER(10) DEFAULT 0,
+ RECIPE_TOTAL_VIEWS	 NUMBER(10) DEFAULT 0,
+ RECIPE_WEEK_VIEWS	 NUMBER(10) DEFAULT 0,
+ RECIPE_TIME		 DATE default sysdate NOT NULL,
+ RECIPE_EDIT		 VARCHAR2(20) default '編輯中',
+ RECIPE_CLASSIFY	 VARCHAR2(20) default '未分類',
+ 
+
+ 
+ CONSTRAINT recipe_mem_no_FK FOREIGN KEY (mem_no) REFERENCES MEMBER (mem_no),
+ CONSTRAINT REICPE_RECIPE_NO_PK PRIMARY KEY (RECIPE_NO));
+
+CREATE SEQUENCE recipe_seq
+INCREMENT BY 1
+START WITH 1
+NOMAXVALUE
+NOCYCLE
+NOCACHE;
+
+
+INSERT INTO recipe (recipe_no,mem_no,recipe_name,recipe_intro,FOOD_MATER,RECIPE_LIKE,RECIPE_TOTAL_VIEWS,RECIPE_WEEK_VIEWS,RECIPE_TIME,RECIPE_EDIT,RECIPE_CLASSIFY) 
+VALUES ('R'||lpad(recipe_seq.NEXTVAL,8,0),'M00000001','台式炒米粉','香噴噴的台式炒米粉~讓人一吃停不下來','米粉-200公克+香菇-6~8朵+蝦米-2大匙+洋蔥-一顆+胡蘿蔔-一條+韭菜-適量+五花肉-200克+油蔥酥-2大匙+蔥切段-一支+鹽-適量+醬油膏-一大匙+米酒-1/2大匙+水-240cc+醬油-2大匙',100,2333,400,TO_DATE('2015-04-26 18:30','YYYY-MM-DD HH24:mi'),'已發布','未分類');
+
+INSERT INTO recipe (recipe_no,mem_no,recipe_name,recipe_intro,FOOD_MATER,RECIPE_LIKE,RECIPE_TOTAL_VIEWS,RECIPE_WEEK_VIEWS,RECIPE_TIME,RECIPE_EDIT,RECIPE_CLASSIFY) 
+VALUES ('R'||lpad(recipe_seq.NEXTVAL,8,0),'M00000001','芋頭米粉湯','鬆軟綿密香氣十足的芋頭跟米粉同煮~搭配濃濃大骨湯底~讓人吃上好幾碗','米粉-200公克+芋頭-250公克+香菇-4朵+蝦米-一小把+紅蔥頭-4顆+韭菜-300克+豬骨高湯-適量+鹽-適量+白胡椒-適量+日式醬油-適量+醬油膏-適量+米酒-適量',60,1222,300,TO_DATE('2016-09-14 13:23','YYYY-MM-DD HH24:mi'),'已發布','未分類');
+
+INSERT INTO recipe (recipe_no,mem_no,recipe_name,recipe_intro,FOOD_MATER,RECIPE_LIKE,RECIPE_TOTAL_VIEWS,RECIPE_WEEK_VIEWS,RECIPE_TIME,RECIPE_EDIT,RECIPE_CLASSIFY) 
+VALUES ('R'||lpad(recipe_seq.NEXTVAL,8,0),'M00000001','松阪豬肉炒米粉','用頂級松阪豬肉炒米粉別有一番風味喔！','米粉-1包+香菇-5朵+洋蔥-半顆+蔥-1根+松阪豬肉-100克+醬油-3匙+胡椒粉-少許+烏醋-1匙+紅蔥酥-1匙+高湯-1碗',46,1300,200,TO_DATE('2016-10-14 20:11','YYYY-MM-DD HH24:mi'),'已發布','未分類');
+
+
+
+INSERT INTO recipe (recipe_no,mem_no,recipe_name,recipe_intro,FOOD_MATER,RECIPE_LIKE,RECIPE_TOTAL_VIEWS,RECIPE_WEEK_VIEWS,RECIPE_TIME,RECIPE_EDIT,RECIPE_CLASSIFY) 
+VALUES ('R'||lpad(recipe_seq.NEXTVAL,8,0),'M00000001','蛋香鮭魚炒飯','富含Omega-3脂肪酸、蛋白質等營養又美味的鮭魚，炒成一盤蛋香、魚香的鮭魚炒飯，舔盤秒殺完食 ','鮭魚-1片+洋蔥末-1/4顆+蔥-2支+白飯-約3-4人分+辣椒末-少許+鹽-適量+白胡椒-適量+糖-適量+米酒-1大匙+鹽-適量+白胡椒-少許',50,1688,396,TO_DATE('2016-10-25 14:25','YYYY-MM-DD HH24:mi'),'已發布','未分類');
+
+
+INSERT INTO recipe (recipe_no,mem_no,recipe_name,recipe_intro,FOOD_MATER,RECIPE_LIKE,RECIPE_TOTAL_VIEWS,RECIPE_WEEK_VIEWS,RECIPE_TIME,RECIPE_EDIT,RECIPE_CLASSIFY) 
+VALUES ('R'||lpad(recipe_seq.NEXTVAL,8,0),'M00000001','蝦仁蛋炒飯','颱風天的簡單料理，只要有白飯、蝦仁、蔥花、雞蛋就可以來盤蝦仁蛋炒飯了。','白蝦蝦仁-150克+白飯-4碗+蔥花-半碗+雞蛋-3顆+鹽-3小匙+白胡椒粉-適量',50,1688,396,TO_DATE('2016-10-25 14:25','YYYY-MM-DD HH24:mi'),'已發布','未分類');
+
+INSERT INTO recipe (recipe_no,mem_no,recipe_name,recipe_intro,FOOD_MATER,RECIPE_LIKE,RECIPE_TOTAL_VIEWS,RECIPE_WEEK_VIEWS,RECIPE_TIME,RECIPE_EDIT,RECIPE_CLASSIFY) 
+VALUES ('R'||lpad(recipe_seq.NEXTVAL,8,0),'M00000001','滑蛋蝦仁蓋飯','和一般滑蛋蝦仁的菜餚做法有點不同，蓋飯適合像親子丼那樣的軟嫩口感、稍微濃稠的湯汁和少許的蛋花，入口時才會滑順好吃，不會有吃到大塊"炒蛋"的感覺；炒香蒜末的時候加一點豬絞肉香氣更足。','豬絞肉-2大匙+草蝦-8隻+蒜頭-1顆+全蛋液-1/4顆+白飯-2碗+米酒-1小匙+排骨高湯-200~250ml+鹽巴-少許+太白粉水-1~2小匙+香油-適量+蔥花-適量',50,1688,396,TO_DATE('2016-10-25 14:25','YYYY-MM-DD HH24:mi'),'已發布','未分類');
+
+
+INSERT INTO recipe (recipe_no,mem_no,recipe_name,recipe_intro,FOOD_MATER,RECIPE_LIKE,RECIPE_TOTAL_VIEWS,RECIPE_WEEK_VIEWS,RECIPE_TIME,RECIPE_EDIT,RECIPE_CLASSIFY) 
+VALUES ('R'||lpad(recipe_seq.NEXTVAL,8,0),'M00000001','豬肉丼飯','省錢、省時，快速上菜的一餐。新手作也會很好吃喔！','梅花豬肉片-300公克+洋蔥-1顆+蔥-3株+生蛋黃-4個+醬油-2湯匙+醬油膏-3湯匙+白胡椒-適量+米酒-3湯匙+砂糖-一小匙+白飯-4人份',50,1688,396,TO_DATE('2016-10-25 14:25','YYYY-MM-DD HH24:mi'),'已發布','未分類');
+
+INSERT INTO recipe (recipe_no,mem_no,recipe_name,recipe_intro,FOOD_MATER,RECIPE_LIKE,RECIPE_TOTAL_VIEWS,RECIPE_WEEK_VIEWS,RECIPE_TIME,RECIPE_EDIT,RECIPE_CLASSIFY) 
+VALUES ('R'||lpad(recipe_seq.NEXTVAL,8,0),'M00000001','親子丼','道地日式口味，在家輕鬆料理上桌。','雞腿肉-一片+雞蛋-兩顆+蔥白-三~四根+洋蔥-適量+味霖-四大匙+醬油-兩大匙+酒-一大匙+高湯-適量+鹽-一小匙',50,1688,396,TO_DATE('2016-10-25 14:25','YYYY-MM-DD HH24:mi'),'已發布','未分類');
+
+INSERT INTO recipe (recipe_no,mem_no,recipe_name,recipe_intro,FOOD_MATER,RECIPE_LIKE,RECIPE_TOTAL_VIEWS,RECIPE_WEEK_VIEWS,RECIPE_TIME,RECIPE_EDIT,RECIPE_CLASSIFY) 
+VALUES ('R'||lpad(recipe_seq.NEXTVAL,8,0),'M00000004','月亮蝦餅','這好吃的密訣就在於……新鮮現做!到市場買新鮮蝦子回來處理，做出來的蝦餅完全是市售冷凍蝦沒法比的。要吃到好吃的月亮蝦餅，一定要用鮮蝦哦。','鮮蝦-25~30隻+潤餅皮-4張+蛋白-一個+豬油-1大匙+泰式甜辣醬-適量+玉米粉-1大匙+米酒-1小匙+鹽-1/2小匙+白胡椒粉+少許',50,1688,396,TO_DATE('2016-10-25 14:25','YYYY-MM-DD HH24:mi'),'已發布','未分類');
+
+
+INSERT INTO recipe (recipe_no,mem_no,recipe_name,recipe_intro,FOOD_MATER,RECIPE_LIKE,RECIPE_TOTAL_VIEWS,RECIPE_WEEK_VIEWS,RECIPE_TIME,RECIPE_EDIT,RECIPE_CLASSIFY) 
+VALUES ('R'||lpad(recipe_seq.NEXTVAL,8,0),'M00000002','南瓜蔬菜煎餅','每次買南瓜總是要吃很久，小田太太拿來做成煎餅又香又酥分享給大家','南瓜-1/4顆+洋蔥-半顆+蒜頭-適量+蝦仁-適量+雞蛋-1顆+鹽巴-2匙+韓國煎餅粉-2杯+水-1杯',50,1688,396,TO_DATE('2016-10-25 14:25','YYYY-MM-DD HH24:mi'),'已發布','未分類');
+
+INSERT INTO recipe (recipe_no,mem_no,recipe_name,recipe_intro,FOOD_MATER,RECIPE_LIKE,RECIPE_TOTAL_VIEWS,RECIPE_WEEK_VIEWS,RECIPE_TIME,RECIPE_EDIT,RECIPE_CLASSIFY) 
+VALUES ('R'||lpad(recipe_seq.NEXTVAL,8,0),'M00000002','蔥抓餅','可事先將麵皮橄好，放冷凍保存，想吃時只要拿出來簡單地煎食，或者打上蛋再捲起來，作為早餐或下午的點心都很適合！','中筋麵粉-400克+鹽-1/2小匙+滾水-200毫升+冷開水-100毫升+植物油-3大匙+蔥-4~5支+植物油-適量+炒過的白芝麻-適量',50,1688,396,TO_DATE('2016-10-25 14:25','YYYY-MM-DD HH24:mi'),'已發布','未分類');
+
+
+INSERT INTO recipe (recipe_no,mem_no,recipe_name,recipe_intro,FOOD_MATER,RECIPE_LIKE,RECIPE_TOTAL_VIEWS,RECIPE_WEEK_VIEWS,RECIPE_TIME,RECIPE_EDIT,RECIPE_CLASSIFY) 
+VALUES ('R'||lpad(recipe_seq.NEXTVAL,8,0),'M00000002','青醬雞肉義大利麵','利用簡單的食材，自製青醬一點也不難！ 
+搭配雞肉、海鮮都很對味，還能製成青醬小磚，方便使用，小小一顆卻大大美味','九層塔-120g+堅果-1.5大匙+乾酪粉-20ml+橄欖油-2大匙+鹽、黑胡椒-適量+蒜頭-1瓣+雞胸肉-一盒+蒜頭-2瓣+義大利麵-適量+辣椒-半條+米酒-1匙+洋蔥-半顆',50,1688,396,TO_DATE('2016-10-25 14:25','YYYY-MM-DD HH24:mi'),'已發布','未分類');
+
+
+INSERT INTO recipe (recipe_no,mem_no,recipe_name,recipe_intro,FOOD_MATER,RECIPE_LIKE,RECIPE_TOTAL_VIEWS,RECIPE_WEEK_VIEWS,RECIPE_TIME,RECIPE_EDIT,RECIPE_CLASSIFY) 
+VALUES ('R'||lpad(recipe_seq.NEXTVAL,8,0),'M00000002','義大利肉醬麵','大人小孩都喜愛，每一口都很滿足！','絞肉-300g+洋蔥-1顆+大番茄-2顆+蒜頭-3瓣+月桂葉-2片+番茄醬-5大匙+雞高湯-1杯+黑胡椒-適量+麵-6塊+油-少許+帕馬森起司-少許+巴西里-少許',50,1688,396,TO_DATE('2016-10-25 14:25','YYYY-MM-DD HH24:mi'),'已發布','未分類');
+
+INSERT INTO recipe (recipe_no,mem_no,recipe_name,recipe_intro,FOOD_MATER,RECIPE_LIKE,RECIPE_TOTAL_VIEWS,RECIPE_WEEK_VIEWS,RECIPE_TIME,RECIPE_EDIT,RECIPE_CLASSIFY) 
+VALUES ('R'||lpad(recipe_seq.NEXTVAL,8,0),'M00000002','蕃茄羅勒蒜香海鮮義大利麵','新鮮羅勒搭配奶油蒜香，加入大海的鮮甜，輕鬆在家料理出道地的義大利美食','細義大利麵-170g+蕃茄-1~2顆+蝦子-200g+干貝-150g+櫻桃小蕃茄-6顆+蒜頭-7辦+奶油-25g+橄欖油-3大匙+鹽-適量+黑胡椒-適量+羅勒葉切碎-4大匙',50,1688,396,TO_DATE('2016-10-25 14:25','YYYY-MM-DD HH24:mi'),'已發布','未分類');
+
+INSERT INTO recipe (recipe_no,mem_no,recipe_name,recipe_intro,FOOD_MATER,RECIPE_LIKE,RECIPE_TOTAL_VIEWS,RECIPE_WEEK_VIEWS,RECIPE_TIME,RECIPE_EDIT,RECIPE_CLASSIFY) 
+VALUES ('R'||lpad(recipe_seq.NEXTVAL,8,0),'M00000002','一口煎餃','這次包水餃的皮也剩太多~蔥花切一切加點胡椒和鹽~捏一捏~煎一煎~一口一個','水餃皮-適量+肉末-少許+蔥花-適量',50,1688,396,TO_DATE('2016-10-25 14:25','YYYY-MM-DD HH24:mi'),'已發布','未分類');
+
+
+INSERT INTO recipe (recipe_no,mem_no,recipe_name,recipe_intro,FOOD_MATER,RECIPE_LIKE,RECIPE_TOTAL_VIEWS,RECIPE_WEEK_VIEWS,RECIPE_TIME,RECIPE_EDIT,RECIPE_CLASSIFY) 
+VALUES ('R'||lpad(recipe_seq.NEXTVAL,8,0),'M00000002','韭菜鍋貼','挑小農的韭菜、看得到的豬絞肉，再加上令人安心的調味料，我的韭菜鍋貼真是充滿愛～','韭菜-250克+粗豬絞肉-350克+芝麻油-1/2大匙+醬油-2大匙+薑末-2小匙+水餃皮-30片+油-1大匙+麵粉-1/2大匙+水-半杯',50,1688,396,TO_DATE('2016-10-25 14:25','YYYY-MM-DD HH24:mi'),'已發布','未分類');
+
+INSERT INTO recipe (recipe_no,mem_no,recipe_name,recipe_intro,FOOD_MATER,RECIPE_LIKE,RECIPE_TOTAL_VIEWS,RECIPE_WEEK_VIEWS,RECIPE_TIME,RECIPE_EDIT,RECIPE_CLASSIFY) 
+VALUES ('R'||lpad(recipe_seq.NEXTVAL,8,0),'M00000002','高麗菜水餃','自己家裡包的水餃，新鮮可口～水餃裡頭除了高麗菜、絞肉，還加了紅蘿蔔、韭菜花，健康美味!!','高麗菜-半顆+紅蘿蔔-半條+韭菜花-7~8根+豬絞肉-一斤+水餃皮-兩包+鹽-少許+香油-少許+白胡椒粉-少許',50,1688,396,TO_DATE('2016-10-25 14:25','YYYY-MM-DD HH24:mi'),'已發布','未分類');
+
+
+INSERT INTO recipe (recipe_no,mem_no,recipe_name,recipe_intro,FOOD_MATER,RECIPE_LIKE,RECIPE_TOTAL_VIEWS,RECIPE_WEEK_VIEWS,RECIPE_TIME,RECIPE_EDIT,RECIPE_CLASSIFY) 
+VALUES ('R'||lpad(recipe_seq.NEXTVAL,8,0),'M00000003','玉米巧達濃湯','秋天的早晨，來個熱呼呼的巧達濃湯暖暖胃吧，玉米、高麗菜和火腿，食材和做法簡單，沾麵包，或是純享受，都是美味滿點的早午餐最佳選擇。','玉米罐-1/3罐+高麗菜-1/5顆+火腿片-3片+荷蘭芹-適量+奶油-30公克+低筋麵粉-15公克+牛奶-200CC+水-300CC+鹽-適量+胡椒粉-適量+黑胡椒-適量',50,1688,396,TO_DATE('2016-10-25 14:25','YYYY-MM-DD HH24:mi'),'已發布','未分類');
+
+
+INSERT INTO recipe (recipe_no,mem_no,recipe_name,recipe_intro,FOOD_MATER,RECIPE_LIKE,RECIPE_TOTAL_VIEWS,RECIPE_WEEK_VIEWS,RECIPE_TIME,RECIPE_EDIT,RECIPE_CLASSIFY) 
+VALUES ('R'||lpad(recipe_seq.NEXTVAL,8,0),'M00000003','紅蘿蔔奶油濃湯','只要簡單幾步驟，就能做成柔滑香甜、奶香醇厚的濃湯','鮮嫩紅蘿蔔-2根+洋蔥-1/2顆+無鹽奶油-2大匙+白飯-2大匙+鮮奶-400ml+海鹽-少許+黑胡椒-少許+液態鮮奶油-適量+雞高湯-300ml+鹽-1/2小匙',50,1688,396,TO_DATE('2016-10-25 14:25','YYYY-MM-DD HH24:mi'),'已發布','未分類');
+
+
+INSERT INTO recipe (recipe_no,mem_no,recipe_name,recipe_intro,FOOD_MATER,RECIPE_LIKE,RECIPE_TOTAL_VIEWS,RECIPE_WEEK_VIEWS,RECIPE_TIME,RECIPE_EDIT,RECIPE_CLASSIFY) 
+VALUES ('R'||lpad(recipe_seq.NEXTVAL,8,0),'M00000003','蛤蠣蘑菇濃湯','擺脫罐頭濃湯，不需要任何添加物只要利用馬鈴薯的特性，在家也能煮出好喝的蘑菇濃湯喔！','奶油-15克+蛤蠣-1斤+蒜頭-3~5顆+紅蘿蔔-適量+蘑菇-20顆+馬鈴薯中型-2顆+開水-600cc+動物性鮮奶油-40cc+鹽巴-適量+黑胡椒-適量+巴西里-適量+糖-1/4小匙',50,1688,396,TO_DATE('2016-10-25 14:25','YYYY-MM-DD HH24:mi'),'已發布','未分類');
+
+
+INSERT INTO recipe (recipe_no,mem_no,recipe_name,recipe_intro,FOOD_MATER,RECIPE_LIKE,RECIPE_TOTAL_VIEWS,RECIPE_WEEK_VIEWS,RECIPE_TIME,RECIPE_EDIT,RECIPE_CLASSIFY) 
+VALUES ('R'||lpad(recipe_seq.NEXTVAL,8,0),'M00000003','香菇雞湯','用電鍋煮~美味又簡單的香菇雞湯','雞肉-1份+小香菇-30朵+紅棗-20顆+枸杞-少許+薑-5片+水-1000ml+鹽巴-少許+米酒-2匙',50,1688,396,TO_DATE('2016-10-25 14:25','YYYY-MM-DD HH24:mi'),'已發布','未分類');
+
+
+INSERT INTO recipe (recipe_no,mem_no,recipe_name,recipe_intro,FOOD_MATER,RECIPE_LIKE,RECIPE_TOTAL_VIEWS,RECIPE_WEEK_VIEWS,RECIPE_TIME,RECIPE_EDIT,RECIPE_CLASSIFY) 
+VALUES ('R'||lpad(recipe_seq.NEXTVAL,8,0),'M00000003','剝皮辣椒苦瓜雞湯','秋風起～就是開始想喝熱熱的湯暖暖胃。簡單的雞湯，快速上菜有湯有肉也有菜，悶點飯再加個綠色蔬菜就可以吃飯','仿土雞腿-2隻+苦瓜-1條+嫩薑-一塊+剝皮辣椒-適量',50,1688,396,TO_DATE('2016-10-25 14:25','YYYY-MM-DD HH24:mi'),'已發布','未分類');
+
+INSERT INTO recipe (recipe_no,mem_no,recipe_name,recipe_intro,FOOD_MATER,RECIPE_LIKE,RECIPE_TOTAL_VIEWS,RECIPE_WEEK_VIEWS,RECIPE_TIME,RECIPE_EDIT,RECIPE_CLASSIFY) 
+VALUES ('R'||lpad(recipe_seq.NEXTVAL,8,0),'M00000003','麻油雞','用全酒煮麻油雞更香醇~','土雞-一隻+老薑-1大塊+米酒-一瓶+水600-cc+鹽-適量+麻油-200cc',50,1688,396,TO_DATE('2016-10-25 14:25','YYYY-MM-DD HH24:mi'),'已發布','未分類');
+
+
+INSERT INTO recipe (recipe_no,mem_no,recipe_name,recipe_intro,FOOD_MATER,RECIPE_LIKE,RECIPE_TOTAL_VIEWS,RECIPE_WEEK_VIEWS,RECIPE_TIME,RECIPE_EDIT,RECIPE_CLASSIFY) 
+VALUES ('R'||lpad(recipe_seq.NEXTVAL,8,0),'M00000003','赤肉羹','台灣傳統小吃赤肉羹，滑嫩鮮香，配飯、麵、冬粉都好吃。','小里肌-620g+太白粉-200g+白菜-200g+蘑菇-5朵+黑木耳-少許+筍絲-50g+雞蛋-1個+蒜-1瓣+香菜-適量+油-1大匙+醬油-2~3大匙+胡椒粉-1小匙+鹽-適量+烏醋-少許+太白粉水-適量+冰開水-適量+香菇素蠔油-2大匙+醬油-2大匙+料理酒-2大匙+五香粉-1小匙+蒜泥-1小匙',50,1688,396,TO_DATE('2016-10-25 14:25','YYYY-MM-DD HH24:mi'),'已發布','未分類');
+
+
+INSERT INTO recipe (recipe_no,mem_no,recipe_name,recipe_intro,FOOD_MATER,RECIPE_LIKE,RECIPE_TOTAL_VIEWS,RECIPE_WEEK_VIEWS,RECIPE_TIME,RECIPE_EDIT,RECIPE_CLASSIFY) 
+VALUES ('R'||lpad(recipe_seq.NEXTVAL,8,0),'M00000003','香菇肉羹湯','肉羹就是要自己煮，用料實在、料多多，吃起來才過癮，單獨羹湯食用或拌飯、拌麵都很棒喔!','魚漿-300g+豬絞肉-600g+五香粉-1/4匙+黑胡椒粉-1/8匙+糖-1/8匙+油蔥酥-10g+醬油-適量+香油-適量+竹筍-600g+紅蘿蔔-1/2條+中型香菇-20朵+黑醋-20g+冰糖-35g+鹽巴-5~10g+香油-適量+玉米粉-適量玉米粉-適量',50,1688,396,TO_DATE('2016-10-25 14:25','YYYY-MM-DD HH24:mi'),'已發布','未分類');
+
+INSERT INTO recipe (recipe_no,mem_no,recipe_name,recipe_intro,FOOD_MATER,RECIPE_LIKE,RECIPE_TOTAL_VIEWS,RECIPE_WEEK_VIEWS,RECIPE_TIME,RECIPE_EDIT,RECIPE_CLASSIFY) 
+VALUES ('R'||lpad(recipe_seq.NEXTVAL,8,0),'M00000003','酸辣湯','吃水餃時，再配上一碗夠味的酸辣湯，哇 好幸福。','肉絲-200g+紅蘿蔔-1/2根+鴨血-150g+盒裝豆腐-1/2塊+木耳-3片+金針菇-1包+蔥-1根+雞蛋-2個+醬油-1大匙+玉米粉-1茶匙+香油-1茶匙+排骨湯塊-1塊+醬油-50cc+白醋-適量+白胡椒-適量+鹽-1/2茶匙+香油-適量+玉米粉水-適量',50,1688,396,TO_DATE('2016-10-25 14:25','YYYY-MM-DD HH24:mi'),'已發布','未分類');
+
+
+INSERT INTO recipe (recipe_no,mem_no,recipe_name,recipe_intro,FOOD_MATER,RECIPE_LIKE,RECIPE_TOTAL_VIEWS,RECIPE_WEEK_VIEWS,RECIPE_TIME,RECIPE_EDIT,RECIPE_CLASSIFY) 
+VALUES ('R'||lpad(recipe_seq.NEXTVAL,8,0),'M00000004','台式鹹酥雞','小時候放學最喜歡到巷口的炸雞攤販 
+買一包香香酥酥的鹹酥雞~但是其實鹹酥雞的作法是很簡單!只要把握訣竅 很容易的也能在家裡輕鬆的做出這道料理喔!又香又酥脆的鹹酥雞!讓人食指大動!!','雞胸肉丁-350g+九層塔-適量+醬油膏-2匙+蒜泥-適量+砂糖-1匙+樹薯粉-80g+胡椒鹽-適量',50,1688,396,TO_DATE('2016-10-25 14:25','YYYY-MM-DD HH24:mi'),'已發布','未分類');
+
+
+INSERT INTO recipe (recipe_no,mem_no,recipe_name,recipe_intro,FOOD_MATER,RECIPE_LIKE,RECIPE_TOTAL_VIEWS,RECIPE_WEEK_VIEWS,RECIPE_TIME,RECIPE_EDIT,RECIPE_CLASSIFY) 
+VALUES ('R'||lpad(recipe_seq.NEXTVAL,8,0),'M00000004','黑胡椒洋蔥雞柳','雞胸肉切成條狀用太白粉、胡椒粉、米酒先醃好~和洋蔥一起拌炒~加上黑胡椒醬~好下飯','雞胸肉-1/2個+洋蔥-1顆+蔥-2根+市售黑胡椒醬-2大匙+醬油-1匙+太白粉-2匙+胡椒粉-1匙+米酒-1匙+醬油-1匙',50,1688,396,TO_DATE('2016-10-25 14:25','YYYY-MM-DD HH24:mi'),'已發布','未分類');
+
+INSERT INTO recipe (recipe_no,mem_no,recipe_name,recipe_intro,FOOD_MATER,RECIPE_LIKE,RECIPE_TOTAL_VIEWS,RECIPE_WEEK_VIEWS,RECIPE_TIME,RECIPE_EDIT,RECIPE_CLASSIFY) 
+VALUES ('R'||lpad(recipe_seq.NEXTVAL,8,0),'M00000004','蒜香茄汁烤雞胸','半夜想在家吃點宵夜，卻又懶的出門，簡單又快速的美味烤雞胸，立刻滿足老饕的味蕾。','無骨雞胸肉-一片+九層塔-7~8片+香菜-2根+起司-適量+黑胡椒-少許+鹽-少許+橄欖油-適量+番茄醬-三大匙+蒜泥-一大瓣',50,1688,396,TO_DATE('2016-10-25 14:25','YYYY-MM-DD HH24:mi'),'已發布','未分類');
+
+
+
+INSERT INTO recipe (recipe_no,mem_no,recipe_name,recipe_intro,FOOD_MATER,RECIPE_LIKE,RECIPE_TOTAL_VIEWS,RECIPE_WEEK_VIEWS,RECIPE_TIME,RECIPE_EDIT,RECIPE_CLASSIFY) 
+VALUES ('R'||lpad(recipe_seq.NEXTVAL,8,0),'M00000004','左宗棠雞','什麼是左宗棠雞? 我覺得它吃起來非常像韓式炸雞，但比韓式炸雞更好吃，鹹鹹甜甜帶點微辣的醬汁巴在炸的非常香酥的雞腿肉上，咬一口天哪！超級好吃的啊！當醬汁碰到炸雞融在一起咬在嘴裡的那種口感，真的堪稱美食不為過。','去骨雞腿肉-2隻+大型辣椒-2根+雞蛋-1顆+太白粉-1~2大匙+醬油-1大匙+蒜頭-3粒+醬油-1~1.5大匙+砂糖-1大匙+白醋-1大匙+米酒-1大匙+番茄醬-1大匙+水-1大匙+太白粉-1/2小匙',50,1688,396,TO_DATE('2016-10-25 14:25','YYYY-MM-DD HH24:mi'),'已發布','未分類');
+
+
+INSERT INTO recipe (recipe_no,mem_no,recipe_name,recipe_intro,FOOD_MATER,RECIPE_LIKE,RECIPE_TOTAL_VIEWS,RECIPE_WEEK_VIEWS,RECIPE_TIME,RECIPE_EDIT,RECIPE_CLASSIFY) 
+VALUES ('R'||lpad(recipe_seq.NEXTVAL,8,0),'M00000004','蜜汁照燒烤雞腿','簡單的醬料醃漬，烤出軟嫩多汁、鹹中帶甜的好吃雞腿~','雞腿-4支+番茄醬-1大匙+醬油-1大匙+味醂-1大匙+米酒-1大匙+蜂蜜-2大匙+蒜末-2~3瓣+香油-1茶匙',50,1688,396,TO_DATE('2016-10-25 14:25','YYYY-MM-DD HH24:mi'),'已發布','未分類');
+
+
+
+INSERT INTO recipe (recipe_no,mem_no,recipe_name,recipe_intro,FOOD_MATER,RECIPE_LIKE,RECIPE_TOTAL_VIEWS,RECIPE_WEEK_VIEWS,RECIPE_TIME,RECIPE_EDIT,RECIPE_CLASSIFY) 
+VALUES ('R'||lpad(recipe_seq.NEXTVAL,8,0),'M00000004','蔥油雞','雞肉油膩滑溜的口感，沾著蔥香滿溢滾燙的雞汁，怎能不令人食指大動垂涎欲滴！','去骨清雞腿-2大片+鹽巴-0.5~1匙+米酒-1匙+白胡椒粉-酌量+老薑切末-3片+青蔥切絲-2根',50,1688,396,TO_DATE('2016-10-25 14:25','YYYY-MM-DD HH24:mi'),'已發布','未分類');
+
+
+INSERT INTO recipe (recipe_no,mem_no,recipe_name,recipe_intro,FOOD_MATER,RECIPE_LIKE,RECIPE_TOTAL_VIEWS,RECIPE_WEEK_VIEWS,RECIPE_TIME,RECIPE_EDIT,RECIPE_CLASSIFY) 
+VALUES ('R'||lpad(recipe_seq.NEXTVAL,8,0),'M00000004','香辣蔥燒排骨','鹹香軟嫩的排骨，每一口都有青蔥香氣和香辣口感，只要簡單五步驟，輕鬆完成！','豬小排-600g+老薑-3片+辣椒-1～2根+蔥-4～5根+水-450cc+醬油-3.5~4大匙+冰糖-2大匙+紹興酒-3大匙',50,1688,396,TO_DATE('2016-10-25 14:25','YYYY-MM-DD HH24:mi'),'已發布','未分類');
+
+INSERT INTO recipe (recipe_no,mem_no,recipe_name,recipe_intro,FOOD_MATER,RECIPE_LIKE,RECIPE_TOTAL_VIEWS,RECIPE_WEEK_VIEWS,RECIPE_TIME,RECIPE_EDIT,RECIPE_CLASSIFY) 
+VALUES ('R'||lpad(recipe_seq.NEXTVAL,8,0),'M00000004','高昇排骨','高昇排骨常被用來當作年菜，因為它的醬汁比例簡單好記，就是以12345這樣倍數調製，看起來就像是步步高昇一樣，寓意十分吉祥，重點是簡單好做又好吃！','豬肋排-500g+白芝麻-少許+米酒-30cc+白醋-60cc+砂糖-90g+醬油-120cc+可樂-150cc',50,1688,396,TO_DATE('2016-10-25 14:25','YYYY-MM-DD HH24:mi'),'已發布','未分類');
+
+INSERT INTO recipe (recipe_no,mem_no,recipe_name,recipe_intro,FOOD_MATER,RECIPE_LIKE,RECIPE_TOTAL_VIEWS,RECIPE_WEEK_VIEWS,RECIPE_TIME,RECIPE_EDIT,RECIPE_CLASSIFY) 
+VALUES ('R'||lpad(recipe_seq.NEXTVAL,8,0),'M00000004','蔥爆豬五花','香Q的豆干搭上乾癟至金黃的豬五花，醬油的鹹香，蔥段的清甜，白飯一碗接一碗，停不下來。','豬五花條-兩條+豆干-五片+青蔥-兩支+紅蘿蔔-少許+蒜頭-一瓣+醬油-兩大匙+糖-一大匙+鹽-一小匙+辣椒-一條',50,1688,396,TO_DATE('2016-10-25 14:25','YYYY-MM-DD HH24:mi'),'已發布','未分類');
+
+INSERT INTO recipe (recipe_no,mem_no,recipe_name,recipe_intro,FOOD_MATER,RECIPE_LIKE,RECIPE_TOTAL_VIEWS,RECIPE_WEEK_VIEWS,RECIPE_TIME,RECIPE_EDIT,RECIPE_CLASSIFY) 
+VALUES ('R'||lpad(recipe_seq.NEXTVAL,8,0),'M00000004','肋眼牛排','煎好牛排三要件--1.牛排新鮮 2.鍋熱油熱 3.牛排休息','肋眼牛排-250g+橄欖油-適量+無鹽奶油-少許+鹽-適量+黑胡椒粉-少許',50,1688,396,TO_DATE('2016-10-25 14:25','YYYY-MM-DD HH24:mi'),'已發布','未分類');
+
+
+INSERT INTO recipe (recipe_no,mem_no,recipe_name,recipe_intro,FOOD_MATER,RECIPE_LIKE,RECIPE_TOTAL_VIEWS,RECIPE_WEEK_VIEWS,RECIPE_TIME,RECIPE_EDIT,RECIPE_CLASSIFY) 
+VALUES ('R'||lpad(recipe_seq.NEXTVAL,8,0),'M00000004','滷牛肉','滷牛肉是很好的應景年菜，是方便又好吃的冷盤，滷上一鍋就可慢慢享用。','牛板肉-1200g+牛腱-875g+花椒-20~30粒+八角-2粒+桂皮-1根+草果-1粒+白豆蔻-3粒+豆蔻-1粒+丁香-2~3個+月桂葉-2片+辣椒-1根+紹興酒-3大匙+糖-1大匙+醬油-8大匙+薑-5片',50,1688,396,TO_DATE('2016-10-25 14:25','YYYY-MM-DD HH24:mi'),'已發布','未分類');
+
+
+INSERT INTO recipe (recipe_no,mem_no,recipe_name,recipe_intro,FOOD_MATER,RECIPE_LIKE,RECIPE_TOTAL_VIEWS,RECIPE_WEEK_VIEWS,RECIPE_TIME,RECIPE_EDIT,RECIPE_CLASSIFY) 
+VALUES ('R'||lpad(recipe_seq.NEXTVAL,8,0),'M00000004','簡易紅酒燉牛肉','用鑄鐵鍋就可以一鍋到底的簡易紅酒燉牛肉，只要先煎好牛肉，再用同一鍋炒香蔬菜，接著和牛肉一起以紅酒燉到牛肉軟爛，就可以做出非常入味及濃郁的紅酒燉牛肉!','牛腱-1500公克+洋蔥-1個+麵粉-適量+紅蘿蔔-1根+杏鮑菇-3根+小蕃茄-30顆+月桂葉-4片+新鮮迷迭香-3根+紅酒-600cc+海鹽-1大匙+黃砂糖-1小匙+粗粒黑胡椒-1小匙',50,1688,396,TO_DATE('2016-10-25 14:25','YYYY-MM-DD HH24:mi'),'已發布','未分類');
+
+
+INSERT INTO recipe (recipe_no,mem_no,recipe_name,recipe_intro,FOOD_MATER,RECIPE_LIKE,RECIPE_TOTAL_VIEWS,RECIPE_WEEK_VIEWS,RECIPE_TIME,RECIPE_EDIT,RECIPE_CLASSIFY) 
+VALUES ('R'||lpad(recipe_seq.NEXTVAL,8,0),'M00000005','水煎包','蔬菜包子滋味一樣好','熟白芝麻-1大匙+中筋麵粉-300公克+酵母粉-3公克+水-175CC+橄欖油-6公克+高麗菜-1/4棵+芹菜-3根+小條紅蘿蔔-1/2條+炸豆包-3片+乾香菇-4朵+蛋-2個+水300-cc麵粉-2大匙',50,1688,396,TO_DATE('2016-10-25 14:25','YYYY-MM-DD HH24:mi'),'已發布','未分類');
+
+INSERT INTO recipe (recipe_no,mem_no,recipe_name,recipe_intro,FOOD_MATER,RECIPE_LIKE,RECIPE_TOTAL_VIEWS,RECIPE_WEEK_VIEWS,RECIPE_TIME,RECIPE_EDIT,RECIPE_CLASSIFY) 
+VALUES ('R'||lpad(recipe_seq.NEXTVAL,8,0),'M00000005','芝麻包子','麵皮Q軟，芝麻內餡綿密好吃~~','中筋麵粉-500g+酵母-5g+糖-10g+水-260g+沙拉油-10g+黑芝麻粉-200g+無鹽奶油-120g+砂糖-80g',50,1688,396,TO_DATE('2016-10-25 14:25','YYYY-MM-DD HH24:mi'),'已發布','未分類');
+
+
+INSERT INTO recipe (recipe_no,mem_no,recipe_name,recipe_intro,FOOD_MATER,RECIPE_LIKE,RECIPE_TOTAL_VIEWS,RECIPE_WEEK_VIEWS,RECIPE_TIME,RECIPE_EDIT,RECIPE_CLASSIFY) 
+VALUES ('R'||lpad(recipe_seq.NEXTVAL,8,0),'M00000005','高麗菜肉包','冬天絕對抗拒不了剛蒸好，熱熱的包子，制作也很簡單哦。','牛奶-130g+速發酵母-3/4匙+糖-15g+中筋麵粉-250g+鹽-1/8匙+植物油-1大匙+豬絞肉-200g+高麗菜-150g+胡蘿蔔絲-15g+香菇-5g+櫻花蝦-8g+薑末-少許+蔥花-15g-鹽+1/2小匙+糖-1小匙+白胡椒粉-少許+醬油-1大匙+清水-2大匙+米酒-1大匙+麻油-1/2大匙',50,1688,396,TO_DATE('2016-10-25 14:25','YYYY-MM-DD HH24:mi'),'已發布','未分類');
+
+INSERT INTO recipe (recipe_no,mem_no,recipe_name,recipe_intro,FOOD_MATER,RECIPE_LIKE,RECIPE_TOTAL_VIEWS,RECIPE_WEEK_VIEWS,RECIPE_TIME,RECIPE_EDIT,RECIPE_CLASSIFY) 
+VALUES ('R'||lpad(recipe_seq.NEXTVAL,8,0),'M00000005','芋頭酥','中秋節到了，當然少不了芋頭酥，酥皮中加入紫薯粉讓顏色更美哦~配分食譜是20顆量，這次我做3倍量，所以照片看起的量會較多哦!','發酵奶油-100克+低筋麵粉-170克+紫薯粉-30克+高筋麵粉-140克+低筋麵粉-60克+糖粉-30克+發酵奶油-75克+冰水-100克+市售芋頭餡-400克',50,1688,396,TO_DATE('2016-10-25 14:25','YYYY-MM-DD HH24:mi'),'已發布','未分類');
+
+
+INSERT INTO recipe (recipe_no,mem_no,recipe_name,recipe_intro,FOOD_MATER,RECIPE_LIKE,RECIPE_TOTAL_VIEWS,RECIPE_WEEK_VIEWS,RECIPE_TIME,RECIPE_EDIT,RECIPE_CLASSIFY) 
+VALUES ('R'||lpad(recipe_seq.NEXTVAL,8,0),'M00000005','蛋黃酥','中秋節不可少的就是"蛋黃酥"，但是外面賣的一顆都好貴，而且誰知道商人用的材料是什麼?自己動手做不只不含色素防腐劑連奶油都是自己分離出來的無水奶油不含反式脂肪，不只好吃還吃的健康。','鹹蛋黃-12顆+黑芝麻-少許+米酒-少許+蛋黃-1顆+紅豆泥-240g+中筋麵粉-125g+無水奶油-45g+糖粉-15g+水-60cc+低筋麵粉-120g+無水奶油-60g',50,1688,396,TO_DATE('2016-10-25 14:25','YYYY-MM-DD HH24:mi'),'已發布','未分類');
+
+
+INSERT INTO recipe (recipe_no,mem_no,recipe_name,recipe_intro,FOOD_MATER,RECIPE_LIKE,RECIPE_TOTAL_VIEWS,RECIPE_WEEK_VIEWS,RECIPE_TIME,RECIPE_EDIT,RECIPE_CLASSIFY) 
+VALUES ('R'||lpad(recipe_seq.NEXTVAL,8,0),'M00000005','蘿蔔糕','白蘿蔔正當時，煮湯厭了就來做蘿蔔糕吧！','白蘿蔔-4~5根+在來米粉-250克+水-550ml+紅蔥油-適量+鹽巴-適量+白胡椒-適量',50,1688,396,TO_DATE('2016-10-25 14:25','YYYY-MM-DD HH24:mi'),'已發布','未分類');
+
+
+
+INSERT INTO recipe (recipe_no,mem_no,recipe_name,recipe_intro,FOOD_MATER,RECIPE_LIKE,RECIPE_TOTAL_VIEWS,RECIPE_WEEK_VIEWS,RECIPE_TIME,RECIPE_EDIT,RECIPE_CLASSIFY) 
+VALUES ('R'||lpad(recipe_seq.NEXTVAL,8,0),'M00000005','小豬饅頭','基本的白饅頭、加點巧思、就變成可愛的小豬饅頭','中筋麵粉-250g+速發酵母-3g+糖-15g+油-5g+水或鮮奶-130~135g+火龍果汁-適量',50,1688,396,TO_DATE('2016-10-25 14:25','YYYY-MM-DD HH24:mi'),'已發布','未分類');
+
+
+
+INSERT INTO recipe (recipe_no,mem_no,recipe_name,recipe_intro,FOOD_MATER,RECIPE_LIKE,RECIPE_TOTAL_VIEWS,RECIPE_WEEK_VIEWS,RECIPE_TIME,RECIPE_EDIT,RECIPE_CLASSIFY) 
+VALUES ('R'||lpad(recipe_seq.NEXTVAL,8,0),'M00000005','黑糖饅頭','饅頭加入了黑糖，微甜口感讓饅頭的味道更豐富了~','中筋麵粉-250g+全麥麵粉-50g+黑糖-70g+溫水-180g+鹽-1/8小匙+速發乾酵母-1/2小匙',50,1688,396,TO_DATE('2016-10-25 14:25','YYYY-MM-DD HH24:mi'),'已發布','未分類');
+
+
+INSERT INTO recipe (recipe_no,mem_no,recipe_name,recipe_intro,FOOD_MATER,RECIPE_LIKE,RECIPE_TOTAL_VIEWS,RECIPE_WEEK_VIEWS,RECIPE_TIME,RECIPE_EDIT,RECIPE_CLASSIFY) 
+VALUES ('R'||lpad(recipe_seq.NEXTVAL,8,0),'M00000004','蜂蜜牛奶饅頭','準備著親手做的饅頭，可以是蜂蜜，可以是牛奶。方便在外求學，在外奮鬥上班的家小，一杯咖啡or一杯豆漿牛奶，就能飽腹。不過多的發酵，實在的口感，這是屬於我的簡便主食！','中筋麵粉-250g+低筋麵粉-50g+酵母粉-5g+蜂蜜-60g+牛奶-120g+水-適量',50,1688,396,TO_DATE('2016-10-25 14:25','YYYY-MM-DD HH24:mi'),'已發布','未分類');
+
+
+INSERT INTO recipe (recipe_no,mem_no,recipe_name,recipe_intro,FOOD_MATER,RECIPE_LIKE,RECIPE_TOTAL_VIEWS,RECIPE_WEEK_VIEWS,RECIPE_TIME,RECIPE_EDIT,RECIPE_CLASSIFY) 
+VALUES ('R'||lpad(recipe_seq.NEXTVAL,8,0),'M00000004','Q感流淚吐司','這是根據網路上流傳的流淚吐司個人延伸版本，除了柔軟以外，更增添一點Q度的嚼勁，好吃吐司無需抹醬就讓人一口接一口回味無窮','高筋麵粉-200g+法國麵包粉-50g+鮮奶-50g+動物性鮮奶油-25g+水-100g+細砂糖-25g+鹽-3g+速發乾酵母-3g+發酵奶油-25g',50,1688,396,TO_DATE('2016-10-25 14:25','YYYY-MM-DD HH24:mi'),'已發布','未分類');
+
+
+
+INSERT INTO recipe (recipe_no,mem_no,recipe_name,recipe_intro,FOOD_MATER,RECIPE_LIKE,RECIPE_TOTAL_VIEWS,RECIPE_WEEK_VIEWS,RECIPE_TIME,RECIPE_EDIT,RECIPE_CLASSIFY) 
+VALUES ('R'||lpad(recipe_seq.NEXTVAL,8,0),'M00000004','日式抹茶吐司','基本的吐司加入日本抹茶粉，抹茶綠有種療癒的感覺','高筋麵粉-280g+抹茶粉-8g+細砂糖-20g+鹽-6g+奶粉-8g+速發酵母-5g+水-190g+無鹽奶油-20g',50,1688,396,TO_DATE('2016-10-25 14:25','YYYY-MM-DD HH24:mi'),'已發布','未分類');
+
+
+INSERT INTO recipe (recipe_no,mem_no,recipe_name,recipe_intro,FOOD_MATER,RECIPE_LIKE,RECIPE_TOTAL_VIEWS,RECIPE_WEEK_VIEWS,RECIPE_TIME,RECIPE_EDIT,RECIPE_CLASSIFY) 
+VALUES ('R'||lpad(recipe_seq.NEXTVAL,8,0),'M00000003','法式巧克力吐司','brioche marbre au chocolat，準備時間大約半個小時，烘培時間大約15-20分鐘，發酵時間每次約為兩個小時。看似需要時間很多，但是其實過程和食材都很簡單！食譜中所用的糖和奶油都有減量一些，喜歡更鬆軟口感的，可以加多一點奶油。','低筋麵粉-300克+酵母粉-6克+糖-40克+鹽-適量+牛奶-125克+無鹽奶油-30克+巧克力醬-3大匙',50,1688,396,TO_DATE('2016-10-25 14:25','YYYY-MM-DD HH24:mi'),'已發布','未分類');
+
+
+
+
+INSERT INTO recipe (recipe_no,mem_no,recipe_name,recipe_intro,FOOD_MATER,RECIPE_LIKE,RECIPE_TOTAL_VIEWS,RECIPE_WEEK_VIEWS,RECIPE_TIME,RECIPE_EDIT,RECIPE_CLASSIFY) 
+VALUES ('R'||lpad(recipe_seq.NEXTVAL,8,0),'M00000002','oreo起司蛋糕','超簡單免烤oreo起司蛋糕~奶油乳酪記得先拿出來退冰軟化！','oreo餅乾-100克+無鹽奶油-40克+奶油乳酪-200克+鮮奶油-100ml+糖-20克+吉利丁-2片',50,1688,396,TO_DATE('2016-10-25 14:25','YYYY-MM-DD HH24:mi'),'已發布','未分類');
+
+
+INSERT INTO recipe (recipe_no,mem_no,recipe_name,recipe_intro,FOOD_MATER,RECIPE_LIKE,RECIPE_TOTAL_VIEWS,RECIPE_WEEK_VIEWS,RECIPE_TIME,RECIPE_EDIT,RECIPE_CLASSIFY) 
+VALUES ('R'||lpad(recipe_seq.NEXTVAL,8,0),'M00000001','輕乳酪蛋糕','輕乳酪蛋糕油脂使用較少，口感比較清爽，因為麵粉量也少的關係，整體是入口即化的口感','奶油乳酪-120g+奶油-10g+牛奶-60g+蛋黃-2顆+低筋麵粉-25g+蛋白-2顆+糖-60g',50,1688,396,TO_DATE('2016-10-25 14:25','YYYY-MM-DD HH24:mi'),'已發布','未分類');
+
+
+INSERT INTO recipe (recipe_no,mem_no,recipe_name,recipe_intro,FOOD_MATER,RECIPE_LIKE,RECIPE_TOTAL_VIEWS,RECIPE_WEEK_VIEWS,RECIPE_TIME,RECIPE_EDIT,RECIPE_CLASSIFY) 
+VALUES ('R'||lpad(recipe_seq.NEXTVAL,8,0),'M00000002','濃郁起士蛋糕','Cheese Cake是許多人的至愛，更是靈魂與咖啡間的浪漫橋樑。其實不難，可以自己動手來享受這美妙的美味。','消化餅乾-92g+無鹽奶油-30g+Cream Cheese-250g+無鹽奶油-50g+砂糖-50g+蛋-1個+酸奶油-100g+牛奶-40cc+香草莢-1根+檸檬汁-20cc+玉米粉-1.5大匙',50,1688,396,TO_DATE('2016-10-25 14:25','YYYY-MM-DD HH24:mi'),'已發布','未分類');
+
+
+
+
+
+commit;
+
+
+------------------------------------------------------------------------
+
+建立表格: recipe_cont
+--------------------------------------------------------------------------------------------------------
+
+
+CREATE TABLE RECIPE_CONT (
+ RECIPE_NO               VARCHAR2(20) NOT NULL,
+ STEP           	 NUMBER(2) NOT NULL,
+ STEP_PIC		 BLOB,
+ STEP_CONT		 CLOB,
+ 
+
+ CONSTRAINT recipe_cont_recipe_no_step_PK PRIMARY KEY (RECIPE_NO,STEP),
+ CONSTRAINT recipe_cont_recipe_no_FK FOREIGN KEY (RECIPE_NO) REFERENCES RECIPE (RECIPE_NO)
+
+
+);
+
+insert into recipe_cont values ('R00000001',1,null,'事前先將炊粉或米粉浸泡軟化~炊粉軟化時間比米粉短!!豬肉先用醃肉材料醃漬約10分鐘~米粉調味先混和!!開始製作~起一鍋子~下約2大匙油與些許鹽爆香香菇與蝦米~盛起備用');
+insert into recipe_cont values ('R00000001',2,null,'再下一大匙油分別炒香洋蔥~再下胡蘿蔔炒香~再下豬肉炒香炒至變白~');
+insert into recipe_cont values ('R00000001',3,null,'加入已爆香的香菇與蝦米~再加入油蔥酥與白胡椒粉以及少許鹽同拌炒~');
+insert into recipe_cont values ('R00000001',4,null,'放入浸泡軟化且瀝乾水的炊粉或米粉~加入蔥白與已混勻的米粉調味~蓋鍋蓋燜煮~炊粉約3分鐘就軟化!!米粉需更長些時間!*純米比重越高的米粉越容易煮軟~所以時間要自行斟酌!!');
+insert into recipe_cont values ('R00000001',5,null,'炊粉或米粉燜煮至軟化後加入蔥綠與韭菜拌炒至蔬菜熟~即完成');
+insert into recipe_cont values ('R00000001',6,null,'即可盛起上桌');
+
+
+
+insert into recipe_cont values ('R00000002',1,null,'備料，炊粉用清水泡軟備用~豬肉先與一點米酒與醬油膏醃漬入味~芋頭先入烤箱烤到表層糊化或是用煎鍋加點油煎到表面上色 *開始料理~香菇~蝦米~蔥頭先分別爆香');
+insert into recipe_cont values ('R00000002',2,null,'豬肉再入鍋中炒至變白');
+insert into recipe_cont values ('R00000002',3,null,'放入已烤過的芋頭與剛爆香的香菇~蝦米~蔥頭還有肉同炒~加入些許白胡椒與鹽拌炒~*放入烤過的芋頭煮時湯汁比較澄清~芋頭煮時也比較不易碎散');
+insert into recipe_cont values ('R00000002',4,null,'放入已用清水泡軟化的炊(米)粉~加入可蓋過炊粉的高湯~蓋上鍋蓋煮到食材熟軟');
+insert into recipe_cont values ('R00000002',5,null,'最後加入韭菜將韭菜煮熟');
+insert into recipe_cont values ('R00000002',6,null,'加入日式醬油作最後調味~即完成');
+
+
+insert into recipe_cont values ('R00000003',1,null,'備料，豬肉簡單加個醬油醃製即可');
+insert into recipe_cont values ('R00000003',2,null,'煮一鍋水，加入鹽及香油，川燙米粉，只要3分鐘即可');
+insert into recipe_cont values ('R00000003',3,null,'迅速將川燙後的米粉撈起悶住');
+insert into recipe_cont values ('R00000003',4,null,'將蒜頭、洋蔥、蔥段、香菇炒香');
+insert into recipe_cont values ('R00000003',5,null,'下紅蔥酥、豬肉炒至半熟');
+insert into recipe_cont values ('R00000003',6,null,'將豆芽菜倒入後以醬油、烏醋、白胡椒粉、高湯調味');
+insert into recipe_cont values ('R00000003',7,null,'加入米粉炒到收汁即可');
+insert into recipe_cont values ('R00000003',8,null,'完成');
+
+
+insert into recipe_cont values ('R00000004',1,null,'備料：1.青椒切約0.3cm寬 2.紅蘿蔔切絲 3.備蒜末 4.醃牛肉');
+insert into recipe_cont values ('R00000004',2,null,'醃牛肉時要注意太白粉要在其他醃料加入都抓勻後，最後才加入太白粉再抓勻 我用的是牛肉薄片，我只醃大概10分鐘就入味了');
+insert into recipe_cont values ('R00000004',3,null,'起油鍋，倒適量的油先處理牛肉');
+insert into recipe_cont values ('R00000004',4,null,'我用的不是不沾鍋所以油鍋熱後才能放牛肉，牛肉下鍋後別急著翻動會黏鍋喔! 稍微等個10秒再翻炒牛肉，快速炒熟後盛起備用');
+insert into recipe_cont values ('R00000004',5,null,'以原油鍋爆香蒜末和紅蘿蔔，再加入青椒和調味料');
+insert into recipe_cont values ('R00000004',6,null,'青椒是快熟的蔬菜，大約五分軟時下白飯翻炒 如果炒飯不夠鹹依個人口味斟酌以鹽巴或醬油調味');
+insert into recipe_cont values ('R00000004',7,null,'最後在加入牛肉拌一下就完成囉!');
+
+
+insert into recipe_cont values ('R00000005',1,null,'鮭魚洗淨瀝乾水分後以醃料醃漬約10~15分鐘，將鮭魚稍微擦乾多餘水分(下鍋時比較不會噴油)才不會，熱鍋，倒些許油，放入鮭魚，香煎至兩面金黃');
+insert into recipe_cont values ('R00000005',2,null,'將煎好的鮭魚去除魚皮魚刺，以叉子拌成碎粒狀，一邊撒些許白胡椒拌勻');
+insert into recipe_cont values ('R00000005',3,null,'炒鍋熱鍋後，倒些許油，倒入打散後的蛋液，炒至7~8分熟軟嫩，取出備用');
+insert into recipe_cont values ('R00000005',4,null,'視鍋中剩油狀況，可再倒入些許油，放入洋蔥末、蔥末(蔥白部分)拌炒熟軟');
+insert into recipe_cont values ('R00000005',5,null,'放入白飯，以中大火拌炒均勻');
+insert into recipe_cont values ('R00000005',6,null,'將炒好的蛋粒、鮭魚碎粒、辣椒末倒入，一邊撒入調味料調味，一邊翻炒均勻，起鍋前放入蔥綠即完成');
+
+
+insert into recipe_cont values ('R00000006',1,null,'備料');
+insert into recipe_cont values ('R00000006',2,null,'湯鍋將水煮滾，放入蝦仁燙熟，盛起備用');
+insert into recipe_cont values ('R00000006',3,null,'鍋中放入3大匙油，加雞蛋攪勻倒入鍋中快速拌炒至7分熟');
+insert into recipe_cont values ('R00000006',4,null,'加入白飯，以中大火炒到鍋邊的飯粒會跳起（表示飯的水分被炒乾，要注意不要燒焦），持續拌炒至飯粒微微金黃');
+insert into recipe_cont values ('R00000006',5,null,'加入蔥花拌勻');
+insert into recipe_cont values ('R00000006',6,null,'加入鹽、黑、白胡椒粉拌勻；最後加入燙熟的蝦仁拌勻即可');
+
+
+
+commit;
+-------------------------------------------------------------------------------------------------------
+
+
+
+食譜大類別
+--------------------------------------------------------------------------------------------------
+
+
+
+CREATE TABLE RECIPE_L_TYPE(
+	RECIPE_L_TYPE_NO VARCHAR2(20) NOT NULL,
+	L_TYPE_NAME 		 VARCHAR2(60) NOT NULL,
+	
+
+	CONSTRAINT RECIPE_L_TYPE_NO_PK PRIMARY KEY (RECIPE_L_TYPE_NO));
+
+CREATE SEQUENCE RECIPE_L_TYPE_SEQ
+	INCREMENT BY 1
+	START WITH 1
+	NOMAXVALUE
+	NOCYCLE
+	NOCACHE;
+
+INSERT INTO RECIPE_L_TYPE VALUES ('RL'||LPAD(RECIPE_L_TYPE_SEQ.NEXTVAL,4,0),'家常菜');
+INSERT INTO RECIPE_L_TYPE VALUES ('RL'||LPAD(RECIPE_L_TYPE_SEQ.NEXTVAL,4,0),'家常食材');
+INSERT INTO RECIPE_L_TYPE VALUES ('RL'||LPAD(RECIPE_L_TYPE_SEQ.NEXTVAL,4,0),'點心烘焙');
+
+
+COMMIT;
+
+--------------------------------------------------------------------------------------------------
+
+
+食譜中類別
+------------------------------------------------------------------------------------------------------------------------
+
+
+
+
+CREATE TABLE RECIPE_M_TYPE(
+	RECIPE_M_TYPE_NO VARCHAR2(20) NOT NULL,
+	M_TYPE_NAME 		 VARCHAR2(60) NOT NULL,
+	PARENT_TYPE 		 VARCHAR2(20) NOT NULL,
+
+	CONSTRAINT RECIPE_M_TYPE_NO_PK PRIMARY KEY (RECIPE_M_TYPE_NO),
+	CONSTRAINT RECIPE_M_TYPE_PARENT_TYPE_FK FOREIGN KEY (PARENT_TYPE) REFERENCES RECIPE_L_TYPE (RECIPE_L_TYPE_NO));
+	
+CREATE SEQUENCE RECIPE_M_TYPE_SEQ
+	INCREMENT BY 1
+	START WITH 1
+	NOMAXVALUE
+	NOCYCLE
+	NOCACHE;	
+
+
+INSERT INTO RECIPE_M_TYPE VALUES ('RM'||LPAD(RECIPE_M_TYPE_SEQ.NEXTVAL,4,0),'米食','RL0001');
+INSERT INTO RECIPE_M_TYPE VALUES ('RM'||LPAD(RECIPE_M_TYPE_SEQ.NEXTVAL,4,0),'麵食','RL0001');
+INSERT INTO RECIPE_M_TYPE VALUES ('RM'||LPAD(RECIPE_M_TYPE_SEQ.NEXTVAL,4,0),'湯品','RL0001');
+INSERT INTO RECIPE_M_TYPE VALUES ('RM'||LPAD(RECIPE_M_TYPE_SEQ.NEXTVAL,4,0),'雞肉','RL0002');
+INSERT INTO RECIPE_M_TYPE VALUES ('RM'||LPAD(RECIPE_M_TYPE_SEQ.NEXTVAL,4,0),'豬肉','RL0002');
+INSERT INTO RECIPE_M_TYPE VALUES ('RM'||LPAD(RECIPE_M_TYPE_SEQ.NEXTVAL,4,0),'牛肉','RL0002');
+INSERT INTO RECIPE_M_TYPE VALUES ('RM'||LPAD(RECIPE_M_TYPE_SEQ.NEXTVAL,4,0),'中式點心','RL0003');
+INSERT INTO RECIPE_M_TYPE VALUES ('RM'||LPAD(RECIPE_M_TYPE_SEQ.NEXTVAL,4,0),'麵包吐司','RL0003');
+INSERT INTO RECIPE_M_TYPE VALUES ('RM'||LPAD(RECIPE_M_TYPE_SEQ.NEXTVAL,4,0),'蛋糕','RL0003');
+
+COMMIT;
+
+-----------------------------
+
+
+食譜小類別
+------------------------------------------------------------------------------------------------------------------------
+CREATE TABLE RECIPE_S_TYPE(
+	RECIPE_S_TYPE_NO VARCHAR2(20) NOT NULL,
+	S_TYPE_NAME 		 VARCHAR2(60) NOT NULL,
+	PARENT_TYPE 		 VARCHAR2(20) NOT NULL,
+
+	CONSTRAINT RECIPE_S_TYPE_NO_PK PRIMARY KEY (RECIPE_S_TYPE_NO),
+	CONSTRAINT RECIPE_S_TYPE_PARENT_TYPE_FK FOREIGN KEY (PARENT_TYPE) REFERENCES RECIPE_M_TYPE (RECIPE_M_TYPE_NO));
+	
+CREATE SEQUENCE RECIPE_S_TYPE_SEQ
+	INCREMENT BY 1
+	START WITH 1
+	NOMAXVALUE
+	NOCYCLE
+	NOCACHE;	
+
+
+INSERT INTO RECIPE_S_TYPE VALUES ('RS'||LPAD(RECIPE_S_TYPE_SEQ.NEXTVAL,4,0),'米粉','RM0001');
+INSERT INTO RECIPE_S_TYPE VALUES ('RS'||LPAD(RECIPE_S_TYPE_SEQ.NEXTVAL,4,0),'炒飯','RM0001');
+INSERT INTO RECIPE_S_TYPE VALUES ('RS'||LPAD(RECIPE_S_TYPE_SEQ.NEXTVAL,4,0),'蓋飯','RM0001');
+
+INSERT INTO RECIPE_S_TYPE VALUES ('RS'||LPAD(RECIPE_S_TYPE_SEQ.NEXTVAL,4,0),'煎餅','RM0002');
+INSERT INTO RECIPE_S_TYPE VALUES ('RS'||LPAD(RECIPE_S_TYPE_SEQ.NEXTVAL,4,0),'義大利麵','RM0002');
+INSERT INTO RECIPE_S_TYPE VALUES ('RS'||LPAD(RECIPE_S_TYPE_SEQ.NEXTVAL,4,0),'餃子鍋貼','RM0002');
+
+INSERT INTO RECIPE_S_TYPE VALUES ('RS'||LPAD(RECIPE_S_TYPE_SEQ.NEXTVAL,4,0),'濃湯','RM0003');
+INSERT INTO RECIPE_S_TYPE VALUES ('RS'||LPAD(RECIPE_S_TYPE_SEQ.NEXTVAL,4,0),'雞湯','RM0003');
+INSERT INTO RECIPE_S_TYPE VALUES ('RS'||LPAD(RECIPE_S_TYPE_SEQ.NEXTVAL,4,0),'羹湯','RM0003');
+
+INSERT INTO RECIPE_S_TYPE VALUES ('RS'||LPAD(RECIPE_S_TYPE_SEQ.NEXTVAL,4,0),'雞胸肉','RM0004');
+INSERT INTO RECIPE_S_TYPE VALUES ('RS'||LPAD(RECIPE_S_TYPE_SEQ.NEXTVAL,4,0),'雞腿肉','RM0004');
+
+INSERT INTO RECIPE_S_TYPE VALUES ('RS'||LPAD(RECIPE_S_TYPE_SEQ.NEXTVAL,4,0),'包子','RM0007');
+INSERT INTO RECIPE_S_TYPE VALUES ('RS'||LPAD(RECIPE_S_TYPE_SEQ.NEXTVAL,4,0),'糕餅','RM0007');
+INSERT INTO RECIPE_S_TYPE VALUES ('RS'||LPAD(RECIPE_S_TYPE_SEQ.NEXTVAL,4,0),'饅頭','RM0007');
+
+INSERT INTO RECIPE_S_TYPE VALUES ('RS'||LPAD(RECIPE_S_TYPE_SEQ.NEXTVAL,4,0),'吐司','RM0008');
+
+
+INSERT INTO RECIPE_S_TYPE VALUES ('RS'||LPAD(RECIPE_S_TYPE_SEQ.NEXTVAL,4,0),'乳酪蛋糕','RM0009');
+
+
+
+
+
+COMMIT;
+
+------------------------------------------------------------------------------------------------------------------------
+
+
+
+
+建立表格: recipe_type_info
+--------------------------------------------------------------------------------------------------------
+
+
+
+CREATE TABLE RECIPE_TYPE_INFO (
+ RECIPE_NO               VARCHAR2(20) NOT NULL,
+ RECIPE_TYPE_NO          VARCHAR2(20),
+ TYPE_RANGE 		 VARCHAR2(1),
+ 
+CONSTRAINT reci_t_info_reci_no_t_no_PK PRIMARY KEY (RECIPE_NO,RECIPE_TYPE_NO),
+ CONSTRAINT reci_t_info_RECI_NO_FK FOREIGN KEY (RECIPE_NO) REFERENCES RECIPE (RECIPE_NO)
+
+);
+
+
+
+commit;
+
+--------------------------------------------------------------
+
+建立表格: PROD
+--------------------------------------------------------------------------------------------------------
+
+
+CREATE TABLE PRODUCT (
+	PROD_NO						VARCHAR2(20)		NOT NULL,
+	PROD_NAME					VARCHAR2(100)		NOT NULL,
+	PROD_TYPE					VARCHAR2(40)		NOT NULL,
+	SALES_VOLUME			NUMBER					NOT NULL,
+	STOR_CAPACITY			NUMBER					NOT NULL,
+	UNIT_PRICE				NUMBER					NOT NULL,
+	PROD_DESCRIPTION	VARCHAR2(1000)		,
+	PROD_STATUS				VARCHAR2(1)			NOT NULL,
+	DISC_STATUS				VARCHAR2(1)			NOT NULL,
+	SELL_STATUS				VARCHAR2(1)			NOT NULL,
+	PROD_PICTURE			BLOB						,
+	SHELF_DATE				DATE						NOT NULL,
+	REMOVE_DATE				DATE						NOT NULL,
+	DISC_PRICE				NUMBER					,
+	DISC_START_DATE		DATE						,
+	DISC_END_DATE			DATE						,
+ 
+	CONSTRAINT PROD_PROD_NO_PK PRIMARY KEY (PROD_NO));
+ 
+CREATE SEQUENCE prod_seq
+INCREMENT BY 1
+START WITH 1001
+MAXVALUE 2000
+NOCYCLE
+NOCACHE;
+
+INSERT INTO PRODUCT VALUES (prod_seq.NEXTVAL, '過年年菜禮盒', 'SPACE BAG', 100, 50, 600, '過年必吃的人氣限量商品，精心挑選出6道特色餐點，豐盛氣派簡易烹煮，每道年菜都是精心挑選的，讓你過年圍爐輕鬆料理也能嘗盡美食!!<br><br>內容物：<br>1.大白菜...1大顆<br>2.下港排骨酥...1斤<br>3.筍絲...1斤<br>4.海篸...1斤<br>5.魚皮...1斤<br>6.鮑魚...8顆<br>7.蹄筋...1斤<br>8.紅棗...15顆<br>9.鳥蛋...30顆<br>10.香菇...9朵<br>11.大蒜...2支<br>12.蝦米...1大匙<br>13.辣椒...1支<br>14.水...適量<br>15.白胡椒粉...多<br>16.醬油...適量<br>17.烏醋...少許<br>18.米酒...少許<br>19.蒜頭...15顆<br>20.芋頭...1顆', '1', '1', '0', NULL, TO_DATE('2016-12-31','YYYY-MM-DD'), TO_DATE('2017-02-28','YYYY-MM-DD'), 200, TO_DATE('2016-02-01','YYYY-MM-DD'), TO_DATE('2016-05-31','YYYY-MM-DD'));
+INSERT INTO PRODUCT VALUES (prod_seq.NEXTVAL, '日式豬排蓋飯', 'SPACE BAG', 50, 30, 80, '道地的日式豬排蓋飯，滑嫩的蛋液，微甜的醬汁，有點酥酥軟軟的香豬排配上白飯，吃完飽嘟嘟還會笑哩～<br><br>內容物：<br>1.豬里肌肉排...一片 (約150G)<br>2.洋蔥...半顆<br>3.蛋...四顆<br>4.柴魚片...些許<br>5.日式醬油...些許<br>6.味霖...些許<br>7.胡椒...些許<br>8.蒜頭...四顆<br>9.低筋麵粉...一大匙<br>10.麵包粉...二大匙', '1', '0', '1', NULL, TO_DATE('2017-01-01','YYYY-MM-DD'), TO_DATE('2017-03-31','YYYY-MM-DD'), 160, TO_DATE('2016-06-01','YYYY-MM-DD'), TO_DATE('2016-08-31','YYYY-MM-DD'));
+INSERT INTO PRODUCT VALUES (prod_seq.NEXTVAL, '泰式椒麻雞', 'SPACE BAG', 200, 80, 60, '又麻又香微微辣感，越吃越刷嘴～獨門椒麻醬汁，酸香夠味堪稱一絕！嚴選去骨雞腿、酥脆外皮與香嫩多汁雞肉，醃漬入味，辛香誘人胃口大開！最道地最開胃的泰國味，簡單料理即可上桌，深受全家喜愛！<br><br>內容物：<br>1.雞胸肉...一份<br>2.雞蛋...一顆<br>3.鹽巴胡椒...適量<br>4.太白粉...2匙<br>5.清酒...2匙左右<br>6.番薯粉...適量<br>7.辣椒...1-2條<br>8.醬油...1匙<br>9.米醋...2匙<br>10.魚露...2匙<br>11.蠔油...一匙<br>12.糖...一匙<br>13.檸檬...一顆<br>14.蒜末...3-4瓣<br>15.香菜...適量<br>16.水...3-4匙<br>17.花椒蔥油...1-2匙<br>18.花椒粉...適量', '1', '1', '1', NULL, TO_DATE('2017-01-01','YYYY-MM-DD'), TO_DATE('2017-02-28','YYYY-MM-DD'), 15, TO_DATE('2016-01-01','YYYY-MM-DD'), TO_DATE('2016-10-31','YYYY-MM-DD'));
+
+commit;
+---------------------------------------------------------------------------------
+
+建立表格: PROD_ORD
+--------------------------------------------------------------------------------------------------------
+
+
+CREATE TABLE PRODUCT_ORDER (
+	PROD_ORD_NO			VARCHAR2(20)		NOT NULL,
+	MEM_NO					VARCHAR2(20)		NOT NULL,
+	PROD_ORD_TIME		Timestamp DEFAULT SYSDATE NOT NULL,
+	CRED_CARD_NO		VARCHAR2(16)		NOT NULL,
+	VALID_DATE			DATE						NOT NULL,
+	VALID_NO				VARCHAR2(3)			NOT NULL,
+	CRED_CARD_TYPE	VARCHAR2(6)			NOT NULL,
+	TOTAL_MONEY			NUMBER					NOT NULL,
+	SHIP_NAME				VARCHAR2(90)		NOT NULL,
+	POST_CODE				VARCHAR2(5)			NOT NULL,
+	MEM_ADRS				VARCHAR2(300)		NOT NULL,
+	CELL_PHONE			VARCHAR2(20)		NOT NULL,
+	TEL_PHONE				VARCHAR2(20)		NOT NULL,
+	
+	CONSTRAINT PROD_ORD_MEM_NO_FK FOREIGN KEY (MEM_NO) REFERENCES MEMBER (MEM_NO),
+	CONSTRAINT PROD_ORD_PROD_ORD_NO_PK PRIMARY KEY (PROD_ORD_NO));
+ 
+CREATE SEQUENCE prod_ord_seq
+INCREMENT BY 1
+START WITH 0001
+MAXVALUE 2000
+NOCYCLE
+NOCACHE;
+
+INSERT INTO PRODUCT VALUES (prod_seq.NEXTVAL, '馬鈴薯燉肉', 'SPACE BAG', 100, 50, 50, '小孩指定菜｛馬鈴薯燉肉｝，馬鈴薯鬆鬆軟軟、鹹鹹甜甜大人小孩都很愛，更是日本票選的女友必學料理~簡單非常容易上手~<br><br>內容物：<br>1.馬鈴薯...4小顆<br>2.紅蘿蔔...1條<br>3.牛五花...1盒<br>4.洋蔥...半顆<br>5.醬油...3大匙<br>6.味醂...1大匙<br>7.糖...適量<br>8.水...適量<br>9.米酒適量', '1', '1', '0', NULL, TO_DATE('2016-12-31','YYYY-MM-DD'), TO_DATE('2017-02-28','YYYY-MM-DD'), 200, TO_DATE('2016-02-01','YYYY-MM-DD'), TO_DATE('2016-05-31','YYYY-MM-DD'));
+INSERT INTO PRODUCT VALUES (prod_seq.NEXTVAL, '日式豬排蓋飯', 'SPACE BAG', 50, 30, 80, '道地的日式豬排蓋飯，滑嫩的蛋液，微甜的醬汁，有點酥酥軟軟的香豬排配上白飯，吃完飽嘟嘟還會笑哩～<br><br>內容物：<br>1.豬里肌肉排...一片 (約150G)<br>2.洋蔥...半顆<br>3.蛋...四顆<br>4.柴魚片...些許<br>5.日式醬油...些許<br>6.味霖...些許<br>7.胡椒...些許<br>8.蒜頭...四顆<br>9.低筋麵粉...一大匙<br>10.麵包粉...二大匙', '1', '0', '1', NULL, TO_DATE('2017-01-01','YYYY-MM-DD'), TO_DATE('2017-03-31','YYYY-MM-DD'), 160, TO_DATE('2016-06-01','YYYY-MM-DD'), TO_DATE('2016-08-31','YYYY-MM-DD'));
+INSERT INTO PRODUCT VALUES (prod_seq.NEXTVAL, '泰式椒麻雞', 'SPACE BAG', 200, 80, 60, '又麻又香微微辣感，越吃越刷嘴～獨門椒麻醬汁，酸香夠味堪稱一絕！嚴選去骨雞腿、酥脆外皮與香嫩多汁雞肉，醃漬入味，辛香誘人胃口大開！最道地最開胃的泰國味，簡單料理即可上桌，深受全家喜愛！<br><br>內容物：<br>1.雞胸肉...一份<br>2.雞蛋...一顆<br>3.鹽巴胡椒...適量<br>4.太白粉...2匙<br>5.清酒...2匙左右<br>6.番薯粉...適量<br>7.辣椒...1-2條<br>8.醬油...1匙<br>9.米醋...2匙<br>10.魚露...2匙<br>11.蠔油...一匙<br>12.糖...一匙<br>13.檸檬...一顆<br>14.蒜末...3-4瓣<br>15.香菜...適量<br>16.水...3-4匙<br>17.花椒蔥油...1-2匙<br>18.花椒粉...適量', '1', '1', '1', NULL, TO_DATE('2017-01-01','YYYY-MM-DD'), TO_DATE('2017-02-28','YYYY-MM-DD'), 15, TO_DATE('2016-01-01','YYYY-MM-DD'), TO_DATE('2016-10-31','YYYY-MM-DD'));
+INSERT INTO PRODUCT VALUES (prod_seq.NEXTVAL, '義大利肉醬麵', 'SPACE BAG', 30, 10, 65, '以新鮮蕃茄佐特選25:75肥瘦比新鮮豬肉精燉的義大利風味肉醬，加入奶油溫潤口感，食指大動的正統肉醬麵。<br><br>內容物：<br>1.義大利天使細麵...80克<br>2.豬絞肉...100克<br>3.洋蔥...1/4個<br>4.大蒜...1粒<br>5.義大利番茄醬...4大匙<br>6.鹽巴...1/2小匙<br>7.義大利香料...1/2小匙<br>8.洋香菜...1/2小匙<br>9.橄欖油...2大匙<br>10.新鮮巴西里...適量', '1', '0', '1', NULL, TO_DATE('2017-02-01','YYYY-MM-DD'), TO_DATE('2017-02-28','YYYY-MM-DD'), 150, TO_DATE('2016-01-01','YYYY-MM-DD'), TO_DATE('2017-12-31','YYYY-MM-DD'));
+INSERT INTO PRODUCT VALUES (prod_seq.NEXTVAL, '日式豚骨拉麵', 'SPACE BAG', 100, 80, 110, '用豬骨以大火長時間熬煮出乳白色濃湯，因而又叫"白湯"，加上蔥、蒜、麻油調味的湯頭以及咬勁十足細面，濃厚的口味令人讚不絕口。<br><br>內容物：<br>1.豬大骨...兩支<br>2.洋蔥...一顆<br>3.紅蘿蔔...一根<br>4.青江菜...3-5顆<br>5.玉米...3根<br>6.蛋...一顆<br>7.鹽...2大匙<br>8.水...2000c.c<br>9.好勁道千羽拉麵...50g', '1', '1', '1', NULL, TO_DATE('2017-02-15','YYYY-MM-DD'), TO_DATE('2017-03-15','YYYY-MM-DD'), 20, TO_DATE('2016-03-01','YYYY-MM-DD'), TO_DATE('2016-04-30','YYYY-MM-DD'));
+INSERT INTO PRODUCT VALUES (prod_seq.NEXTVAL, '法式蘑菇濃湯', 'SPACE BAG', 50, 30, 45, '香濃滑順的蘑菇濃湯自己做就可以喔！只要有蘑菇、鮮奶、麵粉、蒜頭，就可以立刻變出一杯好喝的蘑菇濃湯啦！<br><br>內容物：<br>1.憶霖奶油白醬...600g<br>2.馬鈴薯(小)...8顆<br>3.蒜頭...2顆<br>4.洋蔥...半顆<br>5.洋菇...100g<br>6.水...1200ml<br>7.油...適量<br>8.黑胡椒粉...4包', '1', '0', '1', NULL, TO_DATE('2017-02-15','YYYY-MM-DD'), TO_DATE('2017-04-15','YYYY-MM-DD'), 160, TO_DATE('2017-03-15','YYYY-MM-DD'), TO_DATE('2016-08-31','YYYY-MM-DD'));
+INSERT INTO PRODUCT VALUES (prod_seq.NEXTVAL, '台灣小吃蚵仔煎', 'SPACE BAG', 200, 80, 75, '蚵仔煎是台灣美食小吃，但是想吃時總要移駕到要到夜市或知名觀光攤點還是有些不盡人意。若是在家中也擺上一攤，想吃就開張營業，方便又舒適，豈不快哉！今天開張營業試試。<br><br>內容物：<br>1.蚵仔...300g<br>2.綠色青菜...適量<br>3.蛋...4顆<br>4.地瓜粉...80g<br>5.太白粉...40g<br>6.水...370g<br>7.蔥花或韭菜...適量<br>8.鹽...1/3茶匙<br>9.白味噌...半湯匙<br>10.番茄醬...1湯匙<br>11.辣椒醬...2湯匙<br>12.糖...半湯匙<br>13.醬油膏...1湯匙<br>14.水...100cc<br>15.太白粉...3-4茶匙', '1', '1', '1', NULL, TO_DATE('2016-12-01','YYYY-MM-DD'), TO_DATE('2017-02-28','YYYY-MM-DD'), 15, TO_DATE('2016-01-01','YYYY-MM-DD'), TO_DATE('2016-10-31','YYYY-MM-DD'));
+INSERT INTO PRODUCT VALUES (prod_seq.NEXTVAL, '大腸麵線', 'SPACE BAG', 30, 10, 60, '物價上漲，自己動手做便宜又實在，想要吃多少料自己加，乾淨、新鮮度爆澎好吃。<br><br>內容物：<br>1.雞絲麵...1包<br>2.滷大腸...40g<br>3.鮮蚵...60g<br>4.香菜(九層塔)...少許<br>5.雞湯塊...2塊<br>6.油蔥...2大匙<br>7.柴魚片...1大匙<br>8.白胡椒粉...1小匙<br>9.味霖...1大匙<br>10.烏醋...1大匙', '1', '0', '1', NULL, TO_DATE('2017-02-15','YYYY-MM-DD'), TO_DATE('2017-03-31','YYYY-MM-DD'), 150, TO_DATE('2016-01-01','YYYY-MM-DD'), TO_DATE('2017-12-31','YYYY-MM-DD'));
+INSERT INTO PRODUCT VALUES (prod_seq.NEXTVAL, '四川麻婆豆腐', 'SPACE BAG', 100, 80, 85, '又麻又辣的味道，入味到不行的豆腐，濃濃的湯汁，拌飯吃超級過癮，根本媲美之前去大陸吃到的道地四川菜，在家簡單煮名菜喔!!<br><br>內容物：<br>1.豬絞肉...200克<br>2.硬豆腐...1件<br>3.草菇...半磅<br>4.乾蔥頭(切片)...2個<br>5蒜茸...1湯匙.<br>6.豆瓣醬...1湯匙<br>7.醬油...1茶匙<br>8.糖...1茶匙', '1', '1', '1', NULL, TO_DATE('2017-02-15','YYYY-MM-DD'), TO_DATE('2017-03-15','YYYY-MM-DD'), 20, TO_DATE('2016-03-01','YYYY-MM-DD'), TO_DATE('2016-04-30','YYYY-MM-DD'));
+
+commit;
+
+----------------------------------------------------------------------------------------
+
+建立表格: PROD_ORD_LIST
+--------------------------------------------------------------------------------------------------------
+
+
+CREATE TABLE PRODUCT_ORDER_LIST (
+	PROD_ORD_NO				VARCHAR2(20)		NOT NULL,
+	PROD_NO						VARCHAR2(20)		NOT NULL,
+	UNIT_PRICE				NUMBER					NOT NULL,
+	PROD_QUANTITY			NUMBER					NOT NULL,
+	DELI_STATUS				VARCHAR2(1)			NOT NULL,
+	DELI_TIME					DATE						,
+ 
+	CONSTRAINT P_O_L_PROD_ORD_NO_FK FOREIGN KEY (PROD_ORD_NO) REFERENCES PRODUCT_ORDER (PROD_ORD_NO),
+ 	CONSTRAINT P_O_L_PROD_NO_FK FOREIGN KEY (PROD_NO) REFERENCES PRODUCT (PROD_NO),
+ 	CONSTRAINT P_O_L_PROD_ORD_NO_PROD_NO_PK PRIMARY KEY (PROD_ORD_NO, PROD_NO));
+
+
+commit;
+-----------------------------------------
+
+
+
+建立表格: EMP和seq
+--------------------------------------------------------------------------------------------------------
+
+
+
+CREATE TABLE EMP (
+ EMP_NO               VARCHAR2(20) NOT NULL,
+ EMP_NAME             VARCHAR2(20) Not Null,
+ EMP_ACCOUNT          VARCHAR2(20) Not Null,
+ EMP_PASSWORD         VARCHAR2(20) Not Null,
+ EMP_ID		      VARCHAR2(12) Not Null,
+ EMP_EMAIL	      VARCHAR2(40) Not Null,
+ EMP_ADDRESS	      VARCHAR2(300) Not Null,
+ EMP_PHONE	      VARCHAR2(20) Not Null,
+ EMP_HIREDATE	      DATE Not Null,
+ EMP_JOB	      VARCHAR2(60) Not Null,
+ EMP_STATUS	      VARCHAR2(1) DEFAULT '1' Not Null,
+
+ CONSTRAINT EMP_EMP_NO_PK PRIMARY KEY (EMP_NO),
+ CONSTRAINT EMP_EMP_ACC_UK UNIQUE(EMP_ACCOUNT),
+ CONSTRAINT EMP_EMP_ID_UK UNIQUE(EMP_ID),
+ CONSTRAINT EMP_EMP_EMAIL_UK UNIQUE(EMP_EMAIL));
+ 
+CREATE SEQUENCE emp_seq
+INCREMENT BY 1
+START WITH 1001
+NOMAXVALUE
+NOCYCLE
+NOCACHE;
+
+INSERT INTO EMP VALUES (emp_seq.NEXTVAL,'李一','test01','psw01','A123456789','test01@gmail.com','地球台灣','0988-11111',TO_DATE('2016-11-26','YYYY-MM-DD'),'網頁管理員','1');
+INSERT INTO EMP VALUES (emp_seq.NEXTVAL,'陳三','test02','psw02','B123456789','test02@gmail.com','地球台灣','0988-11112',TO_DATE('2016-05-23','YYYY-MM-DD'),'老闆','1');
+INSERT INTO EMP VALUES (emp_seq.NEXTVAL,'吳二','test03','psw03','C123456789','test03@gmail.com','地球台灣','0988-11113',TO_DATE('2016-08-26','YYYY-MM-DD'),'經理','1');
+
+
+commit;
+--------------------------------------------------------------------------------------------------------
+
+
+建立表格: auth和seq
+--------------------------------------------------------------------------------------------------------
+
+
+CREATE TABLE AUTH (
+ AUTH_NO               VARCHAR2(4) NOT NULL,
+ AUTH_NAME             VARCHAR2(50) NOT NULL,
+ 
+
+ CONSTRAINT AUTH_AUTH_NO_PK PRIMARY KEY (AUTH_NO));
+
+CREATE SEQUENCE auth_seq
+INCREMENT BY 1
+START WITH 1
+NOMAXVALUE
+NOCYCLE
+NOCACHE;
+
+
+INSERT INTO AUTH VALUES (lpad(auth_seq.NEXTVAL,3,0),'會員管理');
+INSERT INTO AUTH VALUES (lpad(auth_seq.NEXTVAL,3,0),'員工管理');
+INSERT INTO AUTH VALUES (lpad(auth_seq.NEXTVAL,3,0),'食譜管理');
+INSERT INTO AUTH VALUES (lpad(auth_seq.NEXTVAL,3,0),'廣告管理');
+INSERT INTO AUTH VALUES (lpad(auth_seq.NEXTVAL,3,0),'市集管理');
+INSERT INTO AUTH VALUES (lpad(auth_seq.NEXTVAL,3,0),'商品訂單管理');
+INSERT INTO AUTH VALUES (lpad(auth_seq.NEXTVAL,3,0),'私廚平台管理');
+
+commit;
+---------------------------------------
+
+建立表格: emp_auth
+--------------------------------------------------------------------------------------------------------
+
+
+CREATE TABLE EMP_AUTH (
+ EMP_NO               VARCHAR2(20) NOT NULL,
+ AUTH_NO           VARCHAR2(4) NOT NULL,
+ 
+
+ CONSTRAINT emp_auth_emp_no_auth_no_PK PRIMARY KEY (EMP_NO,AUTH_NO),
+ CONSTRAINT emp_auth_EMP_NO_FK FOREIGN KEY (EMP_NO) REFERENCES EMP (EMP_NO),
+ CONSTRAINT emp_auth_AUTH_NO_FK FOREIGN KEY (AUTH_NO) REFERENCES AUTH (AUTH_NO)
+
+);
+
+INSERT INTO emp_auth VALUES ('1001','001');
+INSERT INTO emp_auth VALUES ('1001','002');
+INSERT INTO emp_auth VALUES ('1001','003');
+INSERT INTO emp_auth VALUES ('1001','004');
+INSERT INTO emp_auth VALUES ('1001','005');
+INSERT INTO emp_auth VALUES ('1001','006');
+INSERT INTO emp_auth VALUES ('1001','007');
+
+commit;
+
+---------------------------------------
+
+建立表格: ADV
+--------------------------------------------------------------------------------------------------------
+
+CREATE TABLE ADV (
+	ADV_NO						VARCHAR2(20)		NOT NULL,
+	EMP_NO						VARCHAR2(20)		NOT NULL,
+	ADV_NAME					VARCHAR2(20)		NOT NULL,
+	ADV_IMAGE_NAME		VARCHAR2(40)		,
+	ADV_IMAGE					BLOB						,
+	ADV_URL						VARCHAR2(600)		,
+ 
+ 	CONSTRAINT ADV_EMP_NO_FK FOREIGN KEY (EMP_NO) REFERENCES EMP (EMP_NO),
+	CONSTRAINT ADV_ADV_NO_PK PRIMARY KEY (ADV_NO));
+ 
+CREATE SEQUENCE ADV_seq
+INCREMENT BY 1
+START WITH 0001
+MAXVALUE 2000
+NOCYCLE
+NOCACHE;
+
+INSERT INTO ADV VALUES (adv_seq.NEXTVAL, '1001', '台灣紅藜禮盒', '新的太空包的圖', NULL, 'www.sinfongfarm.com/index.php/shop');
+INSERT INTO ADV VALUES (adv_seq.NEXTVAL, '1002', '琺瑯鑄鐵鍋具', '新的特價的圖', NULL, 'www.yilan.com.tw/html/modules/mymall/index.php?cid=55');
+INSERT INTO ADV VALUES (adv_seq.NEXTVAL, '1003', '礦泉氣泡水', '新的太空包的圖', NULL, 'market.icook.tw/products/antipodes');
+INSERT INTO ADV VALUES (adv_seq.NEXTVAL, '1002', '鷹獵米', '新的活動的圖', NULL, 'www.sofengimage.com.tw/product?id=60');
+INSERT INTO ADV VALUES (adv_seq.NEXTVAL, '1001', '聖光牌米粉', '新的太空包的圖', NULL, 'www.yungshen.com/product.php?lang=tw');
+
+commit;
+
+-----------------------------
+
+
+建立FRD_LIST
+-----------------------------------------------
+
+CREATE TABLE FRD_LIST (
+ MEM_NO       	VARCHAR2(20) NOT NULL,
+ FRIEND_NO     	VARCHAR2(20) NOT NULL,
+ FRIEND_CHK			VARCHAR2(1) NOT NULL,
+
+ CONSTRAINT FRD_LIST_MEM_NO_FK FOREIGN KEY (MEM_NO) REFERENCES MEMBER (MEM_NO),
+ CONSTRAINT FRD_LIST_FRIEND_NO_FK FOREIGN KEY (FRIEND_NO) REFERENCES MEMBER (MEM_NO),
+ CONSTRAINT FRD_LIST_MEM_NO_FRIEND_NO_PK PRIMARY KEY (MEM_NO, FRIEND_NO));
+
+
+commit;
+
+------------------------------------------------------
+
+
+建立 collection
+-------------------------------------------
+
+
+CREATE TABLE COLLECTION (
+ COLL_NO      VARCHAR2(20) NOT NULL,
+ MEM_NO       VARCHAR2(20) NOT NULL,
+ ALL_NO     	VARCHAR2(20) NOT NULL,
+ CLASS_NO			VARCHAR2(2) NOT NULL,
+
+ CONSTRAINT COLLECTION_MEM_NO_FK FOREIGN KEY (MEM_NO) REFERENCES MEMBER (MEM_NO),
+ CONSTRAINT COLLECTION_MEM_NO_ALL_NO_UK UNIQUE(MEM_NO, ALL_NO,CLASS_NO),
+ CONSTRAINT COLLECTION_COLL_NO_PK PRIMARY KEY (COLL_NO));
+ 
+
+CREATE SEQUENCE COLLECTION_seq
+INCREMENT BY 1
+START WITH 1
+NOMAXVALUE
+NOCYCLE
+NOCACHE;
+
+
+commit;
+------------------------------------------------
+
+建立chef
+--------------------------------------------------
+
+
+CREATE TABLE chef(
+ CHEF_NO             VARCHAR2(20)    NOT NULL,
+ MEM_NO              VARCHAR2(20)    NOT NULL,
+ CHEF_CHK_COND       VARCHAR2(1)     NOT NULL,
+ CHEF_BNK            VARCHAR2(5)     NOT NULL,
+ CHEF_BNK_AC         VARCHAR2(15)    NOT NULL,
+ CHEF_SKILL          VARCHAR2(300)    NOT NULL,
+ CHEF_LIC            BLOB            ,
+ CHEF_IMAGE          BLOB            ,
+ CHEF_MOVIE1         BLOB            ,
+ CHEF_MOVIE2         BLOB            ,
+ CHEF_ID             VARCHAR2(10)    NOT NULL,
+ CHEF_NAME           VARCHAR2(90)    NOT NULL,
+ CHEF_AREA           VARCHAR2(300),
+ CHEF_INTR           CLOB,
+ CHEF_MENU           CLOB,
+ CHEF_RECI_IMAGE1    BLOB,
+ CHEF_RECI_IMAGE2    BLOB,
+ CHEF_RECI_IMAGE3    BLOB,
+ CHEF_RECI_IMAGE4    BLOB,
+ CHEF_RECI_IMAGE5    BLOB,
+
+ CONSTRAINT CHEF_chef_id_UK UNIQUE(chef_id),
+ CONSTRAINT CHEF_mem_id_UK UNIQUE(mem_no),
+ CONSTRAINT CHEFN_MEM_NO_FK FOREIGN KEY (MEM_NO) REFERENCES MEMBER (MEM_NO),
+ CONSTRAINT CHEF_CHEF_NO_PK PRIMARY KEY (CHEF_NO)
+ );
+
+CREATE SEQUENCE chef_seq
+INCREMENT BY 1
+START WITH 1
+NOMAXVALUE
+NOCACHE
+NOCYCLE;
+
+INSERT INTO chef VALUES ('C' || lpad(chef_seq.NEXTVAL,8,0),'M00000002','1','700','61614161813456',
+'港式料理','','','','','B123456789','史提芬周','花蓮縣','食神','黯然銷魂飯','','','','','');
+INSERT INTO chef VALUES ('C' || lpad(chef_seq.NEXTVAL,8,0),'M00000003','1','700','69451340578716',
+'中華料理','','','','','C123456789','唐牛','台東縣','食神的死對頭','超級無敵海景佛跳牆','','','','','');
+INSERT INTO chef VALUES ('C' || lpad(chef_seq.NEXTVAL,8,0),'M00000004','1','700','03895561464616',
+'中華料理','','','','','D123456789','江振誠','苗栗縣','法式料理餐廳「Restaurant ANDRÉ」主廚','羅勒鮭魚泥','','','','','');
+INSERT INTO chef VALUES ('C' || lpad(chef_seq.NEXTVAL,8,0),'M00000005','1','700','89127302547626',
+'中式點心','','','','','E123456789','阿基師','南投縣','《型男大主廚》獲得第46屆電視金鐘獎最佳綜合節目主持人獎','煲仔菜','','','','','');
+
+commit;
+
+------------------------------------------------------------------------------------------------------------
+
+建立chef_order_list
+--------------------------------------------------------------------------------------------------------------------
+
+CREATE TABLE chef_order_list(
+ CHEF_ORD_NO       VARCHAR2(20)    NOT NULL,
+ MEM_NO            VARCHAR2(20)    NOT NULL,
+ CHEF_NO           VARCHAR2(20)    NOT NULL,
+ CHEF_ORD_COST     NUMBER(8,2)          ,
+ CHEF_ACT_DATE     Timestamp            NOT NULL,
+ CHEF_ORD_PLACE    VARCHAR2(200)   NOT NULL,
+ CHEF_ORD_CNT      VARCHAR2(500)   ,
+ CHEF_ORD_CON      VARCHAR2(1)     NOT NULL,
+ CHEF_APPR         VARCHAR2(1)     ,
+ CHEF_APPR_CNT     VARCHAR2(300),
+ CHEF_ORD_DATE	   Timestamp not null,
+
+ CONSTRAINT CHEF_ORDER_LIST_CHEF_ORD_NO_PK PRIMARY KEY (CHEF_ORD_NO),
+ CONSTRAINT CHEF_ORDER_LIST_CHEF_NO_FK FOREIGN KEY (CHEF_NO) REFERENCES CHEF (CHEF_NO)
+ );
+
+CREATE SEQUENCE chef_order_list_seq
+INCREMENT BY 1
+START WITH 1
+NOMAXVALUE
+NOCACHE
+NOCYCLE;
+
+commit;
+---------------------------------------------------------------------------
+
+
+建立表格 film和seq
+-------------------------------------------------------
+
+create table film(
+
+ recipe_no		varchar2(20) ,
+ film_file		BLOB,
+
+ CONSTRAINT recipe_no_PK PRIMARY KEY (recipe_no),
+ CONSTRAINT recipe_FK FOREIGN KEY (recipe_no) REFERENCES  recipe(recipe_no)
+ );
+
+ CREATE SEQUENCE film_seq
+ INCREMENT BY 1
+ START WITH 1
+ NOMAXVALUE
+ NOCACHE
+ NOCYCLE;
+ 
+
+ commit;
+
+---------------------------------------------------------------------------------------------------------
