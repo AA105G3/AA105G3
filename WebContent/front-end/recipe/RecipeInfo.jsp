@@ -217,6 +217,9 @@
 				border-bottom: 1px solid;
 				vertical-align: top;
 			}
+			.display-step-cont{
+				padding-left:10px;
+			}
 			#cont-table{
 				width:100%;
 			}
@@ -618,12 +621,12 @@
 	</div>
 	<c:import url="/front-end/adv/Adv.jsp"></c:import>
 	<c:if test="${sessionScope.mem_ac !=null}">
-		<c:import url="/front-end/frd_list/friendBar.jsp" ></c:import>
 	</c:if>
 	<c:import url="/front-end/chat/inviteChat.jsp" ></c:import>
 		<script src="https://code.jquery.com/jquery.js"></script>
 		<script src="https://netdna.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
 		<script src="https://cdnjs.cloudflare.com/ajax/libs/limonte-sweetalert2/6.2.9/sweetalert2.min.js"></script>
+		<c:import url="/front-end/frd_list/friendBar.jsp" ></c:import>
 		<script type="text/javascript">
 
 			//init

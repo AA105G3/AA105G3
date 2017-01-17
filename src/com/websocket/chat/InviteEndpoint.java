@@ -69,6 +69,12 @@ public class InviteEndpoint {
 	@OnClose
 	public void onClose(Session Session, CloseReason reason) {
 		
+		for(String userId:users.keySet()){
+			if(Session.equals(users.get(userId))){
+				users.remove(userId);
+			}
+		}
+		
 		System.out.println(Session.getId() + ": Disconnected: " + Integer.toString(reason.getCloseCode().getCode()));
 	}
 	@OnError

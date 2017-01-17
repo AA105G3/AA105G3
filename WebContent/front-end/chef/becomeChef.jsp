@@ -271,7 +271,7 @@
 						<label><span>*</span>請上傳您的真實照片</label><span>${errorMsgs.get("chef_imgError")}</span>	
 						</div>
 						<label for="chef_image" id="123">
-							<img src="https://api.fnkr.net/testimg/200x200/00CED1/FFF/?text=img+placeholder" class="img-circle">
+							<img src="/AA105G3/images/recipe_cont/stepNoPic.PNG" class="img-circle">
 						</label>
 						<i type="button" class="glyphicon glyphicon-remove clearImg btn"></i>
 						<input type="File" class="imgUpload" name="chef_image" id="chef_image" size="45" value="" />
@@ -335,7 +335,7 @@
 						<td colspan="2" class="chef_lic-wrapper">
 							<div class="text-center"><label><span>*</span>廚藝相關證照(橫向):</label><span>${errorMsgs.get("licError")}</span></div>
 							<label for="chef_lic">
-								<img src="https://api.fnkr.net/testimg/300x250/00CED1/FFF/?text=img+placeholder">
+								<img src="/AA105G3/images/recipe_cont/stepNoPic.PNG">
 							</label>
 							<i type="button" class="glyphicon glyphicon-remove clearImg btn"></i>
 							<input type="File" class="imgUpload" id="chef_lic" name="chef_lic" size="45" value="" />
@@ -347,14 +347,14 @@
 							<div class="row">
 								<div class="col-xs-12 col-sm-6 menu-img-top">
 								<label for="chef_reci_image1">
-									<img src="https://api.fnkr.net/testimg/300x250/00CED1/FFF/?text=img+placeholder">
+									<img src="/AA105G3/images/recipe_cont/stepNoPic.PNG">
 								</label>
 								<i type="button" class="glyphicon glyphicon-remove clearImg btn"></i>
 									<input type="File" class="imgUpload" id="chef_reci_image1" name="chef_reci_image1" size="45" value="" />
 								</div>
 								<div class="col-xs-12 col-sm-6 menu-img-top">
 								<label for="chef_reci_image2">
-									<img src="https://api.fnkr.net/testimg/300x250/00CED1/FFF/?text=img+placeholder">
+									<img src="/AA105G3/images/recipe_cont/stepNoPic.PNG">
 								</label>
 								<i type="button" class="glyphicon glyphicon-remove clearImg btn"></i>
 									<input type="File" class="imgUpload" id="chef_reci_image2" name="chef_reci_image2" size="45" value="" />
@@ -363,21 +363,21 @@
 							<div class="row">
 								<div class="col-xs-12 col-sm-4 menu-img-bottom">
 								<label for="chef_reci_image3">
-									<img src="https://api.fnkr.net/testimg/200x160/00CED1/FFF/?text=img+placeholder">	
+									<img src="/AA105G3/images/recipe_cont/stepNoPic.PNG">	
 								</label>
 								<i type="button" class="glyphicon glyphicon-remove clearImg btn"></i>
 								 <input type="File" class="imgUpload" id="chef_reci_image3" name="chef_reci_image3" size="45" value="" />
 								</div>
 								<div class="col-xs-12 col-sm-4 menu-img-bottom">
 								<label for="chef_reci_image4">
-									<img src="https://api.fnkr.net/testimg/200x160/00CED1/FFF/?text=img+placeholder">
+									<img src="/AA105G3/images/recipe_cont/stepNoPic.PNG">
 								</label>
 								<i type="button" class="glyphicon glyphicon-remove clearImg btn"></i>
 								<input type="File" class="imgUpload" id="chef_reci_image4" name="chef_reci_image4" size="45" value="" />
 								</div>
 								<div class="col-xs-12 col-sm-4 menu-img-bottom">
 								<label for="chef_reci_image5">
-									<img src="https://api.fnkr.net/testimg/200x160/00CED1/FFF/?text=img+placeholder">
+									<img src="/AA105G3/images/recipe_cont/stepNoPic.PNG">
 								</label>
 								<i type="button" class="glyphicon glyphicon-remove clearImg btn"></i>
 								<input type="File" class="imgUpload" id="chef_reci_image5" name="chef_reci_image5" size="45" value="" />
@@ -436,7 +436,7 @@
 
 		$('.clearImg').click(function(){
 				$(this).siblings('input').val("");
-				$(this).siblings('label').children('img').attr('src','https://api.fnkr.net/testimg/300x250/00CED1/FFF/?text=img+placeholder');
+				$(this).siblings('label').children('img').attr('src','/AA105G3/images/recipe_cont/stepNoPic.PNG');
 		})
 		$('#clearVideo1').click(function(){
 				var player = document.getElementById("videoPlayer1");
@@ -493,7 +493,7 @@
 		
 		$().ready(function(){
 				$('#magic').click(function(){
-					$('#chef_name').val('林');
+					$('#chef_name').val('伽夫');
 					$('#chef_id').val('F123456789');
 					$('#chef_bnk').val('202');
 					$('#chef_bnk_ac').val('123456789124');

@@ -156,6 +156,10 @@
 		color:red;
 		text-decoration:none;
 	}
+	.recipe-type-wrapper td{
+		padding:5px 0px !important;
+		vertical-align:top;
+	}
 	
 	#theFooter{
 		/* 對應skin */

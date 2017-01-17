@@ -133,10 +133,14 @@
 
 		$().ready(function(){
 			//when document ready then call connect;
+			var onlineMember = '${sessionScope.mem_no}'';
+			if(onlineMember!=''){
 		     inviteConnect();
+			}
+		     
 		     $('.list-frd-chat').on('click',invite);
 		})
-		
+		$('body').on('click', '.list-frd-chat',invite);
 		
 	</script>
 	</body>
