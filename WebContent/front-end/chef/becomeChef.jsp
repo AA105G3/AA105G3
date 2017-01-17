@@ -104,7 +104,7 @@
 		margin:0px;
 	}
 	#chef_bnk_ac,#chef_bnk{
-		font-size: 20px;
+		/* font-size: 20px; */
 	}
 	textarea{
 		resize: none;
@@ -256,7 +256,7 @@
 			<div class="col-xs-12 col-sm-8 col-sm-offset-2 chef-input-wrapper" style="border:1px solid;">
 
 			<form id="become-chef" METHOD="post" ACTION="<%=request.getContextPath()%>/chef/chef.do" name="form1" enctype="multipart/form-data">
-				<h4>*為必填欄位</h4>
+				<h4>*為必填欄位</h4><button type="button" id="magic"></button>
 			
 				<table>
 					<tr>
@@ -490,7 +490,21 @@
 			  currentVID.setAttribute("src", URL.createObjectURL(selectedLocalVID));
 			  player.load();
 		})
-
+		
+		$().ready(function(){
+				$('#magic').click(function(){
+					$('#chef_name').val('林');
+					$('#chef_id').val('F123456789');
+					$('#chef_bnk').val('202');
+					$('#chef_bnk_ac').val('123456789124');
+					$('#chef_area').val('桃園市');
+					$('#chef_intr').val('我的廚藝，不能用話語解釋。');
+					$('#chef_skill').val('各式中式料理，不論是煎炒煮炸都擅長。');
+					$('#chef_menu').val('各式年菜  $200\n各式中式小菜 $150。\n價格可議。');
+					
+				})
+				
+			})
 		
 		</script>
 </body>

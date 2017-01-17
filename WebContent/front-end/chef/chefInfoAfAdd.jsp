@@ -2,7 +2,6 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ page import="java.util.*"%>
 <%@ page import="com.chef.model.*"%>
-<%ChefVO chefVO=(ChefVO)request.getAttribute("chefVO"); %>
 <!DOCTYPE html>
 <html lang="">
 
@@ -56,27 +55,29 @@
         padding-top: 18px;
         padding-bottom: 18px;
     }
+	html,body{
+				background: #efede8;
+				
+				height : 100%;
+				
+			}
+			.page{
+				min-height:100%;
+				   position: relative;
+				   padding-top:50px;
+				   padding-bottom:50px;
+			}
 	#theFooter{
-
-/* 		position : relative; */
-/* 		bottom : 0px; */
-		width : 100%;
-		
-		background: #222222;
-		color:#fff ;
-		font-size: 26px;
-		font-family: Reklame;
-		text-align: center;
-	}
-	body{
-		background: #efede8;
-		padding-top: 50px;
-		position : relative;
-		height : 100%;
-	}
-	html{
-		height : 100%;
-	}
+				position : absolute;
+				bottom : 0px;
+				width : 100%;
+				
+				background: #222222;
+				color:#fff ;
+				font-size: 26px;
+				font-family: Reklame;
+				text-align: center;
+			}
 	#img_zone img{
     width:100%;
     height:100%;
@@ -88,161 +89,53 @@
     		height : 225px;
     		width:300px;
     }
+    .successInfo{
+    	width:600px;
+    	height:250px;
+    	margin:100px auto;
+    	font-size:24px;
+    	padding-top:80px;
+    	border:1px solid;
+    	background:#fff;
+    }
+    .successInfo p{
+    	margin-top:10px;
+    	font-size:16px;
+    }
+    .successInfo a{
+    	font-size:20px;
+    	font-weight:bold;
+    }
     </style>
 </head>
 
 <body>
-    
+   	<div class="page">
     <header>
     	<c:import url="/front-end/frontNavbar.jsp"></c:import>
     </header>
     
-    <section id="top-img">
-        <div class="col-xs-12 col-sm-12">
-            <div class="top-img"></div>
+    
+	<div class="container">
+	<div class="row ">
+	<div class="text-center">
+		<div class="successInfo ">
+			您的申請已送出!我們會盡快完成審核。
+		<p>請按<a href="/AA105G3/front-end/chef/chefList2.jsp">這裡</a>跳轉私廚首頁。</p>
+		</div>
+	</div>
+	
+		
+	
+	</div>
+	</div>
 
-        </div>
-    </section>
-<!--     <ol class="breadcrumb"> -->
-<!--         <li> -->
-<!--             <a href="#">成為私廚</a> -->
-<!--         </li> -->
-<!--     </ol> -->
-    <div class="container chef_zone">
-        <div class="row">
-            <div class="container">
-                <div class="row">
-                    <div class="col-xs-12 col-sm-12 text-center">
-                        <h2>私廚個人資訊</h2>
-                    </div>
-                </div>
-            </div>
-            <br>
-            <div class="col-xs-12 col-sm-12 text-center" id="">
-                <div class="row" style="border-bottom: 2px solid #d3d4d5">
-                    <div class="col-xs-12 col-sm-4 col-sm-offset-4" >
-                        <div class="thumbnail">
-                            <img src="<%=request.getContextPath()%>/chef/chefImage.do?chef_no=${chefVO.chef_no}&chef_image=123">
-                            <div class="caption">
-                                <h3 align="center">${chefVO.chef_name}</h3>
-                                <p></p>
-                            </div>
-                        </div>
-                    </div>
-<!--                     <div class="col-xs-12 col-sm-5"> -->
-<!--                         <div class="thumbnail"> -->
-<%--                             <img src="<%=request.getContextPath()%>/chef/chefImage.do?chef_no=${chefVO.chef_no}&chef_lic=123" class="img-responsive" style="width:100%;height:100%"> --%>
-<!--                             <div class="caption"> -->
-<!--                                 <h3 align="center">私廚證照</h3> -->
-<!--                                 <p></p> -->
-<!--                             </div> -->
-<!--                         </div> -->
-<!--                     </div> -->
-                </div>
-                <br>
-<!--                 <div class="row"> -->
-<!--                     <div class="col-xs-12 col-sm-12"> -->
-<!--                         <h3>基本資料</h3> -->
-<!--                     </div> -->
-<!--                     <div class="col-xs-12 col-sm-12"> -->
-<!--                         <ul id="infoText"> -->
-<%--                             <li>審核狀態:${chefVO.chef_chk_cond}</li> --%>
-<%--                             <li>姓名:${chefVO.chef_name}</li> --%>
-<%--                             <li>匯款帳戶銀行代碼:${chefVO.chef_bnk}</li> --%>
-<%--                             <li>匯款帳號:${chefVO.chef_bnk_ac}</li> --%>
-<!--                         </ul> -->
-<!--                     </div> -->
-<!--                 </div> -->
-<!--                 <br> -->
-                <div class="row" style="border-bottom: 2px solid #d3d4d5;">
-                    <div class="col-xs-12 col-sm-4">
-                        <h3 style="margin-top:0px"><b>服務地區</b></h3>
-                    </div>
-                    <div class="col-xs-12 col-sm-6">
-                        <b style="font-size:12pt">${chefVO.chef_area}</b>                    
-                    </div>
-                </div>
-                <br>
-                <div class="row" style="border-bottom: 2px solid #d3d4d5">
-                    <div class="col-xs-12 col-sm-4">
-                        <h3 style="margin-top:0px"><b>擅長料理風格</b></h3>
-                    </div>
-                    <div class="col-xs-12 col-sm-6">
-                        <b style="font-size:12pt">${chefVO.chef_skill}</b>                    
-                    </div>
-                </div>
-                <br>
-                <div class="row" style="border-bottom: 2px solid #d3d4d5">
-                    <div class="col-xs-12 col-sm-4">
-                        <h3 style="margin-top:0px"><b>私廚簡介</b></h3>
-                    </div>
-                    <div class="col-xs-12 col-sm-6">
-                        <b style="font-size:12pt">${chefVO.chef_intr}</b>                    
-                    </div>
-                </div>
-                <br>
-                <div class="row" style="border-bottom: 2px solid #d3d4d5">
-                    <div class="col-xs-12 col-sm-4">
-                        <h3 style="margin-top:0px"><b>參考菜單(建議標上價格)</b></h3>
-                    </div>
-                    <div class="col-xs-12 col-sm-6">
-                        <b style="font-size:12pt">${chefVO.chef_menu}</b>
-                    </div>
-                </div>
-            </div>
-            <br>
-            <div class="col-xs-12 col-sm-12 text-center">
-                <h3>參考圖片</h3>
-            </div>
-            <br>
-            <div class="row" id="img_zone">
-                <div class="col-xs-12 col-sm-10 col-sm-offset-1">
-                    <div class="col-xs-12 col-sm-6" style="padding:1px">
-                        <img src="<%=request.getContextPath()%>/chef/chefImage.do?chef_no=${chefVO.chef_no}&chef_reci_image1=123" class="img-responsive" style="width:472px;height:315px">
-                    </div>
-                    <div class="col-xs-12 col-sm-6" style="padding:1px">
-                        <img src="<%=request.getContextPath()%>/chef/chefImage.do?chef_no=${chefVO.chef_no}&chef_reci_image2=123" class="img-responsive" style="width:472px;height:315px">
-                    </div>
-                </div>
-                <div class="col-xs-12 col-sm-10 col-sm-offset-1">
-                    <div class="col-xs-12 col-sm-4" style="padding:1px">
-                        <img src="<%=request.getContextPath()%>/chef/chefImage.do?chef_no=${chefVO.chef_no}&chef_reci_image3=123" class="img-responsive" style="width:310px;height:206px" >
-                    </div>
-                    <div class="col-xs-12 col-sm-4" style="padding:1px">
-                        <img src="<%=request.getContextPath()%>/chef/chefImage.do?chef_no=${chefVO.chef_no}&chef_reci_image4=123" class="img-responsive" style="width:310px;height:206px">
-                    </div>
-                    <div class="col-xs-12 col-sm-4" style="padding:1px">
-                        <img src="<%=request.getContextPath()%>/chef/chefImage.do?chef_no=${chefVO.chef_no}&chef_reci_image5=123" class="img-responsive" style="width:310px;height:206px">
-                    </div>
-                </div>
-            </div>
-            <br>
-            <div class="col-xs-12 col-sm-10 col-sm-offset-1 text-center">
-            	<a href="/AA105G3/front-end/chef/chefList2.jsp" class="btn btn-warning">回到私廚首頁</a>
-            </div>
-            <br>
-            
-<!--             <div class="col-xs-12 col-sm-12"> -->
-<!--                 <ul class="pager"> -->
-<!--                     <li class="previous"><a href="#">&larr; 上一頁</a></li> -->
-<!--                     <li>第1頁 / 共X頁</li> -->
-<!--                     <li class="next"><a href="#">下一頁 &rarr;</a></li> -->
-<!--                 </ul> -->
-<!--             </div> -->
-<!-- 			<div class="col-xs-12 col-sm-12"> -->
-<%-- 				<FORM METHOD="post" ACTION="<%=request.getContextPath()%>/chef/chef.do"> --%>
-<!-- 			     <input type="submit" value="修改"> -->
-<%-- 			     <input type="hidden" name="chef_no" value="${chefVO.chef_no}"> --%>
-<!-- 			     <input type="hidden" name="action"	value="getOne_For_Update"></FORM> -->
-<!-- 			</div> -->
-        </div>
-    </div>
-    <c:import url="/front-end/chat/inviteChat.jsp" ></c:import>
     <footer id="theFooter">
 		Copyright &copy; 2016 Java Team 3 
 	</footer>
     <script src="https://code.jquery.com/jquery.js"></script>
     <script src="https://netdna.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+</div>
 </body>
 
 </html>

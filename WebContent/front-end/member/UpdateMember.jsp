@@ -36,6 +36,17 @@
 		padding-right : 150px;
 		padding-bottom : 22px;
 	}
+	html,body{
+				background: #efede8;
+				
+				height : 100%;
+				
+			}
+			.page{
+				min-height:100%;
+				   position: relative;
+				   padding-top:50px;
+			}
 </style>
 
 </head>
@@ -48,7 +59,7 @@
 
 
 
-
+<div class="page">
 
 <c:import url="/front-end/frontNavbar.jsp"></c:import>
 
@@ -193,7 +204,7 @@
 	</div>
 </div>
 
-<div class="col-xs-12 col-sm-12">
+<!-- <div class="col-xs-12 col-sm-12">
 	<div class="col-xs-12 col-sm-6 div-style">
 		<div class="input-group">
 			申請私廚資格：
@@ -208,7 +219,7 @@
 	<div class="col-xs-12 col-sm-6 span-style">
 		<span id="spanOwn"></span>
 	</div>
-</div>
+</div> -->
 
 <div class="col-xs-12 col-sm-12">
 	<div class="col-xs-12 col-sm-6 div-style">
@@ -257,7 +268,7 @@
 	Copyright &copy; 2016 Java Team 3 
 </footer>
 
-
+</div>
 
 
 

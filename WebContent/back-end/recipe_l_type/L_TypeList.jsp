@@ -10,7 +10,7 @@
 		<meta charset="utf-8">
 		<meta http-equiv="X-UA-Compatible" content="IE=edge">
 		<meta name="viewport" content="width=device-width, initial-scale=1">
-		<title>食譜標題類別管理</title>
+		<title>食譜類別管理</title>
 		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
 		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.12.1/css/bootstrap-select.min.css">
 		<script></script>
@@ -160,10 +160,10 @@
 					<div class="col-xs-12 col-sm-12 col-md-12">
 						<div class="col-xs-12 col-sm-12 head-wrapper">
 							<div class="col-xs-12 col-sm-6">
-								<h2 class="type-title">食譜標題類別管理</h2>
+								<h2 class="type-title">食譜類別管理-第一層類別</h2>
 							</div>
 							 <div class="col-xs-12 col-sm-6 text-right aType-Wrapper">
-							 	<a href="<%=request.getContextPath()%>/back-end/recipe_m_type/M_TypeList.jsp" class="btn btn-default addType" >次標題類別管理</a>
+							 	<a href="<%=request.getContextPath()%>/back-end/recipe_m_type/M_TypeList.jsp" class="btn btn-default addType" >第二層類別管理</a>
 	                    		<button class="btn btn-primary addType" data-toggle="modal" data-target="#addLType">新增類別</button>
 	                    	</div>
 						</div>
@@ -172,9 +172,9 @@
 	                	<table class="table table-striped table-bordered">
 	                    	<thead class="thead-inverse">
 	                    		<tr>
-	                    			<th class="type_no_head">標題類別編號</th>
+	                    			<th class="type_no_head">第一層類別編號</th>
 	                    			<th class="type_name_head">類別名稱</th>
-	                    			<th class="attachment_head">附屬類別(次標題類別)</th>
+	                    			<th class="attachment_head">附屬類別(次類別)</th>
 	                    			<th class="edit_head">編輯</th>
 	                    		</tr>
 	                    	</thead>

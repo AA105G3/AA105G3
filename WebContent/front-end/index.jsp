@@ -412,6 +412,10 @@
 				height: 220px;
 
 			}
+			#Logo h3{
+				font-weight:bold;
+				margin:0px;
+			}
 
 			@media screen and (max-width: 62.75em) {
 				.cbp-ig-grid li {
@@ -482,18 +486,16 @@
 					<c:if test="${sessionScope.mem_no ==null}">
 						<a href="/AA105G3/Login/Flogin.jsp">
 						<img src="<%=request.getContextPath()%>/images/Logo.png">
-							
+							<h3>分享食光</h3>
 							<h3 class="cbp-ig-title">－FoodTime－</h3>
-						
 							<span class="cbp-ig-category">Login</span>
 						</a>
 					</c:if>
 					<c:if test="${sessionScope.mem_no !=null}">
 						<a href="<%=request.getContextPath()%>/member/member.do?action=signOut">
 						<img src="<%=request.getContextPath()%>/images/Logo.png">
-							
+							<h3>分享食光</h3>
 							<h3 class="cbp-ig-title">－FoodTime－</h3>
-						
 							<span class="cbp-ig-category homepagelogout">Logout</span>
 						</a>
 					</c:if>

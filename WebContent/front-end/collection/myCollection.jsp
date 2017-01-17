@@ -503,11 +503,13 @@
 						   
 						    <div class="col-xs-12 col-sm-12 text-left">
 						    	<div class="mem-email">${memberSvc.getOneMember(sessionScope.mem_no).mem_email.toLowerCase()}</div>
-						    	<div class="text-center goChef">
-									<a href="<%=request.getContextPath()%>/chef/chef.do?action=getOne_For_Display&chef_no=${aChef.chef_no}" class="btn btn-info btn-xs">
-									前往私廚頁面
-									</a>
-								</div>
+						    	<c:if test="${aChef.chef_name !=null}">
+									<div class="text-center goChef">
+										<a href="<%=request.getContextPath()%>/chef/chef.do?action=getOne_For_Display&chef_no=${aChef.chef_no}" class="btn btn-info btn-xs">
+										前往私廚頁面
+										</a>
+									</div>
+								</c:if>
 						    </div>
 					
 					    	

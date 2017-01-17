@@ -6,7 +6,7 @@
 <% 	
 	EmpService empSvc = new EmpService();
 	/* String emp_no = (String)session.getAttribute("emp_no"); */
-	String emp_no = "1001";
+	String emp_no = (String) session.getAttribute("emp_no");
 	String emp_name = (empSvc.getOneEmp(emp_no)).getEmp_name(); 	
 	session.setAttribute("emp_name",emp_name);
 	

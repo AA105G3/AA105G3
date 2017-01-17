@@ -135,7 +135,7 @@
 
 
 
-			<a href="#">
+			<a href="<%=request.getContextPath()%>/back-end/recipe_type_info/RecipeNotClassified.jsp">
 				<div class="col-xs-12 col-sm-3 btn btn-xlarge" >
 					<table>
 						<tr>
@@ -169,7 +169,7 @@
 				</div>
 			</a>
 			
-			<a href="#">
+			<a href="<%=request.getContextPath()%>/back-end/chef/ChefCheckListPage.jsp">
 				<div class="col-xs-12 col-sm-3 btn btn-xlarge" >
 					<table>
 						<tr>

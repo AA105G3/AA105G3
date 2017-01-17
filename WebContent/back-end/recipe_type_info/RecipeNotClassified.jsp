@@ -460,13 +460,12 @@
   				var recipe_no = $(this).parent().parent().siblings("td[name='recipe_no']").text();
   				
 				swal({
-				  title: 'Are you sure?',
-				  text: "You won't be able to revert this!",
+				  title: '確定要刪除該分類嗎?',
 				  type: 'warning',
 				  showCancelButton: true,
 				  confirmButtonColor: '#3085d6',
 				  cancelButtonColor: '#d33',
-				  confirmButtonText: 'Yes, delete it!'
+				  confirmButtonText: '刪除!'
 				}).then(function () {
 
 						$.ajax({
@@ -477,7 +476,7 @@
 						 success:function (data){
 							 swal(
 
-							    'Deleted!',
+							    '刪除成功',
 							    data.typeName+'已經被刪除',
 							    'success'
 							  )
@@ -519,13 +518,11 @@
 						 			}
 						 		
 						 			
-							 swal(
+							 swal({
 
-						    	  'Good job!',
-								  'You clicked the button!',
-								  'success'
-								
-							  )
+						    	  title:'類別新增成功!',
+								  type:'success'
+							 })
 							 
 						 	}else{
 						 		$("#type-info-input").modal('hide');
@@ -586,13 +583,12 @@
   				var recipe_no = $(this).parent().parent().siblings("td[name='recipe_no']").text();
   				
 				swal({
-				  title: 'Are you sure?',
-				  text: "You won't be able to revert this!",
+				  title: '確定要刪除該分類嗎?',
 				  type: 'warning',
 				  showCancelButton: true,
 				  confirmButtonColor: '#3085d6',
 				  cancelButtonColor: '#d33',
-				  confirmButtonText: 'Yes, delete it!'
+				  confirmButtonText: '刪除!'
 				}).then(function () {
 
 						$.ajax({
@@ -603,7 +599,7 @@
 						 success:function (data){
 							 swal(
 
-							    'Deleted!',
+							    '刪除成功',
 							    data.typeName+'已經被刪除',
 							    'success'
 							  )

@@ -89,6 +89,7 @@
 						<div class="submit-wrapper col-sm-9 col-sm-pull-3 col-sm-offset-3">
 							<input type="submit" class="btn btn-primary" value="提交"/>
 							<input type="hidden"  name="action" value="insert">	
+							<button type="button" id="magic"></button>
 						</div>
 						<div class="col-sm-offset-3"></div>
 						
@@ -112,7 +113,19 @@
 			    orientation: "bottom right"
 			    
 			});
-
+			$().ready(function(){
+				$('#magic').click(function(){
+					$('#emp_name').val('王五');
+					$('#emp_account').val('emp1002');
+					$('#emp_id').val('X123456789');
+					$('#emp_email').val('ventsmash@gmail.com');
+					$('#emp_address').val('桃園市中壢區中大路300號');
+					$('#emp_phone').val('0988003004');
+					$('#emp_job').val('打工仔');
+					
+				})
+				
+			})
 		</script>
 
 	</body>

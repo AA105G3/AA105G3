@@ -461,7 +461,7 @@ public class ChefServlet extends HttpServlet {
 			// Store this set in the request scope, in case we need to
 			// send the ErrorPage view.
 			req.setAttribute("errorMsgs", errorMsgs);
-			try {
+//			try {
 				/***********************1.接收請求參數 - 輸入格式的錯誤處理*************************/
 				String mem_no = req.getParameter("mem_no").trim();
 				
@@ -470,7 +470,6 @@ public class ChefServlet extends HttpServlet {
 				if(chef_bnk.equals("") || chef_bnk_ac.equals("")){
 					errorMsgs.put("bankError","請輸入銀行匯款帳戶");
 				}
-				
 				
 				String chef_skill = req.getParameter("chef_skill").trim();
 				if(chef_skill.equals("")){
@@ -699,12 +698,12 @@ public class ChefServlet extends HttpServlet {
 				successView.forward(req, res);				
 				
 				/***************************其他可能的錯誤處理**********************************/
-			} catch (Exception e) {
-				errorMsgs.put("error",e.getMessage());
-				RequestDispatcher failureView = req
-						.getRequestDispatcher("/front-end/chef/becomeChef.jsp");
-				failureView.forward(req, res);
-			}
+//			} catch (Exception e) {
+//				errorMsgs.put("error",e.getMessage());
+//				RequestDispatcher failureView = req
+//						.getRequestDispatcher("/front-end/chef/becomeChef.jsp");
+//				failureView.forward(req, res);
+//			}
 		}
 		
 		
