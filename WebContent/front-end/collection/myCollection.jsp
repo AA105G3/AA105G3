@@ -458,8 +458,9 @@
 																		<img class="img-circle" src="<%=request.getContextPath()%>/chef/chefImage.do?chef_no=${chefSvc.getOneChef(aCollection.all_no).chef_no}&chef_image=123">
 																	</td>
 																	<td class="chef-name">
+																	<a href="<%=request.getContextPath()%>/chef/chef.do?action=getOne_For_Display&chef_no=${aCollection.all_no}">
 																		<h3>${chefSvc.getOneChef(aCollection.all_no).chef_name }</h3>
-																		
+																	</a>
 																	</td>
 																	<td class="collection-chef-info">
 																		<p class="chef-skill"><span>私廚專長：</span>

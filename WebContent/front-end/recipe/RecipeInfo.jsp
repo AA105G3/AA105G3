@@ -34,12 +34,17 @@
 			<script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
 		<![endif]-->
 		<style type="text/css">
-			body{
+			html,body{
 				background: #efede8;
-				padding-top:90px;
-				position : relative;
+				
 				height : 100%;
-				padding-bottom:50px;
+				
+			}
+			.page{
+				min-height:100%;
+				   position: relative;
+				   padding-top:90px;
+				   padding-bottom:50px;
 			}
 			.recipe-search{
 		
@@ -345,6 +350,7 @@
 		</style>
 	</head>
 	<body>
+	<div class="page">
 		<c:import url="/front-end/frontNavbar.jsp" ></c:import>
 			<c:import url="/front-end/recipe/RecipeSearchBar.jsp" ></c:import>
 			<div class="container">
@@ -609,6 +615,7 @@
 	<footer id="theFooter">
 		Copyright &copy; 2016 Java Team 3 
 	</footer>	
+	</div>
 	<c:import url="/front-end/adv/Adv.jsp"></c:import>
 	<c:if test="${sessionScope.mem_ac !=null}">
 		<c:import url="/front-end/frd_list/friendBar.jsp" ></c:import>

@@ -362,7 +362,7 @@
 									        					</a>
 									        					</td>
 									        					<td class="fri-status">
-									        						<c:if test="${memberSvc.getOneMember(list.get(s.index+1).mem_no).mem_online ==1}">
+									        						<c:if test="${memberSvc.getOneMember(list.get(s.index+1).friend_no).mem_online ==1}">
 									        						<div class="frd-online"></div>上線中
 									        						<div style="clear:both;"></div>
 								        							<button class="btn btn-info list-frd-chat" value="${list.get(s.index+1).friend_no}">聊天</button>
@@ -372,7 +372,7 @@
 								        								<input type="hidden" name="action" value="delete">
 								        							 </form>
 								        						</c:if>
-								        						<c:if test="${memberSvc.getOneMember(list.get(s.index+1).mem_no).mem_online ==0}">
+								        						<c:if test="${memberSvc.getOneMember(list.get(s.index+1).friend_no).mem_online ==0}">
 								        							<div class="frd-offline"></div> 離線
 									        						<div style="clear:both;"></div>
 									        						<form action="<%=request.getContextPath()%>/frd_list/frd_list.do" method="post" class="frd-form">
@@ -517,7 +517,6 @@
 									<a href="<%=request.getContextPath()%>/chef/chef.do?action=getOne_For_Display&chef_no=${aChef.chef_no}" class="btn btn-info btn-xs">
 									前往私廚頁面
 									</a>
-							<a href="<%=request.getContextPath()%>/chef/chef.do?action=getOne_For_Update&chef_no=${aChef.chef_no}">修改</a>
 								</div>
 						    </div>
 					    	
