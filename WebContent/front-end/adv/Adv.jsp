@@ -40,8 +40,8 @@
 	.adv{
 		position: absolute;
 		position: fixed;
-		top: 57%;
-		left: 90%;
+		top: 48%;
+		left: 88%;
 		width: 250px;
 		list-style: none;
 		margin: 0;

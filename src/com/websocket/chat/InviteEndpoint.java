@@ -34,6 +34,8 @@ public class InviteEndpoint {
         MemberService memberSvc = new MemberService();
         ChefService chefSvc = new ChefService();
         users.put(userId, session);
+        System.out.println(session.getId());
+        System.out.println(userId);
         	if(userName.containsKey(userId)==false){
             	String mem_name = (memberSvc.getOneMember(userId)).getMem_name();
             	userName.put(userId, mem_name);
@@ -41,7 +43,10 @@ public class InviteEndpoint {
         
         	if(chefName.containsKey(userId)==false){
         		ChefVO chefVO = chefSvc.getOneChefByMem_no(userId);
-            	chefName.put(userId, chefVO.getChef_name());
+        		System.out.println(chefVO);
+        		if(chefVO != null){
+        			chefName.put(userId, chefVO.getChef_name());
+        		}
             }
     }
 	
@@ -79,7 +84,7 @@ public class InviteEndpoint {
 	}
 	@OnError
 	public void onError(Session userSession, Throwable e){
-//		e.printStackTrace();
+		e.printStackTrace();
 	}
 	
 	private static String getMemberName(Session session){
@@ -112,7 +117,7 @@ public class InviteEndpoint {
 	
 	
 	private static void sendMessageToOneUser(Message message) throws IOException {
-		
+		System.out.println(message.getTo());
 		if(users.containsKey(message.getTo())){
 			for (String to : users.keySet()) {
 				if (to.equals(message.getTo())) {

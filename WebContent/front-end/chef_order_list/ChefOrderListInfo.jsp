@@ -18,16 +18,21 @@
 			<script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
 		<![endif]-->
 		<style type="text/css">
-		body{
-			background: #efede8;
-
-			padding-top: 90px;
-			position : relative;
-			height : 100%;
-		}
-		html{
-			height : 100%;
-		}	
+		html,body{
+				background: #efede8;
+				/* padding-top: 50px; */
+				height : 100%;
+				/* position : relative; */
+				
+				
+			}
+			.page{
+				min-height:100%;
+				   position: relative;
+				   padding-top:60px;
+				   padding-bottom:50px;
+			}
+		
 		
 		table.chefOrderListInfo{
 			margin-left: auto;
@@ -65,6 +70,7 @@
 		</style>
 	</head>
 	<body>
+<div class="page">
 	<c:import url="/front-end/frontNavbar.jsp"></c:import>
 		<div class="container">
 			<div class="row">
@@ -142,6 +148,7 @@
 		 <footer id="theFooter">
 		Copyright &copy; 2017 Java Team 3 
 		</footer>  
+	</div>
     	<c:import url="/front-end/chat/inviteChat.jsp" ></c:import>
 		
 		<script src="https://code.jquery.com/jquery.js"></script>

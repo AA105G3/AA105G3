@@ -290,7 +290,7 @@
 										<a class="btn"><i class="glyphicon glyphicon-trash step-trash"></i></a>
 									</div>
 									<div class="step-cont-wrapper">
-										<textarea name="step_cont" rows="4" cols="55" placeholder="請輸入食譜步驟內容" style="resize: none"></textarea>	
+										<textarea name="step_cont" rows="4" cols="50" placeholder="請輸入食譜步驟內容" style="resize: none"></textarea>	
 									</div>
 								</div>
 							</div>
@@ -313,7 +313,7 @@
 										<a class="btn"><i class="glyphicon glyphicon-trash step-trash"></i></a>
 									</div>
 									<div class="step-cont-wrapper">
-										<textarea name="step_cont" rows="4" cols="55" placeholder="請輸入食譜步驟內容" style="resize: none">${recipe_contVO.step_cont}</textarea>	
+										<textarea name="step_cont" rows="4" cols="50" placeholder="請輸入食譜步驟內容" style="resize: none">${recipe_contVO.step_cont}</textarea>	
 									</div>
 								</div>
 							</div>
@@ -387,7 +387,7 @@
 						 '<a class="btn"><i class="glyphicon glyphicon-trash step-trash"></i></a>'+
 						'</div>'+
 						'<div class="step-cont-wrapper">'+
-						'<textarea name="step_cont" rows="4" cols="55" placeholder="請輸入食譜步驟內容" style="resize: none"></textarea>'+
+						'<textarea name="step_cont" rows="4" cols="50" placeholder="請輸入食譜步驟內容" style="resize: none"></textarea>'+
 						'</div>'+'</div>'+'</div>';
 			
 			var indexNo=$(this).attr("id").replace("plus_","");

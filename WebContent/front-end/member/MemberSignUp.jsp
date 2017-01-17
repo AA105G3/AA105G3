@@ -36,9 +36,18 @@ MemberVO memberVO = (MemberVO) request.getAttribute("memberVO");
 		padding-right : 150px;
 		padding-bottom : 24px;
 	}
-	body{
+	html,body{
+		/* padding-top: 50px; */
 		height : 100%;
-		background: #efede8;
+		/* position : relative; */
+		
+		
+	}
+	.page{
+		min-height:100%;
+		   position: relative;
+		   padding-top:50px;
+		   padding-bottom:50px;
 	}
 	footer{
 		position : absolute;
@@ -49,7 +58,7 @@ MemberVO memberVO = (MemberVO) request.getAttribute("memberVO");
 
 </head>
 <body>
-
+	<div class="page">
 <c:import url="/front-end/frontNavbar.jsp"></c:import>
 
 
@@ -265,7 +274,7 @@ MemberVO memberVO = (MemberVO) request.getAttribute("memberVO");
 	Copyright &copy; 2016 Java Team 3 
 </footer>
 
-
+</div>
 <script src="https://code.jquery.com/jquery.js"></script>
 <script src="https://netdna.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
 

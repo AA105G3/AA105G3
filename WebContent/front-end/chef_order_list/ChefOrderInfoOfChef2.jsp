@@ -21,22 +21,27 @@
 			<script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
 		<![endif]-->
     <style type="text/css" media="screen">
-    html, body{
-		background : white;
-		height : 100%;
-	}
+    html,body{
+				background: #efede8;
+				/* padding-top: 50px; */
+				height : 100%;
+				/* position : relative; */
+				
+				
+			}
+			.page{
+				min-height:100%;
+				   position: relative;
+				   padding-top:60px;
+				   padding-bottom:50px;
+			}
 
     
     .first-col img {
         width: 350px;
         height: 250px;
     }
-    body{
-		background: #efede8;
-		padding-top: 90px;
-		position : relative;
-		height : 100%;
-	}
+  
     .next-col {
         padding-bottom: 50px;
     }

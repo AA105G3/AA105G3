@@ -20,9 +20,19 @@
 			<script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
 		<![endif]-->
 <style type="text/css" media="screen">
-    html, body{
-		background : white;
+    html,body{
+		background: #efede8;
+		/* padding-top: 50px; */
 		height : 100%;
+		/* position : relative; */
+		
+		
+	}
+	.page{
+		min-height:100%;
+		   position: relative;
+		   padding-top:60px;
+		   padding-bottom:50px;
 	}
    
     
@@ -97,7 +107,7 @@
 
 
 
-
+<div class="page">
 <!--START SCROLL TOP BUTTON -->
 <header>    
     <c:import url="/front-end/frontNavbar.jsp"></c:import>
@@ -201,6 +211,7 @@
 <footer id="theFooter">
 		Copyright &copy; 2016 Java Team 3 
 </footer>
+</div>
 <script src="https://code.jquery.com/jquery.js"></script>
 <script src="https://netdna.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
 	<script>

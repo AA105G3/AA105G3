@@ -24,16 +24,7 @@
 		height : 100%;
 	}
 
-	#skin{
-		/* border : solid red; */
-		/* background : #f5f5dc; */
-		width : 100%;
-		margin : 0px auto;
-				
-		/* 填滿skin */
-		min-height : 100%;
-		position : relative;
-	}
+	
 	#id_wrapper{
 		min-height: 100%;
 		position: relative;
@@ -64,15 +55,21 @@
 	tr{
 		height: 50px;
 	}
-	body{
+	html,body{
 		background: #efede8;
-		padding-top: 50px;
-		position : relative;
+		/* padding-top: 50px; */
 		height : 100%;
+		/* position : relative; */
+		
+		
 	}
-	html{
-		height : 100%;
+	.page{
+		min-height:100%;
+		   position: relative;
+		   padding-top:60px;
+		   padding-bottom:50px;
 	}
+		
 	form{
 		display:inline;
 	}
@@ -86,10 +83,10 @@
 <body>
 
 
+<div class="page">
 
 
 
-<div id="skin">
 
 <header>
 	<c:import url="/front-end/frontNavbar.jsp"></c:import>
@@ -147,12 +144,12 @@
 	</tr>
 	<tr>
 		<td>信用卡驗證碼：</td>
-		<td><input type="TEXT" name="valid_no" size="3" maxlength="3"
+		<td><input type="TEXT" name="valid_no" id="valid_no" size="3" maxlength="3"
 			value="" /></td>
 	</tr>
 	<tr>
 		<td>信用卡有效時期：</td>
-		<td><input type="TEXT" name="valid_date" size="3" maxlength="5"></td>
+		<td><input type="TEXT" name="valid_date" id="valid_date" size="3" maxlength="5"></td>
 	</tr>
 	<tr>
 		<td>信用卡卡別：</td>
@@ -213,6 +210,7 @@
 	<input type="hidden" name="chef_ord_cnt" value="<%=chef_order_listVO.getChef_ord_cnt()%>">
 	<input type="hidden" name="chef_ord_con" value="2">
 	<input type="hidden" name="chef_ord_date" value="<%=chef_order_listVO.getChef_ord_date()%>">
+	<button type="button" id="magic">   </button>
 	
 </FORM>	
 	
@@ -225,12 +223,28 @@
 <footer id="theFooter">
 		Copyright &copy; 2016 Java Team 3 
 </footer>
+
+</div>
 <c:import url="/front-end/chat/inviteChat.jsp" ></c:import>
 
 
 <script src="https://code.jquery.com/jquery.js"></script>
 <script src="https://netdna.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+<script type="text/javascript">
+$().ready(function(){
+	$('#magic').click(function(){
+		$('#text1').val('111');
+		$('#text2').val('222');
+		$('#text3').val('333');
+		$('#text4').val('444');
+		$('#valid_no').val('101');
+		$('#valid_date').val('12/30');
+		
+	})
+	
+})
 
+</script>
 
 
 

@@ -107,7 +107,7 @@
 			}
 
 			.cbp-ig-icon:before {
-				font-size: 12em;
+				font-size: 11em;
 				speak: none;
 				font-style: normal;
 				font-weight: normal;
@@ -147,7 +147,7 @@
 			.cbp-ig-grid .cbp-ig-title {
 				margin: 20px 0 10px 0;
 				padding: 20px 0 0 0;
-				font-size: 3em;
+				font-size: 2em;
 				position: relative;
 				-webkit-transition: -webkit-transform 0.2s;
 				-moz-transition: -moz-transform 0.2s;
@@ -157,7 +157,7 @@
 			.cbp-ig-grid li#Logo .cbp-ig-title {
 				margin: 0px 0 30px 0;
 				padding: 10px 0 0 0;
-				font-size: 3em;
+				font-size: 2em;
 				position: relative;
 				-webkit-transition: -webkit-transform 0.2s;
 				-moz-transition: -moz-transform 0.2s;
@@ -206,7 +206,7 @@
 			.cbp-ig-grid li.odd .cbp-ig-category {
 				text-transform: uppercase;
 				display: inline-block;
-				font-size: 20px;
+				font-size: 18px;
 				letter-spacing: 1px;
 				font-weight: bold;
 				color: #fff;
@@ -222,7 +222,7 @@
 			.cbp-ig-grid li.even .cbp-ig-category {
 				text-transform: uppercase;
 				display: inline-block;
-				font-size: 20px;
+				font-size: 18px;
 				letter-spacing: 1px;
 				color: #fff;
 				-webkit-transform: translateY(10px);
@@ -239,7 +239,7 @@
 			.cbp-ig-grid li#Logo .cbp-ig-category {
 				
 				display: inline-block;
-				font-size: 28px;
+				font-size: 24px;
 				letter-spacing: 1px;
 				color: #e3b13e;
 				padding:5px 10px;
@@ -255,7 +255,7 @@
 			.cbp-ig-grid li#Logo .homepagelogout {
 				
 				display: inline-block;
-				font-size: 28px;
+				font-size: 24px;
 				letter-spacing: 1px;
 				color: #fff;
 				background: #e3b13e;
@@ -408,8 +408,8 @@
 			#Logo img{
 				margin-top: 50px;
 				margin-bottom: 10px;
-				width: 250px;
-				height: 220px;
+				width: 200px;
+				height: 160px;
 
 			}
 			#Logo h3{

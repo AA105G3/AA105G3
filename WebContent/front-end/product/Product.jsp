@@ -75,7 +75,7 @@
 	.shopping-cart{
 		position: absolute;
 		position: fixed;
-		top: 600px;
+		top: 433px;
 		left: 25px;
 		width: 250px;
 		list-style: none;

@@ -209,29 +209,26 @@ MemberVO memberVO = (MemberVO) request.getAttribute("memberVO");
     <input type="hidden" name="mem_no" value="${mem_no}">
     <input type="hidden" name="chef_no" value="${chefVO.chef_no}">
 	<input type="submit" value="送出新增" class="btn btn-success">
+	<button type="button" id="magic">   </button>
 	</div>
 	</FORM>
 	<br>
 	<br>
 	<c:import url="/front-end/chat/inviteChat.jsp" ></c:import>
     <footer id="theFooter">
-		Copyright &copy; 2016 Java Team 3 
+		Copyright &copy; 2017 Java Team 3 
 	</footer>
     <script src="https://code.jquery.com/jquery.js"></script>
     <script src="https://netdna.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
 <!--     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.6.4/js/bootstrap-datepicker.js"></script> -->
     <script type="text/javascript">
-//     $('#chef_act_date').datepicker({
-//         format: "yyyy/mm/dd",
-//         startDate: '+3d',
-//         endDate: '+1m +3d',
-//         maxViewMode: 0,
-//         todayBtn: "linked",
-//         clearBtn: true,
-//         //daysOfWeekDisabled: "0,6",
-//         orientation: "bottom right"
-
-//     });
+    $().ready(function(){
+		$('#magic').click(function(){
+			$('#chef_ord_place').val('桃園市中大路');
+			$('#chef_ord_cnt').val('過年年菜料理。');
+		})
+		
+	})
     </script>
     
 </body>

@@ -133,7 +133,7 @@
 
 		$().ready(function(){
 			//when document ready then call connect;
-			var onlineMember = '${sessionScope.mem_no}'';
+			var onlineMember = '${sessionScope.mem_no}';
 			if(onlineMember!=''){
 		     inviteConnect();
 			}
