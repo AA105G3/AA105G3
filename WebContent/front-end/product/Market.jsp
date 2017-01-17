@@ -61,8 +61,9 @@
 	#top-img{
 		background-image: url(/AA105G3/images/Market/product_title.jpg);
 		height: 500px;
-		/* background-size: cover; */
+	    background-size: cover;
 		background-position: center;
+		background-repeat: no-repeat;
 	}
 	.front-style{
 		background: #f5deb3;
