@@ -150,7 +150,15 @@
 		$().ready(function(){
 			$('#inputArea').width($(window).width()-90);
 			$('#messagesArea').height($(window).height()-85)
-
+			$('#inputArea').keypress(function(e){
+				
+				if($('#inputArea').val().trim() != ''){
+				 if (e.keyCode == 13) {
+					    $('#msgInput').click();
+					  }
+					
+				}
+			})
 			//chat websocket
 			connect();
 
@@ -185,7 +193,7 @@
 	    }
 
 	    function send() {
-
+			
 	        var content =$('#inputArea').val();
 	        var to = frd_no;//送訊息的目標id
 	        var html = '<div class="direct-chat-message right">'+
@@ -193,7 +201,7 @@
 						'<div class="direct-chat-text">'+content+'</div>'+
 						'<div style="clear:right;"></div>'+
 						'</div>';
-
+			$('#inputArea').val('');
 	        var json = JSON.stringify({
 	            "from":mem_no,
 	        	"to":to,
