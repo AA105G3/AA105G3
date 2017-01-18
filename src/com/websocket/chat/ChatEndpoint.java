@@ -114,7 +114,10 @@ public class ChatEndpoint {
 
 		if (chefName.containsKey(userId) == false) {
 			ChefVO chefVO = chefSvc.getOneChefByMem_no(userId);
+			
+			if(chefVO != null){
 			chefName.put(userId, chefVO.getChef_name());
+			}
 		}
 	}
 

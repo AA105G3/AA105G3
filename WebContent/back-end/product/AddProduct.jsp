@@ -219,16 +219,16 @@ th, td {
 <script>
 	$(document).ready(function(){
 		$('#incredibleButton').click(function(e){
-			$('#prod_name').val('馬鈴薯燉肉');
+			$('#prod_name').val('過年年菜禮盒');
 			$('#shelf_date').attr('value','2017-01-19');
 			$('#remove_date').attr('value','2017-03-19');
 			$('#sales_volume').val('0');
 			$('#stor_capacity').val('100');
-			$('#unit_price').val('50');
-			$('#disc_price').val('45');
+			$('#unit_price').val('300');
+			$('#disc_price').val('250');
 			$('#disc_start_date').attr('value','2017-02-19');
 			$('#disc_end_date').attr('value','2017-03-19');
-			document.getElementById("productTextarea").value = "小孩指定菜｛馬鈴薯燉肉｝，馬鈴薯鬆鬆軟軟、鹹鹹甜甜大人小孩都很愛，更是日本票選的女友必學料理~簡單非常容易上手~<br><br>內容物：<br>1.馬鈴薯...4小顆<br>2.紅蘿蔔...1條<br>3.牛五花...1盒<br>4.洋蔥...半顆<br>5.醬油...3大匙<br>6.味醂...1大匙<br>7.糖...適量<br>8.水...適量<br>9.米酒適量";
+			document.getElementById("productTextarea").value = "過年必吃的人氣限量商品，精心挑選出6道特色餐點，豐盛氣派簡易烹煮，每道年菜都是精心挑選的，讓你過年圍爐輕鬆料理也能嘗盡美食!!<br><br>內容物：<br>1.大白菜...1大顆<br>2.下港排骨酥...1斤<br>3.筍絲...1斤<br>4.海篸...1斤<br>5.魚皮...1斤<br>6.鮑魚...8顆<br>7.蹄筋...1斤<br>8.紅棗...15顆<br>9.鳥蛋...30顆<br>10.香菇...9朵<br>11.大蒜...2支<br>12.蝦米...1大匙<br>13.辣椒...1支<br>14.水...適量<br>15.白胡椒粉...多<br>16.醬油...適量<br>17.烏醋...少許<br>18.米酒...少許<br>19.蒜頭...15顆<br>20.芋頭...1顆";
 		}); 
 	});
 </script>
