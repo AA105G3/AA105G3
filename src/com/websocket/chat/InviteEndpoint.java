@@ -84,7 +84,7 @@ public class InviteEndpoint {
 	}
 	@OnError
 	public void onError(Session userSession, Throwable e){
-		e.printStackTrace();
+//		e.printStackTrace();
 	}
 	
 	private static String getMemberName(Session session){

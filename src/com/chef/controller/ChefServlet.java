@@ -184,7 +184,7 @@ public class ChefServlet extends HttpServlet {
 				chefSvc.updateChef(chef_no, chefVO.getChef_bnk(), chefVO.getChef_bnk_ac(), chefVO.getChef_skill(), chefVO.getChef_lic(), chefVO.getChef_image(), chefVO.getChef_movie1(), chefVO.getChef_movie2(), chefVO.getChef_id(), chefVO.getChef_name(), chefVO.getChef_area(), chefVO.getChef_intr(), chefVO.getChef_menu(), chefVO.getChef_reci_image1(), chefVO.getChef_reci_image2(), chefVO.getChef_reci_image3(), chefVO.getChef_reci_image4(), chefVO.getChef_reci_image5(),"1");
 				MemberService memberSvc = new MemberService();
 				MemberVO memberVO = memberSvc.getOneMember(chefVO.getMem_no());
-				
+				MemberVO memberVO1 = memberSvc.updateMemOwn("1", memberVO.getMem_email());
 				
 				String to = memberVO.getMem_email();
 				String subject = "私廚審核通知";

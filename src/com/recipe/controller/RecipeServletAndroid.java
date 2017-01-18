@@ -401,7 +401,7 @@ public class RecipeServletAndroid extends HttpServlet {
 				res.setContentType("image/jpeg");
 				res.setContentLength(recipe_pic.length);
 			} else {
-				InputStream in = getServletContext().getResourceAsStream("/noImages/noimage.jpg");
+				InputStream in = getServletContext().getResourceAsStream("/images/noimage.jpg");
 				recipe_pic = new byte[in.available()];
 				in.read(recipe_pic);
 				in.close();

@@ -29,9 +29,9 @@ pageContext.setAttribute("buylist",buylist);
 <link rel="stylesheet" href="/AA105G3/css/frontpageCSS.css">
 
 <style type="text/css" media="screen">
-	html, body{
-		background : white;
-		height : 100%;
+	body{
+		background: #efede8;
+		min-height : 100%;
 	}
 
 	#skin{
@@ -55,7 +55,7 @@ pageContext.setAttribute("buylist",buylist);
 	#theFooter{
 		/* 對應skin */
 		position : absolute;
-		bottom : 0px;
+		/* bottom : 0px; */
 		width : 100%;
 	}
 	.list-style{
@@ -74,6 +74,9 @@ pageContext.setAttribute("buylist",buylist);
 	.message-style{
 		padding-top : 15px;
 		padding-bottom : 15px;
+	}
+	.btn-style{
+		padding-bottom : 100px;
 	}
 </style>
 
@@ -191,7 +194,7 @@ pageContext.setAttribute("buylist",buylist);
 </table>
 <br>
 
-<div class="col-xs-12 col-sm-6">
+<div class="col-xs-12 col-sm-6 btn-style">
 	<a href="/AA105G3/front-end/product/Market.jsp" class="btn btn-default">取消</a>
 </div>
 

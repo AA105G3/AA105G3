@@ -61,7 +61,7 @@
 	}
 	.list-style{
 		padding-top : 100px;
-		padding-left : 225px;
+		padding-left : 100px;
 		padding-bottom : 100px;
 	}
 	th{

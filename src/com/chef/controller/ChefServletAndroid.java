@@ -76,20 +76,21 @@ public class ChefServletAndroid extends HttpServlet {
 		if ("getOneByMem_no".equals(action)) {
 			String mem_no = jsonObject.get("mem_no").getAsString();
 			ChefVO chefVO = chefSvc.getOneByMem_no(mem_no);
-
-			// 照片設為NULL, 避免手機OOM
-			chefVO.setChef_lic(null);
-			chefVO.setChef_image(null);
-			chefVO.setChef_movie1(null);
-			chefVO.setChef_movie2(null);
-			chefVO.setChef_reci_image1(null);
-			chefVO.setChef_reci_image2(null);
-			chefVO.setChef_reci_image3(null);
-			chefVO.setChef_reci_image4(null);
-			chefVO.setChef_reci_image5(null);
-			System.out.println("@@@@@@@@@@@@@@@@@@@@@ chefVO.get=" + chefVO.getChef_name());
-			outStr.append(gson.toJson(chefVO));
-			SendResponse.writeText(res, outStr.toString());
+			
+			if(chefVO!=null){
+				// 照片設為NULL, 避免手機OOM
+				chefVO.setChef_lic(null);
+				chefVO.setChef_image(null);
+				chefVO.setChef_movie1(null);
+				chefVO.setChef_movie2(null);
+				chefVO.setChef_reci_image1(null);
+				chefVO.setChef_reci_image2(null);
+				chefVO.setChef_reci_image3(null);
+				chefVO.setChef_reci_image4(null);
+				chefVO.setChef_reci_image5(null);
+				outStr.append(gson.toJson(chefVO));
+				SendResponse.writeText(res, outStr.toString());
+			}
 		}
 
 		if ("getOneByChef_no".equals(action)) {

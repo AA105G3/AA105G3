@@ -135,6 +135,7 @@
     <url-pattern>/front-end/product_order_list/Cart.jsp</url-pattern>
     <url-pattern>/front-end/product_order/ListProductOrder.jsp</url-pattern>
     <url-pattern>/front-end/chef/becomeChef.jsp</url-pattern>
+    <url-pattern>/front-end/recipe/addRecipe.jsp</url-pattern>
     <dispatcher>REQUEST</dispatcher>
     <dispatcher>FORWARD</dispatcher>
     <dispatcher>INCLUDE</dispatcher>

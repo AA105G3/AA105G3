@@ -23,10 +23,18 @@
 	<![endif]-->
 	<style type="text/css">
 	
-		body{
-			background: #efede8;
-			padding-top: 90px;
-		}
+		html,body{
+				background: #efede8;
+				
+				height : 100%;
+				
+			}
+			.page{
+				min-height:100%;
+				   position: relative;
+				   padding-top:90px;
+				   padding-bottom:50px;
+			}
 		.recipe-title h3{
 			margin-bottom: 5px;
 		}
@@ -44,12 +52,14 @@
 			width: 300px;
 			height: 200px;
 		}
-
+		.ingredients{
+			width:150px;
+		}
 		.update-recipe-wrapper{
 			margin-top: 20px;
 		}
 		.quantity{
-			width: 60px;
+			width: 40px;
 		}
 		.quantity,.ingredients{
 			height: 35px;
@@ -160,10 +170,22 @@
 		.video-area h3{
 			margin:0px 0px 10px 0px;
 		}
+		#theFooter{
+				/* 對應skin */
+				position : absolute;
+				bottom : 0px;
+				width : 100%;
+				
+				background: #222222;
+				color:#fff ;
+				font-size: 26px;
+				font-family: Reklame;
+				text-align: center;
+			}
 	</style>
 </head>
 <body>
-	
+<div class="page">
 	<c:if test="${not empty errorMsgs}">
 	<font color='red'>請修正以下錯誤:
 	<ul>
@@ -179,8 +201,8 @@
 	</header>
 	<div class="container">
 		<div class="row update-recipe-wrapper">
-			<div class="col-xs-12 col-sm-offset-2 col-sm-7">
 			<form class="form" action="<%=request.getContextPath()%>/recipe/recipe.do" method="POST" enctype="multipart/form-data">
+			<div class="col-xs-12 col-sm-offset-2 col-sm-7">
 
 					<div class="recipe-title">
 					<h3>食譜名稱：</h3>
@@ -327,16 +349,24 @@
 			</div>
 			<div class="col-xs-12 col-sm-1">
 				<div>
-					<button class="btn btn-primary createRecipe-btn" type="submit" name="action" value="insert">發布</button>
+					<input type="submit" class="btn btn-primary createRecipe-btn" value="發布">
+					<input type="hidden" name="action" value="insert">
 				</div>
 				<div>
 					<button class="btn btn-danger cancelRecipe-btn" id="cancelRecipe-btn" type="button" >取消</button>
 				</div>
 			</div>				
-
 			</form>
+
+			
+			
 			</div>
 		</div>
+	
+	
+	<footer id="theFooter">
+		Copyright &copy; 2016 Java Team 3 
+	</footer>	
 	</div>
 	<c:if test="${sessionScope.mem_ac !=null}">
 		<c:import url="/front-end/frd_list/friendBar.jsp" ></c:import>
