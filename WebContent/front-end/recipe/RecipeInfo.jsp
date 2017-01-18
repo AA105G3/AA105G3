@@ -311,7 +311,7 @@
 				padding-top:125px;
 			}
 			#myModal .modal-content{
-				width : 112%;
+				width : 900px;
 			}
 			.display-video-title{
 				font-size: 18px;
